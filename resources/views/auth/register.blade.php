@@ -194,7 +194,7 @@
             if (!kecamatanId) return;
 
             $.ajax({
-                url: 'http://localhost:8000/api/getSubRayonByKecamatan/' + kecamatanId,
+                url: '/api/getSubRayonByKecamatan/' + kecamatanId,
                 method: 'GET',
                 success: function (response) {
                     var data = response.data || [];
