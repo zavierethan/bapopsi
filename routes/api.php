@@ -21,5 +21,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::get('/getSubRayonByKecamatan/{kecId}', [App\Http\Controllers\SubRayonController::class, 'getSubRayonByKec']);
 
+Route::get('/getKelasByCabor/{caborId}', [App\Http\Controllers\SportController::class, 'getKelasByCabor']);
+
 // Dashboards Summary
 Route::get('dashboard/store/get-data-summary/', [App\Http\Controllers\Dashboards\StoreDashboardController::class, 'getTransactionSummary']);

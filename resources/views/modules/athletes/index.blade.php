@@ -32,13 +32,11 @@
                     <!--end::Breadcrumb-->
                 </div>
                 <!--end::Page title-->
-                <!--begin::Actions-->
                 <div class="d-flex align-items-center gap-2 gap-lg-3">
                     <!--begin::Primary button-->
-
+                    <a href="{{route('athletes.create')}}" class="btn btn-sm fw-bold btn-primary">New</a>
                     <!--end::Primary button-->
                 </div>
-                <!--end::Actions-->
             </div>
             <!--end::Toolbar container-->
         </div>
@@ -88,9 +86,11 @@
                                     <!--begin::Table row-->
                                     <tr class="text-start text-gray-400 fw-bolder fs-7 text-uppercase gs-0">
                                         <th class="min-w-125px">Nama Lengkap</th>
-                                        <th class="min-w-125px">NISN</th>
+                                        <th class="min-w-125px">Tempat Lahir</th>
+                                        <th class="min-w-125px">Tanggal Lahir</th>
                                         <th class="min-w-125px">Jenis Kelamin</th>
                                         <th class="min-w-125px">Asal Sekolah</th>
+                                        <th class="min-w-125px">NISN</th>
                                         <th class="min-w-125px">Cabang Olahraga</th>
                                         <th class="text-center min-w-70px">Actions</th>
                                     </tr>
@@ -126,7 +126,7 @@
         paging: true, // Enable pagination
         pageLength: 10, // Number of rows per page
         ajax: {
-            url: `{{route('registrations.get-lists')}}`, // Replace with your route
+            url: `{{route('athletes.get-lists')}}`, // Replace with your route
             type: 'GET',
             dataSrc: function (json) {
                 return json.data; // Map the 'data' field
@@ -134,10 +134,12 @@
         },
         columns: [
             { data: 'nama_lengkap', name: 'nama_lengkap' },
-            { data: 'email', name: 'email' },
-            { data: 'jenjang', name: 'jenjang' },
-            { data: 'nama_kecamatan', name: 'nama_kecamatan' },
-            { data: 'sub_rayon', name: 'sub_rayon' },
+            { data: 'tempat_lahir', name: 'tempat_lahir' },
+            { data: 'tanggal_lahir', name: 'tanggal_lahir' },
+            { data: 'jenis_kelamin', name: 'jenis_kelamin' },
+            { data: 'nama_sekolah', name: 'nama_sekolah' },
+            { data: 'nisn', name: 'nisn' },
+            { data: 'cabang_olahraga', name: 'cabang_olahraga' },
             {
                 data: null, // No direct field from the server
                 name: 'action',
@@ -146,6 +148,7 @@
                 render: function (data, type, row) {
                     return `
                         <div class="text-center">
+                            <a href="/sub-rayon/edit/${row.id}" class="btn btn-sm btn-primary btn-active-light-primary">Lihat</a>
                             <a href="/sub-rayon/edit/${row.id}" class="btn btn-sm btn-success btn-active-light-primary">Approve</a>
                             <a href="/sub-rayon/edit/${row.id}" class="btn btn-sm btn-danger btn-active-light-primary">Reject</a>
                         <div>

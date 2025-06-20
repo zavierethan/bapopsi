@@ -138,4 +138,9 @@ class SportController extends Controller
         }
     }
 
+    public function getKelasByCabor($caborId) {
+        $data = DB::table('sport_classes')->where('sport_id', $caborId)->get();
+
+        return response()->json(['data' => $data], 200);
+    }
 }
