@@ -11,7 +11,7 @@
                 <!--begin::Page title-->
                 <div class="page-title d-flex flex-column justify-content-center flex-wrap me-3">
                     <!--begin::Title-->
-                    <h1 class="page-heading d-flex text-gray-900 fw-bold fs-3 flex-column justify-content-center my-0">Sub Rayon</h1>
+                    <h1 class="page-heading d-flex text-gray-900 fw-bold fs-3 flex-column justify-content-center my-0">Rayon</h1>
                     <!--end::Title-->
                     <!--begin::Breadcrumb-->
                     <ul class="breadcrumb breadcrumb-separatorless fw-semibold fs-7 my-0 pt-1">
@@ -26,7 +26,7 @@
                         </li>
                         <!--end::Item-->
                         <!--begin::Item-->
-                        <li class="breadcrumb-item text-muted">Sub Rayon</li>
+                        <li class="breadcrumb-item text-muted">Rayon</li>
                         <!--end::Item-->
                     </ul>
                     <!--end::Breadcrumb-->
@@ -35,7 +35,7 @@
                 <!--begin::Actions-->
                 <div class="d-flex align-items-center gap-2 gap-lg-3">
                     <!--begin::Primary button-->
-                    <a href="{{route('sub-rayon.create')}}" class="btn btn-sm fw-bold btn-primary">New</a>
+                    <a href="{{route('rayon.create')}}" class="btn btn-sm fw-bold btn-primary">New</a>
                     <!--end::Primary button-->
                 </div>
                 <!--end::Actions-->
@@ -87,8 +87,9 @@
                                 <thead>
                                     <!--begin::Table row-->
                                     <tr class="text-start text-gray-400 fw-bolder fs-7 text-uppercase gs-0">
-                                        <th class="min-w-125px">Nama Sub Rayon</th>
-                                        <th class="min-w-125px">Kelompok Rayon</th>
+                                        <th class="min-w-125px">Nama Rayon</th>
+                                        <th class="min-w-125px">Kecamatan</th>
+                                        <th class="min-w-125px">Keterangan</th>
                                         <th class="text-center min-w-70px">Actions</th>
                                     </tr>
                                     <!--end::Table row-->
@@ -123,15 +124,16 @@
         paging: true, // Enable pagination
         pageLength: 10, // Number of rows per page
         ajax: {
-            url: `{{route('sub-rayon.get-lists')}}`, // Replace with your route
+            url: `{{route('rayon.get-lists')}}`, // Replace with your route
             type: 'GET',
             dataSrc: function (json) {
                 return json.data; // Map the 'data' field
             }
         },
         columns: [
-            { data: 'nama', name: 'nama' },
             { data: 'nama_rayon', name: 'nama_rayon' },
+            { data: 'keterangan', name: 'keterangan' },
+            { data: 'kecamatan', name: 'kecamatan' },
             {
                 data: null, // No direct field from the server
                 name: 'action',
@@ -140,7 +142,7 @@
                 render: function (data, type, row) {
                     return `
                         <div class="text-center">
-                            <a href="/sub-rayon/edit/${row.id}" class="btn btn-sm btn-light btn-active-light-primary">Edit</a>
+                            <a href="/rayon/edit/${row.id}" class="btn btn-sm btn-light btn-active-light-primary">Edit</a>
                         <div>
                     `;
                 }

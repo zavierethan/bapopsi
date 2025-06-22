@@ -12,7 +12,7 @@
                 <div class="page-title d-flex flex-column justify-content-center flex-wrap me-3">
                     <!--begin::Title-->
                     <h1 class="page-heading d-flex text-gray-900 fw-bold fs-3 flex-column justify-content-center my-0">
-                        Sub Rayon</h1>
+                        Rayon</h1>
                     <!--end::Title-->
                     <!--begin::Breadcrumb-->
                     <ul class="breadcrumb breadcrumb-separatorless fw-semibold fs-7 my-0 pt-1">
@@ -27,7 +27,7 @@
                         </li>
                         <!--end::Item-->
                         <!--begin::Item-->
-                        <li class="breadcrumb-item text-muted">Sub Rayon</li>
+                        <li class="breadcrumb-item text-muted">Rayon</li>
                         <!--end::Item-->
                         <!--begin::Item-->
                         <li class="breadcrumb-item">
@@ -57,22 +57,7 @@
                                 @csrf
                                 <div class="fv-row mb-5">
                                     <div class="mb-1">
-                                        <label class="form-label fw-bold fs-6 mb-2">Rayon</label>
-                                        <div class="position-relative mb-3">
-                                            <select class="form-select form-select-solid" data-control="select2"
-                                                data-placeholder="-" name="kecamatan_id">
-                                                <option value=""></option>
-                                                @foreach($rayon as $r)
-                                                <option value="{{$r->id}}">{{$r->nama}}</option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="separator my-5"></div>
-                                <div class="fv-row mb-5">
-                                    <div class="mb-1">
-                                        <label class="form-label fw-bold fs-6 mb-2">Nama Sub Rayon</label>
+                                        <label class="form-label fw-bold fs-6 mb-2">Nama Rayon</label>
                                         <div class="position-relative mb-3">
                                             <input class="form-control form-control-md form-control-solid" type="text"
                                                 name="nama" id="nama" />
@@ -80,51 +65,78 @@
                                     </div>
                                 </div>
                                 <div class="separator my-5"></div>
-                                <div class="flex justify-end">
-                                    <button type="submit" class="btn btn-primary">Submit</button>
-                                    <a href="{{route('sub-rayon.index')}}" class="btn btn-danger">Cancel</a>
+                                <div class="fv-row mb-5">
+                                    <div class="mb-1">
+                                        <label class="form-label fw-bold fs-6 mb-2">Wilayah (Kecamatan)</label>
+                                        <div class="row">
+                                            @php
+                                            $chunks = $kecamatan->chunk(10); // Maksimal 10 kecamatan per kolom
+                                            @endphp
+                                            @foreach ($chunks as $chunk)
+                                            <div class="col-md-3">
+                                                @foreach ($chunk as $item)
+                                                <div class="form-check mb-2">
+                                                    <input class="form-check-input" type="checkbox"
+                                                        name="kecamatan_id[]" value="{{ $item->id }}"
+                                                        id="kec-{{ $item->id }}">
+                                                    <label class="form-check-label" for="kec-{{ $item->id }}">
+                                                        {{ $item->nama }}
+                                                    </label>
+                                                </div>
+                                                @endforeach
+                                            </div>
+                                            @endforeach
+                                        </div>
+
+                                        @if ($kecamatan->isEmpty())
+                                        <p class="text-muted">Belum ada data kecamatan.</p>
+                                        @endif
+                                    </div>
                                 </div>
-                                <div id="alert-success" class="alert alert-success mt-5 d-none">Data berhasil disimpan!
-                                </div>
-                                <div id="alert-error" class="alert alert-danger mt-5 d-none">Gagal menyimpan data!</div>
-                            </form>
                         </div>
+                        <div class="separator my-5"></div>
+                        <div class="d-flex justify-content-end mb-5 gap-2">
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                            <a href="{{ route('rayon.index') }}" class="btn btn-danger">Cancel</a>
+                        </div>
+                        <div id="alert-success" class="alert alert-success mt-5 d-none">Data berhasil disimpan!
+                        </div>
+                        <div id="alert-error" class="alert alert-danger mt-5 d-none">Gagal menyimpan data!</div>
+                        </form>
                     </div>
                 </div>
-                <!--end::Row-->
             </div>
-            <!--end::Content container-->
+            <!--end::Row-->
         </div>
-        <!--end::Content-->
+        <!--end::Content container-->
     </div>
-    <!--end::Content wrapper-->
+</div>
 </div>
 @endsection
 
 @section('script')
 <script>
-    $('#subrayon-form').on('submit', function (e) {
-        e.preventDefault();
+$('#form-atlet').on('submit', function(e) {
+    e.preventDefault();
 
-        $('#alert-success').addClass('d-none');
-        $('#alert-error').addClass('d-none');
+    let formData = new FormData(this);
 
-        const formData = $(this).serialize();
-
-        $.ajax({
-            url: "{{ route('sub-rayon.save') }}",
-            type: "POST",
-            data: formData,
-            success: function (response) {
-                $('#alert-success').removeClass('d-none');
-                $('#subrayon-form')[0].reset();
-            },
-            error: function (xhr) {
-                console.error(xhr.responseText);
-                $('#alert-error').removeClass('d-none');
-            }
-        });
+    $.ajax({
+        url: "{{ route('athletes.save') }}",
+        method: 'POST',
+        data: formData,
+        processData: false,
+        contentType: false,
+        success: function(res) {
+            alert('Data berhasil disimpan!');
+            window.location.href = "{{ route('rayon.index') }}"; // Redirect
+        },
+        error: function(err) {
+            console.log(err);
+            alert('Terjadi kesalahan saat menyimpan data.');
+        }
     });
+});
+
 </script>
 @endsection
-

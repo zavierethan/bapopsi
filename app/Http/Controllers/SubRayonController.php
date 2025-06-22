@@ -15,8 +15,8 @@ class SubRayonController extends Controller
         $params = $request->all();
 
         $query = DB::table('sub_rayon')
-            ->select('sub_rayon.*', 'kecamatan.nama as nama_kecamatan')
-            ->join('kecamatan', 'kecamatan.id', '=', 'sub_rayon.kecamatan_id');
+            ->select('sub_rayon.*', 'sub_rayon.nama as nama_rayon')
+            ->leftJoin('rayon', 'rayon.id', '=', 'sub_rayon.rayon_id');
 
         if (!empty($params['name'])) {
             $query->where('sub_rayon.nama', $params['name']);
@@ -53,8 +53,8 @@ class SubRayonController extends Controller
     }
 
     public function create() {
-        $kecamatan = DB::table('kecamatan')->orderBy('nama', 'asc')->get();
-        return view('modules.sub-rayon.create', compact('kecamatan'));
+        $rayon = DB::table('rayon')->orderBy('nama', 'asc')->get();
+        return view('modules.sub-rayon.create', compact('rayon'));
     }
 
     public function save(Request $request) {

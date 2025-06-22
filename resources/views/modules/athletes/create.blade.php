@@ -174,7 +174,7 @@
 
                                 <div class="d-flex justify-content-end gap-3 mt-5">
                                     <button type="submit" class="btn btn-primary">Submit</button>
-                                    <a href="{{ route('groups.index') }}" class="btn btn-danger">Cancel</a>
+                                    <a href="{{ route('athletes.index') }}" class="btn btn-danger">Cancel</a>
                                 </div>
                             </div>
                         </div>
