@@ -80,11 +80,9 @@
                         <!--begin::Card body-->
                         <div class="card-body pt-0 overflow-x-auto">
                             <!--begin::Table-->
-                            <table class="table align-middle table-row-dashed fs-6 gy-5" id="kt_groups_table">
-                                <!--begin::Table head-->
-                                <thead>
-                                    <!--begin::Table row-->
-                                    <tr class="text-start text-gray-400 fw-bolder fs-7 text-uppercase gs-0">
+                            <table class="table align-middle table-striped table-hover shadow-card rounded-card" id="kt_groups_table" style="border-radius:14px;overflow:hidden;">
+                                <thead class="table-light fw-bold" style="background:#f3f6f9;">
+                                    <tr class="text-start text-gray-700 fw-bolder fs-7 text-uppercase gs-0">
                                         <th class="min-w-125px">Nama Lengkap</th>
                                         <th class="min-w-125px">Tempat Lahir</th>
                                         <th class="min-w-125px">Tanggal Lahir</th>
@@ -94,13 +92,9 @@
                                         <th class="min-w-125px">Cabang Olahraga</th>
                                         <th class="text-center min-w-70px">Actions</th>
                                     </tr>
-                                    <!--end::Table row-->
                                 </thead>
-                                <!--end::Table head-->
-                                <!--begin::Table body-->
-                                <tbody class="fw-bold text-gray-600">
+                                <tbody class="fw-semibold text-gray-700">
                                 </tbody>
-                                <!--end::Table body-->
                             </table>
                             <!--end::Table-->
                         </div>

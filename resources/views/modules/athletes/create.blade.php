@@ -92,7 +92,10 @@
                                     <div class="col-md-6 mb-4">
                                         <label class="form-label fw-bold fs-6 mb-2">Pas Photo</label>
                                         <input class="form-control form-control-md form-control-solid" type="file"
-                                            name="pas_foto" />
+                                            name="pas_foto" id="inputPasFoto" accept="image/*" />
+                                        <div class="mt-2">
+                                            <img id="previewFoto" src="#" alt="Preview Foto" style="display:none; max-width:140px; max-height:180px; border-radius:10px; box-shadow:0 2px 8px rgba(0,0,0,0.08); border:2px solid #eee;" />
+                                        </div>
                                     </div>
                                     <div class="col-md-6 mb-4">
                                         <label class="form-label fw-bold fs-6 mb-2">Raport</label>
@@ -287,5 +290,15 @@ function updateRemoveOfficialButtons() {
 }
 
 updateRemoveOfficialButtons();
+
+// Preview foto pas photo
+$(document).on('change', '#inputPasFoto', function(e) {
+    const [file] = this.files;
+    if (file) {
+        $('#previewFoto').attr('src', URL.createObjectURL(file)).show();
+    } else {
+        $('#previewFoto').hide();
+    }
+});
 </script>
 @endsection
