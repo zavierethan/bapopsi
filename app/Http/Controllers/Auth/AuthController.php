@@ -23,7 +23,7 @@ class AuthController extends Controller
         $user = User::where('name', $credentials['name'])->first();
 
         if (!$user) {
-            return redirect('/')->with('error', 'Invalid credentials');
+            return redirect('/')->with('error', 'Username atau password salah.');
         }
 
         // Check if the user is active
