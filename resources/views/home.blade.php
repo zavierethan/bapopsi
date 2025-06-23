@@ -49,379 +49,215 @@
 @endsection
 
 @section('main-content')
-<!--begin::Main-->
-<div class="app-main flex-column flex-row-fluid" id="kt_app_main">
-    <!--begin::Content wrapper-->
-    <div class="d-flex flex-column flex-column-fluid">
-        <!--begin::Toolbar-->
-        <div id="kt_app_toolbar" class="app-toolbar py-3 py-lg-6">
-            <!--begin::Toolbar container-->
-            <div id="kt_app_toolbar_container" class="app-container container-fluid d-flex flex-stack">
-                <!--begin::Page title-->
-                <div class="page-title d-flex flex-column justify-content-center flex-wrap me-3">
-                    <!--begin::Title-->
-                    <h1 class="page-heading d-flex text-gray-900 fw-bold fs-3 flex-column justify-content-center my-0">
-                        Dashboards</h1>
-                    <!--end::Title-->
-                    <!--begin::Breadcrumb-->
-                    <ul class="breadcrumb breadcrumb-separatorless fw-semibold fs-7 my-0 pt-1">
-                        <!--begin::Item-->
-                        <li class="breadcrumb-item text-muted">
-                            <a href="index.html" class="text-muted text-hover-primary">Ritels</a>
-                        </li>
-                        <!--end::Item-->
-                        <!--begin::Item-->
-                        <li class="breadcrumb-item">
-                            <span class="bullet bg-gray-500 w-5px h-2px"></span>
-                        </li>
-                        <!--end::Item-->
-                        <!--begin::Item-->
-                        <li class="breadcrumb-item text-muted">Daily Reports</li>
-                        <!--end::Item-->
-                    </ul>
-                    <!--end::Breadcrumb-->
-                </div>
-                <!--end::Page title-->
-                <!--begin::Actions-->
-                <div class="d-flex align-items-center gap-2 gap-lg-3">
-                    <!--begin::Secondary button-->
-                    <div class="d-flex align-items-center fw-bold">
-                        <!--begin::Label-->
-                        <div class="text-gray-500 fs-7 me-2">Periode</div>
-                        <!--end::Label-->
-                        <!--begin::Select-->
-                        <input type="date"
-                            class="form-control form-control-solid text-graY-800 fs-base lh-1 fw-bold py-0 ps-3 w-auto"
-                            id="start-date" value="<?php echo date('Y-m-01'); ?>" /> -
-                        <input type="date"
-                            class="form-control form-control-solid text-graY-800 fs-base lh-1 fw-bold py-0 ps-3 w-auto"
-                            id="end-date" value="<?php echo date('Y-m-t'); ?>" />
-                        <!--end::Select-->
-                    </div>
-                    <a href="#" class="btn btn-sm fw-bold btn-secondary" id="btn-form-export">Export ke Excel</a>
-                    <!--end::Secondary button-->
-                </div>
-                <!--end::Actions-->
-            </div>
-            <!--end::Toolbar container-->
+<div class="container py-5">
+    <!-- Filter Wilayah, Jenis Medali, Cabang Olahraga, Export Excel -->
+    <div class="row mb-4">
+        <div class="col-lg-9 mb-2 d-flex gap-2 flex-wrap">
+            <select class="form-select w-auto" id="filterWilayah">
+                <option value="">Semua Wilayah</option>
+                <option>Bandung</option>
+                <option>Sumedang</option>
+                <option>Cimahi</option>
+            </select>
+            <select class="form-select w-auto" id="filterMedali">
+                <option value="">Semua Medali</option>
+                <option>Emas</option>
+                <option>Perak</option>
+                <option>Perunggu</option>
+            </select>
+            <select class="form-select w-auto" id="filterCabang">
+                <option value="">Semua Cabang</option>
+                <option>Badminton</option>
+                <option>Basket</option>
+                <option>Voli</option>
+                <option>Sepak Bola</option>
+                <option>Renang</option>
+                <option>Atletik</option>
+            </select>
         </div>
-        <!--end::Toolbar-->
-        <!--begin::Content-->
-        <div id="kt_app_content" class="app-content flex-column-fluid">
-            <!--begin::Content container-->
-            <div id="kt_app_content_container" class="app-container">
-                <!--begin::Row-->
-                <div class="row gy-5 g-xl-10">
-                    <!--begin::Col-->
-                    <div class="col-12 col-sm-6 col-xl-3 mb-5 mb-xl-10">
-                        <!--begin::Card widget 2-->
-                        <div class="card h-lg-100">
-                            <!--begin::Body-->
-                            <div class="card-body d-flex flex-column justify-content-center align-items-center text-center">
-                                <!--begin::Icon-->
-                                <div class="m-0">
-                                    <i class="ki-duotone ki-chart-simple fs-2hx text-gray-600">
-                                        <span class="path1"></span>
-                                        <span class="path2"></span>
-                                        <span class="path3"></span>
-                                        <span class="path4"></span>
-                                    </i>
-                                </div>
-                                <!--end::Icon-->
-                                <div class="d-flex flex-column my-7">
-                                    <!--begin::Number-->
-                                    <span class="fw-semibold fs-2x text-gray-800 lh-1 ls-n2"
-                                        id="total-transactions">0</span>
-                                    <!--end::Number-->
-                                </div>
-                                <!--begin::Badge-->
-                                <span class="badge badge-light-success fs-base">Total Atlet</span>
-                                <!--end::Badge-->
-                            </div>
-                            <!--end::Body-->
-                        </div>
-                        <!--end::Card widget 2-->
-                    </div>
-                    <!--end::Col-->
-                    <!--begin::Col-->
-                    <div class="col-12 col-sm-6 col-xl-3 mb-5 mb-xl-10">
-                        <!--begin::Card widget 2-->
-                        <div class="card h-lg-100">
-                            <!--begin::Body-->
-                            <div class="card-body d-flex flex-column justify-content-center align-items-center text-center">
-                                <!--begin::Icon-->
-                                <div class="m-0">
-                                    <i class="ki-duotone ki-chart-simple fs-2hx text-gray-600">
-                                        <span class="path1"></span>
-                                        <span class="path2"></span>
-                                        <span class="path3"></span>
-                                        <span class="path4"></span>
-                                    </i>
-                                </div>
-                                <!--end::Icon-->
-                                <!--begin::Section-->
-                                <div class="d-flex flex-column my-7">
-                                    <!--begin::Number-->
-                                    <span class="fw-semibold fs-2x text-gray-800 lh-1 ls-n2" id="total-omzet">0</span>
-                                    <!--end::Number-->
-                                </div>
-                                <!--end::Section-->
-                                <!--begin::Badge-->
-                                <span class="badge badge-light-success fs-base">Cabang Olahraga</span>
-                                <!--end::Badge-->
-                            </div>
-                            <!--end::Body-->
-                        </div>
-                        <!--end::Card widget 2-->
-                    </div>
-                    <!--end::Col-->
-                    <!--begin::Col-->
-                    <div class="col-12 col-sm-6 col-xl-3 mb-5 mb-xl-10">
-                        <!--begin::Card widget 2-->
-                        <div class="card h-lg-100">
-                            <!--begin::Body-->
-                            <div class="card-body d-flex flex-column justify-content-center align-items-center text-center">
-                                <!--begin::Icon-->
-                                <div class="m-0">
-                                    <i class="ki-duotone ki-chart-simple fs-2hx text-gray-600">
-                                        <span class="path1"></span>
-                                        <span class="path2"></span>
-                                        <span class="path3"></span>
-                                        <span class="path4"></span>
-                                    </i>
-                                </div>
-                                <!--end::Icon-->
-                                <!--begin::Section-->
-                                <div class="d-flex flex-column my-7">
-                                    <!--begin::Number-->
-                                    <span class="fw-semibold fs-2x text-gray-800 lh-1 ls-n2" id="total-cash">0</span>
-                                    <!--end::Number-->
-                                </div>
-                                <!--end::Section-->
-                                <!--begin::Badge-->
-                                <div class="m-0">
-                                    <span class="badge badge-light-success fs-base">Event Tahun Ini</span>
-                                </div>
-                                <!--end::Badge-->
-                            </div>
-                            <!--end::Body-->
-                        </div>
-                        <!--end::Card widget 2-->
-                    </div>
-                    <!--end::Col-->
-                    <!--begin::Col-->
-                    <div class="col-12 col-sm-6 col-xl-3 mb-5 mb-xl-10">
-                        <!--begin::Card widget 2-->
-                        <div class="card h-lg-100">
-                            <!--begin::Body-->
-                            <div class="card-body d-flex flex-column justify-content-center align-items-center text-center">
-                                <!--begin::Icon-->
-                                <div class="m-0">
-                                    <i class="ki-duotone ki-chart-simple fs-2hx text-gray-600">
-                                        <span class="path1"></span>
-                                        <span class="path2"></span>
-                                        <span class="path3"></span>
-                                        <span class="path4"></span>
-                                    </i>
-                                </div>
-                                <!--end::Icon-->
-                                <!--begin::Section-->
-                                <div class="d-flex flex-column my-7">
-                                    <!--begin::Number-->
-                                    <span class="fw-semibold fs-2x text-gray-800 lh-1 ls-n2"
-                                        id="total-receivable">0</span>
-                                    <!--end::Number-->
-                                </div>
-                                <!--end::Section-->
-                                <!--begin::Badge-->
-                                <div class="m-0">
-                                    <span class="badge badge-light-success fs-base">Total Medali</span>
-                                </div>
-                                <!--end::Badge-->
-                            </div>
-                            <!--end::Body-->
-                        </div>
-                        <!--end::Card widget 2-->
-                    </div>
-                    <!--end::Col-->
-                </div>
-                <div class="row g-5 g-xl-10 mb-xl-10">
-                    <!--begin::Col-->
-                    <div class="col-lg-6 col-xl-6 col-xxl-6 mb-5 mb-xl-0">
-                        <!--begin::Chart widget 3-->
-                        <div class="card card-flush overflow-hidden h-md-100">
-                            <!--begin::Card body-->
-                            <div class="card-body d-flex justify-content-between flex-column pb-1 px-0">
-                                <!--begin::Statistics-->
-                                <figure class="highcharts-figure">
-                                    <div id="container-1"></div>
-                                </figure>
-                                <!--end::Chart-->
-                            </div>
-                            <!--end::Card body-->
-                        </div>
-                        <!--end::Chart widget 3-->
-                    </div>
-                    <div class="col-lg-6 col-xl-6 col-xxl-6 mb-5 mb-xl-0">
-                        <!--begin::Chart widget 3-->
-                        <div class="card card-flush overflow-hidden h-md-100">
-                            <!--begin::Card body-->
-                            <div class="card-body d-flex justify-content-between flex-column pb-1 px-0">
-                                <!--begin::Statistics-->
-                                <figure class="highcharts-figure">
-                                    <div id="container-2"></div>
-                                </figure>
-                                <!--end::Chart-->
-                            </div>
-                            <!--end::Card body-->
-                        </div>
-                        <!--end::Chart widget 3-->
-                    </div>
-                    <!--end::Col-->
-                </div>
-                <!--end::Row-->
-            </div>
-            <!--end::Content container-->
+        <div class="col-lg-3 mb-2 text-end">
+            <button class="btn btn-success px-4" id="btnExportExcel"><i class="fas fa-file-excel me-2"></i>Export Excel</button>
         </div>
-        <!--end::Content-->
     </div>
-    <!--end::Content wrapper-->
+    <!-- Statistik Card -->
+    <div class="row mb-4">
+        <div class="col-md-3 mb-3">
+            <div class="card text-center shadow-card rounded-card p-3">
+                <div class="stat-icon blue mx-auto mb-2"><i class="fas fa-users"></i></div>
+                <div class="fw-bold fs-2">1,850</div>
+                <div class="text-muted">Atlet Terdaftar</div>
+            </div>
+        </div>
+        <div class="col-md-3 mb-3">
+            <div class="card text-center shadow-card rounded-card p-3">
+                <div class="stat-icon orange mx-auto mb-2"><i class="fas fa-medal"></i></div>
+                <div class="fw-bold fs-2">240</div>
+                <div class="text-muted">Total Medali</div>
+            </div>
+        </div>
+        <div class="col-md-3 mb-3">
+            <div class="card text-center shadow-card rounded-card p-3">
+                <div class="stat-icon green mx-auto mb-2"><i class="fas fa-basketball-ball"></i></div>
+                <div class="fw-bold fs-2">24</div>
+                <div class="text-muted">Cabang Olahraga</div>
+            </div>
+        </div>
+        <div class="col-md-3 mb-3">
+            <div class="card text-center shadow-card rounded-card p-3">
+                <div class="stat-icon purple mx-auto mb-2"><i class="fas fa-school"></i></div>
+                <div class="fw-bold fs-2">130</div>
+                <div class="text-muted">Sekolah</div>
+            </div>
+        </div>
+    </div>
+    <!-- Grafik -->
+    <div class="row mb-4">
+        <div class="col-lg-7 mb-3">
+            <div class="card shadow-card rounded-card p-4">
+                <div class="d-flex align-items-center mb-3">
+                    <div class="stat-icon orange me-2"><i class="fas fa-chart-bar"></i></div>
+                    <div>
+                        <div class="fw-bold fs-5 mb-0">Grafik Batang</div>
+                        <div class="text-muted small">Perbandingan medali per cabang</div>
+                    </div>
+                </div>
+                <canvas id="barChartDashboard" height="220"></canvas>
+            </div>
+        </div>
+        <div class="col-lg-5 mb-3">
+            <div class="card shadow-card rounded-card p-4">
+                <div class="d-flex align-items-center mb-3">
+                    <div class="stat-icon blue me-2"><i class="fas fa-chart-pie"></i></div>
+                    <div>
+                        <div class="fw-bold fs-5 mb-0">Grafik Lingkaran</div>
+                        <div class="text-muted small">Distribusi total medali</div>
+                    </div>
+                </div>
+                <canvas id="pieChartDashboard" height="220"></canvas>
+            </div>
+        </div>
+    </div>
+    <!-- Tabel Data Atlet -->
+    <div class="card shadow-card rounded-card p-4 mt-4">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h5 class="fw-bold mb-0">Data Atlet</h5>
+            <div class="d-flex gap-2">
+                <select class="form-select" id="sportFilterDashboard">
+                    <option value="">Semua Cabang</option>
+                    <option>Badminton</option>
+                    <option>Basket</option>
+                    <option>Voli</option>
+                    <option>Sepak Bola</option>
+                    <option>Renang</option>
+                    <option>Atletik</option>
+                </select>
+                <select class="form-select" id="schoolFilterDashboard">
+                    <option value="">Semua Sekolah</option>
+                    <option>SMA 1 Bantul</option>
+                    <option>SMA 2 Sewon</option>
+                    <option>SMA 3 Kasihan</option>
+                </select>
+            </div>
+        </div>
+        <div class="table-responsive">
+            <table class="table align-middle">
+                <thead class="table-light">
+                    <tr>
+                        <th>No</th>
+                        <th>Nama Atlet</th>
+                        <th>Prestasi</th>
+                        <th>Sekolah</th>
+                        <th>Cabang Olahraga</th>
+                    </tr>
+                </thead>
+                <tbody id="athleteTableDashboard">
+                    <tr>
+                        <td>1</td>
+                        <td class="fw-semibold">Rizky Maulana</td>
+                        <td>Emas</td>
+                        <td>SMA 1 Bantul</td>
+                        <td>Badminton</td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td class="fw-semibold">Dewi Lestari</td>
+                        <td>Perak</td>
+                        <td>SMA 2 Sewon</td>
+                        <td>Basket</td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td class="fw-semibold">Andi Saputra</td>
+                        <td>Perunggu</td>
+                        <td>SMA 3 Kasihan</td>
+                        <td>Voli</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>
-<!--end:::Main-->
 @endsection
 
 @section('script')
-<script src="https://code.highcharts.com/highcharts.js"></script>
-<script src="https://code.highcharts.com/modules/exporting.js"></script>
-<script src="https://code.highcharts.com/modules/export-data.js"></script>
-<script src="https://code.highcharts.com/modules/accessibility.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-$(document).ready(function() {
-
-    $.ajax({
-        url: '/dashboards/transaction-summary', // API Laravel
-        method: 'GET',
-        dataType: 'json',
-        success: function(response) {
-            console.log(response);
-            $('#total-transactions').text(response.total_transactions);
-            $('#total-omzet').text(response.total_omzet);
+// Data dummy untuk grafik batang
+const barDataDashboard = {
+    labels: ['Badminton', 'Basket', 'Voli', 'Sepak Bola', 'Renang', 'Atletik'],
+    datasets: [
+        {
+            label: 'Emas',
+            backgroundColor: '#FFD600',
+            data: [12, 6, 8, 4, 7, 15],
         },
-        error: function(xhr, status, error) {
-            console.error("Error fetching data:", error);
-        }
-    });
-
-    $.ajax({
-        url: '/dashboards/sales-trend', // API Laravel
-        method: 'GET',
-        dataType: 'json',
-        success: function(response) {
-            Highcharts.chart('container-1', {
-                title: {
-                    text: 'Tren Penjualan Store (Bulan Ini)'
-                },
-                subtitle: {
-                    text: 'Data penjualan per minggu untuk bulan ini'
-                },
-                yAxis: {
-                    title: {
-                        text: 'Jumlah Penjualan'
-                    }
-                },
-                xAxis: {
-                    categories: ['Minggu 1', 'Minggu 2', 'Minggu 3', 'Minggu 4'],
-                    title: {
-                        text: 'Minggu'
-                    }
-                },
-                legend: {
-                    layout: 'vertical',
-                    align: 'right',
-                    verticalAlign: 'middle'
-                },
-                plotOptions: {
-                    series: {
-                        label: {
-                            connectorAllowed: false
-                        }
-                    }
-                },
-                series: response, // Langsung pakai response dari API!
-                responsive: {
-                    rules: [{
-                        condition: {
-                            maxWidth: 500
-                        },
-                        chartOptions: {
-                            legend: {
-                                layout: 'horizontal',
-                                align: 'center',
-                                verticalAlign: 'bottom'
-                            }
-                        }
-                    }]
-                }
-            });
+        {
+            label: 'Perak',
+            backgroundColor: '#B0B0B0',
+            data: [8, 9, 11, 6, 10, 12],
         },
-        error: function(xhr, status, error) {
-            console.error("Error fetching data:", error);
-        }
-    });
-
-
-    $.ajax({
-        url: '/dashboards/top-selling-products', // API Laravel
-        method: 'GET',
-        dataType: 'json',
-        success: function(response) {
-            Highcharts.chart('container-2', {
-                chart: {
-                    type: 'column'
-                },
-                title: {
-                    text: '10 Produk Terlaris'
-                },
-                subtitle: {
-                    text: 'Data penjualan berdasarkan jumlah produk terjual'
-                },
-                accessibility: {
-                    announceNewData: {
-                        enabled: true
-                    }
-                },
-                xAxis: {
-                    type: 'category'
-                },
-                yAxis: {
-                    title: {
-                        text: 'Jumlah Produk Terjual'
-                    }
-                },
-                legend: {
-                    enabled: false
-                },
-                plotOptions: {
-                    series: {
-                        borderWidth: 0,
-                        dataLabels: {
-                            enabled: true,
-                            format: '{point.y} Kg'
-                        }
-                    }
-                },
-                tooltip: {
-                    headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
-                    pointFormat: '<span style="color:{point.color}">{point.name}</span>: ' +
-                        '<b>{point.y}</b> unit terjual<br/>'
-                },
-                series: response // Data dari API langsung dipakai di Highcharts!
-            });
+        {
+            label: 'Perunggu',
+            backgroundColor: '#FF9800',
+            data: [15, 12, 7, 8, 9, 18],
         },
-        error: function(xhr, status, error) {
-            console.error("Error fetching data:", error);
+    ]
+};
+const barChartDashboard = new Chart(document.getElementById('barChartDashboard'), {
+    type: 'bar',
+    data: barDataDashboard,
+    options: {
+        responsive: true,
+        plugins: {
+            legend: { position: 'top' },
+            title: { display: false }
+        },
+        scales: {
+            x: { stacked: true },
+            y: { stacked: true }
         }
-    });
+    }
+});
+// Data dummy untuk grafik lingkaran
+const pieDataDashboard = {
+    labels: ['Emas', 'Perak', 'Perunggu'],
+    datasets: [{
+        data: [45, 46, 60],
+        backgroundColor: ['#FFD600', '#B0B0B0', '#FF9800'],
+        borderColor: '#fff',
+        borderWidth: 2,
+    }]
+};
+const pieChartDashboard = new Chart(document.getElementById('pieChartDashboard'), {
+    type: 'doughnut',
+    data: pieDataDashboard,
+    options: {
+        cutout: '70%',
+        plugins: {
+            legend: { display: true, position: 'bottom' },
+            tooltip: { enabled: true }
+        }
+    }
 });
 </script>
 @endsection

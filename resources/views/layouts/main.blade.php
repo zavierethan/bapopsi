@@ -278,6 +278,7 @@
                         <a href="#">
                             <img alt="Logo" src="{{asset('assets/media/logos/bapopsi-logo.png')}}"
                                 class="h-50px app-sidebar-logo-default" style="margin-left: 25px;" />
+                            <span style="font-weight:700; font-size:1.7rem; color:#fff; margin-left:12px; letter-spacing:1px; vertical-align:middle;">BAPOPSI</span>
                             <img alt="Logo" src="{{asset('assets/media/logos/bapopsi-logo.png')}}"
                                 class="h-30px app-sidebar-logo-minimize" />
                         </a>
