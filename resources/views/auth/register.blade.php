@@ -56,10 +56,9 @@
                             <div class="fv-row mb-8" data-kt-password-meter="true">
                                 <div class="mb-1">
                                     <div class="position-relative mb-3">
-                                        <input class="form-control bg-transparent" type="password" placeholder="Password" name="password" autocomplete="off" required />
-                                        <span class="btn btn-sm btn-icon position-absolute translate-middle top-50 end-0 me-n2" data-kt-password-meter-control="visibility">
-                                            <i class="ki-duotone ki-eye-slash fs-2"></i>
-                                            <i class="ki-duotone ki-eye fs-2 d-none"></i>
+                                        <input class="form-control bg-transparent" type="password" placeholder="Password" name="password" autocomplete="off" id="passwordInputReg" required />
+                                        <span class="btn btn-sm btn-icon position-absolute translate-middle top-50 end-0 me-n2" id="togglePasswordReg" style="cursor:pointer;">
+                                            <i class="fa fa-eye-slash" id="iconEyeReg"></i>
                                         </span>
                                     </div>
                                     <div class="d-flex align-items-center mb-3" data-kt-password-meter-control="highlight">
@@ -71,6 +70,13 @@
                                 </div>
                                 <div class="text-muted">Gunakan 8+ karakter dengan campuran huruf, angka & simbol.</div>
                             </div>
+                            <div class="fv-row mb-8 position-relative">
+                                <input class="form-control bg-transparent" type="password" placeholder="Konfirmasi Password" name="password_confirmation" autocomplete="off" id="confirmPasswordInputReg" required />
+                                <span class="btn btn-sm btn-icon position-absolute translate-middle top-50 end-0 me-n2" id="toggleConfirmPasswordReg" style="cursor:pointer;">
+                                    <i class="fa fa-eye-slash" id="iconEyeConfirmReg"></i>
+                                </span>
+                                <div class="text-danger small mt-1" id="passwordMismatchWarning" style="display:none;">Password yang dimasukkan tidak sama.</div>
+                            </div>
                             <div class="d-grid mb-10">
                                 <button type="submit" id="kt_register_submit" class="btn btn-primary">
                                     <span class="indicator-label">Daftar</span>
@@ -81,6 +87,16 @@
                                 <a href="{{ url('/login') }}" class="link-primary">Masuk</a>
                             </div>
                         </form>
+                    </div>
+                </div>
+                <div class="mt-8">
+                    <div class="alert alert-info p-4 rounded shadow-sm">
+                        <div class="fw-bold mb-2">Informasi Pendaftaran :</div>
+                        <ul class="mb-0 ps-4">
+                            <li>Akun akan diverifikasi oleh admin dalam 1-2 hari kerja. Jika dalam hari ketiga anda tidak bisa login berarti akun anda tidak terverifikasi, lakukan pendaftaran ulang akun.</li>
+                            <li>Pastikan data yang dimasukkan sudah benar.</li>
+                            <li>Hubungi admin jika ada kendala dalam pendaftaran.</li>
+                        </ul>
                     </div>
                 </div>
             </div>
@@ -167,6 +183,30 @@
                         $('#kt_register_submit').prop('disabled', false).text('Daftar');
                     }
                 });
+            });
+
+            // Toggle password visibility (register)
+            $(document).on('click', '#togglePasswordReg', function() {
+                const input = $('#passwordInputReg');
+                const icon = $('#iconEyeReg');
+                if (input.attr('type') === 'password') {
+                    input.attr('type', 'text');
+                    icon.removeClass('fa-eye-slash').addClass('fa-eye');
+                } else {
+                    input.attr('type', 'password');
+                    icon.removeClass('fa-eye').addClass('fa-eye-slash');
+                }
+            });
+            $(document).on('click', '#toggleConfirmPasswordReg', function() {
+                const input = $('#confirmPasswordInputReg');
+                const icon = $('#iconEyeConfirmReg');
+                if (input.attr('type') === 'password') {
+                    input.attr('type', 'text');
+                    icon.removeClass('fa-eye-slash').addClass('fa-eye');
+                } else {
+                    input.attr('type', 'password');
+                    icon.removeClass('fa-eye').addClass('fa-eye-slash');
+                }
             });
         });
     </script>

@@ -34,8 +34,11 @@
                                 <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
                                 @enderror
                             </div>
-                            <div class="fv-row mb-3">
-                                <input type="password" placeholder="Password" name="password" autocomplete="off" class="form-control bg-transparent @error('password') is-invalid @enderror" />
+                            <div class="fv-row mb-3 position-relative">
+                                <input type="password" placeholder="Password" name="password" autocomplete="off" class="form-control bg-transparent @error('password') is-invalid @enderror" id="passwordInput" />
+                                <span class="btn btn-sm btn-icon position-absolute translate-middle top-50 end-0 me-n2" id="togglePassword" style="cursor:pointer;">
+                                    <i class="fa fa-eye-slash" id="iconEye"></i>
+                                </span>
                                 @error('password')
                                 <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
                                 @enderror
@@ -57,6 +60,16 @@
                         </form>
                     </div>
                 </div>
+                <div class="mt-8">
+                    <div class="alert alert-info p-4 rounded shadow-sm">
+                        <div class="fw-bold mb-2">Informasi Pendaftaran :</div>
+                        <ul class="mb-0 ps-4">
+                            <li>Akun akan diverifikasi oleh admin dalam 1-2 hari kerja. Jika dalam hari ketiga anda tidak bisa login berarti akun anda tidak terverifikasi, lakukan pendaftaran ulang akun.</li>
+                            <li>Pastikan data yang dimasukkan sudah benar.</li>
+                            <li>Hubungi admin jika ada kendala dalam pendaftaran.</li>
+                        </ul>
+                    </div>
+                </div>
             </div>
             <div class="d-flex flex-lg-row-fluid w-lg-50 bgi-size-cover bgi-position-center order-1 order-lg-2" style="background: linear-gradient(135deg, #FF6B35 0%, #1E3A8A 50%, #3B82F6 100%);">
                 <div class="d-flex flex-column flex-center py-7 py-lg-15 px-5 px-md-15 w-100">
@@ -73,5 +86,19 @@
     </div>
     <script src="{{ asset('assets/plugins/global/plugins.bundle.js') }}"></script>
     <script src="{{ asset('assets/js/scripts.bundle.js') }}"></script>
+    <script>
+    // Toggle password visibility
+    $(document).on('click', '#togglePassword', function() {
+        const input = $('#passwordInput');
+        const icon = $('#iconEye');
+        if (input.attr('type') === 'password') {
+            input.attr('type', 'text');
+            icon.removeClass('fa-eye-slash').addClass('fa-eye');
+        } else {
+            input.attr('type', 'password');
+            icon.removeClass('fa-eye').addClass('fa-eye-slash');
+        }
+    });
+    </script>
 </body>
 </html>
