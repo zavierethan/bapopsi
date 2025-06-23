@@ -1,3 +1,168 @@
+/* Clean Modern Dashboard Theme ala EduFlow */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+
+body, .app-default {
+    font-family: 'Poppins', 'Inter', Arial, sans-serif;
+    background: #f6f8fa;
+    color: #222;
+}
+
+.app-header {
+    background: #fff;
+    box-shadow: 0 2px 8px rgba(37,99,235,0.06);
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    padding: 0.5rem 2rem;
+}
+
+.app-sidebar {
+    background: #fff;
+    box-shadow: 2px 0 16px rgba(37,99,235,0.04);
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border-right: 1px solid #e5e7eb;
+}
+
+.menu-link, .menu-title {
+    color: #222 !important;
+    font-weight: 500;
+    letter-spacing: 0.2px;
+    border-radius: 8px;
+    padding: 0.75rem 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    border-right: 4px solid transparent;
+}
+.menu-link.active, .menu-link:hover {
+    background: #eaf1ff !important;
+    color: #2563eb !important;
+    border-right: 4px solid #2563eb;
+    box-shadow: 0 2px 8px rgba(37,99,235,0.04);
+    transition: all 0.2s;
+}
+.menu-link .menu-icon {
+    color: #b0b8c9;
+    transition: color 0.2s;
+}
+.menu-link.active .menu-icon, .menu-link:hover .menu-icon {
+    color: #2563eb !important;
+}
+
+/* Sidebar section title (if any) */
+.menu-section {
+    color: #b0b8c9;
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin: 1.5rem 0 0.5rem 1.25rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.btn, .btn-custom {
+    background: #2563eb;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    transition: background 0.2s, box-shadow 0.2s;
+}
+.btn:hover, .btn-custom:hover {
+    background: #1e40af;
+    color: #fff;
+    box-shadow: 0 4px 16px rgba(37,99,235,0.12);
+}
+
+.card, .app-container, .app-page, .app-wrapper {
+    border-radius: 18px;
+    box-shadow: 0 2px 16px rgba(37,99,235,0.06);
+    background: #fff;
+    color: #222;
+}
+
+/* Statistik Icon Bulat */
+.stat-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+}
+.stat-icon.blue { background: #2563eb; color: #fff; }
+.stat-icon.green { background: #22c55e; color: #fff; }
+.stat-icon.purple { background: #a21caf; color: #fff; }
+.stat-icon.orange { background: #ff9800; color: #fff; }
+
+/* Table header gradient */
+.table thead, .table thead th, .table thead tr {
+    background: #f3f4f6 !important;
+    color: #222 !important;
+}
+
+::-webkit-scrollbar {
+    width: 8px;
+    background: #e0e7ef;
+}
+::-webkit-scrollbar-thumb {
+    background: #2563eb;
+    border-radius: 8px;
+}
+
+.app-navbar .symbol img, .app-sidebar-logo img {
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(37,99,235,0.10);
+}
+
+.menu-arrow {
+    color: #2563eb;
+}
+
+/* Animasi halus */
+.menu-link, .btn, .card, .app-header, .app-sidebar {
+    transition: all 0.2s;
+}
+
+/* Badge, label, dsb */
+.badge-blue { background: #2563eb; color: #fff; }
+.badge-green { background: #22c55e; color: #fff; }
+.badge-yellow { background: #ffd600; color: #222; }
+.badge-orange { background: #ff9800; color: #fff; }
+.badge-purple { background: #a21caf; color: #fff; }
+
+/* Utility */
+.shadow-card { box-shadow: 0 2px 16px rgba(37,99,235,0.06); }
+.rounded-card { border-radius: 18px; }
+
+/* Search bar style (optional) */
+.search-bar {
+    background: #f3f4f6;
+    border-radius: 8px;
+    border: 1px solid #e5e7eb;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    width: 100%;
+    max-width: 400px;
+    outline: none;
+    color: #222;
+}
+
+/* User info style (optional) */
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+.user-info .avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #2563eb;
+}
+
 /* BAPOPSI Sporty & Modern Theme */
 :root {
     /* Primary Sporty Colors */
