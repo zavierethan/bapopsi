@@ -8,7 +8,6 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,400,500,600,700" />
     <link href="{{ asset('assets/plugins/global/plugins.bundle.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('assets/css/style.bundle.css') }}" rel="stylesheet" type="text/css" />
-    <!-- BAPOPSI Sporty Theme -->
     <link href="{{ asset('assets/css/sporty-theme.css') }}" rel="stylesheet" type="text/css" />
 </head>
 <body id="kt_body" class="app-blank">
@@ -17,31 +16,31 @@
             <div class="d-flex flex-column flex-lg-row-fluid w-lg-50 p-10 order-2 order-lg-1">
                 <div class="d-flex flex-center flex-column flex-lg-row-fluid">
                     <div class="w-lg-500px p-10">
-                        <form class="form w-100" novalidate="novalidate" id="kt_register_form" method="POST" action="">
+                        <form class="form w-100" novalidate="novalidate" id="kt_register_form" method="POST" action="{{ route('register.save') }}">
                             @csrf
                             <div class="text-center mb-11">
                                 <h1 class="text-gray-900 fw-bolder mb-3">Buat Akun</h1>
                                 <div class="text-gray-500 fw-semibold fs-6">Daftarkan Diri Anda untuk Memulai</div>
                             </div>
                             <div class="fv-row mb-8">
-                                <input type="text" placeholder="Nama Lengkap" name="nama_lengkap" autocomplete="off" class="form-control bg-transparent" />
+                                <input type="text" placeholder="Nama Lengkap" name="nama_lengkap" autocomplete="off" class="form-control bg-transparent" required />
                             </div>
                             <div class="fv-row mb-8">
-                                <input type="email" placeholder="Email" name="email" autocomplete="off" class="form-control bg-transparent" />
+                                <input type="email" placeholder="Email" name="email" autocomplete="off" class="form-control bg-transparent" required />
                             </div>
                             <div class="row fv-row mb-8">
                                 <div class="col-xl-6">
-                                    <select name="jenjang" class="form-select bg-transparent" id="jenjang">
+                                    <select name="jenjang" class="form-select bg-transparent" id="jenjang" required>
                                         <option value="" disabled selected>-- Pilih Jenjang --</option>
                                         <option value="SD">SD</option>
                                         <option value="SMP">SMP</option>
                                     </select>
                                 </div>
                                 <div class="col-xl-6">
-                                    <select name="kecamatan_id" class="form-select bg-transparent" id="kecamatan">
+                                    <select name="kecamatan_id" class="form-select bg-transparent" id="kecamatan" required>
                                         <option disabled selected>-- Pilih Kecamatan --</option>
                                         @foreach($kecamatan as $k)
-                                        <option value="{{$k->id}}">{{$k->nama}}</option>
+                                            <option value="{{ $k->id }}">{{ $k->nama }}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -52,14 +51,15 @@
                                 </select>
                             </div>
                             <div class="fv-row mb-8">
-                                <input type="text" placeholder="Username" name="name" autocomplete="off" class="form-control bg-transparent" />
+                                <input type="text" placeholder="Username" name="username" autocomplete="off" class="form-control bg-transparent" required />
                             </div>
                             <div class="fv-row mb-8" data-kt-password-meter="true">
                                 <div class="mb-1">
                                     <div class="position-relative mb-3">
-                                        <input class="form-control bg-transparent" type="password" placeholder="Password" name="password" autocomplete="off" />
+                                        <input class="form-control bg-transparent" type="password" placeholder="Password" name="password" autocomplete="off" required />
                                         <span class="btn btn-sm btn-icon position-absolute translate-middle top-50 end-0 me-n2" data-kt-password-meter-control="visibility">
-                                            <i class="ki-duotone ki-eye-slash fs-2"></i><i class="ki-duotone ki-eye fs-2 d-none"></i>
+                                            <i class="ki-duotone ki-eye-slash fs-2"></i>
+                                            <i class="ki-duotone ki-eye fs-2 d-none"></i>
                                         </span>
                                     </div>
                                     <div class="d-flex align-items-center mb-3" data-kt-password-meter-control="highlight">
@@ -97,32 +97,76 @@
             </div>
         </div>
     </div>
+
+    <!-- JS Assets -->
     <script src="{{ asset('assets/plugins/global/plugins.bundle.js') }}"></script>
     <script src="{{ asset('assets/js/scripts.bundle.js') }}"></script>
+
+    <!-- AJAX & Dependent Dropdown Logic -->
     <script>
-        $('#jenjang').on("change", function() {
-            if ($(this).val() === "SMP") {
-                $('#sub-rayon').show();
-            } else {
-                $('#sub-rayon').hide();
-                $('#subRayonSelect').val('');
-            }
-        });
-        $('#kecamatan').on('change', function() {
-            var kecamatanId = $(this).val();
-            var $subRayonSelect = $('#subRayonSelect');
-            if (!kecamatanId) return;
-            $.ajax({
-                url: '/api/getSubRayonByKecamatan/' + kecamatanId,
-                method: 'GET',
-                success: function(response) {
-                    var data = response.data || [];
-                    $subRayonSelect.empty().append('<option value="" disabled selected>-- Pilih Sub Rayon --</option>');
-                    $.each(data, function(index, item) {
-                        $subRayonSelect.append($('<option></option>').val(item.id).text(item.nama));
-                    });
-                },
-                error: function(xhr) { console.error('Failed to fetch sub rayon:', xhr); }
+        $(document).ready(function () {
+            $('#jenjang').on("change", function () {
+                if ($(this).val() === "SMP") {
+                    $('#sub-rayon').show();
+                } else {
+                    $('#sub-rayon').hide();
+                    $('#subRayonSelect').val('');
+                }
+            });
+
+            $('#kecamatan').on('change', function () {
+                var kecamatanId = $(this).val();
+                var $subRayonSelect = $('#subRayonSelect');
+                if (!kecamatanId) return;
+                $.ajax({
+                    url: '/api/getSubRayonByKecamatan/' + kecamatanId,
+                    method: 'GET',
+                    success: function (response) {
+                        var data = response.data || [];
+                        $subRayonSelect.empty().append('<option value="" disabled selected>-- Pilih Sub Rayon --</option>');
+                        $.each(data, function (index, item) {
+                            $subRayonSelect.append($('<option></option>').val(item.id).text(item.nama));
+                        });
+                    },
+                    error: function (xhr) {
+                        console.error('Gagal mengambil data sub rayon:', xhr);
+                    }
+                });
+            });
+
+            // AJAX Form Submission
+            $('#kt_register_form').on('submit', function (e) {
+                e.preventDefault();
+                let form = $(this);
+                let formData = form.serialize();
+
+                $('#kt_register_submit').prop('disabled', true).text('Memproses...');
+
+                $.ajax({
+                    url: form.attr('action'),
+                    method: 'POST',
+                    data: formData,
+                    headers: {
+                        'X-CSRF-TOKEN': $('input[name="_token"]').val()
+                    },
+                    success: function (response) {
+                        alert('Registrasi berhasil!');
+                        window.location.href = "/login";
+                    },
+                    error: function (xhr) {
+                        let msg = 'Terjadi kesalahan saat mendaftar.';
+                        if (xhr.status === 422) {
+                            let errors = xhr.responseJSON.errors;
+                            msg = Object.values(errors).flat().join("\n");
+                        } else if (xhr.responseJSON && xhr.responseJSON.message) {
+                            msg = xhr.responseJSON.message;
+                        }
+                        alert(msg);
+                    },
+                    complete: function () {
+                        $('#kt_register_submit').prop('disabled', false).text('Daftar');
+                    }
+                });
             });
         });
     </script>
