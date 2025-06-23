@@ -82,11 +82,9 @@
                         <!--begin::Card body-->
                         <div class="card-body pt-0 overflow-x-auto">
                             <!--begin::Table-->
-                            <table class="table align-middle table-row-dashed fs-6 gy-5" id="kt_groups_table">
-                                <!--begin::Table head-->
-                                <thead>
-                                    <!--begin::Table row-->
-                                    <tr class="text-start text-gray-400 fw-bolder fs-7 text-uppercase gs-0">
+                            <table class="table align-middle table-striped table-hover shadow-card rounded-card" id="kt_subrayon_table" style="border-radius:14px;overflow:hidden;">
+                                <thead class="table-light fw-bold" style="background:#f3f6f9;">
+                                    <tr class="text-start text-gray-700 fw-bolder fs-7 text-uppercase gs-0">
                                         <th class="min-w-125px">Kecamatan (Rayon)</th>
                                         <th class="min-w-125px">Nama Sub Rayon</th>
                                         <th class="min-w-125px">Kelompok Rayon</th>
