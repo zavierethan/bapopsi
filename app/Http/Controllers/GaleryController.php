@@ -14,28 +14,35 @@ class GaleryController extends Controller
 
     public function getLists(Request $request) {
 
-        $params = $request->all();
-
-        $query = DB::table('galleries')
-            ->select('galleries.*', 'gallery_categories.name as category')
-            ->join('gallery_categories', 'gallery_categories.id', '=', 'galleries.category_id');
-
+        $searchValue = $request->input('search.value');
         $start = $request->input('start', 0);
         $length = $request->input('length', 10);
 
-        $totalRecords = $query->count();
-        $filteredRecords = $query->count();
-        $data = $query->orderBy('galleries.id', 'desc')->skip($start)->take($length)->get();
+        $query = DB::table('galleries')
+            ->join('gallery_categories', 'gallery_categories.id', '=', 'galleries.category_id')
+            ->select('galleries.*', 'gallery_categories.name as category');
 
-        $response = [
-            'draw' => $request->input('draw'),
+        $totalRecords = $query->count();
+
+        if (!empty($searchValue)) {
+            $query->where('galleries.title', 'like', '%' . $searchValue . '%');
+        }
+
+        $filteredRecords = $query->count();
+
+        $data = $query->orderBy('galleries.id', 'desc')
+                    ->skip($start)
+                    ->take($length)
+                    ->get();
+
+        return response()->json([
+            'draw' => intval($request->input('draw')),
             'recordsTotal' => $totalRecords,
             'recordsFiltered' => $filteredRecords,
-            'data' => $data
-        ];
-
-        return response()->json($response);
+            'data' => $data,
+        ]);
     }
+
 
     public function create() {
         $categories = DB::table('gallery_categories')->get();

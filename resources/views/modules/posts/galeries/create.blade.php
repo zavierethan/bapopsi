@@ -136,7 +136,7 @@ $('#newsForm').on('submit', function(e) {
             Swal.fire({
                 icon: 'success',
                 title: 'Berhasil!',
-                text: 'News berhasil disimpan!',
+                text: 'Galery berhasil disimpan!',
                 timer: 2000,
                 showConfirmButton: false
             }).then(() => {

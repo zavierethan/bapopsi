@@ -102,12 +102,12 @@
                                     <div class="mb-1">
                                         <label class="form-label fw-bold fs-6 mb-2">Status</label>
                                         <div class="position-relative mb-3">
-                                        <select class="form-select form-select-solid" data-control="select2"
-                                            data-placeholder="-" name="status">
-                                            <option value="1" selected>Active</option>
-                                            <option value="0">Non Active</option>
-                                        </select>
-                                    </div>
+                                            <select class="form-select form-select-solid" data-control="select2"
+                                                data-placeholder="-" name="status">
+                                                <option value="1" selected>Active</option>
+                                                <option value="0">Non Active</option>
+                                            </select>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="separator my-5"></div>
@@ -130,39 +130,69 @@
 @endsection
 
 @section('script')
-    <!-- Load CKEditor 5 Classic -->
-    <script src="https://cdn.ckeditor.com/ckeditor5/39.0.1/classic/ckeditor.js"></script>
-    <script>
-        let editor;
-        ClassicEditor
-            .create(document.querySelector('#content'))
-            .then(e => editor = e)
-            .catch(error => console.error(error));
+<!-- Load CKEditor 5 Classic -->
+<script src="https://cdn.ckeditor.com/ckeditor5/39.0.1/classic/ckeditor.js"></script>
+<script>
+let editor;
 
-        $('#newsForm').on('submit', function (e) {
-            e.preventDefault();
+ClassicEditor
+    .create(document.querySelector('#content'))
+    .then(e => editor = e)
+    .catch(error => console.error(error));
 
-            const formData = {
-                _token: $('input[name="_token"]').val(),
-                title: $('#title').val(),
-                content: editor.getData(),
-                category: $('select[name="category"]').val(),
-                status: $('select[name="status"]').val(),
-            };
+$('#newsForm').on('submit', function(e) {
+    e.preventDefault();
 
-            $.ajax({
-                url: "{{ route('posts.news.save') }}",
-                method: "POST",
-                data: formData,
-                success: function (response) {
-                    alert("News berhasil disimpan!");
-                    window.location.href = "{{ route('posts.news.index') }}";
-                },
-                error: function (xhr) {
-                    alert("Terjadi kesalahan: " + xhr.responseText);
-                }
+    // Sync CKEditor data to textarea
+    $('#content').val(editor.getData());
+
+    const form = $('#newsForm')[0];
+    const formData = new FormData(form);
+
+    $.ajax({
+        url: "{{ route('posts.news.save') }}",
+        method: "POST",
+        data: formData,
+        processData: false,
+        contentType: false,
+        success: function(response) {
+            Swal.fire({
+                icon: 'success',
+                title: 'Berhasil!',
+                text: 'News berhasil disimpan!',
+                timer: 2000,
+                showConfirmButton: false
+            }).then(() => {
+                window.location.href = "{{ route('posts.news.index') }}";
             });
-        });
+        },
+        error: function(xhr) {
+            if (xhr.status === 422) {
+                const errors = xhr.responseJSON.errors;
+                let errorList = '<ul style="text-align: left;">';
+                $.each(errors, function(key, messages) {
+                    messages.forEach(function(message) {
+                        errorList += `<li>${message}</li>`;
+                    });
+                });
+                errorList += '</ul>';
 
-    </script>
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Warning !',
+                    html: errorList,
+                    confirmButtonText: 'Ok'
+                });
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Kesalahan Server',
+                    text: 'Terjadi kesalahan pada sistem. Coba lagi nanti atau hubungi administrator.'
+                });
+            }
+        }
+    });
+});
+</script>
 @endsection
+

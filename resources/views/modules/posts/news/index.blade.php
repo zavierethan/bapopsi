@@ -77,21 +77,15 @@
                                 </div>
                                 <!--begin::Filters-->
                             </div>
-                            <!--end::Card toolbar-->
                         </div>
-                        <!--begin::Card body-->
                         <div class="card-body pt-0 overflow-x-auto">
-                            <!--begin::Table-->
-                            <table class="table align-middle table-striped table-hover shadow-card rounded-card" id="kt_menus_table" style="border-radius:14px;overflow:hidden;">
-                                <!--begin::Table head-->
-                                <thead class="table-light fw-bold" style="background:#f3f6f9;">
-                                    <!--begin::Table row-->
+                            <table class="table align-middle table-row-dashed fs-6 gy-5" id="kt_menus_table">
+                                <thead>
                                     <tr class="text-start text-gray-400 fw-bolder fs-7 text-uppercase gs-0">
                                         <th class="min-w-125px">Title</th>
                                         <th class="min-w-125px">Category</th>
                                         <th class="min-w-125px">Author ID</th>
                                         <th class="min-w-125px text-center">Published At</th>
-                                        <th class="min-w-125px text-center">Active</th>
                                         <th class="text-center min-w-70px">Actions</th>
                                     </tr>
                                     <!--end::Table row-->
@@ -123,48 +117,33 @@
     var table = $("#kt_menus_table").DataTable({
         processing: true,
         serverSide: true,
-        paging: true, // Enable pagination
-        pageLength: 10, // Number of rows per page
+        paging: true,
+        pageLength: 10,
         ajax: {
-            url: `{{route('posts.news.get-lists')}}`, // Replace with your route
+            url: `{{route('posts.news.get-lists')}}`,
             type: 'GET',
             data: function (d) {
                 // Add filter data to the request
-                d.parent_id = $('#parent-id').val();
             },
             dataSrc: function (json) {
-                return json.data; // Map the 'data' field
+                return json.data;
             }
         },
         columns: [
             { data: 'title', name: 'title' },
             { data: 'category', name: 'category' },
-            { data: 'url', name: 'url' },
-            { data: 'author', name: 'author'},
+            { data: 'author_id', name: 'author_id' },
+            { data: 'published_at', name: 'published_at', className: 'text-center'},
             {
-                data: 'is_active',
-                name: 'is_active',
-                className: 'text-center',
-                render: function(data, type, row) {
-                    var is_active = "";
-
-                    if (row.is_active == 1) {
-                        is_active = `<span class="badge bg-success text-dark">Active</span>`
-                    } else {
-                        is_active = `<span class="badge bg-success text-dark">Non Active</span>`
-                    }
-                    return is_active;
-                }
-            },
-            {
-                data: null, // No direct field from the server
+                data: null,
                 name: 'action',
-                orderable: false, // Disable ordering for this column
-                searchable: false, // Disable searching for this column
+                orderable: false,
+                searchable: false,
                 render: function (data, type, row) {
                     return `
                         <div class="text-center">
-                            <a href="/menus/edit/${row.id}" class="btn btn-sm btn-light btn-active-light-primary">Edit</a>
+                            <a href="/posts/news/edit/${row.id}" class="btn btn-sm btn-light btn-active-light-primary">Edit</a>
+                            <button class="btn btn-sm btn-light btn-active-light-danger btn-delete" data-id="${row.id}">Delete</button>
                         <div>
                     `;
                 }
@@ -173,12 +152,40 @@
     });
 
     $('[data-kt-menu-table-filter="search"]').on('keyup', function() {
-        const searchTerm = $(this).val(); // Get the value from the search input
-        table.search(searchTerm).draw(); // Trigger the search and refresh the DataTable
+        const searchTerm = $(this).val();
+        table.search(searchTerm).draw();
     });
 
-    $('#parent-id').on('change', function () {
-        table.draw(); // Trigger DataTable redraw with updated filter values
+    $(document).on('click', '.btn-delete', function() {
+        const id = $(this).data('id');
+
+        Swal.fire({
+            title: 'Yakin ingin menghapus?',
+            text: 'Data tidak bisa dikembalikan setelah dihapus!',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#6c757d',
+            confirmButtonText: 'Ya, hapus!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: `/posts/news/delete/${id}`,
+                    method: 'DELETE',
+                    data: {
+                        _token: '{{ csrf_token() }}'
+                    },
+                    success: function(res) {
+                        Swal.fire('Berhasil!', res.message, 'success');
+                        $('#kt_menus_table').DataTable().ajax.reload();
+                    },
+                    error: function(err) {
+                        Swal.fire('Gagal!', 'Terjadi kesalahan saat menghapus data.', 'error');
+                    }
+                });
+            }
+        });
     });
+
 </script>
 @endsection

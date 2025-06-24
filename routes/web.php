@@ -145,8 +145,8 @@ Route::group(['middleware' => ['auth']], function() {
                     Route::get('/create', [App\Http\Controllers\NewsController::class, 'create'])->name('create');
                     Route::post('/save', [App\Http\Controllers\NewsController::class, 'save'])->name('save');
                     Route::get('/edit/{id}', [App\Http\Controllers\NewsController::class, 'edit'])->name('edit');
-                    Route::post('/update', [App\Http\Controllers\NewsController::class, 'update'])->name('update');
-                    Route::post('/delete', [App\Http\Controllers\NewsController::class, 'delete'])->name('delete');
+                    Route::post('/update/{id}', [App\Http\Controllers\NewsController::class, 'update'])->name('update');
+                    Route::delete('/delete/{id}', [App\Http\Controllers\NewsController::class, 'delete'])->name('delete');
                 });
             });
             Route::prefix('galeries')->group(function () {
@@ -172,7 +172,7 @@ Route::group(['middleware' => ['auth']], function() {
             Route::get('/create', [App\Http\Controllers\SportController::class, 'create'])->name('create');
             Route::post('/save', [App\Http\Controllers\SportController::class, 'save'])->name('save');
             Route::get('/edit/{id}', [App\Http\Controllers\SportController::class, 'edit'])->name('edit');
-            Route::post('/update', [App\Http\Controllers\SportController::class, 'update'])->name('update');
+            Route::post('/update/{id}', [App\Http\Controllers\SportController::class, 'update'])->name('update');
             Route::post('/delete', [App\Http\Controllers\SportController::class, 'delete'])->name('delete');
         });
     });

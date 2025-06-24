@@ -80,8 +80,8 @@
                         <!--begin::Card body-->
                         <div class="card-body pt-0 overflow-x-auto">
                             <!--begin::Table-->
-                            <table class="table align-middle table-striped table-hover shadow-card rounded-card" id="kt_groups_table" style="border-radius:14px;overflow:hidden;">
-                                <thead class="table-light fw-bold" style="background:#f3f6f9;">
+                            <table class="table align-middle table-row-dashed fs-6 gy-5" id="kt_groups_table">
+                                <thead>
                                     <tr class="text-start text-gray-700 fw-bolder fs-7 text-uppercase gs-0">
                                         <th class="min-w-125px">Nama Lengkap</th>
                                         <th class="min-w-125px">Tempat Lahir</th>

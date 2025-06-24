@@ -42,7 +42,7 @@
                                         </i>
                                         <input type="text" data-kt-menu-table-filter="search"
                                             class="form-control form-control-solid w-250px ps-15"
-                                            placeholder="Search" />
+                                            placeholder="Search by Title" />
                                     </div>
                                 </div>
                             </div>

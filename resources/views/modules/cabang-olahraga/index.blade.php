@@ -72,7 +72,7 @@
                                         </svg>
                                     </span>
                                     <!--end::Svg Icon-->
-                                    <input type="text" data-kt-customer-table-filter="search" class="form-control form-control-solid w-250px ps-15" placeholder="Search" />
+                                    <input type="text" data-kt-sport-table-filter="search" class="form-control form-control-solid w-250px ps-15" placeholder="Search" />
                                 </div>
                                 <!--end::Toolbar-->
                             </div>
@@ -82,10 +82,11 @@
                         <!--begin::Card body-->
                         <div class="card-body pt-0 overflow-x-auto">
                             <!--begin::Table-->
-                            <table class="table align-middle table-striped table-hover shadow-card rounded-card" id="kt_groups_table" style="border-radius:14px;overflow:hidden;">
-                                <thead class="table-light fw-bold" style="background:#f3f6f9;">
+                            <table class="table align-middle table-row-dashed fs-6 gy-5" id="kt_groups_table">
+                                <thead>
                                     <tr class="text-start text-gray-700 fw-bolder fs-7 text-uppercase gs-0">
                                         <th class="min-w-125px">Cabang Olahraga</th>
+                                        <th class="min-w-125px">Kelas</th>
                                         <th class="text-center min-w-70px">Actions</th>
                                     </tr>
                                 </thead>
@@ -110,7 +111,7 @@
 
 @section('script')
 <script>
-    $("#kt_groups_table").DataTable({
+    var table = $("#kt_groups_table").DataTable({
         processing: true,
         serverSide: true,
         paging: true, // Enable pagination
@@ -124,6 +125,7 @@
         },
         columns: [
             { data: 'name', name: 'name' },
+            { data: 'classes', name: 'classes' },
             {
                 data: null, // No direct field from the server
                 name: 'action',
@@ -138,6 +140,11 @@
                 }
             }
         ]
+    });
+
+    $('[data-kt-sport-table-filter="search"]').on('keyup', function() {
+        const searchTerm = $(this).val();
+        table.search(searchTerm).draw();
     });
 </script>
 @endsection

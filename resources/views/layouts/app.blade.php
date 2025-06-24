@@ -7,6 +7,8 @@
     <title>BAPOPSI Landing Page</title>
     <script src="https://cdn.tailwindcss.com"></script>
 
+    <link rel="shortcut icon" href="{{asset('assets/media/logos/bapopsi-logo.png')}}" />
+
     <!-- Font Awesome (for icons, optional) -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
 
