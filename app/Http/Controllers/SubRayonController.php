@@ -105,7 +105,6 @@ class SubRayonController extends Controller
             'kecamatan_id' => 'required|exists:kecamatan,id',
         ]);
 
-        // ✅ Cek apakah kecamatan sudah termapping ke rayon
         $isMapped = DB::table('rayon_kecamatan')
             ->where('kecamatan_id', $request->kecamatan_id)
             ->exists();
@@ -117,7 +116,6 @@ class SubRayonController extends Controller
             ], 422);
         }
 
-        // ✅ Update jika lolos validasi
         DB::table('sub_rayon')
             ->where('id', $id)
             ->update([
@@ -129,6 +127,12 @@ class SubRayonController extends Controller
             'success' => true,
             'message' => 'Data berhasil diperbarui.'
         ]);
+    }
+
+    public function getSubRayonByKec($kecId) {
+        $data = DB::table('sub_rayon')->where('kecamatan_id', $kecId)->get();
+
+        return response()->json(['data' => $data], 200);
     }
 
 }
