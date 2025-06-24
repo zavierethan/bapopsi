@@ -11,13 +11,13 @@
                 <!--begin::Page title-->
                 <div class="page-title d-flex flex-column justify-content-center flex-wrap me-3">
                     <!--begin::Title-->
-                    <h1 class="page-heading d-flex text-gray-900 fw-bold fs-3 flex-column justify-content-center my-0">Menus</h1>
+                    <h1 class="page-heading d-flex text-gray-900 fw-bold fs-3 flex-column justify-content-center my-0">News</h1>
                     <!--end::Title-->
                     <!--begin::Breadcrumb-->
                     <ul class="breadcrumb breadcrumb-separatorless fw-semibold fs-7 my-0 pt-1">
                         <!--begin::Item-->
                         <li class="breadcrumb-item text-muted">
-                            <a href="index.html" class="text-muted text-hover-primary">Accounts</a>
+                            <a href="index.html" class="text-muted text-hover-primary">Posts</a>
                         </li>
                         <!--end::Item-->
                         <!--begin::Item-->
@@ -26,7 +26,7 @@
                         </li>
                         <!--end::Item-->
                         <!--begin::Item-->
-                        <li class="breadcrumb-item text-muted">Menus</li>
+                        <li class="breadcrumb-item text-muted">News</li>
                         <!--end::Item-->
                     </ul>
                     <!--end::Breadcrumb-->
@@ -35,7 +35,7 @@
                 <!--begin::Actions-->
                 <div class="d-flex align-items-center gap-2 gap-lg-3">
                     <!--begin::Primary button-->
-                    <a href="{{route('menus.create')}}" class="btn btn-sm fw-bold btn-primary">New</a>
+                    <a href="{{route('posts.news.create')}}" class="btn btn-sm fw-bold btn-primary">New</a>
                     <!--end::Primary button-->
                 </div>
                 <!--end::Actions-->
@@ -87,10 +87,10 @@
                                 <thead>
                                     <!--begin::Table row-->
                                     <tr class="text-start text-gray-400 fw-bolder fs-7 text-uppercase gs-0">
-                                        <th class="min-w-125px">Name</th>
-                                        <th class="min-w-125px">Parent</th>
-                                        <th class="min-w-125px">URL</th>
-                                        <th class="min-w-125px text-center">Order</th>
+                                        <th class="min-w-125px">Title</th>
+                                        <th class="min-w-125px">Category</th>
+                                        <th class="min-w-125px">Author ID</th>
+                                        <th class="min-w-125px text-center">Published At</th>
                                         <th class="min-w-125px text-center">Active</th>
                                         <th class="text-center min-w-70px">Actions</th>
                                     </tr>
@@ -126,7 +126,7 @@
         paging: true, // Enable pagination
         pageLength: 10, // Number of rows per page
         ajax: {
-            url: `{{route('menus.get-lists')}}`, // Replace with your route
+            url: `{{route('posts.news.get-lists')}}`, // Replace with your route
             type: 'GET',
             data: function (d) {
                 // Add filter data to the request
@@ -137,10 +137,10 @@
             }
         },
         columns: [
-            { data: 'menu_name', name: 'menu_name' },
-            { data: 'parent_name', name: 'parent_name' },
+            { data: 'title', name: 'title' },
+            { data: 'category', name: 'category' },
             { data: 'url', name: 'url' },
-            { data: 'order', name: 'order', className: 'text-center' },
+            { data: 'author', name: 'author'},
             {
                 data: 'is_active',
                 name: 'is_active',

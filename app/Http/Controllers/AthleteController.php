@@ -17,6 +17,13 @@ class AthleteController extends Controller
         $query = DB::table('atlet')
             ->select(
                 'atlet.*',
+                DB::raw("CASE
+                        WHEN atlet.appr_status IS NULL THEN 'Waiting Approval'
+                        WHEN atlet.appr_status = 1 THEN 'Approved'
+                        WHEN atlet.appr_status = 0 THEN 'Rejected'
+                    END as approval_status"
+                ),
+                DB::raw("TO_CHAR(atlet.appr_date, 'DD-MM-YYYY HH24:MI:SS') AS approval_date"),
                 'sports.name as cabang_olahraga'
             )
             ->leftJoin('sports', 'sports.id', '=', 'atlet.cabang_olahraga_id');
@@ -90,7 +97,8 @@ class AthleteController extends Controller
                 'cabang_olahraga_id' => $request->cabang_olahraga,
                 'kelas_id'           => $request->kelas_id,
                 'created_at'         => now(),
-                'updated_at'         => now()
+                'updated_at'         => now(),
+                'appr_status'        => 0
             ]);
 
             // Simpan data official
@@ -123,5 +131,37 @@ class AthleteController extends Controller
                 'error' => $e->getMessage()
             ], 500);
         }
+    }
+
+    public function approve($id) {
+        DB::beginTransaction();
+
+        try {
+            DB::table('atlet')->where('id', $id)->update([
+                'appr_status' => 1,
+                'appr_date' => now(),
+            ]);
+
+            DB::commit();
+
+            return response()->json(['success' => true]);
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json([
+                'success' => false,
+                'message' => 'Approval failed.',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+    public function reject($id) {
+        DB::table('atlet')->where('id', $id)->update([
+            "appr_status" => 0,
+            "appr_date" => now()
+        ]);
+
+        return response()->json(['success' => true]);
     }
 }

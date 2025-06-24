@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use DB;
 
 class NewsController extends Controller
 {
@@ -14,14 +15,16 @@ class NewsController extends Controller
 
         $params = $request->all();
 
-        $query = DB::table('posts');
+        $query = DB::table('posts')
+            ->select('posts.*', 'post_categories.name as category')
+            ->join('post_categories', 'post_categories.id', '=', 'posts.category_id');
 
         $start = $request->input('start', 0);
         $length = $request->input('length', 10);
 
         $totalRecords = $query->count();
         $filteredRecords = $query->count();
-        $data = $query->orderBy('id', 'created_at')->skip($start)->take($length)->get();
+        $data = $query->orderBy('posts.id', 'desc')->skip($start)->take($length)->get();
 
         $response = [
             'draw' => $request->input('draw'),
@@ -34,50 +37,39 @@ class NewsController extends Controller
     }
 
     public function create() {
-        return view('modules.posts.news.create');
+        $categories = DB::table('post_categories')->get();
+        return view('modules.posts.news.create', compact('categories'));
     }
 
     public function save(Request $request) {
 
-        $currentUserId = Auth::user()->id;
-
-        //TODO set created_by and updated)_by
-        DB::table('suppliers')->insert([
-            "name" => $request->name,
-            "phone_number" => $request->phone_number,
-            "address" => $request->address,
-            "is_active" => $request->is_active,
-            "created_by" => $currentUserId
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'content' => 'required|string',
+            'category' => 'required|exists:categories,id',
+            'status' => 'required|boolean',
         ]);
 
-        return redirect()->route('suppliers.index');
+        $news = News::create([
+            'title' => $request->title,
+            'content' => $request->content,
+            'category_id' => $request->category,
+            'status' => $request->status,
+        ]);
+
+        return response()->json([
+            'message' => 'News created successfully',
+            'data' => $news
+        ]);
     }
 
     public function edit($id) {
-        $supplier = DB::table('posts')->where('id', $id)->first();
 
-        if (!$supplier) {
-            return redirect()->route('suppliers.index')->with('error', 'Supplier not found.');
-        }
-
-        return view('modules.posts.news.edit', compact('supplier'));
     }
 
     public function update(Request $request) {
 
-        $currentUserId = Auth::user()->id;
 
-        DB::table('posts')
-            ->where('id', $request->id)
-            ->update([
-                'name' => $request->name,
-                'phone_number' => $request->phone_number,
-                'address' => $request->address,
-                "is_active" => $request->is_active,
-                "updated_by" => $currentUserId
-            ]);
-
-        return redirect()->route('suppliers.index');
     }
 
     public function delete(Request $request) {

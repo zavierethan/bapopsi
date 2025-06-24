@@ -92,7 +92,9 @@
                                         <th class="min-w-125px">Asal Sekolah</th>
                                         <th class="min-w-125px">NISN</th>
                                         <th class="min-w-125px">Cabang Olahraga</th>
-                                        <th class="text-center min-w-70px">Actions</th>
+                                        <th class="min-w-125px">Approval Status</th>
+                                        <th class="min-w-125px">Tanggal Approval</th>
+                                        <th class="min-w-125px">Actions</th>
                                     </tr>
                                     <!--end::Table row-->
                                 </thead>
@@ -141,21 +143,93 @@
             { data: 'nisn', name: 'nisn' },
             { data: 'cabang_olahraga', name: 'cabang_olahraga' },
             {
+                data: 'approval_status',
+                name: 'approval_status',
+                render: function (data, type, row) {
+                    let badgeClass = '';
+
+                    switch (data) {
+                        case 'Waiting Approval':
+                            badgeClass = 'badge badge-warning';
+                            break;
+                        case 'Approved':
+                            badgeClass = 'badge badge-success';
+                            break;
+                        case 'Rejected':
+                            badgeClass = 'badge badge-danger';
+                            break;
+                        default:
+                            badgeClass = 'badge badge-secondary';
+                    }
+
+                    return `<span class="${badgeClass}">${data}</span>`;
+                }
+            },
+            { data: 'approval_date', name: 'approval_date' },
+            {
                 data: null, // No direct field from the server
                 name: 'action',
                 orderable: false, // Disable ordering for this column
                 searchable: false, // Disable searching for this column
                 render: function (data, type, row) {
-                    return `
-                        <div class="text-center">
-                            <a href="/sub-rayon/edit/${row.id}" class="btn btn-sm btn-primary btn-active-light-primary">Lihat</a>
-                            <a href="/sub-rayon/edit/${row.id}" class="btn btn-sm btn-success btn-active-light-primary">Approve</a>
-                            <a href="/sub-rayon/edit/${row.id}" class="btn btn-sm btn-danger btn-active-light-primary">Reject</a>
-                        <div>
-                    `;
+                    if (row.approval_status === 'Waiting Approval') {
+                        return `
+                            <div class="text-center">
+                                <a href="/sub-rayon/edit/${row.id}" class="btn btn-sm btn-primary btn-active-light-primary">Lihat</a>
+                                <button class="btn btn-sm btn-success btn-active-light-primary btn-approve" data-id="${row.id}">Approve</button>
+                                <button class="btn btn-sm btn-danger btn-active-light-primary btn-reject" data-id="${row.id}">Reject</button>
+                            </div>
+                        `;
+                    } else {
+                        return `<a href="/sub-rayon/edit/${row.id}" class="btn btn-sm btn-primary btn-active-light-primary">Lihat</a>`;
+                    }
                 }
             }
         ]
+    });
+
+    $(document).on('click', '.btn-approve', function () {
+        const id = $(this).data('id');
+
+        if (confirm('Are you sure you want to approve this Athlete?')) {
+            $.ajax({
+                url: `/athletes/approve/${id}`,
+                type: 'POST',
+                data: {
+                    _token: '{{ csrf_token() }}'
+                },
+                success: function () {
+                    alert('Approved successfully!');
+                    $('#kt_groups_table').DataTable().ajax.reload(null, false);
+                },
+                error: function (xhr) {
+                    console.error(xhr.responseText);
+                    alert('Failed to approve.');
+                }
+            });
+        }
+    });
+
+    $(document).on('click', '.btn-reject', function () {
+        const id = $(this).data('id');
+
+        if (confirm('Are you sure you want to reject this Athlete?')) {
+            $.ajax({
+                url: `/athletes/reject/${id}`,
+                type: 'POST',
+                data: {
+                    _token: '{{ csrf_token() }}'
+                },
+                success: function (response) {
+                    alert('Rejected successfully!');
+                    $('#kt_groups_table').DataTable().ajax.reload();
+                },
+                error: function (xhr) {
+                    console.error(xhr.responseText);
+                    alert('Failed to reject.');
+                }
+            });
+        }
     });
 </script>
 @endsection
