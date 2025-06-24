@@ -208,7 +208,7 @@ Route::group(['middleware' => ['auth']], function() {
             Route::get('/create', [App\Http\Controllers\SubRayonController::class, 'create'])->name('create');
             Route::post('/save', [App\Http\Controllers\SubRayonController::class, 'save'])->name('save');
             Route::get('/edit/{id}', [App\Http\Controllers\SubRayonController::class, 'edit'])->name('edit');
-            Route::post('/update', [App\Http\Controllers\SubRayonController::class, 'update'])->name('update');
+            Route::post('/update/{id}', [App\Http\Controllers\SubRayonController::class, 'update'])->name('update');
             Route::post('/delete', [App\Http\Controllers\SubRayonController::class, 'delete'])->name('delete');
         });
     });

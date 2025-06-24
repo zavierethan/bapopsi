@@ -14,9 +14,16 @@ class SubRayonController extends Controller
     public function getLists(Request $request){
         $params = $request->all();
 
-        $query = DB::table('sub_rayon')
-            ->select('sub_rayon.*', 'sub_rayon.nama as nama_rayon')
-            ->leftJoin('rayon', 'rayon.id', '=', 'sub_rayon.rayon_id');
+        $query =  DB::table('sub_rayon as sr')
+            ->join('kecamatan as k', 'sr.kecamatan_id', '=', 'k.id')
+            ->leftJoin('rayon_kecamatan as rk', 'rk.kecamatan_id', '=', 'k.id')
+            ->leftJoin('rayon as r', 'rk.rayon_id', '=', 'r.id')
+            ->select(
+                'sr.id',
+                'sr.nama as sub_rayon',
+                'k.nama as kecamatan',
+                'r.nama as rayon'
+            );
 
         if (!empty($params['name'])) {
             $query->where('sub_rayon.nama', $params['name']);
@@ -25,7 +32,7 @@ class SubRayonController extends Controller
         $searchValue = $request->input('search.value');
         if (!empty($searchValue)) {
             $query->where(function ($q) use ($searchValue) {
-                $q->where('sub_rayon.nama', 'like', '%' . strtoupper($searchValue) . '%');
+                $q->where('sr.nama', 'like', '%' . strtoupper($searchValue) . '%');
             });
         }
 
@@ -42,7 +49,7 @@ class SubRayonController extends Controller
 
         $totalRecords = $query->count();
         $filteredRecords = $query->count();
-        $data = $query->orderBy('id', 'desc')->skip($start)->take($length)->get();
+        $data = $query->orderBy('sr.id', 'desc')->skip($start)->take($length)->get();
 
         return response()->json([
             'draw' => $request->input('draw'),
@@ -53,51 +60,75 @@ class SubRayonController extends Controller
     }
 
     public function create() {
-        $rayon = DB::table('rayon')->orderBy('nama', 'asc')->get();
+        $rayon = DB::table('kecamatan')->orderBy('nama', 'asc')->get();
         return view('modules.sub-rayon.create', compact('rayon'));
     }
 
     public function save(Request $request) {
        $request->validate([
-            'kecamatan_id' => 'required|integer|exists:kecamatan,id',
             'nama' => 'required|string|max:255',
+            'kecamatan_id' => 'required|exists:kecamatan,id',
         ]);
 
-        DB::beginTransaction();
+        $exists = DB::table('rayon_kecamatan')
+            ->where('kecamatan_id', $request->kecamatan_id)
+            ->exists();
 
-        try {
-            DB::table('sub_rayon')->insert([
-                'kecamatan_id' => $request->kecamatan_id,
-                'nama' => $request->nama
-            ]);
-
-            DB::commit();
-
-            return response()->json(['success' => true]);
-        } catch (\Exception $e) {
-            DB::rollBack();
-            return response()->json(['success' => false, 'error' => $e->getMessage()], 500);
+        if (!$exists) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Kecamatan ini belum dimapping ke rayon. Harap mapping terlebih dahulu.'
+            ], 422);
         }
+
+        DB::table('sub_rayon')->insert([
+            'nama' => $request->nama,
+            'kecamatan_id' => $request->kecamatan_id
+        ]);
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Sub rayon berhasil disimpan.'
+        ]);
     }
 
     public function edit($id) {
-        $sport = DB::table('sub_rayon')->where('id', $id)->first();
-        return view('modules.sub-rayon.edit', compact('sport'));
+        $subrayon = DB::table('sub_rayon')->where('id', $id)->first();
+        $kecamatan = DB::table('kecamatan')->get();
+
+        return view('modules.sub-rayon.edit', compact('subrayon', 'kecamatan'));
     }
 
-    public function update(Request $request) {
-        DB::table('sports')->where('id', $request->id)->update([
-            "code" => $request->code,
-            "nama" => $request->name,
-            "kecamatan_id" => $request->kecamatan_id
+    public function update(Request $request, $id) {
+        $request->validate([
+            'nama' => 'required|string|max:255',
+            'kecamatan_id' => 'required|exists:kecamatan,id',
         ]);
 
-        return redirect()->route('sub-rayon.index');
+        // ✅ Cek apakah kecamatan sudah termapping ke rayon
+        $isMapped = DB::table('rayon_kecamatan')
+            ->where('kecamatan_id', $request->kecamatan_id)
+            ->exists();
+
+        if (!$isMapped) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Kecamatan ini belum dimapping ke rayon. Harap mapping terlebih dahulu.'
+            ], 422);
+        }
+
+        // ✅ Update jika lolos validasi
+        DB::table('sub_rayon')
+            ->where('id', $id)
+            ->update([
+                'nama' => $request->nama,
+                'kecamatan_id' => $request->kecamatan_id,
+            ]);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Data berhasil diperbarui.'
+        ]);
     }
 
-    public function getSubRayonByKec($kecId) {
-        $data = DB::table('sub_rayon')->where('kecamatan_id', $kecId)->get();
-
-        return response()->json(['data' => $data], 200);
-    }
 }
