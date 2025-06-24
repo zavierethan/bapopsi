@@ -116,27 +116,38 @@
 
 @section('script')
 <script>
-$('#form-atlet').on('submit', function(e) {
+$('#subrayon-form').on('submit', function(e) {
     e.preventDefault();
 
     let formData = new FormData(this);
 
     $.ajax({
-        url: "{{ route('athletes.save') }}",
+        url: "{{ route('rayon.save') }}", // ganti sesuai route store kamu
         method: 'POST',
         data: formData,
         processData: false,
         contentType: false,
         success: function(res) {
-            alert('Data berhasil disimpan!');
-            window.location.href = "{{ route('rayon.index') }}"; // Redirect
+            Swal.fire({
+                icon: 'success',
+                title: 'Berhasil!',
+                text: 'Data berhasil disimpan.',
+                timer: 2000,
+                showConfirmButton: false
+            }).then(() => {
+                window.location.href = "{{ route('rayon.index') }}";
+            });
         },
         error: function(err) {
             console.log(err);
-            alert('Terjadi kesalahan saat menyimpan data.');
+            Swal.fire({
+                icon: 'error',
+                title: 'Gagal!',
+                text: 'Terjadi kesalahan saat menyimpan data.'
+            });
         }
     });
 });
-
 </script>
 @endsection
+
