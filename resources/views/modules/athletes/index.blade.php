@@ -165,7 +165,7 @@ $("#kt_groups_table").DataTable({
                 if (row.approval_status === 'Waiting Approval') {
                     return `
                         <div class="flex justify-center gap-2">
-                            <a href="/athletes/${row.id}" class="btn btn-sm btn-primary">Lihat</a>
+                            <a href="/athletes/edit/${row.id}" class="btn btn-sm btn-primary">Lihat</a>
                             <button class="btn btn-sm btn-success btn-approve" data-id="${row.id}">Approve</button>
                             <button class="btn btn-sm btn-danger btn-reject" data-id="${row.id}">Reject</button>
                         </div>
