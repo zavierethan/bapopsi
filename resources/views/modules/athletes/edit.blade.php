@@ -152,7 +152,7 @@
                                 <button type="button" id="add-official" class="btn btn-light-primary mb-3">Tambah Official</button>
                                 <div class="d-flex justify-content-end">
                                     <button type="submit" class="btn btn-primary">Update</button>
-                                    <a href="{{ route('athletes.print-nametag', $atlet->id) }}" class="btn btn-success ms-2" target="_blank">
+                                    <a href="" class="btn btn-success ms-2" target="_blank">
                                         <i class="fa fa-print"></i> Cetak Name Tag (PDF)
                                     </a>
                                     <a href="{{ route('athletes.index') }}" class="btn btn-danger ms-2">Cancel</a>
