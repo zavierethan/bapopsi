@@ -151,7 +151,7 @@ class AthleteController extends Controller
             return response()->json([
                 'success' => false,
                 'message' => 'Approval failed.',
-                'error' => $e->getMessage()
+                'error'   => $e->getMessage()
             ], 500);
         }
     }
@@ -159,7 +159,7 @@ class AthleteController extends Controller
     public function reject($id) {
         DB::table('atlet')->where('id', $id)->update([
             "appr_status" => 0,
-            "appr_date" => now()
+            "appr_date"   => now()
         ]);
 
         return response()->json(['success' => true]);

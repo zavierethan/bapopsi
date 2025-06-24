@@ -156,8 +156,8 @@ Route::group(['middleware' => ['auth']], function() {
                     Route::get('/create', [App\Http\Controllers\GaleryController::class, 'create'])->name('create');
                     Route::post('/save', [App\Http\Controllers\GaleryController::class, 'save'])->name('save');
                     Route::get('/edit/{id}', [App\Http\Controllers\GaleryController::class, 'edit'])->name('edit');
-                    Route::post('/update', [App\Http\Controllers\GaleryController::class, 'update'])->name('update');
-                    Route::post('/delete', [App\Http\Controllers\GaleryController::class, 'delete'])->name('delete');
+                    Route::post('/update/{id}', [App\Http\Controllers\GaleryController::class, 'update'])->name('update');
+                    Route::delete('/delete/{id}', [App\Http\Controllers\GaleryController::class, 'delete'])->name('delete');
                 });
             });
         });

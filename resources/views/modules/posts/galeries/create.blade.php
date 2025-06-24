@@ -67,10 +67,10 @@
                                 <div class="separator my-5"></div>
                                 <div class="fv-row mb-5">
                                     <div class="mb-1">
-                                        <label class="form-label fw-bold fs-6 mb-2">Thumbnail</label>
+                                        <label class="form-label fw-bold fs-6 mb-2">Image</label>
                                         <div class="position-relative mb-3">
                                             <input class="form-control form-control-md form-control-solid" type="file"
-                                                name="thumbnail" id="thumbnail" />
+                                                name="image" id="image" />
                                         </div>
                                     </div>
                                 </div>
@@ -100,19 +100,6 @@
                                     </div>
                                 </div>
                                 <div class="separator my-5"></div>
-                                <div class="fv-row mb-5">
-                                    <div class="mb-1">
-                                        <label class="form-label fw-bold fs-6 mb-2">Status</label>
-                                        <div class="position-relative mb-3">
-                                        <select class="form-select form-select-solid" data-control="select2"
-                                            data-placeholder="-" name="status">
-                                            <option value="1" selected>Active</option>
-                                            <option value="0">Non Active</option>
-                                        </select>
-                                    </div>
-                                    </div>
-                                </div>
-                                <div class="separator my-5"></div>
                                 <div class="flex justify-end">
                                     <button type="submit" class="btn btn-primary">Submit</button>
                                     <a href="{{route('posts.galeries.index')}}" class="btn btn-danger">Cancel</a>
@@ -132,31 +119,56 @@
 @endsection
 
 @section('script')
-    <script>
-        $('#newsForm').on('submit', function (e) {
-            e.preventDefault();
+<script>
+$('#newsForm').on('submit', function(e) {
+    e.preventDefault();
 
-            const formData = {
-                _token: $('input[name="_token"]').val(),
-                title: $('#title').val(),
-                content: editor.getData(),
-                category: $('select[name="category"]').val(),
-                status: $('select[name="status"]').val(),
-            };
+    const form = $('#newsForm')[0];
+    const formData = new FormData(form);
 
-            $.ajax({
-                url: "{{ route('posts.news.save') }}",
-                method: "POST",
-                data: formData,
-                success: function (response) {
-                    alert("News berhasil disimpan!");
-                    window.location.href = "{{ route('posts.news.index') }}";
-                },
-                error: function (xhr) {
-                    alert("Terjadi kesalahan: " + xhr.responseText);
-                }
+    $.ajax({
+        url: "{{ route('posts.galeries.save') }}",
+        method: "POST",
+        data: formData,
+        processData: false,
+        contentType: false,
+        success: function(response) {
+            Swal.fire({
+                icon: 'success',
+                title: 'Berhasil!',
+                text: 'News berhasil disimpan!',
+                timer: 2000,
+                showConfirmButton: false
+            }).then(() => {
+                window.location.href = "{{ route('posts.galeries.index') }}";
             });
-        });
+        },
+        error: function(xhr) {
+            if (xhr.status === 422) {
+                const errors = xhr.responseJSON.errors;
+                let errorList = '<ul style="text-align: left;">';
+                $.each(errors, function(key, messages) {
+                    messages.forEach(function(message) {
+                        errorList += `<li>${message}</li>`;
+                    });
+                });
+                errorList += '</ul>';
 
-    </script>
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Warning !',
+                    html: errorList,
+                    confirmButtonText: 'Ok'
+                });
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Kesalahan Server',
+                    text: 'Terjadi kesalahan pada sistem. Coba lagi nanti atau hubungi administrator.'
+                });
+            }
+        }
+    });
+});
+</script>
 @endsection
