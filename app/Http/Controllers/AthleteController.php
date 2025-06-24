@@ -2,6 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use Barryvdh\DomPDF\Facade\Pdf;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
+
 use Illuminate\Http\Request;
 use DB;
 
@@ -39,20 +44,20 @@ class AthleteController extends Controller
             });
         }
 
-        if ($request->has('order') && $request->order) {
-            $columnIndex = $request->order[0]['column'];
-            $sortDirection = $request->order[0]['dir'];
-            $columnName = $request->columns[$columnIndex]['data'];
+        // if ($request->has('order') && $request->order) {
+        //     $columnIndex = $request->order[0]['column'];
+        //     $sortDirection = $request->order[0]['dir'];
+        //     $columnName = $request->columns[$columnIndex]['data'];
 
-            $query->orderBy($columnName, $sortDirection);
-        }
+        //     $query->orderBy($columnName, $sortDirection);
+        // }
 
         $start = $request->input('start', 0);
         $length = $request->input('length', 10);
 
         $totalRecords = $query->count();
         $filteredRecords = $query->count();
-        $data = $query->orderBy('id', 'desc')->skip($start)->take($length)->get();
+        $data = $query->orderBy('atlet.id', 'desc')->skip($start)->take($length)->get();
 
         return response()->json([
             'draw' => $request->input('draw'),
@@ -68,9 +73,26 @@ class AthleteController extends Controller
     }
 
     public function save(Request $request) {
+        $request->validate([
+            'nama_lengkap'       => 'required|string|max:255',
+            'tempat_lahir'       => 'required|string|max:255',
+            'tanggal_lahir'      => 'required|date',
+            'jenis_kelamin'      => 'required|in:L,P',
+            'nama_sekolah'       => 'required|string|max:255',
+            'nisn'               => 'nullable|string|max:50',
+            'cabang_olahraga'    => 'required|exists:sports,id',
+            'kelas_id'           => 'required|exists:sport_classes,id',
+            'pas_foto'           => 'nullable|file|mimes:jpg,jpeg,png|max:2048',
+            'raport'             => 'nullable|file|mimes:pdf|max:2048',
+            'akta_lahir'         => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:2048',
+            'officials.*.nama'   => 'required_with:officials.*.jabatan|string|max:255',
+            'officials.*.jabatan'=> 'required_with:officials.*.nama|string|max:255',
+            'officials.*.foto'   => 'nullable|file|mimes:jpg,jpeg,png|max:2048'
+        ]);
+
         DB::beginTransaction();
+
         try {
-            // Simpan file atlet ke public path
             $pasFotoPath = $request->hasFile('pas_foto')
                 ? $request->file('pas_foto')->store('uploads/atlet', 'public')
                 : null;
@@ -83,7 +105,6 @@ class AthleteController extends Controller
                 ? $request->file('akta_lahir')->store('uploads/atlet', 'public')
                 : null;
 
-            // Simpan data atlet
             $atletId = DB::table('atlet')->insertGetId([
                 'nama_lengkap'       => $request->nama_lengkap,
                 'tempat_lahir'       => $request->tempat_lahir,
@@ -98,17 +119,15 @@ class AthleteController extends Controller
                 'kelas_id'           => $request->kelas_id,
                 'created_at'         => now(),
                 'updated_at'         => now(),
-                'appr_status'        => 0
             ]);
 
-            // Simpan data official
             if ($request->has('officials')) {
                 foreach ($request->officials as $index => $official) {
                     $fotoPath = null;
-                    $fileInput = "officials.{$index}.foto";
+                    $fotoInputName = "officials.{$index}.foto";
 
-                    if ($request->hasFile($fileInput)) {
-                        $fotoPath = $request->file($fileInput)->store('uploads/official', 'public');
+                    if ($request->hasFile($fotoInputName)) {
+                        $fotoPath = $request->file($fotoInputName)->store('uploads/official', 'public');
                     }
 
                     DB::table('officials')->insert([
@@ -131,6 +150,15 @@ class AthleteController extends Controller
                 'error' => $e->getMessage()
             ], 500);
         }
+    }
+
+    public function edit($id) {
+        $atlet = DB::table('atlet')->where('id', $id)->first();
+        $officials = DB::table('officials')->where('atlet_id', $id)->get();
+        $cabor = DB::table('sports')->get();
+        $kelas = DB::table('sport_classes')->where('sport_id', $atlet->cabang_olahraga_id)->get();
+
+        return view('modules.athletes.edit', compact('atlet', 'officials', 'cabor', 'kelas'));
     }
 
     public function approve($id) {
@@ -163,5 +191,39 @@ class AthleteController extends Controller
         ]);
 
         return response()->json(['success' => true]);
+    }
+
+    public function generateNameTagPdf($id) {
+
+        $atlet = DB::table('atlet')
+            ->join('sports', 'sports.id', '=', 'atlet.cabang_olahraga_id')
+            ->select('atlet.*', 'sports.name as cabang_olahraga')
+            ->where('atlet.id', $id)
+            ->first();
+
+        if (!$atlet) {
+            abort(404);
+        }
+
+        $url = url('/athletes/edit/' . $id);
+        $qrSvg = QrCode::format('svg')->size(150)->generate($url);
+        $qrBase64 = $qrSvg;
+
+        $pdf = Pdf::loadView('modules.athletes.pdf-nametag', [
+            'atlet' => $atlet,
+            'qrBase64' => $qrBase64,
+        ])->setPaper([0, 0, 270, 420]);
+
+        return view('modules.athletes.pdf-nametag');
+    }
+
+    private function convertImageToBase64($path){
+        if (!file_exists($path)) {
+            return null;
+        }
+
+        $type = pathinfo($path, PATHINFO_EXTENSION);
+        $data = file_get_contents($path);
+        return 'data:image/' . $type . ';base64,' . base64_encode($data);
     }
 }

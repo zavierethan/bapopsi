@@ -148,18 +148,16 @@
                                         <div class="col-md-4">
                                             <label class="form-label fw-bold fs-6 mb-2">Nama Official</label>
                                             <input class="form-control form-control-md form-control-solid" type="text"
-                                                name="officials[0][jabatan]" placeholder="Contoh: Pelatih Kepala"
-                                                required>
+                                                name="officials[0][jabatan]" placeholder="Contoh: Pelatih Kepala">
                                         </div>
                                         <div class="col-md-4">
                                             <label class="form-label fw-bold fs-6 mb-2">Nama Lengkap</label>
                                             <input class="form-control form-control-md form-control-solid" type="text"
-                                                name="officials[0][nama]" placeholder="Contoh: Budi Santoso" required>
+                                                name="officials[0][nama]" placeholder="Contoh: Budi Santoso">
                                         </div>
                                         <div class="col-md-3">
                                             <label class="form-label fw-bold fs-6 mb-2">Foto</label>
-                                            <input class="form-control form-control-md form-control-solid" type="file"
-                                                name="officials[0][foto]" required>
+                                            <input class="form-control form-control-md form-control-solid" type="file">
                                         </div>
                                         <div class="col-md-1 text-end">
                                             <button type="button"
@@ -203,15 +201,40 @@ $('#form-atlet').on('submit', function(e) {
         processData: false,
         contentType: false,
         success: function(res) {
-            alert('Data berhasil disimpan!');
-            window.location.href = "{{ route('athletes.index') }}"; // Redirect
+            Swal.fire({
+                icon: 'success',
+                title: 'Berhasil!',
+                text: 'Data berhasil disimpan.',
+                timer: 2000,
+                showConfirmButton: false
+            }).then(() => {
+                window.location.href = "{{ route('athletes.index') }}";
+            });
         },
         error: function(err) {
-            console.log(err);
-            alert('Terjadi kesalahan saat menyimpan data.');
+            let message = 'Terjadi kesalahan saat menyimpan data.';
+
+            if (err.status === 422 && err.responseJSON?.errors) {
+                message = '<ul style="text-align:left;">';
+                $.each(err.responseJSON.errors, function(field, errors) {
+                    errors.forEach(function(error) {
+                        message += `<li>${error}</li>`;
+                    });
+                });
+                message += '</ul>';
+            } else if (err.responseJSON?.message) {
+                message = err.responseJSON.message;
+            }
+
+            Swal.fire({
+                icon: 'warning',
+                title: 'Perhatian!',
+                html: message
+            });
         }
     });
 });
+
 
 $('#caborId').on('change', function() {
     let sportId = $(this).val();
