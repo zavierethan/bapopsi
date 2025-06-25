@@ -172,18 +172,25 @@
 
 
     <script>
-    const toggle = document.getElementById('menu-toggle');
-    const menu = document.getElementById('mobile-menu');
-    toggle.addEventListener('click', () => {
-        menu.classList.toggle('hidden');
-    });
+        const toggle = document.getElementById('menu-toggle');
+        const menu = document.getElementById('mobile-menu');
+        toggle.addEventListener('click', () => {
+            menu.classList.toggle('hidden');
+        });
 
-    document.getElementById('medals').innerText = statsData.totalMedals;
-    document.getElementById('athletes').innerText = statsData.totalAthletes.toLocaleString();
-    document.getElementById('sports').innerText = statsData.totalSports;
-    document.getElementById('schools').innerText = statsData.totalSchools;
+        // document.getElementById('medals').innerText = statsData.totalMedals;
+        // document.getElementById('athletes').innerText = statsData.totalAthletes.toLocaleString();
+        // document.getElementById('sports').innerText = statsData.totalSports;
+        // document.getElementById('schools').innerText = statsData.totalSchools;
     </script>
-    <script src="{{ asset('assets/js/custom/custom-charts.js') }}"></script>
+    <!-- <script src="{{ asset('assets/js/custom/custom-charts.js') }}"></script> -->
+
+    <!--begin::Global Javascript Bundle(mandatory for all pages)-->
+    <script src="{{asset('assets/plugins/global/plugins.bundle.js')}}"></script>
+    <script src="{{asset('assets/js/scripts.bundle.js')}}"></script>
+    <!--end::Global Javascript Bundle-->
+
+    @yield('script')
 
 </body>
 

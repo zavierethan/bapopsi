@@ -7,7 +7,8 @@
         <!-- Page Title -->
         <div class="text-center mb-12">
             <h1 class="text-4xl md:text-5xl font-extrabold text-gray-900 mb-4">Galeri Olahraga</h1>
-            <p class="text-xl text-gray-600 max-w-3xl mx-auto">Kumpulan foto dokumentasi kegiatan dan prestasi olahraga pelajar</p>
+            <p class="text-xl text-gray-600 max-w-3xl mx-auto">Kumpulan foto dokumentasi kegiatan dan prestasi olahraga
+                pelajar</p>
         </div>
 
         <!-- Search and Filter -->
@@ -27,43 +28,8 @@
         </div>
 
         <!-- Gallery Grid -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-12">
-            <!-- Gallery Item -->
-            <div
-                class="group bg-white rounded-xl shadow-lg border overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:scale-105 cursor-pointer">
-                <div class="relative overflow-hidden">
-                    <img src="https://via.placeholder.com/400x240" alt="Judul Kegiatan"
-                        class="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-300" />
-                    <div class="absolute top-3 right-3">
-                        <span
-                            class="bg-gradient-to-r from-orange-500 to-red-500 text-white px-3 py-1 rounded-full text-xs font-medium">Olahraga</span>
-                    </div>
-                </div>
-                <div class="p-4">
-                    <h3 class="font-bold text-gray-900 mb-2 line-clamp-2 text-sm leading-tight">Judul Kegiatan Menarik</h3>
-                    <p class="text-gray-600 text-xs mb-3 line-clamp-2">Deskripsi singkat tentang kegiatan yang dilakukan
-                        dalam foto ini.</p>
-                    <div class="flex items-center justify-between text-xs text-gray-500">
-                        <div class="flex items-center space-x-1">
-                            <!-- Calendar icon -->
-                            <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 24 24">
-                                <path
-                                    d="M19 4h-1V2h-2v2H8V2H6v2H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2V6a2 2 0 00-2-2zM5 20V9h14v11H5z" />
-                            </svg>
-                            <span>18/06/2025</span>
-                        </div>
-                        <div class="flex items-center space-x-1">
-                            <!-- MapPin icon -->
-                            <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 24 24">
-                                <path
-                                    d="M12 2a7 7 0 00-7 7c0 5.25 7 13 7 13s7-7.75 7-13a7 7 0 00-7-7zm0 9.5a2.5 2.5 0 110-5 2.5 2.5 0 010 5z" />
-                            </svg>
-                            <span class="truncate max-w-20">Bandung</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- Repeat for other gallery items -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-12" id="galleries-wrapper">
+
         </div>
 
         <!-- Empty State -->
@@ -79,4 +45,65 @@
     </div>
 </div>
 
+@endsection
+
+@section('script')
+<script>
+$(document).ready(function() {
+    $.ajax({
+        url: '/api/posts/galeries', // pastikan URL endpoint sesuai
+        type: 'GET',
+        dataType: 'json',
+        success: function(response) {
+            let articles = response.data;
+            let html = '';
+
+            $.each(articles, function(index, article) {
+                let contentText = $('<div>').html(article.content).text().substring(0, 100);
+
+                html += `
+                    <div class="group bg-white rounded-xl shadow-lg border overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:scale-105 cursor-pointer">
+                        <div class="relative overflow-hidden">
+                            <img src="/storage/${article.image_url}" alt="${article.title}"
+                                class="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-300" />
+                            <div class="absolute top-3 right-3">
+                                <span
+                                    class="bg-gradient-to-r from-orange-500 to-red-500 text-white px-3 py-1 rounded-full text-xs font-medium">${article.category}</span>
+                            </div>
+                        </div>
+                        <div class="p-4">
+                            <h3 class="font-bold text-gray-900 mb-2 line-clamp-2 text-sm leading-tight">Judul Kegiatan Menarik</h3>
+                            <p class="text-gray-600 text-xs mb-3 line-clamp-2">${article.description}</p>
+                            <div class="flex items-center justify-between text-xs text-gray-500">
+                                <div class="flex items-center space-x-1">
+                                    <!-- Calendar icon -->
+                                    <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 24 24">
+                                        <path
+                                            d="M19 4h-1V2h-2v2H8V2H6v2H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2V6a2 2 0 00-2-2zM5 20V9h14v11H5z" />
+                                    </svg>
+                                    <span>${new Date(article.created_at).toLocaleDateString('id-ID')}</span>
+                                </div>
+                                <div class="flex items-center space-x-1">
+                                    <!-- MapPin icon -->
+                                    <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 24 24">
+                                        <path
+                                            d="M12 2a7 7 0 00-7 7c0 5.25 7 13 7 13s7-7.75 7-13a7 7 0 00-7-7zm0 9.5a2.5 2.5 0 110-5 2.5 2.5 0 010 5z" />
+                                    </svg>
+                                    <span class="truncate max-w-20">Bandung</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+
+            $('#galleries-wrapper').html(html);
+        },
+        error: function(xhr, status, error) {
+            $('#galleries-wrapper').html(
+                '<div class="text-red-500">Gagal memuat data artikel.</div>');
+        }
+    });
+});
+</script>
 @endsection

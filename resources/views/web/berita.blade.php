@@ -7,7 +7,8 @@
         <!-- Page Title -->
         <div class="text-center mb-12">
             <h1 class="text-4xl md:text-5xl font-extrabold text-gray-900 mb-4">Berita Olahraga</h1>
-            <p class="text-xl text-gray-600 max-w-3xl mx-auto">Informasi terbaru seputar kegiatan dan prestasi olahraga pelajar</p>
+            <p class="text-xl text-gray-600 max-w-3xl mx-auto">Informasi terbaru seputar kegiatan dan prestasi olahraga
+                pelajar</p>
         </div>
 
         <!-- Search and Filter -->
@@ -27,58 +28,8 @@
         </div>
 
         <!-- Articles Grid -->
-        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
-            <div
-                class="bg-white rounded-xl shadow-lg border overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:scale-105 cursor-pointer">
-                <img src="https://via.placeholder.com/400x240" alt="Judul Artikel" class="w-full h-48 object-cover" />
-                <div class="p-6">
-                    <div class="flex items-center justify-between mb-3">
-                        <span class="bg-gradient-to-r from-orange-500 to-red-500 text-white px-3 py-1 rounded-full text-xs font-medium">Olahraga</span>
-                        <div class="flex items-center space-x-1 text-gray-500 text-xs">
-                            <!-- Clock icon -->
-                            <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M12 6v6l4 2" />
-                                <path fill="none" d="M0 0h24v24H0z" />
-                                <path d="M12 2a10 10 0 100 20 10 10 0 000-20z" />
-                            </svg>
-                            <span>3 menit</span>
-                        </div>
-                    </div>
-                    <h3 class="text-lg font-bold text-gray-900 mb-2 line-clamp-2 leading-tight">Judul Artikel Menarik
-                        Tentang Olahraga</h3>
-                    <p class="text-gray-600 text-sm mb-4 line-clamp-3">Ini adalah ringkasan singkat dari artikel tersebut,
-                        memberikan gambaran umum kepada pembaca...</p>
-                    <div class="flex items-center justify-between text-xs text-gray-500">
-                        <div class="flex items-center space-x-1">
-                            <!-- User icon -->
-                            <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 24 24">
-                                <path
-                                    d="M12 12c2.7 0 5-2.3 5-5s-2.3-5-5-5-5 2.3-5 5 2.3 5 5 5zm0 2c-3.3 0-10 1.7-10 5v3h20v-3c0-3.3-6.7-5-10-5z" />
-                            </svg>
-                            <span>Admin</span>
-                        </div>
-                        <div class="flex items-center space-x-3">
-                            <div class="flex items-center space-x-1">
-                                <!-- Calendar icon -->
-                                <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 24 24">
-                                    <path
-                                        d="M19 4h-1V2h-2v2H8V2H6v2H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2V6a2 2 0 00-2-2zM5 20V9h14v11H5z" />
-                                </svg>
-                                <span>18/06/2025</span>
-                            </div>
-                            <div class="flex items-center space-x-1">
-                                <!-- Eye icon -->
-                                <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 24 24">
-                                    <path
-                                        d="M12 4.5C7 4.5 2.73 8.11 1 12c1.73 3.89 6 7.5 11 7.5s9.27-3.61 11-7.5c-1.73-3.89-6-7.5-11-7.5zm0 12a4.5 4.5 0 110-9 4.5 4.5 0 010 9zm0-7.5a3 3 0 100 6 3 3 0 000-6z" />
-                                </svg>
-                                <span>120</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- Repeat .grid-card for more articles -->
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12" id="articles-wrapper">
+
         </div>
 
         <!-- Empty State -->
@@ -94,4 +45,67 @@
     </div>
 </div>
 
+@endsection
+
+
+@section('script')
+<script>
+$(document).ready(function () {
+    $.ajax({
+        url: '/api/posts/news', // pastikan URL endpoint sesuai
+        type: 'GET',
+        dataType: 'json',
+        success: function(response) {
+            let articles = response.data;
+            let html = '';
+
+            $.each(articles, function(index, article) {
+                let contentText = $('<div>').html(article.content).text().substring(0, 100);
+
+                html += `
+                    <div class="bg-white rounded-xl shadow-lg border overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:scale-105 cursor-pointer">
+                        <img src="/storage/${article.thumbnail_url}" alt="${article.title}" class="w-full h-48 object-cover" />
+                        <div class="p-6">
+                            <div class="flex items-center justify-between mb-3">
+                                <span class="bg-gradient-to-r from-orange-500 to-red-500 text-white px-3 py-1 rounded-full text-xs font-medium">${article.category}</span>
+                                <div class="flex items-center space-x-1 text-gray-500 text-xs">
+                                    <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 24 24">
+                                        <path d="M12 6v6l4 2" />
+                                        <path fill="none" d="M0 0h24v24H0z" />
+                                        <path d="M12 2a10 10 0 100 20 10 10 0 000-20z" />
+                                    </svg>
+                                    <span>3 menit</span>
+                                </div>
+                            </div>
+                            <h3 class="text-lg font-bold text-gray-900 mb-2 line-clamp-2 leading-tight">${article.title}</h3>
+                            <p class="text-gray-600 text-sm mb-4 line-clamp-3">${contentText}...</p>
+                            <div class="flex items-center justify-between text-xs text-gray-500">
+                                <div class="flex items-center space-x-1">
+                                    <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 24 24">
+                                        <path d="M12 12c2.7 0 5-2.3 5-5s-2.3-5-5-5-5 2.3-5 5 2.3 5 5 5zm0 2c-3.3 0-10 1.7-10 5v3h20v-3c0-3.3-6.7-5-10-5z" />
+                                    </svg>
+                                    <span>Admin</span>
+                                </div>
+                                <div class="flex items-center space-x-3">
+                                    <div class="flex items-center space-x-1">
+                                        <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 24 24">
+                                            <path d="M19 4h-1V2h-2v2H8V2H6v2H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2V6a2 2 0 00-2-2zM5 20V9h14v11H5z" />
+                                        </svg>
+                                        <span>${new Date(article.published_at).toLocaleDateString('id-ID')}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+
+            $('#articles-wrapper').html(html);
+        },
+        error: function(xhr, status, error) {
+            $('#articles-wrapper').html('<div class="text-red-500">Gagal memuat data artikel.</div>');
+        }
+    });
+});
+</script>
 @endsection
