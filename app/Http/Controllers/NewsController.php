@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Storage;
+use DB;
 
 class NewsController extends Controller
 {
@@ -12,75 +15,135 @@ class NewsController extends Controller
 
     public function getLists(Request $request) {
 
-        $params = $request->all();
-
-        $query = DB::table('posts');
-
+        $searchValue = $request->input('search.value');
         $start = $request->input('start', 0);
         $length = $request->input('length', 10);
 
-        $totalRecords = $query->count();
-        $filteredRecords = $query->count();
-        $data = $query->orderBy('id', 'created_at')->skip($start)->take($length)->get();
+        $query = DB::table('posts')
+            ->select('posts.*', 'post_categories.name as category')
+            ->join('post_categories', 'post_categories.id', '=', 'posts.category_id');
 
-        $response = [
-            'draw' => $request->input('draw'),
+        $totalRecords = $query->count();
+
+        if (!empty($searchValue)) {
+            $query->where('posts.title', 'like', '%' . $searchValue . '%');
+        }
+
+        $filteredRecords = $query->count();
+
+        $data = $query->orderBy('posts.id', 'desc')
+                    ->skip($start)
+                    ->take($length)
+                    ->get();
+
+        return response()->json([
+            'draw' => intval($request->input('draw')),
             'recordsTotal' => $totalRecords,
             'recordsFiltered' => $filteredRecords,
-            'data' => $data
-        ];
-
-        return response()->json($response);
+            'data' => $data,
+        ]);
     }
 
     public function create() {
-        return view('modules.posts.news.create');
+        $categories = DB::table('post_categories')->get();
+        return view('modules.posts.news.create', compact('categories'));
     }
 
     public function save(Request $request) {
 
-        $currentUserId = Auth::user()->id;
-
-        //TODO set created_by and updated)_by
-        DB::table('suppliers')->insert([
-            "name" => $request->name,
-            "phone_number" => $request->phone_number,
-            "address" => $request->address,
-            "is_active" => $request->is_active,
-            "created_by" => $currentUserId
+        $request->validate([
+            'title'         => 'required|string|max:255',
+            'content'       => 'required|string',
+            'category'      => 'required|exists:post_categories,id',
+            'thumbnail'     => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
-        return redirect()->route('suppliers.index');
+        $imagePath = $request->hasFile('thumbnail')
+                    ? $request->file('thumbnail')->store('/uploads/posts', 'public')
+                    : null;
+
+        $post = DB::table('posts')->insert([
+            'title'         => $request->title,
+            'slug'          => Str::slug($request->title, '-'),
+            'content'       => $request->content,
+            'thumbnail_url' => $imagePath,
+            'category_id'   => $request->category,
+            // 'status'        => $request->status,
+            'published_at'  => now(),
+        ]);
+
+        return response()->json([
+            'message' => 'News berhasil disimpan',
+            'data'    => $post
+        ]);
     }
 
     public function edit($id) {
-        $supplier = DB::table('posts')->where('id', $id)->first();
+        $news = DB::table('posts')->where('id', $id)->first();
+        $categories =  DB::table('post_categories')->get();
 
-        if (!$supplier) {
-            return redirect()->route('suppliers.index')->with('error', 'Supplier not found.');
+        return view('modules.posts.news.edit', compact('news', 'categories'));
+    }
+
+    public function update(Request $request, $id) {
+        $request->validate([
+            'title'         => 'required|string|max:255',
+            'content'       => 'required|string',
+            'category'      => 'required|exists:post_categories,id',
+            'thumbnail'     => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        ]);
+
+        $post = DB::table('posts')->where('id', $id)->first();
+
+        if (!$post) {
+            return response()->json(['message' => 'News tidak ditemukan'], 404);
         }
 
-        return view('modules.posts.news.edit', compact('supplier'));
+        $imagePath = $post->thumbnail_url;
+
+        if ($request->hasFile('thumbnail')) {
+            if ($post->thumbnail_url && Storage::disk('public')->exists($post->thumbnail_url)) {
+                Storage::disk('public')->delete($post->thumbnail_url);
+            }
+
+            $imagePath = $request->file('thumbnail')->store('uploads/posts', 'public');
+        }
+
+        DB::table('posts')->where('id', $id)->update([
+            'title'         => $request->title,
+            'slug'          => Str::slug($request->title, '-'),
+            'content'       => $request->content,
+            'thumbnail_url' => $imagePath,
+            'category_id'   => $request->category,
+            // 'status'        => $request->status,
+            'updated_at'    => now(),
+        ]);
+
+        $updated = DB::table('posts')->where('id', $id)->first();
+
+        return response()->json([
+            'message' => 'News berhasil diperbarui',
+            'data'    => $updated,
+        ]);
     }
 
-    public function update(Request $request) {
+    public function delete($id) {
+        $post = DB::table('posts')->where('id', $id)->first();
 
-        $currentUserId = Auth::user()->id;
+        if (!$post) {
+            return response()->json([
+                'message' => 'News tidak ditemukan',
+            ], 404);
+        }
 
-        DB::table('posts')
-            ->where('id', $request->id)
-            ->update([
-                'name' => $request->name,
-                'phone_number' => $request->phone_number,
-                'address' => $request->address,
-                "is_active" => $request->is_active,
-                "updated_by" => $currentUserId
-            ]);
+        if ($post->thumbnail_url && Storage::disk('public')->exists($post->thumbnail_url)) {
+            Storage::disk('public')->delete($post->thumbnail_url);
+        }
 
-        return redirect()->route('suppliers.index');
-    }
+        DB::table('posts')->where('id', $id)->delete();
 
-    public function delete(Request $request) {
-
+        return response()->json([
+            'message' => 'News berhasil dihapus',
+        ]);
     }
 }

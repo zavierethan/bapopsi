@@ -79,6 +79,11 @@ Route::group(['middleware' => ['auth']], function() {
             Route::post('/save', [App\Http\Controllers\AthleteController::class, 'save'])->name('save');
             Route::get('/edit/{id}', [App\Http\Controllers\AthleteController::class, 'edit'])->name('edit');
             Route::post('/update', [App\Http\Controllers\AthleteController::class, 'update'])->name('update');
+
+            Route::post('/approve/{id}', [App\Http\Controllers\AthleteController::class, 'approve']);
+            Route::post('/reject/{id}', [App\Http\Controllers\AthleteController::class, 'reject']);
+
+            Route::get('/print-nametag/{id}', [App\Http\Controllers\AthleteController::class, 'generateNameTagPdf'])->name('print-nametag');
         });
     });
 
@@ -146,8 +151,8 @@ Route::group(['middleware' => ['auth']], function() {
                     Route::get('/create', [App\Http\Controllers\NewsController::class, 'create'])->name('create');
                     Route::post('/save', [App\Http\Controllers\NewsController::class, 'save'])->name('save');
                     Route::get('/edit/{id}', [App\Http\Controllers\NewsController::class, 'edit'])->name('edit');
-                    Route::post('/update', [App\Http\Controllers\NewsController::class, 'update'])->name('update');
-                    Route::post('/delete', [App\Http\Controllers\NewsController::class, 'delete'])->name('delete');
+                    Route::post('/update/{id}', [App\Http\Controllers\NewsController::class, 'update'])->name('update');
+                    Route::delete('/delete/{id}', [App\Http\Controllers\NewsController::class, 'delete'])->name('delete');
                 });
             });
             Route::prefix('galeries')->group(function () {
@@ -157,8 +162,8 @@ Route::group(['middleware' => ['auth']], function() {
                     Route::get('/create', [App\Http\Controllers\GaleryController::class, 'create'])->name('create');
                     Route::post('/save', [App\Http\Controllers\GaleryController::class, 'save'])->name('save');
                     Route::get('/edit/{id}', [App\Http\Controllers\GaleryController::class, 'edit'])->name('edit');
-                    Route::post('/update', [App\Http\Controllers\GaleryController::class, 'update'])->name('update');
-                    Route::post('/delete', [App\Http\Controllers\GaleryController::class, 'delete'])->name('delete');
+                    Route::post('/update/{id}', [App\Http\Controllers\GaleryController::class, 'update'])->name('update');
+                    Route::delete('/delete/{id}', [App\Http\Controllers\GaleryController::class, 'delete'])->name('delete');
                 });
             });
         });
@@ -173,7 +178,7 @@ Route::group(['middleware' => ['auth']], function() {
             Route::get('/create', [App\Http\Controllers\SportController::class, 'create'])->name('create');
             Route::post('/save', [App\Http\Controllers\SportController::class, 'save'])->name('save');
             Route::get('/edit/{id}', [App\Http\Controllers\SportController::class, 'edit'])->name('edit');
-            Route::post('/update', [App\Http\Controllers\SportController::class, 'update'])->name('update');
+            Route::post('/update/{id}', [App\Http\Controllers\SportController::class, 'update'])->name('update');
             Route::post('/delete', [App\Http\Controllers\SportController::class, 'delete'])->name('delete');
         });
     });
@@ -197,7 +202,7 @@ Route::group(['middleware' => ['auth']], function() {
             Route::get('/create', [App\Http\Controllers\RayonController::class, 'create'])->name('create');
             Route::post('/save', [App\Http\Controllers\RayonController::class, 'save'])->name('save');
             Route::get('/edit/{id}', [App\Http\Controllers\RayonController::class, 'edit'])->name('edit');
-            Route::post('/update', [App\Http\Controllers\RayonController::class, 'update'])->name('update');
+            Route::post('/update/{id}', [App\Http\Controllers\RayonController::class, 'update'])->name('update');
             Route::post('/delete', [App\Http\Controllers\RayonController::class, 'delete'])->name('delete');
         });
     });
@@ -209,7 +214,7 @@ Route::group(['middleware' => ['auth']], function() {
             Route::get('/create', [App\Http\Controllers\SubRayonController::class, 'create'])->name('create');
             Route::post('/save', [App\Http\Controllers\SubRayonController::class, 'save'])->name('save');
             Route::get('/edit/{id}', [App\Http\Controllers\SubRayonController::class, 'edit'])->name('edit');
-            Route::post('/update', [App\Http\Controllers\SubRayonController::class, 'update'])->name('update');
+            Route::post('/update/{id}', [App\Http\Controllers\SubRayonController::class, 'update'])->name('update');
             Route::post('/delete', [App\Http\Controllers\SubRayonController::class, 'delete'])->name('delete');
         });
     });

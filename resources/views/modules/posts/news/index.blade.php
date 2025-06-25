@@ -11,13 +11,13 @@
                 <!--begin::Page title-->
                 <div class="page-title d-flex flex-column justify-content-center flex-wrap me-3">
                     <!--begin::Title-->
-                    <h1 class="page-heading d-flex text-gray-900 fw-bold fs-3 flex-column justify-content-center my-0">Menus</h1>
+                    <h1 class="page-heading d-flex text-gray-900 fw-bold fs-3 flex-column justify-content-center my-0">News</h1>
                     <!--end::Title-->
                     <!--begin::Breadcrumb-->
                     <ul class="breadcrumb breadcrumb-separatorless fw-semibold fs-7 my-0 pt-1">
                         <!--begin::Item-->
                         <li class="breadcrumb-item text-muted">
-                            <a href="index.html" class="text-muted text-hover-primary">Accounts</a>
+                            <a href="index.html" class="text-muted text-hover-primary">Posts</a>
                         </li>
                         <!--end::Item-->
                         <!--begin::Item-->
@@ -26,7 +26,7 @@
                         </li>
                         <!--end::Item-->
                         <!--begin::Item-->
-                        <li class="breadcrumb-item text-muted">Menus</li>
+                        <li class="breadcrumb-item text-muted">News</li>
                         <!--end::Item-->
                     </ul>
                     <!--end::Breadcrumb-->
@@ -35,7 +35,7 @@
                 <!--begin::Actions-->
                 <div class="d-flex align-items-center gap-2 gap-lg-3">
                     <!--begin::Primary button-->
-                    <a href="{{route('menus.create')}}" class="btn btn-sm fw-bold btn-primary">New</a>
+                    <a href="{{route('posts.news.create')}}" class="btn btn-sm fw-bold btn-primary">New</a>
                     <!--end::Primary button-->
                 </div>
                 <!--end::Actions-->
@@ -77,21 +77,15 @@
                                 </div>
                                 <!--begin::Filters-->
                             </div>
-                            <!--end::Card toolbar-->
                         </div>
-                        <!--begin::Card body-->
                         <div class="card-body pt-0 overflow-x-auto">
-                            <!--begin::Table-->
-                            <table class="table align-middle table-striped table-hover shadow-card rounded-card" id="kt_menus_table" style="border-radius:14px;overflow:hidden;">
-                                <!--begin::Table head-->
-                                <thead class="table-light fw-bold" style="background:#f3f6f9;">
-                                    <!--begin::Table row-->
-                                    <tr class="text-start text-gray-700 fw-bolder fs-7 text-uppercase gs-0">
-                                        <th class="min-w-125px">Name</th>
-                                        <th class="min-w-125px">Parent</th>
-                                        <th class="min-w-125px">URL</th>
-                                        <th class="min-w-125px text-center">Order</th>
-                                        <th class="min-w-125px text-center">Active</th>
+                            <table class="table align-middle table-row-dashed fs-6 gy-5" id="kt_menus_table">
+                                <thead>
+                                    <tr class="text-start text-gray-400 fw-bolder fs-7 text-uppercase gs-0">
+                                        <th class="min-w-125px">Title</th>
+                                        <th class="min-w-125px">Category</th>
+                                        <th class="min-w-125px">Author ID</th>
+                                        <th class="min-w-125px text-center">Published At</th>
                                         <th class="text-center min-w-70px">Actions</th>
                                     </tr>
                                     <!--end::Table row-->
@@ -123,48 +117,33 @@
     var table = $("#kt_menus_table").DataTable({
         processing: true,
         serverSide: true,
-        paging: true, // Enable pagination
-        pageLength: 10, // Number of rows per page
+        paging: true,
+        pageLength: 10,
         ajax: {
-            url: `{{route('menus.get-lists')}}`, // Replace with your route
+            url: `{{route('posts.news.get-lists')}}`,
             type: 'GET',
             data: function (d) {
                 // Add filter data to the request
-                d.parent_id = $('#parent-id').val();
             },
             dataSrc: function (json) {
-                return json.data; // Map the 'data' field
+                return json.data;
             }
         },
         columns: [
-            { data: 'menu_name', name: 'menu_name' },
-            { data: 'parent_name', name: 'parent_name' },
-            { data: 'url', name: 'url' },
-            { data: 'order', name: 'order', className: 'text-center' },
+            { data: 'title', name: 'title' },
+            { data: 'category', name: 'category' },
+            { data: 'author_id', name: 'author_id' },
+            { data: 'published_at', name: 'published_at', className: 'text-center'},
             {
-                data: 'is_active',
-                name: 'is_active',
-                className: 'text-center',
-                render: function(data, type, row) {
-                    var is_active = "";
-
-                    if (row.is_active == 1) {
-                        is_active = `<span class="badge bg-success text-dark">Active</span>`
-                    } else {
-                        is_active = `<span class="badge bg-success text-dark">Non Active</span>`
-                    }
-                    return is_active;
-                }
-            },
-            {
-                data: null, // No direct field from the server
+                data: null,
                 name: 'action',
-                orderable: false, // Disable ordering for this column
-                searchable: false, // Disable searching for this column
+                orderable: false,
+                searchable: false,
                 render: function (data, type, row) {
                     return `
                         <div class="text-center">
-                            <a href="/menus/edit/${row.id}" class="btn btn-sm btn-light btn-active-light-primary">Edit</a>
+                            <a href="/posts/news/edit/${row.id}" class="btn btn-sm btn-light btn-active-light-primary">Edit</a>
+                            <button class="btn btn-sm btn-light btn-active-light-danger btn-delete" data-id="${row.id}">Delete</button>
                         <div>
                     `;
                 }
@@ -173,12 +152,40 @@
     });
 
     $('[data-kt-menu-table-filter="search"]').on('keyup', function() {
-        const searchTerm = $(this).val(); // Get the value from the search input
-        table.search(searchTerm).draw(); // Trigger the search and refresh the DataTable
+        const searchTerm = $(this).val();
+        table.search(searchTerm).draw();
     });
 
-    $('#parent-id').on('change', function () {
-        table.draw(); // Trigger DataTable redraw with updated filter values
+    $(document).on('click', '.btn-delete', function() {
+        const id = $(this).data('id');
+
+        Swal.fire({
+            title: 'Yakin ingin menghapus?',
+            text: 'Data tidak bisa dikembalikan setelah dihapus!',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#6c757d',
+            confirmButtonText: 'Ya, hapus!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: `/posts/news/delete/${id}`,
+                    method: 'DELETE',
+                    data: {
+                        _token: '{{ csrf_token() }}'
+                    },
+                    success: function(res) {
+                        Swal.fire('Berhasil!', res.message, 'success');
+                        $('#kt_menus_table').DataTable().ajax.reload();
+                    },
+                    error: function(err) {
+                        Swal.fire('Gagal!', 'Terjadi kesalahan saat menghapus data.', 'error');
+                    }
+                });
+            }
+        });
     });
+
 </script>
 @endsection

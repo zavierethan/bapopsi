@@ -57,7 +57,7 @@
                                 @csrf
                                 <div class="fv-row mb-5">
                                     <div class="mb-1">
-                                        <label class="form-label fw-bold fs-6 mb-2">Rayon</label>
+                                        <label class="form-label fw-bold fs-6 mb-2">Kecamatan</label>
                                         <div class="position-relative mb-3">
                                             <select class="form-select form-select-solid" data-control="select2"
                                                 data-placeholder="-" name="kecamatan_id">
@@ -84,9 +84,6 @@
                                     <button type="submit" class="btn btn-primary">Submit</button>
                                     <a href="{{route('sub-rayon.index')}}" class="btn btn-danger">Cancel</a>
                                 </div>
-                                <div id="alert-success" class="alert alert-success mt-5 d-none">Data berhasil disimpan!
-                                </div>
-                                <div id="alert-error" class="alert alert-danger mt-5 d-none">Gagal menyimpan data!</div>
                             </form>
                         </div>
                     </div>
@@ -103,28 +100,45 @@
 
 @section('script')
 <script>
-    $('#subrayon-form').on('submit', function (e) {
-        e.preventDefault();
+$('#subrayon-form').on('submit', function(e) {
+    e.preventDefault();
 
-        $('#alert-success').addClass('d-none');
-        $('#alert-error').addClass('d-none');
+    let formData = new FormData(this);
 
-        const formData = $(this).serialize();
+    $.ajax({
+        url: "{{ route('sub-rayon.save') }}",
+        method: 'POST',
+        data: formData,
+        processData: false,
+        contentType: false,
+        success: function(res) {
+            Swal.fire({
+                icon: 'success',
+                title: 'Berhasil!',
+                text: res.message || 'Data berhasil disimpan.',
+                timer: 2000,
+                showConfirmButton: false
+            }).then(() => {
+                window.location.href = "{{ route('sub-rayon.index') }}";
+            });
+        },
+        error: function(err) {
+            console.log(err);
 
-        $.ajax({
-            url: "{{ route('sub-rayon.save') }}",
-            type: "POST",
-            data: formData,
-            success: function (response) {
-                $('#alert-success').removeClass('d-none');
-                $('#subrayon-form')[0].reset();
-            },
-            error: function (xhr) {
-                console.error(xhr.responseText);
-                $('#alert-error').removeClass('d-none');
+            let message = 'Terjadi kesalahan saat menyimpan data.';
+
+            // Ambil pesan error dari response jika ada
+            if (err.status === 422 && err.responseJSON && err.responseJSON.message) {
+                message = err.responseJSON.message;
             }
-        });
+
+            Swal.fire({
+                icon: 'error',
+                title: 'Gagal!',
+                text: message
+            });
+        }
     });
+});
 </script>
 @endsection
-

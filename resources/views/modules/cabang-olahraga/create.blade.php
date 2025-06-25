@@ -49,17 +49,18 @@
                         <div class="card-body pt-10">
                             <form id="sport-form" method="POST">
                                 @csrf
-
-                                <!-- Nama Cabang Olahraga -->
                                 <div class="mb-5">
-                                    <label class="form-label fw-bold">Nama Cabang Olahraga</label>
-                                    <input type="text" class="form-control form-control-solid" name="code" required>
+                                    <label class="form-label fw-bold">Nama</label>
+                                    <input type="text" class="form-control form-control-solid" name="name">
                                 </div>
-
                                 <div class="separator my-5"></div>
-
-                                <!-- Kelas -->
-                                <h4 class="mb-4">Daftar Kelas Pertandingan</h4>
+                                <div class="mb-5">
+                                    <label class="form-label fw-bold">Deskripsi</label>
+                                    <textarea type="text" class="form-control form-control-solid"
+                                        name="description"></textarea>
+                                </div>
+                                <div class="separator my-5"></div>
+                                <label class="form-label fw-bold">Kelas</label>
                                 <div id="classes-wrapper">
                                     <div class="class-item position-relative mb-3">
                                         <input type="text" name="sport_classes[0][name]" class="form-control pe-10"
@@ -81,12 +82,6 @@
                                     <a href="{{ route('cabang-olahraga.index') }}" class="btn btn-danger ms-2">Batal</a>
                                 </div>
                             </form>
-
-                            <!-- Notifikasi -->
-                            <div id="alert-success" class="alert alert-success mt-5 d-none">Data berhasil disimpan!
-                            </div>
-                            <div id="alert-error" class="alert alert-danger mt-5 d-none">Terjadi kesalahan saat
-                                menyimpan data.</div>
                         </div>
                     </div>
                 </div>
@@ -125,35 +120,30 @@ function updateRemoveClassButtons() {
 
 updateRemoveClassButtons();
 
-// Submit pakai AJAX
 $('#sport-form').on('submit', function(e) {
     e.preventDefault();
-    $('#alert-success').addClass('d-none');
-    $('#alert-error').addClass('d-none');
-
-    const formData = $(this).serialize();
 
     $.ajax({
         url: "{{ route('cabang-olahraga.save') }}",
-        type: "POST",
-        data: formData,
-        success: function(res) {
-            $('#alert-success').removeClass('d-none');
-            $('#sport-form')[0].reset();
-            $('#classes-wrapper').html(`
-                    <div class="class-item position-relative mb-3">
-                        <input type="text" name="sport_classes[0][name]" class="form-control pe-10" placeholder="Nama Kelas" required>
-                        <button type="button" class="btn btn-icon btn-sm btn-light-danger position-absolute top-50 translate-middle-y end-0 me-2 remove-class" style="display: none;" title="Hapus">
-                            <i class="fa fa-times"></i>
-                        </button>
-                    </div>
-                `);
-            classIndex = 1;
-            updateRemoveClassButtons();
+        method: 'POST',
+        data: $(this).serialize(),
+        success: function() {
+            Swal.fire({
+                icon: 'success',
+                title: 'Berhasil!',
+                text: 'Data cabang olahraga berhasil disimpan.',
+                timer: 2000,
+                showConfirmButton: false
+            }).then(() => {
+                window.location.href = "{{ route('cabang-olahraga.index') }}";
+            });
         },
-        error: function(xhr) {
-            $('#alert-error').removeClass('d-none');
-            console.error(xhr.responseText);
+        error: function() {
+            Swal.fire({
+                icon: 'error',
+                title: 'Gagal!',
+                text: 'Terjadi kesalahan saat menyimpan data.'
+            });
         }
     });
 });

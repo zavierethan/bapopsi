@@ -82,11 +82,11 @@
                         <!--begin::Card body-->
                         <div class="card-body pt-0 overflow-x-auto">
                             <!--begin::Table-->
-                            <table class="table align-middle table-striped table-hover shadow-card rounded-card" id="kt_subrayon_table" style="border-radius:14px;overflow:hidden;">
-                                <thead class="table-light fw-bold" style="background:#f3f6f9;">
+                            <table class="table align-middle table-row-dashed fs-6 gy-5" id="kt_subrayon_table">
+                                <thead>
                                     <tr class="text-start text-gray-700 fw-bolder fs-7 text-uppercase gs-0">
-                                        <th class="min-w-125px">Kecamatan (Rayon)</th>
                                         <th class="min-w-125px">Nama Sub Rayon</th>
+                                        <th class="min-w-125px">Kecamatan</th>
                                         <th class="min-w-125px">Kelompok Rayon</th>
                                         <th class="text-center min-w-70px">Actions</th>
                                     </tr>
@@ -125,8 +125,9 @@
             }
         },
         columns: [
-            { data: 'nama', name: 'nama' },
-            { data: 'nama_rayon', name: 'nama_rayon' },
+            { data: 'sub_rayon', name: 'sub_rayon' },
+            { data: 'kecamatan', name: 'kecamatan' },
+            { data: 'rayon', name: 'rayon' },
             {
                 data: null, // No direct field from the server
                 name: 'action',
