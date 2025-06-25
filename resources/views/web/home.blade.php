@@ -249,7 +249,7 @@
         <h2 class="text-4xl font-bold mb-10 text-white">Berita</h2>
         <div class="flex space-x-6 overflow-x-auto pb-4 scrollbar-thin scrollbar-thumb-blue-300 scrollbar-track-blue-100">
             <!-- News Card 1 -->
-            <div class="min-w-[320px] max-w-xs bg-white rounded-2xl shadow-lg border hover:scale-105 hover:shadow-2xl transition-all duration-300 cursor-pointer flex-shrink-0">
+            <a href="/berita-detail" class="min-w-[320px] max-w-xs bg-white rounded-2xl shadow-lg border hover:scale-105 hover:shadow-2xl transition-all duration-300 cursor-pointer flex-shrink-0 block">
                 <img src='https://via.placeholder.com/400x240' alt='Berita 1' class='w-full h-40 object-cover rounded-t-2xl'>
                 <div class="p-6">
                     <div class="flex items-center justify-between mb-3">
@@ -264,9 +264,9 @@
                         <span>120x dibaca</span>
                     </div>
                 </div>
-            </div>
+            </a>
             <!-- News Card 2 -->
-            <div class="min-w-[320px] max-w-xs bg-white rounded-2xl shadow-lg border hover:scale-105 hover:shadow-2xl transition-all duration-300 cursor-pointer flex-shrink-0">
+            <a href="/berita-detail" class="min-w-[320px] max-w-xs bg-white rounded-2xl shadow-lg border hover:scale-105 hover:shadow-2xl transition-all duration-300 cursor-pointer flex-shrink-0 block">
                 <img src='https://via.placeholder.com/400x240' alt='Berita 2' class='w-full h-40 object-cover rounded-t-2xl'>
                 <div class="p-6">
                     <div class="flex items-center justify-between mb-3">
@@ -281,9 +281,9 @@
                         <span>98x dibaca</span>
                     </div>
                 </div>
-            </div>
+            </a>
             <!-- News Card 3 -->
-            <div class="min-w-[320px] max-w-xs bg-white rounded-2xl shadow-lg border hover:scale-105 hover:shadow-2xl transition-all duration-300 cursor-pointer flex-shrink-0">
+            <a href="/berita-detail" class="min-w-[320px] max-w-xs bg-white rounded-2xl shadow-lg border hover:scale-105 hover:shadow-2xl transition-all duration-300 cursor-pointer flex-shrink-0 block">
                 <img src='https://via.placeholder.com/400x240' alt='Berita 3' class='w-full h-40 object-cover rounded-t-2xl'>
                 <div class="p-6">
                     <div class="flex items-center justify-between mb-3">
@@ -298,9 +298,9 @@
                         <span>75x dibaca</span>
                     </div>
                 </div>
-            </div>
+            </a>
             <!-- News Card 4 -->
-            <div class="min-w-[320px] max-w-xs bg-white rounded-2xl shadow-lg border hover:scale-105 hover:shadow-2xl transition-all duration-300 cursor-pointer flex-shrink-0">
+            <a href="/berita-detail" class="min-w-[320px] max-w-xs bg-white rounded-2xl shadow-lg border hover:scale-105 hover:shadow-2xl transition-all duration-300 cursor-pointer flex-shrink-0 block">
                 <img src='https://via.placeholder.com/400x240' alt='Berita 4' class='w-full h-40 object-cover rounded-t-2xl'>
                 <div class="p-6">
                     <div class="flex items-center justify-between mb-3">
@@ -315,7 +315,7 @@
                         <span>60x dibaca</span>
                     </div>
                 </div>
-            </div>
+            </a>
         </div>
     </div>
 </section>

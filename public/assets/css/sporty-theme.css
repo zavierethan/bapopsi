@@ -316,21 +316,74 @@ body {
 /* Table Styles */
 .table {
     background: var(--sporty-white);
-    border-radius: 8px;
+    border-radius: 16px;
     overflow: hidden;
-    box-shadow: var(--sporty-shadow-sm);
+    box-shadow: 0 4px 24px rgba(37,99,235,0.10);
+    border-collapse: separate;
+    border-spacing: 0;
+    margin-bottom: 1.5rem;
+    font-size: 1rem;
 }
 
 .table thead th {
-    background: var(--sporty-gradient-secondary);
-    color: var(--sporty-white);
-    font-weight: 600;
+    background: linear-gradient(90deg, #2563eb 0%, #ff9800 100%);
+    color: #fff;
+    font-weight: 700;
     border: none;
-    padding: 16px;
+    padding: 18px 16px;
+    letter-spacing: 1px;
+    text-shadow: 0 1px 2px rgba(30,58,138,0.10);
+    font-size: 0.98rem;
+    text-transform: uppercase;
 }
 
-.table tbody tr:hover {
-    background-color: var(--sporty-gray-100);
+.table-striped > tbody > tr:nth-of-type(odd) {
+    background-color: #f3f6fd;
+}
+
+.table-striped > tbody > tr:nth-of-type(even) {
+    background-color: #fff;
+}
+
+.table-hover > tbody > tr:hover {
+    background: linear-gradient(90deg, #eaf1ff 0%, #fffbe6 100%);
+    box-shadow: 0 2px 12px rgba(37,99,235,0.08);
+    cursor: pointer;
+    transition: background 0.2s, box-shadow 0.2s;
+}
+
+.table tbody tr.active-row, .table tbody tr.selected {
+    border-left: 4px solid #2563eb;
+    background: #eaf1ff;
+}
+
+.table td, .table th {
+    vertical-align: middle;
+    padding: 14px 16px;
+    border-top: 1px solid #e5e7eb;
+}
+
+.table td .badge, .table th .badge {
+    font-size: 0.92em;
+    font-weight: 600;
+    border-radius: 12px;
+    padding: 6px 14px;
+    box-shadow: 0 1px 4px rgba(37,99,235,0.08);
+}
+
+.table-responsive {
+    border-radius: 16px;
+    overflow-x: auto;
+    box-shadow: 0 2px 12px rgba(37,99,235,0.06);
+    margin-bottom: 1.5rem;
+}
+
+.table thead th:first-child, .table tbody td:first-child {
+    border-top-left-radius: 16px;
+}
+
+.table thead th:last-child, .table tbody td:last-child {
+    border-top-right-radius: 16px;
 }
 
 /* Alert Styles */

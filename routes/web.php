@@ -30,6 +30,10 @@ Route::get('/berita', function () {
     return view('web.berita');
 });
 
+Route::get('/berita-detail', function () {
+    return view('web.berita-detail');
+});
+
 Route::get('/galery', function () {
     return view('web.galery');
 });
