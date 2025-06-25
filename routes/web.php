@@ -26,12 +26,18 @@ Route::get('/prestasi', function () {
     return view('web.prestasi');
 });
 
-Route::get('/berita', function () {
-    return view('web.berita');
-});
-
 Route::get('/berita-detail', function () {
     return view('web.berita-detail');
+});
+
+Route::prefix('berita')->group(function () {
+    Route::name('berita.')->group(function () {
+        Route::get('/', function () {
+            return view('web.berita');
+        });
+
+        Route::get('/{slug}', [App\Http\Controllers\NewsController::class, 'show']);
+    });
 });
 
 Route::get('/galery', function () {

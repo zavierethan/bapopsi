@@ -247,75 +247,8 @@
 <section class="py-20 bg-gradient-to-r from-orange-500 via-red-500 to-blue-700 text-white">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <h2 class="text-4xl font-bold mb-10 text-white">Berita</h2>
-        <div class="flex space-x-6 overflow-x-auto pb-4 scrollbar-thin scrollbar-thumb-blue-300 scrollbar-track-blue-100">
-            <!-- News Card 1 -->
-            <a href="/berita-detail" class="min-w-[320px] max-w-xs bg-white rounded-2xl shadow-lg border hover:scale-105 hover:shadow-2xl transition-all duration-300 cursor-pointer flex-shrink-0 block">
-                <img src='https://via.placeholder.com/400x240' alt='Berita 1' class='w-full h-40 object-cover rounded-t-2xl'>
-                <div class="p-6">
-                    <div class="flex items-center justify-between mb-3">
-                        <span class="bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-xs font-medium">Olahraga</span>
-                        <span class="text-xs text-gray-400">18/06/2025</span>
-                    </div>
-                    <h3 class="text-lg font-bold text-gray-900 mb-2 line-clamp-2 leading-tight">Judul Artikel Menarik Tentang Olahraga</h3>
-                    <p class="text-gray-600 text-sm mb-4 line-clamp-3">Ini adalah ringkasan singkat dari artikel tersebut, memberikan gambaran umum kepada pembaca...</p>
-                    <div class="flex items-center space-x-2 text-xs text-gray-500">
-                        <span>Admin</span>
-                        <span>•</span>
-                        <span>120x dibaca</span>
-                    </div>
-                </div>
-            </a>
-            <!-- News Card 2 -->
-            <a href="/berita-detail" class="min-w-[320px] max-w-xs bg-white rounded-2xl shadow-lg border hover:scale-105 hover:shadow-2xl transition-all duration-300 cursor-pointer flex-shrink-0 block">
-                <img src='https://via.placeholder.com/400x240' alt='Berita 2' class='w-full h-40 object-cover rounded-t-2xl'>
-                <div class="p-6">
-                    <div class="flex items-center justify-between mb-3">
-                        <span class="bg-green-100 text-green-800 px-2 py-1 rounded-full text-xs font-medium">Event</span>
-                        <span class="text-xs text-gray-400">15/06/2025</span>
-                    </div>
-                    <h3 class="text-lg font-bold text-gray-900 mb-2 line-clamp-2 leading-tight">Event Olahraga Pelajar Terbesar</h3>
-                    <p class="text-gray-600 text-sm mb-4 line-clamp-3">Event olahraga pelajar tingkat kabupaten yang diikuti ratusan atlet...</p>
-                    <div class="flex items-center space-x-2 text-xs text-gray-500">
-                        <span>Admin</span>
-                        <span>•</span>
-                        <span>98x dibaca</span>
-                    </div>
-                </div>
-            </a>
-            <!-- News Card 3 -->
-            <a href="/berita-detail" class="min-w-[320px] max-w-xs bg-white rounded-2xl shadow-lg border hover:scale-105 hover:shadow-2xl transition-all duration-300 cursor-pointer flex-shrink-0 block">
-                <img src='https://via.placeholder.com/400x240' alt='Berita 3' class='w-full h-40 object-cover rounded-t-2xl'>
-                <div class="p-6">
-                    <div class="flex items-center justify-between mb-3">
-                        <span class="bg-yellow-100 text-yellow-800 px-2 py-1 rounded-full text-xs font-medium">Pengumuman</span>
-                        <span class="text-xs text-gray-400">10/06/2025</span>
-                    </div>
-                    <h3 class="text-lg font-bold text-gray-900 mb-2 line-clamp-2 leading-tight">Pengumuman Penting untuk Atlet</h3>
-                    <p class="text-gray-600 text-sm mb-4 line-clamp-3">Pengumuman penting terkait jadwal pertandingan dan administrasi...</p>
-                    <div class="flex items-center space-x-2 text-xs text-gray-500">
-                        <span>Admin</span>
-                        <span>•</span>
-                        <span>75x dibaca</span>
-                    </div>
-                </div>
-            </a>
-            <!-- News Card 4 -->
-            <a href="/berita-detail" class="min-w-[320px] max-w-xs bg-white rounded-2xl shadow-lg border hover:scale-105 hover:shadow-2xl transition-all duration-300 cursor-pointer flex-shrink-0 block">
-                <img src='https://via.placeholder.com/400x240' alt='Berita 4' class='w-full h-40 object-cover rounded-t-2xl'>
-                <div class="p-6">
-                    <div class="flex items-center justify-between mb-3">
-                        <span class="bg-pink-100 text-pink-800 px-2 py-1 rounded-full text-xs font-medium">Berita</span>
-                        <span class="text-xs text-gray-400">05/06/2025</span>
-                    </div>
-                    <h3 class="text-lg font-bold text-gray-900 mb-2 line-clamp-2 leading-tight">BAPOPSI Raih Penghargaan Nasional</h3>
-                    <p class="text-gray-600 text-sm mb-4 line-clamp-3">BAPOPSI Kabupaten Bandung meraih penghargaan nasional atas inovasi digital...</p>
-                    <div class="flex items-center space-x-2 text-xs text-gray-500">
-                        <span>Admin</span>
-                        <span>•</span>
-                        <span>60x dibaca</span>
-                    </div>
-                </div>
-            </a>
+        <div class="flex space-x-6 overflow-x-auto pb-4 scrollbar-thin scrollbar-thumb-blue-300 scrollbar-track-blue-100" id="articles-wrapper">
+
         </div>
     </div>
 </section>
@@ -393,6 +326,45 @@ new Chart(document.getElementById("pieChart"), {
             tooltip: { enabled: true }
         }
     }
+});
+
+$(document).ready(function () {
+    $.ajax({
+        url: '/api/posts/news',
+        type: 'GET',
+        dataType: 'json',
+        success: function(response) {
+            let articles = response.data;
+            let html = '';
+
+            $.each(articles, function(index, article) {
+                let contentText = $('<div>').html(article.content).text().substring(0, 100);
+
+                html += `
+                    <a href="/berita/${article.slug}" class="min-w-[320px] max-w-xs bg-white rounded-2xl shadow-lg border hover:scale-105 hover:shadow-2xl transition-all duration-300 cursor-pointer flex-shrink-0 block">
+                        <img src='/storage/${article.thumbnail_url}' alt='${article.title}' class='w-full h-40 object-cover rounded-t-2xl'>
+                        <div class="p-6">
+                            <div class="flex items-center justify-between mb-3">
+                                <span class="bg-pink-100 text-pink-800 px-2 py-1 rounded-full text-xs font-medium">Berita</span>
+                                <span class="text-xs text-gray-400">${new Date(article.published_at).toLocaleDateString('id-ID')}</span>
+                            </div>
+                            <h3 class="text-lg font-bold text-gray-900 mb-2 line-clamp-2 leading-tight">${article.title}</h3>
+                            <p class="text-gray-600 text-sm mb-4 line-clamp-3">${contentText}...</p>
+                            <div class="flex items-center space-x-2 text-xs text-gray-500">
+                                <span>Admin</span>
+                                <span>•</span>
+                            </div>
+                        </div>
+                    </a>
+                `;
+            });
+
+            $('#articles-wrapper').html(html);
+        },
+        error: function(xhr, status, error) {
+            $('#articles-wrapper').html('<div class="text-red-500">Gagal memuat data artikel.</div>');
+        }
+    });
 });
 </script>
 @endsection

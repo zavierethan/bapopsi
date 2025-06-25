@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>BAPOPSI Landing Page</title>
+    <title>BAPOPSI</title>
     <script src="https://cdn.tailwindcss.com"></script>
 
     <link rel="shortcut icon" href="{{asset('assets/media/logos/bapopsi-logo.png')}}" />
@@ -183,7 +183,7 @@
         // document.getElementById('sports').innerText = statsData.totalSports;
         // document.getElementById('schools').innerText = statsData.totalSchools;
     </script>
-    <!-- <script src="{{ asset('assets/js/custom/custom-charts.js') }}"></script> -->
+    <script src="{{ asset('assets/js/custom/custom-charts.js') }}"></script>
 
     <!--begin::Global Javascript Bundle(mandatory for all pages)-->
     <script src="{{asset('assets/plugins/global/plugins.bundle.js')}}"></script>
