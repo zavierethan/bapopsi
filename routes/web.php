@@ -72,6 +72,8 @@ Route::group(['middleware' => ['auth']], function() {
 
             Route::post('/approve/{id}', [App\Http\Controllers\RegistrationController::class, 'approve']);
             Route::post('/reject/{id}', [App\Http\Controllers\RegistrationController::class, 'reject']);
+
+            Route::get('/getApprovalSummary', [App\Http\Controllers\RegistrationController::class, 'getTotalApprovalSummary'])->name('summary');
         });
     });
 

@@ -111,4 +111,20 @@ class RegistrationController extends Controller
 
         return response()->json(['success' => true]);
     }
+
+    public function getTotalApprovalSummary() {
+        $summary = DB::table('registration_requests')
+            ->selectRaw("
+                COUNT(*) FILTER (WHERE approval_status IS NULL) AS waiting_approval,
+                COUNT(*) FILTER (WHERE approval_status = 1) AS approved,
+                COUNT(*) FILTER (WHERE approval_status = 0) AS rejected
+            ")
+            ->first();
+
+        return response()->json([
+            'waiting_approval' => $summary->waiting_approval,
+            'approved' => $summary->approved,
+            'rejected' => $summary->rejected,
+        ]);
+    }
 }

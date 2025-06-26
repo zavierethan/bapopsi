@@ -122,6 +122,7 @@
 
 @section('script')
 <script>
+const userRoleId = {{ Auth::user()->group_id }};
 $("#kt_groups_table").DataTable({
     processing: true,
     serverSide: true,
@@ -163,13 +164,21 @@ $("#kt_groups_table").DataTable({
             className: 'text-center',
             render: function (data, type, row) {
                 if (row.approval_status === 'Waiting Approval') {
-                    return `
-                        <div class="flex justify-center gap-2">
-                            <a href="/athletes/edit/${row.id}" class="btn btn-sm btn-primary">Lihat</a>
-                            <button class="btn btn-sm btn-success btn-approve" data-id="${row.id}">Approve</button>
-                            <button class="btn btn-sm btn-danger btn-reject" data-id="${row.id}">Reject</button>
-                        </div>
-                    `;
+                    if (userRoleId === 14 || userRoleId === 1 ) { // approval hanya bisa di lakukan oleh admin dan superadmin
+                        return `
+                            <div class="flex justify-center gap-2">
+                                <a href="/athletes/edit/${row.id}" class="btn btn-sm btn-primary">Lihat</a>
+                                <button class="btn btn-sm btn-success btn-approve" data-id="${row.id}">Approve</button>
+                                <button class="btn btn-sm btn-danger btn-reject" data-id="${row.id}">Reject</button>
+                            </div>
+                        `;
+                    } else {
+                        return `
+                            <div class="flex justify-center">
+                                <a href="/athletes/edit/${row.id}" class="btn btn-sm btn-primary">Lihat</a>
+                            </div>
+                        `;
+                    }
                 } else {
                     return `
                         <div class="flex justify-center">
