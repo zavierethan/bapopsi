@@ -218,6 +218,19 @@ class AthleteController extends Controller
         return view('modules.athletes.pdf-nametag');
     }
 
+    public function showIdCard($id) {
+        $atlet = DB::table('atlet')
+            ->join('sports', 'sports.id', '=', 'atlet.cabang_olahraga_id')
+            ->select('atlet.*', 'sports.name as cabang_olahraga')
+            ->where('atlet.id', $id)
+            ->first();
+        if (!$atlet) {
+            abort(404);
+        }
+        $qrUrl = url('/athletes/detail/' . $id); // This should be the route to athlete detail
+        return view('modules.athletes.idcard', compact('atlet', 'qrUrl'));
+    }
+
     private function convertImageToBase64($path){
         if (!file_exists($path)) {
             return null;
