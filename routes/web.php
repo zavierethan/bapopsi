@@ -87,6 +87,8 @@ Route::group(['middleware' => ['auth']], function() {
         });
     });
 
+    Route::get('/admin/athletes/idcard/{id}', [\App\Http\Controllers\AthleteController::class, 'showIdCard'])->name('athletes.idcard');
+
     // Athlete Managers
 
     Route::prefix('athlete-managers')->group(function () {
