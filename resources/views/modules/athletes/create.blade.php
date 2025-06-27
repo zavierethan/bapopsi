@@ -76,8 +76,14 @@
                                     </div>
                                     <div class="col-md-6 mb-4">
                                         <label class="form-label fw-bold fs-6 mb-2">Jenis Kelamin</label>
-                                        <input class="form-control form-control-md form-control-solid" type="text"
-                                            name="jenis_kelamin" />
+                                        <div class="position-relative mb-3">
+                                            <select class="form-select form-select-solid" data-control="select2"
+                                                data-placeholder="-" name="jenis_kelamin" id="jenis_kelamin">
+                                                <option value=""></option>
+                                                <option value="L">Laki - Laki</option>
+                                                <option value="P">Perempuan</option>
+                                            </select>
+                                        </div>
                                     </div>
                                     <div class="col-md-6 mb-4">
                                         <label class="form-label fw-bold fs-6 mb-2">Nama Sekolah</label>
@@ -94,7 +100,8 @@
                                         <input class="form-control form-control-md form-control-solid" type="file"
                                             name="pas_foto" id="inputPasFoto" accept="image/*" />
                                         <div class="mt-2">
-                                            <img id="previewFoto" src="#" alt="Preview Foto" style="display:none; max-width:140px; max-height:180px; border-radius:10px; box-shadow:0 2px 8px rgba(0,0,0,0.08); border:2px solid #eee;" />
+                                            <img id="previewFoto" src="#" alt="Preview Foto"
+                                                style="display:none; max-width:140px; max-height:180px; border-radius:10px; box-shadow:0 2px 8px rgba(0,0,0,0.08); border:2px solid #eee;" />
                                         </div>
                                     </div>
                                     <div class="col-md-6 mb-4">
@@ -157,7 +164,8 @@
                                         </div>
                                         <div class="col-md-3">
                                             <label class="form-label fw-bold fs-6 mb-2">Foto</label>
-                                            <input class="form-control form-control-md form-control-solid" type="file">
+                                            <input class="form-control form-control-md form-control-solid" type="file"
+                                                name="officials[0][foto]">
                                         </div>
                                         <div class="col-md-1 text-end">
                                             <button type="button"
@@ -168,15 +176,14 @@
                                         </div>
                                     </div>
                                 </div>
+                            </div>
+                            <button type="button" id="add-official" class="btn btn-light-primary mb-5">
+                                <i class="fa fa-plus"></i> Tambah Official
+                            </button>
 
-                                <button type="button" id="add-official" class="btn btn-light-primary mb-5">
-                                    <i class="fa fa-plus"></i> Tambah Official
-                                </button>
-
-                                <div class="d-flex justify-content-end gap-3 mt-5">
-                                    <button type="submit" class="btn btn-primary">Submit</button>
-                                    <a href="{{ route('athletes.index') }}" class="btn btn-danger">Cancel</a>
-                                </div>
+                            <div class="d-flex justify-content-end gap-3 mt-5">
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                                <a href="{{ route('athletes.index') }}" class="btn btn-danger">Cancel</a>
                             </div>
                         </div>
                     </form>

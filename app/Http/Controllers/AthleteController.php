@@ -23,13 +23,14 @@ class AthleteController extends Controller
         $query = DB::table('atlet')
             ->select(
                 'atlet.*',
+                DB::raw("TO_CHAR(atlet.tanggal_lahir, 'DD/MM/YYYY') AS tanggal_lahir"),
                 DB::raw("CASE
                         WHEN atlet.appr_status IS NULL THEN 'Waiting Approval'
                         WHEN atlet.appr_status = 1 THEN 'Approved'
                         WHEN atlet.appr_status = 0 THEN 'Rejected'
                     END as approval_status"
                 ),
-                DB::raw("TO_CHAR(atlet.appr_date, 'DD-MM-YYYY HH24:MI:SS') AS approval_date"),
+                DB::raw("TO_CHAR(atlet.appr_date, 'DD/MM/YYYY HH24:MI:SS') AS approval_date"),
                 'sports.name as cabang_olahraga'
             )
             ->leftJoin('sports', 'sports.id', '=', 'atlet.cabang_olahraga_id');
@@ -78,15 +79,15 @@ class AthleteController extends Controller
             'tanggal_lahir'      => 'required|date',
             'jenis_kelamin'      => 'required|in:L,P',
             'nama_sekolah'       => 'required|string|max:255',
-            'nisn'               => 'nullable|string|max:50',
+            'nisn'               => 'required|string|max:50',
             'cabang_olahraga'    => 'required|exists:sports,id',
             'kelas_id'           => 'required|exists:sport_classes,id',
-            'pas_foto'           => 'nullable|file|mimes:jpg,jpeg,png|max:2048',
-            'raport'             => 'nullable|file|mimes:pdf|max:2048',
-            'akta_lahir'         => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:2048',
+            'pas_foto'           => 'required|file|mimes:jpg,jpeg,png|max:2048',
+            'raport'             => 'required|file|mimes:pdf|max:2048',
+            'akta_lahir'         => 'required|file|mimes:pdf|max:2048',
             'officials.*.nama'   => 'required_with:officials.*.jabatan|string|max:255',
             'officials.*.jabatan'=> 'required_with:officials.*.nama|string|max:255',
-            'officials.*.foto'   => 'nullable|file|mimes:jpg,jpeg,png|max:2048'
+            'officials.*.foto'   => 'required_with:officials|file|mimes:jpg,jpeg,png|max:2048'
         ]);
 
         DB::beginTransaction();

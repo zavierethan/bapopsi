@@ -67,8 +67,15 @@
                                         <input class="form-control" type="date" name="tanggal_lahir" value="{{ $atlet->tanggal_lahir }}" />
                                     </div>
                                     <div class="col-md-6 mb-4">
-                                        <label class="form-label fw-bold">Jenis Kelamin</label>
-                                        <input class="form-control" type="text" name="jenis_kelamin" value="{{ $atlet->jenis_kelamin }}" />
+                                        <label class="form-label fw-bold fs-6 mb-2">Jenis Kelamin</label>
+                                        <div class="position-relative mb-3">
+                                            <select class="form-select form-select-solid" data-control="select2"
+                                                data-placeholder="-" name="jenis_kelamin" id="jenis_kelamin">
+                                                <option value=""></option>
+                                                <option value="L" <?php echo ($atlet->jenis_kelamin == 'L') ? 'selected' : ''; ?>>Laki - Laki</option>
+                                                <option value="P" <?php echo ($atlet->jenis_kelamin == 'P') ? 'selected' : ''; ?>>Perempuan</option>
+                                            </select>
+                                        </div>
                                     </div>
                                     <div class="col-md-6 mb-4">
                                         <label class="form-label fw-bold">Nama Sekolah</label>
@@ -88,10 +95,20 @@
                                     <div class="col-md-6 mb-4">
                                         <label class="form-label fw-bold">Raport</label>
                                         <input class="form-control" type="file" name="raport" />
+                                        @if($atlet->raport)
+                                            <small class="d-block mt-1">
+                                                <a href="#" class="text-primary" onclick="showPdfModal('{{ asset('storage/' . $atlet->raport) }}'); return false;">Lihat file Raport (PDF)</a>
+                                            </small>
+                                        @endif
                                     </div>
                                     <div class="col-md-6 mb-4">
                                         <label class="form-label fw-bold">Akta Lahir</label>
                                         <input class="form-control" type="file" name="akta_lahir" />
+                                        @if($atlet->akta_lahir)
+                                            <small class="d-block mt-1">
+                                                <a href="#" class="text-primary" onclick="showPdfModal('{{ asset('storage/' . $atlet->akta_lahir) }}'); return false;">Lihat file Akta Lahir (PDF)</a>
+                                            </small>
+                                        @endif
                                     </div>
                                     <div class="col-md-6 mb-4">
                                         <label class="form-label fw-bold">Cabang Olahraga</label>
@@ -165,6 +182,21 @@
         </div>
     </div>
 </div>
+
+<!-- Modal Preview PDF -->
+<div class="modal fade" id="pdfPreviewModal" tabindex="-1" aria-labelledby="pdfPreviewModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Preview Dokumen</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
+            </div>
+            <div class="modal-body">
+                <iframe id="pdfIframe" src="" width="100%" height="600px" style="border: none;"></iframe>
+            </div>
+        </div>
+    </div>
+</div>
 @endsection
 
 @section('script')
@@ -206,5 +238,10 @@ $('#form-atlet-edit').on('submit', function(e) {
         }
     });
 });
+
+function showPdfModal(pdfUrl) {
+    $('#pdfIframe').attr('src', pdfUrl);
+    $('#pdfPreviewModal').modal('show');
+}
 </script>
 @endsection

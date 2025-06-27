@@ -97,8 +97,8 @@ Route::group(['middleware' => ['auth']], function() {
 
     // Athlete Managers
 
-    Route::prefix('athlete-managers')->group(function () {
-        Route::name('athlete-managers.')->group(function () {
+    Route::prefix('officials')->group(function () {
+        Route::name('officials.')->group(function () {
             Route::get('/', [App\Http\Controllers\AthleteManagersController::class, 'index'])->name('index');
             Route::get('/lists', [App\Http\Controllers\AthleteManagersController::class, 'getLists'])->name('get-lists');
             Route::get('/create', [App\Http\Controllers\AthleteManagersController::class, 'create'])->name('create');
