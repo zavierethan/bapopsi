@@ -91,11 +91,9 @@ Route::group(['middleware' => ['auth']], function() {
             Route::post('/approve/{id}', [App\Http\Controllers\AthleteController::class, 'approve']);
             Route::post('/reject/{id}', [App\Http\Controllers\AthleteController::class, 'reject']);
 
-            Route::get('/print-nametag/{id}', [App\Http\Controllers\AthleteController::class, 'generateNameTagPdf'])->name('print-nametag');
+            Route::get('/print-nametag/{id}', [\App\Http\Controllers\AthleteController::class, 'showIdCard'])->name('idcard');
         });
     });
-
-    Route::get('/admin/athletes/idcard/{id}', [\App\Http\Controllers\AthleteController::class, 'showIdCard'])->name('athletes.idcard');
 
     // Athlete Managers
 

@@ -227,7 +227,13 @@ class AthleteController extends Controller
         if (!$atlet) {
             abort(404);
         }
-        $qrUrl = url('/athletes/detail/' . $id); // This should be the route to athlete detail
+
+        if($atlet->appr_status == 1) {
+            $approvalStatus = "Verified";
+        } else {
+            $approvalStatus = "Not Verified";
+        }
+        $qrUrl = $approvalStatus; // This should be the route to athlete detail
         return view('modules.athletes.idcard', compact('atlet', 'qrUrl'));
     }
 

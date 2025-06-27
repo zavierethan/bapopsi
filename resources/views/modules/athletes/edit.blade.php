@@ -69,7 +69,7 @@
                                     <div class="col-md-6 mb-4">
                                         <label class="form-label fw-bold fs-6 mb-2">Jenis Kelamin</label>
                                         <div class="position-relative mb-3">
-                                            <select class="form-select form-select-solid" data-control="select2"
+                                            <select class="form-select" data-control="select2"
                                                 data-placeholder="-" name="jenis_kelamin" id="jenis_kelamin">
                                                 <option value=""></option>
                                                 <option value="L" <?php echo ($atlet->jenis_kelamin == 'L') ? 'selected' : ''; ?>>Laki - Laki</option>
