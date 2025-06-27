@@ -44,6 +44,15 @@ class NewsController extends Controller
         ]);
     }
 
+    public function show($slug) {
+        $post = DB::table('posts')
+            ->select('posts.*', 'post_categories.name as category')
+            ->join('post_categories', 'post_categories.id', '=', 'posts.category_id')
+            ->where('posts.slug', $slug)->first();
+        $tags =  DB::table('post_categories')->get();
+        return view('web.berita-detail', compact('post', 'tags'));
+    }
+
     public function create() {
         $categories = DB::table('post_categories')->get();
         return view('modules.posts.news.create', compact('categories'));

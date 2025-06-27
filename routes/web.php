@@ -26,12 +26,18 @@ Route::get('/prestasi', function () {
     return view('web.prestasi');
 });
 
-Route::get('/berita', function () {
-    return view('web.berita');
-});
-
 Route::get('/berita-detail', function () {
     return view('web.berita-detail');
+});
+
+Route::prefix('berita')->group(function () {
+    Route::name('berita.')->group(function () {
+        Route::get('/', function () {
+            return view('web.berita');
+        });
+
+        Route::get('/{slug}', [App\Http\Controllers\NewsController::class, 'show']);
+    });
 });
 
 Route::get('/galery', function () {
@@ -66,6 +72,8 @@ Route::group(['middleware' => ['auth']], function() {
 
             Route::post('/approve/{id}', [App\Http\Controllers\RegistrationController::class, 'approve']);
             Route::post('/reject/{id}', [App\Http\Controllers\RegistrationController::class, 'reject']);
+
+            Route::get('/getApprovalSummary', [App\Http\Controllers\RegistrationController::class, 'getTotalApprovalSummary'])->name('summary');
         });
     });
 

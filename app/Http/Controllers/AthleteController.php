@@ -9,6 +9,7 @@ use Illuminate\Support\Str;
 
 use Illuminate\Http\Request;
 use DB;
+use Auth;
 
 class AthleteController extends Controller
 {
@@ -37,20 +38,18 @@ class AthleteController extends Controller
             $query->where('atlet.nama_lengkap', $params['nama_lengkap']);
         }
 
+        $user = Auth::user();
+
+        if (!in_array($user->group_id, [1, 14])) {
+            $query->where('atlet.created_by', $user->id);
+        }
+
         $searchValue = $request->input('search.value');
         if (!empty($searchValue)) {
             $query->where(function ($q) use ($searchValue) {
                 $q->where('atlet.nama_lengkap', 'like', '%' . strtoupper($searchValue) . '%');
             });
         }
-
-        // if ($request->has('order') && $request->order) {
-        //     $columnIndex = $request->order[0]['column'];
-        //     $sortDirection = $request->order[0]['dir'];
-        //     $columnName = $request->columns[$columnIndex]['data'];
-
-        //     $query->orderBy($columnName, $sortDirection);
-        // }
 
         $start = $request->input('start', 0);
         $length = $request->input('length', 10);
@@ -119,6 +118,7 @@ class AthleteController extends Controller
                 'kelas_id'           => $request->kelas_id,
                 'created_at'         => now(),
                 'updated_at'         => now(),
+                'created_by'         => Auth::user()->id,
             ]);
 
             if ($request->has('officials')) {

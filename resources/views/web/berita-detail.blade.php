@@ -18,14 +18,9 @@
         <article class="bg-white rounded-xl shadow-lg border overflow-hidden">
             <!-- Article Image -->
             <div class="relative">
-                <img src="https://via.placeholder.com/800x400" alt="Judul Artikel" class="w-full h-64 md:h-80 object-cover" />
+                <img src="/storage/{{$post->thumbnail_url}}" alt="Judul Artikel" class="w-full h-64 md:h-80 object-cover" />
                 <div class="absolute top-4 left-4">
-                    <span class="bg-gradient-to-r from-orange-500 to-red-500 text-white px-3 py-1 rounded-full text-xs font-medium">Olahraga</span>
-                </div>
-                <div class="absolute bottom-4 right-4">
-                    <div class="bg-black bg-opacity-50 text-white px-3 py-1 rounded-full text-xs">
-                        <span>5 menit baca</span>
-                    </div>
+                    <span class="bg-gradient-to-r from-orange-500 to-red-500 text-white px-3 py-1 rounded-full text-xs font-medium">{{$post->category}}</span>
                 </div>
             </div>
 
@@ -67,61 +62,21 @@
 
                 <!-- Article Title -->
                 <h1 class="text-3xl md:text-4xl font-bold text-gray-900 mb-6 leading-tight">
-                    Prestasi Gemilang Atlet Pelajar Kabupaten Bandung di Kejuaraan Nasional
+                    {{$post->title}}
                 </h1>
 
                 <!-- Article Body -->
-                <div class="prose prose-lg max-w-none text-gray-700 leading-relaxed">
-                    <p class="text-lg mb-6 leading-relaxed">
-                        Kabupaten Bandung kembali menorehkan prestasi gemilang dalam ajang kejuaraan nasional olahraga pelajar yang diselenggarakan di Jakarta pada pekan lalu. Tim atlet pelajar yang dibina oleh BAPOPSI (Badan Pengelola Olahraga Pelajar Sekolah Indonesia) berhasil meraih total 15 medali emas, 12 medali perak, dan 8 medali perunggu.
-                    </p>
-
-                    <h2 class="text-2xl font-bold text-gray-900 mt-8 mb-4">Dominasi di Cabang Atletik</h2>
-                    <p class="mb-6">
-                        Cabang atletik menjadi andalan tim Kabupaten Bandung dengan meraih 8 medali emas dari berbagai nomor lari, lompat, dan lempar. Atlet-atlet muda ini menunjukkan performa luar biasa dengan mengalahkan pesaing dari berbagai provinsi di Indonesia.
-                    </p>
-
-                    <blockquote class="border-l-4 border-orange-500 pl-6 py-4 bg-orange-50 rounded-r-lg my-6">
-                        <p class="text-lg italic text-gray-700">
-                            "Prestasi ini membuktikan bahwa pembinaan olahraga pelajar di Kabupaten Bandung sudah berada di jalur yang tepat. Dedikasi para pelatih dan dukungan dari semua pihak sangat berperan dalam kesuksesan ini."
-                        </p>
-                        <cite class="block mt-2 text-sm text-gray-600">- Ketua BAPOPSI Kabupaten Bandung</cite>
-                    </blockquote>
-
-                    <h2 class="text-2xl font-bold text-gray-900 mt-8 mb-4">Kejutan di Cabang Renang</h2>
-                    <p class="mb-6">
-                        Tidak hanya di atletik, tim renang juga memberikan kejutan dengan meraih 4 medali emas dan 3 medali perak. Para perenang muda ini berhasil memecahkan beberapa rekor daerah dan menunjukkan potensi besar untuk masa depan olahraga Indonesia.
-                    </p>
-
-                    <h2 class="text-2xl font-bold text-gray-900 mt-8 mb-4">Dukungan Pemerintah dan Masyarakat</h2>
-                    <p class="mb-6">
-                        Prestasi ini tidak lepas dari dukungan penuh Pemerintah Kabupaten Bandung yang telah menyediakan fasilitas olahraga yang memadai dan program pembinaan yang sistematis. Masyarakat juga turut memberikan dukungan moral yang sangat berarti bagi para atlet.
-                    </p>
-
-                    <h2 class="text-2xl font-bold text-gray-900 mt-8 mb-4">Persiapan untuk Kompetisi Internasional</h2>
-                    <p class="mb-6">
-                        Dengan prestasi yang telah diraih, BAPOPSI Kabupaten Bandung kini fokus mempersiapkan atlet-atlet terbaik untuk mengikuti kompetisi internasional yang akan diselenggarakan dalam beberapa bulan mendatang. Program latihan intensif telah disusun untuk memastikan para atlet siap menghadapi tantangan yang lebih besar.
-                    </p>
-
-                    <h2 class="text-2xl font-bold text-gray-900 mt-8 mb-4">Harapan ke Depan</h2>
-                    <p class="mb-6">
-                        Prestasi ini diharapkan dapat menjadi motivasi bagi pelajar-pelajar lain di Kabupaten Bandung untuk berprestasi di bidang olahraga. BAPOPSI berkomitmen untuk terus mengembangkan program pembinaan yang lebih baik dan inovatif.
-                    </p>
-
-                    <p class="text-lg font-semibold text-gray-900 mt-8">
-                        Selamat kepada semua atlet, pelatih, dan pihak yang telah berkontribusi dalam prestasi gemilang ini. Semoga prestasi ini menjadi awal dari kesuksesan yang lebih besar di masa depan.
-                    </p>
+                <div class="prose prose-lg max-w-none text-gray-700 leading-relaxed" style="text-align: justify;">
+                    {!!$post->content!!}
                 </div>
 
                 <!-- Article Tags -->
                 <div class="mt-8 pt-6 border-t border-gray-200">
                     <h3 class="text-lg font-semibold text-gray-900 mb-3">Tag:</h3>
                     <div class="flex flex-wrap gap-2">
-                        <span class="bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-sm hover:bg-gray-200 transition-colors cursor-pointer">Olahraga</span>
-                        <span class="bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-sm hover:bg-gray-200 transition-colors cursor-pointer">Prestasi</span>
-                        <span class="bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-sm hover:bg-gray-200 transition-colors cursor-pointer">Atletik</span>
-                        <span class="bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-sm hover:bg-gray-200 transition-colors cursor-pointer">Renang</span>
-                        <span class="bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-sm hover:bg-gray-200 transition-colors cursor-pointer">BAPOPSI</span>
+                        @foreach($tags as $tag)
+                        <span class="bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-sm hover:bg-gray-200 transition-colors cursor-pointer">{{$tag->name}}</span>
+                        @endforeach
                     </div>
                 </div>
 
@@ -155,87 +110,62 @@
         <!-- Related Articles -->
         <div class="mt-12">
             <h2 class="text-2xl font-bold text-gray-900 mb-6">Artikel Terkait</h2>
-            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <!-- Related Article 1 -->
-                <a href="/berita-detail" class="block">
-                    <div class="bg-white rounded-xl shadow-lg border overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:scale-105 cursor-pointer">
-                        <img src="https://via.placeholder.com/400x240" alt="Artikel Terkait" class="w-full h-48 object-cover" />
-                        <div class="p-6">
-                            <div class="flex items-center justify-between mb-3">
-                                <span class="bg-gradient-to-r from-green-500 to-blue-500 text-white px-3 py-1 rounded-full text-xs font-medium">Prestasi</span>
-                                <div class="flex items-center space-x-1 text-gray-500 text-xs">
-                                    <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 24 24">
-                                        <path d="M12 6v6l4 2" />
-                                        <path fill="none" d="M0 0h24v24H0z" />
-                                        <path d="M12 2a10 10 0 100 20 10 10 0 000-20z" />
-                                    </svg>
-                                    <span>3 menit</span>
-                                </div>
-                            </div>
-                            <h3 class="text-lg font-bold text-gray-900 mb-2 line-clamp-2 leading-tight">Persiapan Tim untuk Kejuaraan Provinsi</h3>
-                            <p class="text-gray-600 text-sm mb-4 line-clamp-3">Tim atlet Kabupaten Bandung memulai persiapan intensif untuk menghadapi kejuaraan provinsi...</p>
-                            <div class="flex items-center justify-between text-xs text-gray-500">
-                                <span>15 Juni 2025</span>
-                                <span>856 views</span>
-                            </div>
-                        </div>
-                    </div>
-                </a>
-
-                <!-- Related Article 2 -->
-                <a href="/berita-detail" class="block">
-                    <div class="bg-white rounded-xl shadow-lg border overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:scale-105 cursor-pointer">
-                        <img src="https://via.placeholder.com/400x240" alt="Artikel Terkait" class="w-full h-48 object-cover" />
-                        <div class="p-6">
-                            <div class="flex items-center justify-between mb-3">
-                                <span class="bg-gradient-to-r from-purple-500 to-pink-500 text-white px-3 py-1 rounded-full text-xs font-medium">Event</span>
-                                <div class="flex items-center space-x-1 text-gray-500 text-xs">
-                                    <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 24 24">
-                                        <path d="M12 6v6l4 2" />
-                                        <path fill="none" d="M0 0h24v24H0z" />
-                                        <path d="M12 2a10 10 0 100 20 10 10 0 000-20z" />
-                                    </svg>
-                                    <span>4 menit</span>
-                                </div>
-                            </div>
-                            <h3 class="text-lg font-bold text-gray-900 mb-2 line-clamp-2 leading-tight">Jadwal Kompetisi Olahraga Pelajar 2025</h3>
-                            <p class="text-gray-600 text-sm mb-4 line-clamp-3">Berikut adalah jadwal lengkap kompetisi olahraga pelajar yang akan diselenggarakan...</p>
-                            <div class="flex items-center justify-between text-xs text-gray-500">
-                                <span>12 Juni 2025</span>
-                                <span>1,203 views</span>
-                            </div>
-                        </div>
-                    </div>
-                </a>
-
-                <!-- Related Article 3 -->
-                <a href="/berita-detail" class="block">
-                    <div class="bg-white rounded-xl shadow-lg border overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:scale-105 cursor-pointer">
-                        <img src="https://via.placeholder.com/400x240" alt="Artikel Terkait" class="w-full h-48 object-cover" />
-                        <div class="p-6">
-                            <div class="flex items-center justify-between mb-3">
-                                <span class="bg-gradient-to-r from-yellow-500 to-orange-500 text-white px-3 py-1 rounded-full text-xs font-medium">Pelatihan</span>
-                                <div class="flex items-center space-x-1 text-gray-500 text-xs">
-                                    <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 24 24">
-                                        <path d="M12 6v6l4 2" />
-                                        <path fill="none" d="M0 0h24v24H0z" />
-                                        <path d="M12 2a10 10 0 100 20 10 10 0 000-20z" />
-                                    </svg>
-                                    <span>6 menit</span>
-                                </div>
-                            </div>
-                            <h3 class="text-lg font-bold text-gray-900 mb-2 line-clamp-2 leading-tight">Program Pelatihan Atlet Muda Berprestasi</h3>
-                            <p class="text-gray-600 text-sm mb-4 line-clamp-3">BAPOPSI meluncurkan program pelatihan khusus untuk atlet muda yang berpotensi...</p>
-                            <div class="flex items-center justify-between text-xs text-gray-500">
-                                <span>10 Juni 2025</span>
-                                <span>967 views</span>
-                            </div>
-                        </div>
-                    </div>
-                </a>
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6" id="articles-wrapper">
             </div>
         </div>
     </div>
 </div>
 
-@endsection 
+@endsection
+
+@section('script')
+<script>
+$(document).ready(function () {
+    $.ajax({
+        url: '/api/posts/news', // pastikan URL endpoint sesuai
+        type: 'GET',
+        dataType: 'json',
+        success: function(response) {
+            let articles = response.data;
+            let html = '';
+
+            $.each(articles, function(index, article) {
+                let contentText = $('<div>').html(article.content).text().substring(0, 100);
+
+                html += `
+                    <a href="/berita/${article.slug}" class="block">
+                        <div class="bg-white rounded-xl shadow-lg border overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:scale-105 cursor-pointer">
+                            <img src="/storage/${article.thumbnail_url}" alt="${article.title}" class="w-full h-48 object-cover" />
+                            <div class="p-6">
+                                <div class="flex items-center justify-between mb-3">
+                                    <span class="bg-gradient-to-r from-yellow-500 to-orange-500 text-white px-3 py-1 rounded-full text-xs font-medium">${article.category}</span>
+                                    <div class="flex items-center space-x-1 text-gray-500 text-xs">
+                                        <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 24 24">
+                                            <path d="M12 6v6l4 2" />
+                                            <path fill="none" d="M0 0h24v24H0z" />
+                                            <path d="M12 2a10 10 0 100 20 10 10 0 000-20z" />
+                                        </svg>
+                                        <span>6 menit</span>
+                                    </div>
+                                </div>
+                                <h3 class="text-lg font-bold text-gray-900 mb-2 line-clamp-2 leading-tight">${article.title}</h3>
+                                <p class="text-gray-600 text-sm mb-4 line-clamp-3">${contentText}...</p>
+                                <div class="flex items-center justify-between text-xs text-gray-500">
+                                    <span>${new Date(article.published_at).toLocaleDateString('id-ID')}</span>
+                                    <span>967 views</span>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                `;
+            });
+
+            $('#articles-wrapper').html(html);
+        },
+        error: function(xhr, status, error) {
+            $('#articles-wrapper').html('<div class="text-red-500">Gagal memuat data artikel.</div>');
+        }
+    });
+});
+</script>
+@endsection
