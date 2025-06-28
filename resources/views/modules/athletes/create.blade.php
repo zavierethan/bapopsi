@@ -60,87 +60,105 @@
                             <div class="card-body pt-5">
                                 <div class="row">
                                     <div class="col-md-6 mb-4">
-                                        <label class="form-label fw-bold fs-6 mb-2">Nama Lengkap</label>
-                                        <input class="form-control form-control-md form-control-solid" type="text"
-                                            name="nama_lengkap" />
-                                    </div>
-                                    <div class="col-md-6 mb-4">
-                                        <label class="form-label fw-bold fs-6 mb-2">Tempat Lahir</label>
-                                        <input class="form-control form-control-md form-control-solid" type="text"
-                                            name="tempat_lahir" />
-                                    </div>
-                                    <div class="col-md-6 mb-4">
-                                        <label class="form-label fw-bold fs-6 mb-2">Tanggal Lahir</label>
-                                        <input class="form-control form-control-md form-control-solid" type="date"
-                                            name="tanggal_lahir" />
-                                    </div>
-                                    <div class="col-md-6 mb-4">
-                                        <label class="form-label fw-bold fs-6 mb-2">Jenis Kelamin</label>
-                                        <div class="position-relative mb-3">
-                                            <select class="form-select form-select-solid" data-control="select2"
-                                                data-placeholder="-" name="jenis_kelamin" id="jenis_kelamin">
-                                                <option value=""></option>
-                                                <option value="L">Laki - Laki</option>
-                                                <option value="P">Perempuan</option>
-                                            </select>
+                                        <div class="fv-row mb-5">
+                                            <div class="mb-1">
+                                                <label class="form-label fw-bold fs-6 mb-2">Nama Lengkap</label>
+                                                <input class="form-control form-control-md form-control-solid"
+                                                    type="text" name="nama_lengkap" />
+                                            </div>
+                                        </div>
+                                        <div class="fv-row mb-5">
+                                            <div class="mb-1">
+                                                <label class="form-label fw-bold fs-6 mb-2">Tempat Lahir</label>
+                                                <input class="form-control form-control-md form-control-solid"
+                                                    type="text" name="tempat_lahir" />
+                                            </div>
+                                        </div>
+                                        <div class="fv-row mb-5">
+                                            <div class="mb-1">
+                                                <label class="form-label fw-bold fs-6 mb-2">Tanggal Lahir</label>
+                                                <input class="form-control form-control-md form-control-solid"
+                                                    type="date" name="tanggal_lahir" />
+                                            </div>
+                                        </div>
+                                        <div class="fv-row mb-5">
+                                            <div class="mb-1">
+                                                <label class="form-label fw-bold fs-6 mb-2">Jenis Kelamin</label>
+                                                <div class="position-relative mb-3">
+                                                    <select class="form-select form-select-solid" data-control="select2"
+                                                        data-placeholder="-" name="jenis_kelamin" id="jenis_kelamin">
+                                                        <option value=""></option>
+                                                        <option value="L">Laki - Laki</option>
+                                                        <option value="P">Perempuan</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="fv-row mb-5">
+                                            <div class="mb-1">
+                                                <label class="form-label fw-bold fs-6 mb-2">Nama Sekolah</label>
+                                                <input class="form-control form-control-md form-control-solid"
+                                                    type="text" name="nama_sekolah" />
+                                            </div>
+                                        </div>
+                                        <div class="fv-row mb-5">
+                                            <div class="mb-1">
+                                                <label class="form-label fw-bold fs-6 mb-2">NISN</label>
+                                                <input class="form-control form-control-md form-control-solid"
+                                                    type="text" name="nisn" />
+                                            </div>
+                                        </div>
+                                        <div class="fv-row mb-5">
+                                            <div class="mb-1">
+                                                <label class="form-label fw-bold fs-6 mb-2">Cabang Olahraga</label>
+                                                <div class="position-relative mb-3">
+                                                    <select class="form-select form-select-solid" data-control="select2"
+                                                        data-placeholder="-" name="cabang_olahraga" id="caborId">
+                                                        <option value=""></option>
+                                                        @foreach($cabor as $c)
+                                                        <option value="{{$c->id}}">{{$c->name}}</option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="fv-row mb-5">
+                                            <div class="mb-1">
+                                                <label class="form-label fw-bold fs-6 mb-2">Kelas Cabang
+                                                    Olahraga</label>
+                                                <div class="position-relative mb-3 mt-2" id="radioContainer">
+
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="col-md-6 mb-4">
-                                        <label class="form-label fw-bold fs-6 mb-2">Nama Sekolah</label>
-                                        <input class="form-control form-control-md form-control-solid" type="text"
-                                            name="nama_sekolah" />
-                                    </div>
-                                    <div class="col-md-6 mb-4">
-                                        <label class="form-label fw-bold fs-6 mb-2">NISN</label>
-                                        <input class="form-control form-control-md form-control-solid" type="text"
-                                            name="nisn" />
-                                    </div>
-                                    <div class="col-md-6 mb-4">
-                                        <label class="form-label fw-bold fs-6 mb-2">Pas Photo</label>
-                                        <input class="form-control form-control-md form-control-solid" type="file"
-                                            name="pas_foto" id="inputPasFoto" accept="image/*" />
-                                        <div class="mt-2">
-                                            <img id="previewFoto" src="#" alt="Preview Foto"
-                                                style="display:none; max-width:140px; max-height:180px; border-radius:10px; box-shadow:0 2px 8px rgba(0,0,0,0.08); border:2px solid #eee;" />
+                                        <div class="fv-row mb-5">
+                                            <div class="mb-1">
+                                                <label class="form-label fw-bold fs-6 mb-2">Pas Photo</label>
+                                                <input class="form-control form-control-md form-control-solid"
+                                                    type="file" name="pas_foto" id="inputPasFoto" accept="image/*" />
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="col-md-6 mb-4">
-                                        <label class="form-label fw-bold fs-6 mb-2">Raport</label>
-                                        <input class="form-control form-control-md form-control-solid" type="file"
-                                            name="raport" />
-                                    </div>
-                                    <div class="col-md-6 mb-4">
-                                        <label class="form-label fw-bold fs-6 mb-2">Akta Lahir</label>
-                                        <input class="form-control form-control-md form-control-solid" type="file"
-                                            name="akta_lahir" />
-                                    </div>
-                                    <div class="col-md-6 mb-4">
-                                        <label class="form-label fw-bold fs-6 mb-2">Cabang Olahraga</label>
-                                        <div class="position-relative mb-3">
-                                            <select class="form-select form-select-solid" data-control="select2"
-                                                data-placeholder="-" name="cabang_olahraga" id="caborId">
-                                                <option value=""></option>
-                                                @foreach($cabor as $c)
-                                                <option value="{{$c->id}}">{{$c->name}}</option>
-                                                @endforeach
-                                            </select>
+                                        <div class="fv-row mb-5">
+                                            <div class="mb-1">
+                                                <label class="form-label fw-bold fs-6 mb-2">Raport</label>
+                                                <input class="form-control form-control-md form-control-solid"
+                                                    type="file" name="raport" />
+                                            </div>
+                                        </div>
+                                        <div class="fv-row mb-5">
+                                            <div class="mb-1">
+                                                <label class="form-label fw-bold fs-6 mb-2">Akta Lahir</label>
+                                                <input class="form-control form-control-md form-control-solid"
+                                                    type="file" name="akta_lahir" />
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Spacer -->
-                        <div class="my-4"></div>
-                        <div class="card">
-                            <div class="card-header">
-                                <h3 class="card-title fw-bold">Kelas Cabang Olahraga</h3>
-                            </div>
-                            <div class="card-body pt-5">
-                                <div class="row" id="radioContainer">
-                                </div>
-                            </div>
-                        </div>
                         <!-- Spacer -->
                         <div class="my-4"></div>
 
@@ -151,41 +169,51 @@
                             </div>
                             <div class="card-body pt-5">
                                 <div id="official-wrapper">
-                                    <div class="row official-item align-items-end mb-4">
+                                    <div class="row g-3 official-item align-items-end mb-4">
                                         <div class="col-md-4">
-                                            <label class="form-label fw-bold fs-6 mb-2">Nama Official</label>
-                                            <input class="form-control form-control-md form-control-solid" type="text"
-                                                name="officials[0][jabatan]" placeholder="Contoh: Pelatih Kepala">
+                                            <label class="form-label fw-bold">Jabatan Official</label>
+                                            <select class="form-select" data-control="select2" data-placeholder="-"
+                                                name="officials[0][jabatan]">
+                                                <option value=""></option>
+                                                @foreach($officials as $official)
+                                                <option value="{{$official->id}}">{{$official->nama_jabatan}}</option>
+                                                @endforeach
+                                            </select>
                                         </div>
                                         <div class="col-md-4">
-                                            <label class="form-label fw-bold fs-6 mb-2">Nama Lengkap</label>
-                                            <input class="form-control form-control-md form-control-solid" type="text"
-                                                name="officials[0][nama]" placeholder="Contoh: Budi Santoso">
+                                            <label class="form-label fw-bold">Nama Lengkap</label>
+                                            <input type="text" name="officials[0][nama]" class="form-control"
+                                                placeholder="Contoh: Budi Santoso">
                                         </div>
                                         <div class="col-md-3">
-                                            <label class="form-label fw-bold fs-6 mb-2">Foto</label>
-                                            <input class="form-control form-control-md form-control-solid" type="file"
-                                                name="officials[0][foto]">
+                                            <label class="form-label fw-bold">Foto</label>
+                                            <input type="file" name="officials[0][foto]" class="form-control">
                                         </div>
                                         <div class="col-md-1 text-end">
                                             <button type="button"
-                                                class="btn btn-icon btn-sm btn-light-danger remove-official d-none"
+                                                class="btn btn-icon btn-light-danger remove-official d-none"
                                                 title="Hapus">
                                                 <i class="fa fa-times"></i>
                                             </button>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <button type="button" id="add-official" class="btn btn-light-primary mb-5">
-                                <i class="fa fa-plus"></i> Tambah Official
-                            </button>
 
-                            <div class="d-flex justify-content-end gap-3 mt-5">
-                                <button type="submit" class="btn btn-primary">Submit</button>
-                                <a href="{{ route('athletes.index') }}" class="btn btn-danger">Cancel</a>
+                                <!-- Tombol Tambah -->
+                                <div class="d-flex justify-content-start mb-5">
+                                    <button type="button" id="add-official" class="btn btn-light-primary">
+                                        <i class="fa fa-plus me-2"></i> Tambah Official
+                                    </button>
+                                </div>
+
+                                <!-- Tombol Submit -->
+                                <div class="d-flex justify-content-end gap-3 mt-5">
+                                    <button type="submit" class="btn btn-primary">Submit</button>
+                                    <a href="{{ route('athletes.index') }}" class="btn btn-danger">Cancel</a>
+                                </div>
                             </div>
                         </div>
+
                     </form>
                 </div>
             </div>
@@ -258,16 +286,12 @@ $('#caborId').on('change', function() {
 
                 const radios = $.map(response.data, function(item) {
                     return `
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <div class="form-check">
+                    <div class="form-check">
                                 <input class="form-check-input" type="radio" name="kelas_id" id="kelas_${item.id}" value="${item.id}">
                                 <label class="form-label fw-bold fs-6 mb-2" for="kelas_${item.id}">
                                     ${item.name}
                                 </label>
                             </div>
-                        </div>
-                    </div>
             `;
                 });
 
@@ -282,19 +306,23 @@ $('#caborId').on('change', function() {
 
 let officialIndex = 1;
 
-$('#add-official').click(function() {
+// Ambil opsi dari select yang sudah ada (baris default)
+const jabatanOptions = $('select[name="officials[0][jabatan]"]').html();
+
+$('#add-official').click(function () {
     const officialItem = `
         <div class="row official-item align-items-end mb-4">
             <div class="col-md-4">
-                <input class="form-control form-control-md form-control-solid" type="text"
-                    name="officials[${officialIndex}][jabatan]" placeholder="Contoh: Asisten Pelatih" required>
+                <select class="form-select" name="officials[${officialIndex}][jabatan]" data-control="select2" data-placeholder="-">
+                    ${jabatanOptions}
+                </select>
             </div>
             <div class="col-md-4">
-                <input class="form-control form-control-md form-control-solid" type="text"
+                <input class="form-control" type="text"
                     name="officials[${officialIndex}][nama]" placeholder="Contoh: Rudi Hartono" required>
             </div>
             <div class="col-md-3">
-                <input class="form-control form-control-md form-control-solid" type="file"
+                <input class="form-control" type="file"
                     name="officials[${officialIndex}][foto]" required>
             </div>
             <div class="col-md-1 text-end">
@@ -304,10 +332,20 @@ $('#add-official').click(function() {
             </div>
         </div>
     `;
+
     $('#official-wrapper').append(officialItem);
+
+    // Inisialisasi ulang Select2
+    $(`select[name="officials[${officialIndex}][jabatan]"]`).select2({
+        placeholder: "-",
+        theme: "bootstrap5", // opsional tergantung versi kamu
+        width: '100%'
+    });
+
     officialIndex++;
     updateRemoveOfficialButtons();
 });
+
 
 $(document).on('click', '.remove-official', function() {
     $(this).closest('.official-item').remove();

@@ -86,7 +86,7 @@ Route::group(['middleware' => ['auth']], function() {
             Route::get('/create', [App\Http\Controllers\AthleteController::class, 'create'])->name('create');
             Route::post('/save', [App\Http\Controllers\AthleteController::class, 'save'])->name('save');
             Route::get('/edit/{id}', [App\Http\Controllers\AthleteController::class, 'edit'])->name('edit');
-            Route::post('/update', [App\Http\Controllers\AthleteController::class, 'update'])->name('update');
+            Route::post('/update/{id}', [App\Http\Controllers\AthleteController::class, 'update'])->name('update');
 
             Route::post('/approve/{id}', [App\Http\Controllers\AthleteController::class, 'approve']);
             Route::post('/reject/{id}', [App\Http\Controllers\AthleteController::class, 'reject']);

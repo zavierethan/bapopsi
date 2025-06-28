@@ -241,69 +241,93 @@ $("#kt_registration_table").DataTable({
                             </div>
                         `;
                 } else {
-                    return `<div class="text-center text-muted">No actions</div>`;
+                    return `<div class="text-center text-muted">-</div>`;
                 }
             }
         }
     ]
 });
 
+// APPROVE
 $(document).on('click', '.btn-approve', function() {
     const id = $(this).data('id');
 
-    if (confirm('Are you sure you want to approve this registration?')) {
-        $.ajax({
-            url: `/registrations/approve/${id}`,
-            type: 'POST',
-            data: {
-                _token: '{{ csrf_token() }}'
-            },
-            success: function() {
-                alert('Approved successfully!');
-                fetchApprovalSummary()
-                $('#kt_registration_table').DataTable().ajax.reload(null, false);
-            },
-            error: function(xhr) {
-                console.error(xhr.responseText);
-                alert('Failed to approve.');
-            }
-        });
-    }
+    Swal.fire({
+        title: 'Apakah Anda yakin?',
+        text: 'Pendaftaran ini akan disetujui.',
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonText: 'Ya, Setujui!',
+        cancelButtonText: 'Batal',
+        reverseButtons: true
+    }).then((result) => {
+        if (result.isConfirmed) {
+            $.ajax({
+                url: `/registrations/approve/${id}`,
+                type: 'POST',
+                data: {
+                    _token: '{{ csrf_token() }}'
+                },
+                success: function() {
+                    Swal.fire('Berhasil!', 'Pendaftaran telah disetujui.', 'success');
+                    fetchApprovalSummary();
+                    $('#kt_registration_table').DataTable().ajax.reload(null, false);
+                },
+                error: function(xhr) {
+                    console.error(xhr.responseText);
+                    Swal.fire('Gagal!', 'Gagal menyetujui pendaftaran.', 'error');
+                }
+            });
+        }
+    });
 });
 
+
+// REJECT
 $(document).on('click', '.btn-reject', function() {
     const id = $(this).data('id');
 
-    if (confirm('Are you sure you want to reject this registration?')) {
-        $.ajax({
-            url: `/registrations/reject/${id}`,
-            type: 'POST',
-            data: {
-                _token: '{{ csrf_token() }}'
-            },
-            success: function(response) {
-                alert('Rejected successfully!');
-                fetchApprovalSummary()
-                $('#kt_registration_table').DataTable().ajax.reload();
-            },
-            error: function(xhr) {
-                console.error(xhr.responseText);
-                alert('Failed to reject.');
-            }
-        });
-    }
+    Swal.fire({
+        title: 'Tolak Pendaftaran?',
+        text: 'Pendaftaran ini akan ditolak.',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Ya, Tolak!',
+        cancelButtonText: 'Batal',
+        reverseButtons: true
+    }).then((result) => {
+        if (result.isConfirmed) {
+            $.ajax({
+                url: `/registrations/reject/${id}`,
+                type: 'POST',
+                data: {
+                    _token: '{{ csrf_token() }}'
+                },
+                success: function() {
+                    Swal.fire('Ditolak!', 'Pendaftaran telah ditolak.', 'success');
+                    fetchApprovalSummary();
+                    $('#kt_registration_table').DataTable().ajax.reload(null, false);
+                },
+                error: function(xhr) {
+                    console.error(xhr.responseText);
+                    Swal.fire('Gagal!', 'Gagal menolak pendaftaran.', 'error');
+                }
+            });
+        }
+    });
 });
+
 
 function fetchApprovalSummary() {
     $.ajax({
         url: '{{ route("registrations.summary") }}',
         method: 'GET',
-        success: function (data) {
+        success: function(data) {
             $('#count-waiting').text(data.waiting_approval);
             $('#count-approved').text(data.approved);
             $('#count-rejected').text(data.rejected);
         },
-        error: function (xhr) {
+        error: function(xhr) {
             console.error('Failed to fetch summary', xhr.responseText);
         }
     });

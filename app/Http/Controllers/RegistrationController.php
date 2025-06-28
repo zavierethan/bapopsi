@@ -17,8 +17,8 @@ class RegistrationController extends Controller
         $query = DB::table('registration_requests')
             ->select(
             'registration_requests.*',
-            DB::raw("TO_CHAR(registration_requests.approval_date, 'DD-MM-YYYY HH24:MI:SS') AS approval_date_formatted"),
-            DB::raw("TO_CHAR(registration_requests.created_at, 'DD-MM-YYYY HH24:MI:SS') AS created_at_formatted"),
+            DB::raw("TO_CHAR(registration_requests.approval_date, 'DD/MM/YYYY HH24:MI:SS') AS approval_date_formatted"),
+            DB::raw("TO_CHAR(registration_requests.created_at, 'DD/MM/YYYY HH24:MI:SS') AS created_at_formatted"),
             'kecamatan.nama as nama_kecamatan',
             'sub_rayon.nama as sub_rayon',
             DB::raw("CASE

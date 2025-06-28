@@ -164,7 +164,7 @@
             });
 
             pdf.addImage(imgData, 'JPEG', 0, 0);
-            pdf.save('{{ "nametag_" . \Illuminate\Support\Str::slug($atlet->nama_lengkap) . ".pdf" }}');
+            pdf.save('{{ \Illuminate\Support\Str::slug($atlet->nama_lengkap) . ".pdf" }}');
         }
     </script>
 

@@ -69,7 +69,8 @@ class AthleteController extends Controller
 
     public function create() {
         $cabor = DB::table('sports')->orderBy('name', 'asc')->get();
-        return view('modules.athletes.create', compact('cabor'));
+        $officials = DB::table('jabatan_official')->orderBy('id', 'asc')->get();
+        return view('modules.athletes.create', compact('cabor', 'officials'));
     }
 
     public function save(Request $request) {
@@ -85,8 +86,8 @@ class AthleteController extends Controller
             'pas_foto'           => 'required|file|mimes:jpg,jpeg,png|max:2048',
             'raport'             => 'required|file|mimes:pdf|max:2048',
             'akta_lahir'         => 'required|file|mimes:pdf|max:2048',
-            'officials.*.nama'   => 'required_with:officials.*.jabatan|string|max:255',
-            'officials.*.jabatan'=> 'required_with:officials.*.nama|string|max:255',
+            'officials.*.jabatan'=> 'required_with:officials.*.jabatan|exists:jabatan_official,id|max:255',
+            'officials.*.nama'   => 'required_with:officials.*.nama|string|max:255',
             'officials.*.foto'   => 'required_with:officials|file|mimes:jpg,jpeg,png|max:2048'
         ]);
 
@@ -133,7 +134,7 @@ class AthleteController extends Controller
 
                     DB::table('officials')->insert([
                         'atlet_id'   => $atletId,
-                        'jabatan'    => $official['jabatan'],
+                        'jabatan_id'    => $official['jabatan'],
                         'nama'       => $official['nama'],
                         'foto'       => $fotoPath,
                         'created_at' => now(),
@@ -155,11 +156,101 @@ class AthleteController extends Controller
 
     public function edit($id) {
         $atlet = DB::table('atlet')->where('id', $id)->first();
-        $officials = DB::table('officials')->where('atlet_id', $id)->get();
+        $officials = DB::table('officials')->where('atlet_id', $id)
+                ->leftJoin('jabatan_official', 'jabatan_official.id', '=', 'officials.jabatan_id')
+                ->get();
+        $jabatan = DB::table('jabatan_official')->orderBy('id', 'asc')->get();
         $cabor = DB::table('sports')->get();
         $kelas = DB::table('sport_classes')->where('sport_id', $atlet->cabang_olahraga_id)->get();
 
-        return view('modules.athletes.edit', compact('atlet', 'officials', 'cabor', 'kelas'));
+        return view('modules.athletes.edit', compact('atlet', 'officials', 'cabor', 'kelas', 'jabatan'));
+    }
+
+    public function update(Request $request, $id) {
+        $request->validate([
+            'nama_lengkap'    => 'required|string|max:255',
+            'tempat_lahir'    => 'required|string|max:255',
+            'tanggal_lahir'   => 'required|date',
+            'jenis_kelamin'   => 'required|in:L,P',
+            'nama_sekolah'    => 'required|string|max:255',
+            'nisn'            => 'required|string|max:20',
+            'pas_foto'        => 'nullable|image|mimes:jpeg,jpg,png|max:2048',
+            'raport'          => 'nullable|mimes:pdf|max:2048',
+            'akta_lahir'      => 'nullable|mimes:pdf|max:2048',
+            'cabang_olahraga' => 'required|exists:sports,id',
+            'kelas_id'        => 'required|exists:sport_classes,id',
+        ]);
+
+        DB::beginTransaction();
+
+        try {
+            $atlet = DB::table('atlet')->where('id', $id)->first();
+            if (!$atlet) {
+                return response()->json(['message' => 'Data atlet tidak ditemukan.'], 404);
+            }
+
+            $updateData = [
+                'nama_lengkap'       => $request->nama_lengkap,
+                'tempat_lahir'       => $request->tempat_lahir,
+                'tanggal_lahir'      => $request->tanggal_lahir,
+                'jenis_kelamin'      => $request->jenis_kelamin,
+                'nama_sekolah'       => $request->nama_sekolah,
+                'nisn'               => $request->nisn,
+                'cabang_olahraga_id' => $request->cabang_olahraga,
+                'kelas_id'           => $request->kelas_id,
+                'updated_at'         => now()
+            ];
+
+            if ($request->hasFile('pas_foto')) {
+                if ($atlet->pas_foto) Storage::disk('public')->delete($atlet->pas_foto);
+                $updateData['pas_foto'] = $request->file('pas_foto')->store('uploads/atlet', 'public');
+            }
+
+            if ($request->hasFile('raport')) {
+                if ($atlet->raport) Storage::disk('public')->delete($atlet->raport);
+                $updateData['raport'] = $request->file('raport')->store('uploads/atlet', 'public');
+            }
+
+            if ($request->hasFile('akta_lahir')) {
+                if ($atlet->akta_lahir) Storage::disk('public')->delete($atlet->akta_lahir);
+                $updateData['akta_lahir'] = $request->file('akta_lahir')->store('uploads/atlet', 'public');
+            }
+
+            DB::table('atlet')->where('id', $id)->update($updateData);
+
+            // Hapus data official lama
+            DB::table('officials')->where('atlet_id', $id)->delete();
+
+            // Tambah data official baru
+            $officials = $request->input('officials', []);
+            foreach ($officials as $index => $o) {
+                $fotoPath = null;
+                if ($request->hasFile("officials.$index.foto")) {
+                    $fotoPath = $request->file("officials.$index.foto")->store('uploads/official', 'public');
+                }
+
+                DB::table('officials')->insert([
+                    'atlet_id'   => $id,
+                    'jabatan_id'    => $o['jabatan'],
+                    'nama'       => $o['nama'],
+                    'foto'       => $fotoPath,
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ]);
+            }
+
+            DB::commit();
+
+            return response()->json([
+                'message' => 'Data atlet berhasil diperbarui.'
+            ]);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json([
+                'message' => 'Terjadi kesalahan saat memperbarui data.',
+                'error'   => $e->getMessage(),
+            ], 500);
+        }
     }
 
     public function approve($id) {
