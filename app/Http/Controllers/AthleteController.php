@@ -201,6 +201,7 @@ class AthleteController extends Controller
                 'updated_at'         => now()
             ];
 
+            // Handle file uploads
             if ($request->hasFile('pas_foto')) {
                 if ($atlet->pas_foto) Storage::disk('public')->delete($atlet->pas_foto);
                 $updateData['pas_foto'] = $request->file('pas_foto')->store('uploads/atlet', 'public');
@@ -216,22 +217,28 @@ class AthleteController extends Controller
                 $updateData['akta_lahir'] = $request->file('akta_lahir')->store('uploads/atlet', 'public');
             }
 
+            // Update atlet data
             DB::table('atlet')->where('id', $id)->update($updateData);
 
-            // Hapus data official lama
+            // Hapus semua existing officials dan insert ulang
             DB::table('officials')->where('atlet_id', $id)->delete();
 
-            // Tambah data official baru
             $officials = $request->input('officials', []);
             foreach ($officials as $index => $o) {
                 $fotoPath = null;
+
                 if ($request->hasFile("officials.$index.foto")) {
+                    if (!empty($o['foto_existing'])) {
+                        Storage::disk('public')->delete($o['foto_existing']);
+                    }
                     $fotoPath = $request->file("officials.$index.foto")->store('uploads/official', 'public');
+                } elseif (!empty($o['foto_existing'])) {
+                    $fotoPath = $o['foto_existing'];
                 }
 
                 DB::table('officials')->insert([
                     'atlet_id'   => $id,
-                    'jabatan_id'    => $o['jabatan'],
+                    'jabatan_id' => $o['jabatan'],
                     'nama'       => $o['nama'],
                     'foto'       => $fotoPath,
                     'created_at' => now(),
@@ -252,6 +259,7 @@ class AthleteController extends Controller
             ], 500);
         }
     }
+
 
     public function approve($id) {
         DB::beginTransaction();

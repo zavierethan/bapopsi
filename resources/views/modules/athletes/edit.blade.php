@@ -3,216 +3,186 @@
 @section('main-content')
 <div class="app-main flex-column flex-row-fluid" id="kt_app_main">
     <div class="d-flex flex-column flex-column-fluid">
-        <div id="kt_app_toolbar" class="app-toolbar py-3 py-lg-6">
-            <!--begin::Toolbar container-->
-            <div id="kt_app_toolbar_container" class="app-container container-fluid d-flex flex-stack">
-                <!--begin::Page title-->
-                <div class="page-title d-flex flex-column justify-content-center flex-wrap me-3">
-                    <!--begin::Title-->
-                    <h1 class="page-heading d-flex text-gray-900 fw-bold fs-3 flex-column justify-content-center my-0">
-                        Atlet</h1>
-                    <!--end::Title-->
-                    <!--begin::Breadcrumb-->
-                    <ul class="breadcrumb breadcrumb-separatorless fw-semibold fs-7 my-0 pt-1">
-                        <!--begin::Item-->
-                        <li class="breadcrumb-item text-muted">
-                            <a href="index.html" class="text-muted text-hover-primary">Data Atlet</a>
-                        </li>
-                        <!--end::Item-->
-                        <!--begin::Item-->
-                        <li class="breadcrumb-item">
-                            <span class="bullet bg-gray-500 w-5px h-2px"></span>
-                        </li>
-                        <!--end::Item-->
-                        <!--begin::Item-->
-                        <li class="breadcrumb-item text-muted">Atlet</li>
-                        <!--end::Item-->
-                        <!--begin::Item-->
-                        <li class="breadcrumb-item">
-                            <span class="bullet bg-gray-500 w-5px h-2px"></span>
-                        </li>
-                        <!--end::Item-->
-                        <!--begin::Item-->
-                        <li class="breadcrumb-item text-muted">Edit</li>
-                        <!--end::Item-->
-                    </ul>
-                    <!--end::Breadcrumb-->
-                </div>
-                <!--end::Page title-->
-            </div>
-            <!--end::Toolbar container-->
-        </div>
         <div class="app-content flex-column-fluid">
             <div class="app-container container-fluid">
                 <div class="row g-5 g-xl-10 mb-5 mb-xl-10">
                     <form id="form-atlet-edit" enctype="multipart/form-data">
                         @csrf
-                        <div class="card">
+                        <input type="hidden" id="atlet_id" value="{{ $atlet->id }}">
+
+                        <!-- Biodata Atlet -->
+                        <div class="card mb-5">
                             <div class="card-header">
                                 <h3 class="card-title fw-bold">Biodata Atlet</h3>
                             </div>
                             <div class="card-body pt-5">
                                 <div class="row">
-                                    <div class="col-md-6 mb-4">
-                                        <div class="fv-row mb-5">
-                                            <div class="mb-1">
-                                                <label class="form-label fw-bold fs-6 mb-2">Nama Lengkap</label>
-                                                <input type="hidden" id="atlet_id" value="{{ $atlet->id }}">
-                                                <input class="form-control form-control-md"
-                                                    type="text" name="nama_lengkap" value="{{ $atlet->nama_lengkap }}" />
-                                            </div>
+                                    <div class="col-md-6">
+                                        <!-- Nama -->
+                                        <div class="mb-3">
+                                            <label class="form-label">Nama Lengkap</label>
+                                            <input type="text" name="nama_lengkap" class="form-control" value="{{ $atlet->nama_lengkap }}">
                                         </div>
-                                        <div class="fv-row mb-5">
-                                            <div class="mb-1">
-                                                <label class="form-label fw-bold fs-6 mb-2">Tempat Lahir</label>
-                                                <input class="form-control form-control-md"
-                                                    type="text" name="tempat_lahir" value="{{ $atlet->tempat_lahir }}" />
-                                            </div>
+                                        <!-- Tempat Lahir -->
+                                         <div class="separator my-5"></div>
+                                        <div class="mb-3">
+                                            <label class="form-label">Tempat Lahir</label>
+                                            <input type="text" name="tempat_lahir" class="form-control" value="{{ $atlet->tempat_lahir }}">
                                         </div>
-                                        <div class="fv-row mb-5">
-                                            <div class="mb-1">
-                                                <label class="form-label fw-bold fs-6 mb-2">Tanggal Lahir</label>
-                                                <input class="form-control form-control-md"
-                                                    type="date" name="tanggal_lahir" value="{{ $atlet->tanggal_lahir }}" />
-                                            </div>
+                                        <!-- Tanggal Lahir -->
+                                         <div class="separator my-5"></div>
+                                        <div class="mb-3">
+                                            <label class="form-label">Tanggal Lahir</label>
+                                            <input type="date" name="tanggal_lahir" class="form-control" value="{{ $atlet->tanggal_lahir }}">
                                         </div>
-                                        <div class="fv-row mb-5">
-                                            <div class="mb-1">
-                                                <label class="form-label fw-bold fs-6 mb-2">Jenis Kelamin</label>
-                                                <div class="position-relative mb-3">
-                                                    <select class="form-select" data-control="select2"
-                                                        data-placeholder="-" name="jenis_kelamin" id="jenis_kelamin">
-                                                        <option value=""></option>
-                                                        <option value="L" <?php echo ($atlet->jenis_kelamin == 'L') ? 'selected' : ''; ?>>Laki - Laki</option>
-                                                        <option value="P" <?php echo ($atlet->jenis_kelamin == 'P') ? 'selected' : ''; ?>>Perempuan</option>
-                                                    </select>
+                                        <!-- Jenis Kelamin -->
+                                         <div class="separator my-5"></div>
+                                        <div class="mb-3">
+                                            <label class="form-label">Jenis Kelamin</label>
+                                            <select name="jenis_kelamin" class="form-select" data-control="select2">
+                                                <option value="L" {{ $atlet->jenis_kelamin == 'L' ? 'selected' : '' }}>Laki-Laki</option>
+                                                <option value="P" {{ $atlet->jenis_kelamin == 'P' ? 'selected' : '' }}>Perempuan</option>
+                                            </select>
+                                        </div>
+                                        <!-- Nama Sekolah -->
+                                         <div class="separator my-5"></div>
+                                        <div class="mb-3">
+                                            <label class="form-label">Nama Sekolah</label>
+                                            <input type="text" name="nama_sekolah" class="form-control" value="{{ $atlet->nama_sekolah }}">
+                                        </div>
+                                        <!-- NISN -->
+                                         <div class="separator my-5"></div>
+                                        <div class="mb-3">
+                                            <label class="form-label">NISN</label>
+                                            <input type="text" name="nisn" class="form-control" value="{{ $atlet->nisn }}">
+                                        </div>
+                                        <!-- Cabang Olahraga -->
+                                         <div class="separator my-5"></div>
+                                        <div class="mb-3">
+                                            <label class="form-label">Cabang Olahraga</label>
+                                            <select name="cabang_olahraga" id="caborId" class="form-select" data-control="select2">
+                                                @foreach($cabor as $c)
+                                                <option value="{{ $c->id }}" {{ $c->id == $atlet->cabang_olahraga_id ? 'selected' : '' }}>
+                                                    {{ $c->name }}
+                                                </option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                        <!-- Kelas -->
+                                         <div class="separator my-5"></div>
+                                        <div class="mb-3">
+                                            <label class="form-label">Kelas Cabang</label>
+                                            <div id="radioContainer">
+                                                @foreach($kelas as $k)
+                                                <div class="form-check form-check-inline">
+                                                    <input class="form-check-input" type="radio" name="kelas_id" id="kelas_{{ $k->id }}" value="{{ $k->id }}" {{ $k->id == $atlet->kelas_id ? 'checked' : '' }}>
+                                                    <label class="form-check-label" for="kelas_{{ $k->id }}">{{ $k->name }}</label>
                                                 </div>
-                                            </div>
-                                        </div>
-                                        <div class="fv-row mb-5">
-                                            <div class="mb-1">
-                                                <label class="form-label fw-bold fs-6 mb-2">Nama Sekolah</label>
-                                                <input class="form-control form-control-md"
-                                                    type="text" name="nama_sekolah" value="{{ $atlet->nama_sekolah }}" />
-                                            </div>
-                                        </div>
-                                        <div class="fv-row mb-5">
-                                            <div class="mb-1">
-                                                <label class="form-label fw-bold fs-6 mb-2">NISN</label>
-                                                <input class="form-control form-control-md"
-                                                    type="text" name="nisn" value="{{ $atlet->nisn }}" />
-                                            </div>
-                                        </div>
-                                        <div class="fv-row mb-5">
-                                            <div class="mb-1">
-                                                <label class="form-label fw-bold fs-6 mb-2">Cabang Olahraga</label>
-                                                <div class="position-relative mb-3">
-                                                    <select class="form-select" name="cabang_olahraga" data-control="select2" id="caborId">
-                                                        @foreach($cabor as $c)
-                                                        <option value="{{ $c->id }}" {{ $c->id == $atlet->cabang_olahraga_id ? 'selected' : '' }}>{{ $c->name }}</option>
-                                                        @endforeach
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="fv-row mb-5">
-                                            <div class="mb-1">
-                                                <label class="form-label fw-bold fs-6 mb-2">Kelas Cabang
-                                                    Olahraga</label>
-                                                <div class="position-relative mb-3 mt-2" id="radioContainer">
-                                                    @foreach($kelas as $k)
-                                                    <div class="form-check">
-                                                        <input class="form-check-input" type="radio" name="kelas_id" id="kelas_{{ $k->id }}" value="{{ $k->id }}" {{ $k->id == $atlet->kelas_id ? 'checked' : '' }}>
-                                                        <label class="form-label fw-bold fs-6 mb-2" for="kelas_{{ $k->id }}">{{ $k->name }}</label>
-                                                    </div>
-                                                    @endforeach
-                                                </div>
+                                                @endforeach
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-6 mb-4">
-                                        <div class="fv-row mb-5">
-                                            <div class="mb-1">
-                                                <label class="form-label fw-bold fs-6 mb-2">Pas Photo</label>
-                                                <input class="form-control form-control-md"
-                                                    type="file" name="pas_foto" id="inputPasFoto" accept="image/*" />
-                                                @if($atlet->pas_foto)
-                                                <img src="{{ asset('storage/' . $atlet->pas_foto) }}" id="previewFoto" class="mt-2" style="max-width:140px; max-height:180px; border-radius:10px;" />
-                                                @endif
-                                            </div>
+
+                                    <div class="col-md-6">
+                                        <!-- Pas Foto -->
+                                        <div class="mb-3">
+                                            <label class="form-label">Pas Foto</label>
+                                            <input type="file" name="pas_foto" class="form-control" accept="image/*">
+                                            @if($atlet->pas_foto)
+                                            <img src="{{ asset('storage/' . $atlet->pas_foto) }}" class="mt-2" style="max-width:140px;">
+                                            @endif
                                         </div>
-                                        <div class="fv-row mb-5">
-                                            <div class="mb-1">
-                                                <label class="form-label fw-bold fs-6 mb-2">Raport</label>
-                                                <input class="form-control form-control-md"
-                                                    type="file" name="raport" />
-                                                @if($atlet->raport)
-                                                    <small class="d-block mt-1">
-                                                        <a href="#" class="text-primary" onclick="showPdfModal('{{ asset('storage/' . $atlet->raport) }}'); return false;">Lihat file Raport (PDF)</a>
-                                                    </small>
-                                                @endif
-                                            </div>
+                                        <!-- Raport -->
+                                         <div class="separator my-5"></div>
+                                        <div class="mb-3">
+                                            <label class="form-label">Raport</label>
+                                            <input type="file" name="raport" class="form-control">
+                                            @if($atlet->raport)
+                                             <a href="#" class="text-primary" onclick="showPdfModal('{{ asset('storage/' . $atlet->raport) }}'); return false;">Lihat file Raport (PDF)</a>
+                                            @endif
                                         </div>
-                                        <div class="fv-row mb-5">
-                                            <div class="mb-1">
-                                                <label class="form-label fw-bold fs-6 mb-2">Akta Lahir</label>
-                                                <input class="form-control form-control-md"
-                                                    type="file" name="akta_lahir" />
-                                                @if($atlet->akta_lahir)
-                                                    <small class="d-block mt-1">
-                                                        <a href="#" class="text-primary" onclick="showPdfModal('{{ asset('storage/' . $atlet->akta_lahir) }}'); return false;">Lihat file Akta Lahir (PDF)</a>
-                                                    </small>
-                                                @endif
-                                            </div>
+                                        <!-- Akta -->
+                                         <div class="separator my-5"></div>
+                                        <div class="mb-3">
+                                            <label class="form-label">Akta Lahir</label>
+                                            <input type="file" name="akta_lahir" class="form-control">
+                                            @if($atlet->akta_lahir)
+                                            <a href="#" class="text-primary" onclick="showPdfModal('{{ asset('storage/' . $atlet->akta_lahir) }}'); return false;">Lihat file Akta Lahir (PDF)</a>
+                                            @endif
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
-                        <div class="my-4"></div>
-
+                        <!-- Officials Table -->
                         <div class="card">
                             <div class="card-header">
                                 <h3 class="card-title fw-bold">Official</h3>
                             </div>
                             <div class="card-body pt-5" id="official-wrapper">
-                                @foreach($officials as $index => $o)
-                                <div class="row official-item align-items-end mb-4">
-                                    <div class="col-md-4">
-                                        <select class="form-select" data-control="select2" data-placeholder="-" name="officials[{{ $index }}][jabatan]">
-                                            <option value=""></option>
-                                            @foreach($jabatan as $jab)
-                                            <option value="{{$jab->id}}" <?php echo ($jab->id == $o->jabatan_id ) ? 'selected' : ''; ?>>{{$jab->nama_jabatan}}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <input class="form-control" name="officials[{{ $index }}][nama]" value="{{ $o->nama }}">
-                                    </div>
-                                    <div class="col-md-3">
-                                        <input class="form-control" type="file" name="officials[{{ $index }}][foto]">
-                                    </div>
-                                    <div class="col-md-1 text-end">
-                                        <button type="button" class="btn btn-danger btn-sm remove-official">X</button>
-                                    </div>
-                                </div>
-                                @endforeach
-                                <button type="button" id="add-official" class="btn btn-light-primary mb-3">Tambah Official</button>
-                                <div class="d-flex justify-content-end">
+                                <table class="table align-middle">
+                                    <thead>
+                                        <tr class="text-start text-gray-700 fw-bolder fs-7 text-uppercase gs-0">
+                                            <th style="width: 20%;">Foto</th>
+                                            <th style="width: 25%;">Jabatan</th>
+                                            <th style="width: 25%;">Nama</th>
+                                            <th style="width: 5%;">Aksi</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach($officials as $index => $o)
+                                        <tr class="official-item">
+                                            <td class="text-center">
+                                                <label for="official-foto-{{ $index }}" style="cursor:pointer;">
+                                                    <img src="{{ $o->foto ? asset('storage/' . $o->foto) : asset('assets/img/placeholder.jpg') }}"
+                                                        class="img-thumbnail official-preview mb-2" style="max-height: 100px;">
+                                                </label>
+                                                <input class="form-control d-none" type="file" name="officials[{{ $index }}][foto]"
+                                                    id="official-foto-{{ $index }}" onchange="previewImage(event, {{ $index }})">
+                                                <input type="hidden" name="officials[{{ $index }}][foto_existing]" value="{{ $o->foto }}">
+                                            </td>
+                                            <td>
+                                                <select name="officials[{{ $index }}][jabatan]" class="form-select" data-control="select2">
+                                                    <option value=""></option>
+                                                    @foreach($jabatan as $jab)
+                                                    <option value="{{ $jab->id }}" {{ $jab->id == $o->jabatan_id ? 'selected' : '' }}>
+                                                        {{ $jab->nama_jabatan }}
+                                                    </option>
+                                                    @endforeach
+                                                </select>
+                                            </td>
+                                            <td>
+                                                <input class="form-control" name="officials[{{ $index }}][nama]" value="{{ $o->nama }}">
+                                            </td>
+                                            <td class="text-center">
+                                                <button type="button" class="btn btn-danger btn-sm remove-official">X</button>
+                                            </td>
+                                        </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+
+                                <button type="button" id="add-official" class="btn btn-light-primary mt-3">Tambah Official</button>
+
+                                <div class="d-flex justify-content-end mt-4">
                                     @if($atlet->appr_status == 1 && Auth::user()->group_id == 15)
                                     <button type="submit" class="btn btn-primary ms-2">Update</button>
                                     @endif
-                                    @if(is_null($atlet->appr_status) && (Auth::user()->group_id == 14 || Auth::user()->group_id == 1))
-                                    <button type="submit" class="btn btn-primary ms-2">Approve</button>
-                                    <button type="submit" class="btn btn-danger ms-2">Reject</button>
+
+                                    @if(is_null($atlet->appr_status) && (Auth::user()->group_id == 14 ||
+                                    Auth::user()->group_id == 1))
+                                    <a href="#" class="btn btn-primary ms-2" id="btn-approve">Approve</a>
+                                    <a href="#" class="btn btn-danger ms-2" id="btn-reject">Reject</a>
                                     @endif
 
                                     @if($atlet->appr_status == 1)
-                                    <a href="{{ route('athletes.idcard', $atlet->id) }}" class="btn btn-info ms-2" target="_blank">
+                                    <a href="{{ route('athletes.idcard', $atlet->id) }}" class="btn btn-info ms-2"
+                                        target="_blank">
                                         <i class="fa fa-id-card"></i> Cetak Id Card Tag (PDF)
                                     </a>
                                     @endif
+
                                     <a href="{{ route('athletes.index') }}" class="btn btn-danger ms-2">Kembali</a>
                                 </div>
                             </div>
@@ -242,78 +212,166 @@
 
 @section('script')
 <script>
+let officialIndex = {{ count($officials) }};
 
-$('#caborId').on('change', function() {
-    let sportId = $(this).val();
-    let $radioContainer = $('#radioContainer');
-    $radioContainer.empty();
+function previewImage(event, index) {
+    const input = event.target;
+    const reader = new FileReader();
+    reader.onload = function () {
+        const img = input.closest('td').querySelector('.official-preview');
+        if (img) {
+            img.src = reader.result;
+        }
+    };
+    reader.readAsDataURL(input.files[0]);
+}
 
-    if (sportId) {
-        $.ajax({
-            url: '/api/getKelasByCabor/' + sportId,
-            method: 'GET',
-            success: function(response) {
-                const $container = $('#radioContainer');
-                $container.empty();
-
-                const radios = $.map(response.data, function(item) {
-                    return `
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="kelas_id" id="kelas_${item.id}" value="${item.id}">
-                                <label class="form-label fw-bold fs-6 mb-2" for="kelas_${item.id}">
-                                    ${item.name}
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-            `;
-                });
-
-                $container.html(radios.join(''));
-            },
-            error: function() {
-                $('#radioContainer').html('<p class="text-danger">Gagal memuat kelas.</p>');
-            }
-        });
-    }
+$('#add-official').on('click', function () {
+    const row = `
+        <tr class="official-item">
+            <td class="text-center">
+                <label for="official-foto-${officialIndex}" style="cursor:pointer;">
+                    <img src="{{ asset('assets/img/placeholder.jpg') }}" class="img-thumbnail official-preview mb-2" style="max-height: 100px;">
+                </label>
+                <input class="form-control d-none" type="file" name="officials[${officialIndex}][foto]" id="official-foto-${officialIndex}" onchange="previewImage(event, ${officialIndex})">
+                <input type="hidden" name="officials[${officialIndex}][foto_existing]" value="">
+            </td>
+            <td>
+                <select name="officials[${officialIndex}][jabatan]" class="form-select jabatan-select" data-control="select2">
+                    <option value=""></option>
+                    @foreach($jabatan as $jab)
+                    <option value="{{ $jab->id }}">{{ $jab->nama_jabatan }}</option>
+                    @endforeach
+                </select>
+            </td>
+            <td>
+                <input class="form-control" name="officials[${officialIndex}][nama]" value="">
+            </td>
+            <td class="text-center">
+                <button type="button" class="btn btn-danger btn-sm remove-official">X</button>
+            </td>
+        </tr>
+    `;
+    $('table tbody').append(row);
+    $(`select[name="officials[${officialIndex}][jabatan]"]`).select2();
+    officialIndex++;
 });
 
-$('#form-atlet-edit').on('submit', function(e) {
+$(document).on('click', '.remove-official', function () {
+    $(this).closest('tr').remove();
+});
+
+$('#form-atlet-edit').on('submit', function (e) {
     e.preventDefault();
-    let formData = new FormData(this);
-    let id = $('#atlet_id').val();
+    const formData = new FormData(this);
+    const id = $('#atlet_id').val();
 
     $.ajax({
         url: `/athletes/update/${id}`,
-        method: 'POST',
+        type: 'POST',
         data: formData,
         processData: false,
         contentType: false,
-        success: function(res) {
+        success: function (res) {
             Swal.fire({
                 icon: 'success',
-                title: 'Berhasil!',
-                text: res.message,
-                timer: 2000,
-                showConfirmButton: false
+                title: 'Berhasil',
+                text: res.message
             }).then(() => {
                 window.location.href = "{{ route('athletes.index') }}";
             });
         },
-        error: function(err) {
-            let message = 'Gagal menyimpan data.';
-            if (err.status === 422 && err.responseJSON?.errors) {
-                message = '<ul>';
-                $.each(err.responseJSON.errors, function(field, errors) {
-                    errors.forEach(error => message += `<li>${error}</li>`);
-                });
-                message += '</ul>';
-            } else if (err.responseJSON?.message) {
-                message = err.responseJSON.message;
-            }
-            Swal.fire({ icon: 'error', title: 'Error', html: message });
+        error: function (err) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Gagal',
+                text: 'Terjadi kesalahan'
+            });
+        }
+    });
+});
+
+$(document).on('click', '#btn-approve', function() {
+    const id = $('#atlet_id').val();
+
+    Swal.fire({
+        title: 'Approve Atlet?',
+        text: "Apakah kamu yakin ingin menyetujui atlet ini?",
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Ya, Setujui!',
+        cancelButtonText: 'Batal'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            $.ajax({
+                url: `/athletes/approve/${id}`,
+                type: 'POST',
+                data: {
+                    _token: '{{ csrf_token() }}'
+                },
+                success: function() {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Berhasil!',
+                        text: 'Atlet berhasil disetujui.',
+                        timer: 2000,
+                        showConfirmButton: false
+                    });
+                },
+                error: function(xhr) {
+                    console.error(xhr.responseText);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Gagal!',
+                        text: 'Gagal menyetujui atlet.'
+                    });
+                }
+            });
+        }
+    });
+});
+
+
+$(document).on('click', '#btn-reject', function() {
+    const id = $('#atlet_id').val();
+
+    Swal.fire({
+        title: 'Tolak Atlet?',
+        text: "Apakah kamu yakin ingin menolak atlet ini?",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#6c757d',
+        confirmButtonText: 'Ya, Tolak!',
+        cancelButtonText: 'Batal'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            $.ajax({
+                url: `/athletes/reject/${id}`,
+                type: 'POST',
+                data: {
+                    _token: '{{ csrf_token() }}'
+                },
+                success: function() {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Berhasil!',
+                        text: 'Atlet berhasil ditolak.',
+                        timer: 2000,
+                        showConfirmButton: false
+                    });
+                },
+                error: function(xhr) {
+                    console.error(xhr.responseText);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Gagal!',
+                        text: 'Gagal menolak atlet.'
+                    });
+                }
+            });
         }
     });
 });
