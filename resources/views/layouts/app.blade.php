@@ -74,9 +74,11 @@
             <!-- Desktop Menu -->
             <div class="hidden md:flex space-x-8 text-base font-bold">
                 <a href="/" class="text-white hover:text-orange-200 transition-colors">Beranda</a>
-                <a href="/prestasi" class="text-white hover:text-orange-200 transition-colors">Prestasi</a>
+                <!-- <a href="/prestasi" class="text-white hover:text-orange-200 transition-colors">Prestasi</a> -->
                 <a href="/berita" class="text-white hover:text-orange-200 transition-colors">Berita</a>
+                <a href="/agenda" class="text-white hover:text-orange-200 transition-colors">Agenda</a>
                 <a href="/galery" class="text-white hover:text-orange-200 transition-colors">Galeri</a>
+                <a href="/kontak" class="text-white hover:text-orange-200 transition-colors">Info Kontak</a>
             </div>
 
             <!-- Desktop Buttons -->
@@ -92,9 +94,11 @@
         <!-- Mobile Menu -->
         <div id="mobile-menu" class="md:hidden hidden px-4 pt-4 pb-2 space-y-2 font-bold text-white">
             <a href="/" class="block text-white hover:text-orange-200 transition-colors">Beranda</a>
-            <a href="/prestasi" class="block text-white hover:text-orange-200 transition-colors">Prestasi</a>
+            <!-- <a href="/prestasi" class="block text-white hover:text-orange-200 transition-colors">Prestasi</a> -->
             <a href="/berita" class="block text-white hover:text-orange-200 transition-colors">Berita</a>
+            <a href="/agenda" class="block text-white hover:text-orange-200 transition-colors">Agenda</a>
             <a href="/galery" class="block text-white hover:text-orange-200 transition-colors">Galeri</a>
+            <a href="/kontak" class="block text-white hover:text-orange-200 transition-colors">Info Kontak</a>
             <div class="pt-2 space-y-2">
                 <a href="/login"
                     class="w-full px-4 py-2 border-2 border-white text-white rounded-lg hover:bg-white hover:text-orange-600 transition-all duration-300 text-center block">Masuk</a>
@@ -128,9 +132,10 @@
                     <h3 class="font-semibold mb-4 text-white">Menu</h3>
                     <ul class="space-y-2">
                         <li><a href="/" class="hover:text-orange-300 transition-colors text-gray-300">Beranda</a></li>
-                        <li><a href="/prestasi" class="hover:text-orange-300 transition-colors text-gray-300">Prestasi</a></li>
                         <li><a href="/berita" class="hover:text-orange-300 transition-colors text-gray-300">Berita</a></li>
+                        <li><a href="/agenda" class="hover:text-orange-300 transition-colors text-gray-300">Agenda</a></li>
                         <li><a href="/galery" class="hover:text-orange-300 transition-colors text-gray-300">Galeri</a></li>
+                        <li><a href="/kontak" class="hover:text-orange-300 transition-colors text-gray-300">Info Kontak</a></li>
                     </ul>
                 </div>
 

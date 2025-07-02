@@ -27,6 +27,13 @@
             </div>
         </div>
 
+        <!-- Kategori Tabs -->
+        <div class="flex space-x-4 mb-8 justify-center" id="news-tabs">
+            <button class="tab-btn px-6 py-2 rounded-full font-semibold text-white bg-gradient-to-r from-orange-500 to-red-500 shadow active" data-type="latest">Latest</button>
+            <button class="tab-btn px-6 py-2 rounded-full font-semibold text-gray-700 bg-gray-100 hover:bg-orange-100 transition" data-type="popular">Popular</button>
+            <button class="tab-btn px-6 py-2 rounded-full font-semibold text-gray-700 bg-gray-100 hover:bg-orange-100 transition" data-type="trending">Trending</button>
+        </div>
+
         <!-- Articles Grid -->
         <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12" id="articles-wrapper">
 
@@ -50,18 +57,16 @@
 
 @section('script')
 <script>
-$(document).ready(function () {
+function loadArticles(type = 'latest') {
     $.ajax({
-        url: '/api/posts/news', // pastikan URL endpoint sesuai
+        url: '/api/posts/news?type=' + type,
         type: 'GET',
         dataType: 'json',
         success: function(response) {
             let articles = response.data;
             let html = '';
-
             $.each(articles, function(index, article) {
                 let contentText = $('<div>').html(article.content).text().substring(0, 100);
-
                 html += `
                     <a href="/berita/${article.slug}">
                     <div class="bg-white rounded-xl shadow-lg border overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:scale-105 cursor-pointer">
@@ -101,12 +106,20 @@ $(document).ready(function () {
                     </a>
                 `;
             });
-
             $('#articles-wrapper').html(html);
         },
         error: function(xhr, status, error) {
             $('#articles-wrapper').html('<div class="text-red-500">Gagal memuat data artikel.</div>');
         }
+    });
+}
+$(document).ready(function () {
+    loadArticles('latest');
+    $('#news-tabs').on('click', '.tab-btn', function() {
+        $('.tab-btn').removeClass('bg-gradient-to-r from-orange-500 to-red-500 text-white shadow active').addClass('text-gray-700 bg-gray-100 hover:bg-orange-100');
+        $(this).addClass('bg-gradient-to-r from-orange-500 to-red-500 text-white shadow active').removeClass('text-gray-700 bg-gray-100 hover:bg-orange-100');
+        let type = $(this).data('type');
+        loadArticles(type);
     });
 });
 </script>

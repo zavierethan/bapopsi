@@ -44,6 +44,14 @@ Route::get('/galery', function () {
     return view('web.galery');
 });
 
+Route::get('/agenda', function () {
+    return view('web.agenda');
+});
+
+Route::get('/kontak', function () {
+    return view('web.kontak');
+});
+
 // Auth::routes();
 
 Route::post('/login', [App\Http\Controllers\Auth\AuthController::class, 'login'])->name('login');
