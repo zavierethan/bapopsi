@@ -57,6 +57,16 @@
 
 @section('script')
 <script>
+$(document).ready(function () {
+    loadArticles('latest');
+    $('#news-tabs').on('click', '.tab-btn', function() {
+        $('.tab-btn').removeClass('bg-gradient-to-r from-orange-500 to-red-500 text-white shadow active').addClass('text-gray-700 bg-gray-100 hover:bg-orange-100');
+        $(this).addClass('bg-gradient-to-r from-orange-500 to-red-500 text-white shadow active').removeClass('text-gray-700 bg-gray-100 hover:bg-orange-100');
+        let type = $(this).data('type');
+        loadArticles(type);
+    });
+});
+
 function loadArticles(type = 'latest') {
     $.ajax({
         url: '/api/posts/news?type=' + type,
@@ -113,14 +123,5 @@ function loadArticles(type = 'latest') {
         }
     });
 }
-$(document).ready(function () {
-    loadArticles('latest');
-    $('#news-tabs').on('click', '.tab-btn', function() {
-        $('.tab-btn').removeClass('bg-gradient-to-r from-orange-500 to-red-500 text-white shadow active').addClass('text-gray-700 bg-gray-100 hover:bg-orange-100');
-        $(this).addClass('bg-gradient-to-r from-orange-500 to-red-500 text-white shadow active').removeClass('text-gray-700 bg-gray-100 hover:bg-orange-100');
-        let type = $(this).data('type');
-        loadArticles(type);
-    });
-});
 </script>
 @endsection

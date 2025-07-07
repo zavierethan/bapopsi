@@ -12,13 +12,13 @@
                 <div class="page-title d-flex flex-column justify-content-center flex-wrap me-3">
                     <!--begin::Title-->
                     <h1 class="page-heading d-flex text-gray-900 fw-bold fs-3 flex-column justify-content-center my-0">
-                        Atlet</h1>
+                        Event Registrations</h1>
                     <!--end::Title-->
                     <!--begin::Breadcrumb-->
                     <ul class="breadcrumb breadcrumb-separatorless fw-semibold fs-7 my-0 pt-1">
                         <!--begin::Item-->
                         <li class="breadcrumb-item text-muted">
-                            <a href="index.html" class="text-muted text-hover-primary">Data Atlet</a>
+                            <a href="index.html" class="text-muted text-hover-primary">Data Peserta</a>
                         </li>
                         <!--end::Item-->
                         <!--begin::Item-->
@@ -27,27 +27,62 @@
                         </li>
                         <!--end::Item-->
                         <!--begin::Item-->
-                        <li class="breadcrumb-item text-muted">Atlet</li>
+                        <li class="breadcrumb-item text-muted">Event Registrations</li>
                         <!--end::Item-->
                     </ul>
                     <!--end::Breadcrumb-->
                 </div>
                 <!--end::Page title-->
+                <!--begin::Actions-->
                 <div class="d-flex align-items-center gap-2 gap-lg-3">
                     <!--begin::Primary button-->
-                    <a href="{{route('athletes.create')}}" class="btn btn-sm fw-bold btn-primary">New</a>
+                    <a href="{{route('event-registrations.create')}}" class="btn btn-sm fw-bold btn-primary">New</a>
                     <!--end::Primary button-->
                 </div>
+                <!--end::Actions-->
             </div>
             <!--end::Toolbar container-->
         </div>
         <!--end::Toolbar-->
+
         <!--begin::Content-->
         <div id="kt_app_content" class="app-content flex-column-fluid">
             <!--begin::Content container-->
             <div id="kt_app_content_container" class="app-container container-fluid">
                 <!--begin::Row-->
                 <div class="row g-5 g-xl-10 mb-5 mb-xl-10">
+                    <div class="card">
+                        <!--begin::Card body-->
+                        <div class="card-body pt-0 overflow-x-auto">
+                            <div class="row g-5 g-xl-10 mb-3 mt-3">
+                                <div class="col-md-4">
+                                    <div class="card bg-warning">
+                                        <div class="card-body">
+                                            <h5 class="text-white text-center">Waiting Approval</h5>
+                                            <h2 class="text-white text-center" id="count-waiting">0</h2>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="card bg-success">
+                                        <div class="card-body">
+                                            <h5 class="text-white text-center">Approved</h5>
+                                            <h2 class="text-white text-center" id="count-approved">0</h2>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="card bg-danger">
+                                        <div class="card-body">
+                                            <h5 class="text-white text-center">Rejected</h5>
+                                            <h2 class="text-white text-center" id="count-rejected">0</h2>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--end::Card body-->
+                    </div>
                     <!--begin::Table-->
                     <div class="card">
                         <!--begin::Card header-->
@@ -86,21 +121,26 @@
                         <!--begin::Card body-->
                         <div class="card-body pt-0 overflow-x-auto">
                             <!--begin::Table-->
-                            <table class="table align-middle table-row-dashed fs-6 gy-5" id="kt_groups_table">
+                            <table class="table align-middle table-row-dashed fs-6 gy-5" id="kt_registration_table">
+                                <!--begin::Table head-->
                                 <thead>
+                                    <!--begin::Table row-->
                                     <tr class="text-start text-gray-700 fw-bolder fs-7 text-uppercase gs-0">
-                                        <th class="min-w-125px">Nama Lengkap</th>
+                                        <th class="min-w-125px">Nama Event</th>
                                         <th class="min-w-125px">Kecamatan</th>
                                         <th class="min-w-125px">Sub Rayon</th>
-                                        <th class="min-w-125px">Cabang Olahraga</th>
-                                        <th class="min-w-125px">Approval Status</th>
-                                        <th class="min-w-125px">Catatan Approval</th>
+                                        <th class="min-w-125px">Tanggal Registrasi</th>
+                                        <th class="min-w-125px text-center">Approval Status</th>
                                         <th class="min-w-125px">Tanggal Approval</th>
-                                        <th class="min-w-125px text-center">Actions</th>
+                                        <th class="text-center min-w-70px">Actions</th>
                                     </tr>
+                                    <!--end::Table row-->
                                 </thead>
+                                <!--end::Table head-->
+                                <!--begin::Table body-->
                                 <tbody class="fw-semibold text-gray-700">
                                 </tbody>
+                                <!--end::Table body-->
                             </table>
                             <!--end::Table-->
                         </div>
@@ -116,136 +156,115 @@
     </div>
     <!--end::Content wrapper-->
 </div>
-
-<div class="modal fade" id="pdfPreviewModal" tabindex="-1" aria-labelledby="pdfPreviewModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-xl">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Preview Dokumen</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
-            </div>
-            <div class="modal-body">
-                <iframe id="pdfIframe" src="" width="100%" height="600px" style="border: none;"></iframe>
-            </div>
-        </div>
-    </div>
-</div>
 @endsection
 
 @section('script')
 <script>
-const userRoleId = {{ Auth::user()->group_id }};
-$("#kt_groups_table").DataTable({
+fetchApprovalSummary()
+$("#kt_registration_table").DataTable({
     processing: true,
     serverSide: true,
     paging: true,
     pageLength: 10,
     ajax: {
-        url: `{{ route('athletes.get-lists') }}`,
+        url: `{{route('event-registrations.get-lists')}}`,
         type: 'GET',
-        dataSrc: 'data'
+        dataSrc: function(json) {
+            return json.data;
+        }
     },
-    columns: [
-        { data: 'nama_lengkap', name: 'nama_lengkap' },
-        { data: 'nama_kecamatan', name: 'nama_kecamatan' },
-        { data: 'nama_sub_rayon', name: 'nama_sub_rayon' },
-        { data: 'cabang_olahraga', name: 'cabang_olahraga' },
+    columns: [{
+            data: 'name',
+            name: 'name'
+        },
+        {
+            data: 'nama_kecamatan',
+            name: 'nama_kecamatan'
+        },
+        {
+            data: 'sub_rayon',
+            name: 'sub_rayon'
+        },
+        {
+            data: 'created_at_formatted',
+            name: 'created_at_formatted'
+        },
         {
             data: 'approval_status',
             name: 'approval_status',
             className: 'text-center',
-            render: function (data) {
-                let badgeClass = {
-                    'Waiting Approval': 'badge badge-warning',
-                    'Approved': 'badge badge-success',
-                    'Rejected': 'badge badge-danger'
-                }[data] || 'badge badge-secondary';
+            render: function(data, type, row) {
+                let badgeClass = '';
+
+                switch (data) {
+                    case 'Waiting Approval':
+                        badgeClass = 'badge badge-warning';
+                        break;
+                    case 'Approved':
+                        badgeClass = 'badge badge-success';
+                        break;
+                    case 'Rejected':
+                        badgeClass = 'badge badge-danger';
+                        break;
+                    default:
+                        badgeClass = 'badge badge-secondary';
+                }
 
                 return `<span class="${badgeClass}">${data}</span>`;
             }
         },
-        { data: 'appr_notes', name: 'appr_notes' },
-        { data: 'approval_date', name: 'approval_date' },
+        {
+            data: 'approval_date_formatted',
+            name: 'approval_date_formatted'
+        },
         {
             data: null,
             name: 'action',
             orderable: false,
             searchable: false,
-            className: 'text-center',
-            render: function (data, type, row) {
+            render: function(data, type, row) {
                 if (row.approval_status === 'Waiting Approval') {
-                    if (userRoleId === 14) { // approval hanya bisa di lakukan oleh admin dan superadmin
-                        return `
-                            <div class="flex justify-center gap-2">
-                                <a href="/athletes/detail/${row.id}" class="btn btn-sm btn-primary">Lihat</a>
-                                <button class="btn btn-sm btn-success btn-approve" data-id="${row.id}">Approve</button>
-                                <button class="btn btn-sm btn-danger btn-reject" data-id="${row.id}">Reject</button>
-                            </div>
-                        `;
-                    } else {
-                        return `
-                            <div class="flex justify-center">
-                                <a href="/athletes/detail/${row.id}" class="btn btn-sm btn-primary">Lihat</a>
-                            </div>
-                        `;
-                    }
-                } else if (row.approval_status === 'Approved'){
                     return `
-                        <div class="flex justify-center">
-                            <a href="/athletes/detail/${row.id}" class="btn btn-sm btn-primary">Lihat</a>
-                            <button class="btn btn-sm btn-success btn-print-id-card" data-id="${row.id}">Cetak ID Card</button>
-                        </div>
-                    `;
-                } else {
-                   return `
-                            <div class="flex justify-center">
-                                <a href="/athletes/detail/${row.id}" class="btn btn-sm btn-primary">Lihat</a>
+                            <div class="text-center">
+                                <a href="/event-registrations/detail/${row.id}" class="btn btn-sm btn-success btn-active-light-primary w-80" data-id="${row.id}">Detail</a>
                             </div>
                         `;
+                } else {
+                    return `<div class="text-center text-muted">-</div>`;
                 }
             }
         }
     ]
 });
 
-
+// APPROVE
 $(document).on('click', '.btn-approve', function() {
     const id = $(this).data('id');
 
     Swal.fire({
-        title: 'Approve Atlet?',
-        text: "Apakah kamu yakin ingin menyetujui atlet ini?",
+        title: 'Apakah Anda yakin?',
+        text: 'Pendaftaran ini akan disetujui.',
         icon: 'question',
         showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
         confirmButtonText: 'Ya, Setujui!',
-        cancelButtonText: 'Batal'
+        cancelButtonText: 'Batal',
+        reverseButtons: true
     }).then((result) => {
         if (result.isConfirmed) {
             $.ajax({
-                url: `/athletes/approve/${id}`,
+                url: `/registrations/approve/${id}`,
                 type: 'POST',
                 data: {
                     _token: '{{ csrf_token() }}'
                 },
                 success: function() {
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Berhasil!',
-                        text: 'Atlet berhasil disetujui.',
-                        timer: 2000,
-                        showConfirmButton: false
-                    });
-                    $('#kt_groups_table').DataTable().ajax.reload(null, false);
+                    Swal.fire('Berhasil!', 'Pendaftaran telah disetujui.', 'success');
+                    fetchApprovalSummary();
+                    $('#kt_registration_table').DataTable().ajax.reload(null, false);
                 },
                 error: function(xhr) {
                     console.error(xhr.responseText);
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Gagal!',
-                        text: 'Gagal menyetujui atlet.'
-                    });
+                    Swal.fire('Gagal!', 'Gagal menyetujui pendaftaran.', 'error');
                 }
             });
         }
@@ -253,58 +272,54 @@ $(document).on('click', '.btn-approve', function() {
 });
 
 
+// REJECT
 $(document).on('click', '.btn-reject', function() {
     const id = $(this).data('id');
 
     Swal.fire({
-        title: 'Tolak Atlet?',
-        text: "Apakah kamu yakin ingin menolak atlet ini?",
+        title: 'Tolak Pendaftaran?',
+        text: 'Pendaftaran ini akan ditolak.',
         icon: 'warning',
         showCancelButton: true,
-        confirmButtonColor: '#d33',
-        cancelButtonColor: '#6c757d',
         confirmButtonText: 'Ya, Tolak!',
-        cancelButtonText: 'Batal'
+        cancelButtonText: 'Batal',
+        reverseButtons: true
     }).then((result) => {
         if (result.isConfirmed) {
             $.ajax({
-                url: `/athletes/reject/${id}`,
+                url: `/registrations/reject/${id}`,
                 type: 'POST',
                 data: {
                     _token: '{{ csrf_token() }}'
                 },
                 success: function() {
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Berhasil!',
-                        text: 'Atlet berhasil ditolak.',
-                        timer: 2000,
-                        showConfirmButton: false
-                    });
-                    $('#kt_groups_table').DataTable().ajax.reload();
+                    Swal.fire('Ditolak!', 'Pendaftaran telah ditolak.', 'success');
+                    fetchApprovalSummary();
+                    $('#kt_registration_table').DataTable().ajax.reload(null, false);
                 },
                 error: function(xhr) {
                     console.error(xhr.responseText);
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Gagal!',
-                        text: 'Gagal menolak atlet.'
-                    });
+                    Swal.fire('Gagal!', 'Gagal menolak pendaftaran.', 'error');
                 }
             });
         }
     });
 });
 
-$(document).on('click', '.btn-print-id-card', function () {
-    const atletId = $(this).data('id');
-    const url = `/athletes/id-card/${atletId}`; // route to controller
 
-    // Set URL ke iframe untuk load konten
-    $('#pdfIframe').attr('src', url);
-
-    // Tampilkan modal
-    $('#pdfPreviewModal').modal('show');
-});
+function fetchApprovalSummary() {
+    $.ajax({
+        url: '{{ route("registrations.summary") }}',
+        method: 'GET',
+        success: function(data) {
+            $('#count-waiting').text(data.waiting_approval);
+            $('#count-approved').text(data.approved);
+            $('#count-rejected').text(data.rejected);
+        },
+        error: function(xhr) {
+            console.error('Failed to fetch summary', xhr.responseText);
+        }
+    });
+}
 </script>
 @endsection

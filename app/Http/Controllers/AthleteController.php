@@ -23,17 +23,25 @@ class AthleteController extends Controller
         $query = DB::table('atlet')
             ->select(
                 'atlet.*',
+
                 DB::raw("TO_CHAR(atlet.tanggal_lahir, 'DD/MM/YYYY') AS tanggal_lahir"),
                 DB::raw("CASE
-                        WHEN atlet.appr_status IS NULL THEN 'Waiting Approval'
-                        WHEN atlet.appr_status = 1 THEN 'Approved'
-                        WHEN atlet.appr_status = 0 THEN 'Rejected'
-                    END as approval_status"
-                ),
+                    WHEN atlet.appr_status IS NULL THEN 'Waiting Approval'
+                    WHEN atlet.appr_status = 1 THEN 'Approved'
+                    WHEN atlet.appr_status = 0 THEN 'Rejected'
+                END as approval_status"),
                 DB::raw("TO_CHAR(atlet.appr_date, 'DD/MM/YYYY HH24:MI:SS') AS approval_date"),
-                'sports.name as cabang_olahraga'
+                'atlet.appr_notes',
+                'sports.name as cabang_olahraga',
+                'event_registrations.kecamatan_id',
+                'event_registrations.sub_rayon_id',
+                'kecamatan.nama as nama_kecamatan',
+                'sub_rayon.nama as nama_sub_rayon'
             )
-            ->leftJoin('sports', 'sports.id', '=', 'atlet.cabang_olahraga_id');
+            ->leftJoin('sports', 'sports.id', '=', 'atlet.cabang_olahraga_id')
+            ->leftJoin('event_registrations', 'event_registrations.id', '=', 'atlet.event_reg_id')
+            ->leftJoin('kecamatan', 'kecamatan.id', '=', 'event_registrations.kecamatan_id')
+            ->leftJoin('sub_rayon', 'sub_rayon.id', '=', 'event_registrations.sub_rayon_id');
 
         if (!empty($params['nama_lengkap'])) {
             $query->where('atlet.nama_lengkap', $params['nama_lengkap']);
@@ -42,7 +50,12 @@ class AthleteController extends Controller
         $user = Auth::user();
 
         if (!in_array($user->group_id, [1, 14])) {
-            $query->where('atlet.created_by', $user->id);
+
+            if($user->group_id == 16) {
+
+            } else {
+                $query->where('atlet.created_by', $user->id);
+            }
         }
 
         $searchValue = $request->input('search.value');
@@ -156,14 +169,13 @@ class AthleteController extends Controller
 
     public function edit($id) {
         $atlet = DB::table('atlet')->where('id', $id)->first();
-        $officials = DB::table('officials')->where('atlet_id', $id)
-                ->leftJoin('jabatan_official', 'jabatan_official.id', '=', 'officials.jabatan_id')
-                ->get();
+        $officials = DB::table('officials')->leftJoin('jabatan_official', 'jabatan_official.id', '=', 'officials.jabatan_id')->get();
+        $medals = DB::table('medals')->where('atlet_id', $atlet->id)->get();
         $jabatan = DB::table('jabatan_official')->orderBy('id', 'asc')->get();
         $cabor = DB::table('sports')->get();
         $kelas = DB::table('sport_classes')->where('sport_id', $atlet->cabang_olahraga_id)->get();
 
-        return view('modules.athletes.edit', compact('atlet', 'officials', 'cabor', 'kelas', 'jabatan'));
+        return view('modules.athletes.edit', compact('atlet', 'officials', 'cabor', 'kelas', 'jabatan', 'medals'));
     }
 
     public function update(Request $request, $id) {
@@ -176,9 +188,7 @@ class AthleteController extends Controller
             'nisn'            => 'required|string|max:20',
             'pas_foto'        => 'nullable|image|mimes:jpeg,jpg,png|max:2048',
             'raport'          => 'nullable|mimes:pdf|max:2048',
-            'akta_lahir'      => 'nullable|mimes:pdf|max:2048',
-            'cabang_olahraga' => 'required|exists:sports,id',
-            'kelas_id'        => 'required|exists:sport_classes,id',
+            'akta_lahir'      => 'nullable|mimes:pdf|max:2048'
         ]);
 
         DB::beginTransaction();
@@ -196,51 +206,39 @@ class AthleteController extends Controller
                 'jenis_kelamin'      => $request->jenis_kelamin,
                 'nama_sekolah'       => $request->nama_sekolah,
                 'nisn'               => $request->nisn,
-                'cabang_olahraga_id' => $request->cabang_olahraga,
-                'kelas_id'           => $request->kelas_id,
+                'appr_status'        => null,
                 'updated_at'         => now()
             ];
 
             // Handle file uploads
             if ($request->hasFile('pas_foto')) {
                 if ($atlet->pas_foto) Storage::disk('public')->delete($atlet->pas_foto);
-                $updateData['pas_foto'] = $request->file('pas_foto')->store('uploads/atlet', 'public');
+                $updateData['pas_foto'] = $request->file('pas_foto')->store('uploads/atlets/pas_foto', 'public');
             }
 
             if ($request->hasFile('raport')) {
                 if ($atlet->raport) Storage::disk('public')->delete($atlet->raport);
-                $updateData['raport'] = $request->file('raport')->store('uploads/atlet', 'public');
+                $updateData['raport'] = $request->file('raport')->store('uploads/atlets/raport', 'public');
             }
 
             if ($request->hasFile('akta_lahir')) {
                 if ($atlet->akta_lahir) Storage::disk('public')->delete($atlet->akta_lahir);
-                $updateData['akta_lahir'] = $request->file('akta_lahir')->store('uploads/atlet', 'public');
+                $updateData['akta_lahir'] = $request->file('akta_lahir')->store('uploads/atlets/akta_lahir', 'public');
             }
 
             // Update atlet data
             DB::table('atlet')->where('id', $id)->update($updateData);
 
             // Hapus semua existing officials dan insert ulang
-            DB::table('officials')->where('atlet_id', $id)->delete();
+            DB::table('medals')->where('atlet_id', $id)->delete();
 
-            $officials = $request->input('officials', []);
-            foreach ($officials as $index => $o) {
-                $fotoPath = null;
-
-                if ($request->hasFile("officials.$index.foto")) {
-                    if (!empty($o['foto_existing'])) {
-                        Storage::disk('public')->delete($o['foto_existing']);
-                    }
-                    $fotoPath = $request->file("officials.$index.foto")->store('uploads/official', 'public');
-                } elseif (!empty($o['foto_existing'])) {
-                    $fotoPath = $o['foto_existing'];
-                }
-
-                DB::table('officials')->insert([
+            $medals = $request->input('medals', []);
+            foreach ($medals as $index => $o) {
+                DB::table('medals')->insert([
                     'atlet_id'   => $id,
-                    'jabatan_id' => $o['jabatan'],
-                    'nama'       => $o['nama'],
-                    'foto'       => $fotoPath,
+                    'medal_type' => $o['medal_type'],
+                    'event'      => $o['event'],
+                    'tahun'      => $o['tahun'],
                     'created_at' => now(),
                     'updated_at' => now(),
                 ]);
@@ -259,7 +257,6 @@ class AthleteController extends Controller
             ], 500);
         }
     }
-
 
     public function approve($id) {
         DB::beginTransaction();
@@ -284,9 +281,10 @@ class AthleteController extends Controller
         }
     }
 
-    public function reject($id) {
+    public function reject($id, Request $request) {
         DB::table('atlet')->where('id', $id)->update([
             "appr_status" => 0,
+            "appr_notes"  => $request->reason,
             "appr_date"   => now()
         ]);
 
@@ -305,7 +303,7 @@ class AthleteController extends Controller
             abort(404);
         }
 
-        $url = url('/athletes/edit/' . $id);
+        $url = url('/athletes/detail/' . $id);
         $qrSvg = QrCode::format('svg')->size(150)->generate($url);
         $qrBase64 = $qrSvg;
 
@@ -323,16 +321,14 @@ class AthleteController extends Controller
             ->select('atlet.*', 'sports.name as cabang_olahraga')
             ->where('atlet.id', $id)
             ->first();
+
         if (!$atlet) {
             abort(404);
         }
 
-        if($atlet->appr_status == 1) {
-            $approvalStatus = "Verified";
-        } else {
-            $approvalStatus = "Not Verified";
-        }
-        $qrUrl = $approvalStatus; // This should be the route to athlete detail
+        $approvalStatus = $atlet->appr_status == 1 ? "Verified" : "Not Verified";
+        $qrUrl = $approvalStatus;
+
         return view('modules.athletes.idcard', compact('atlet', 'qrUrl'));
     }
 

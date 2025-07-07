@@ -23,50 +23,49 @@
 @section('script')
 <script>
 $(document).ready(function() {
-    const agendaList = [
-        {
-            tanggal: '2024-07-10',
-            nama: 'Pekan Olahraga Pelajar',
-            lokasi: 'GOR Sabilulungan',
-            deskripsi: 'Kompetisi olahraga pelajar tingkat kabupaten Bandung.'
-        },
-        {
-            tanggal: '2024-07-15',
-            nama: 'Seminar Kesehatan Atlet',
-            lokasi: 'Aula Dispora',
-            deskripsi: 'Seminar dan workshop kesehatan untuk atlet pelajar.'
-        },
-        {
-            tanggal: '2024-07-20',
-            nama: 'Pelatihan Wasit Muda',
-            lokasi: 'SMAN 1 Bandung',
-            deskripsi: 'Pelatihan dasar untuk calon wasit muda cabang olahraga.'
-        }
-    ];
-    let html = '';
-    if (agendaList.length === 0) {
-        $('#agenda-empty').removeClass('hidden');
-    } else {
-        $('#agenda-empty').addClass('hidden');
-        agendaList.forEach(function(item) {
-            html += `
-                <div class="bg-white rounded-2xl shadow-lg border p-6 flex flex-col md:flex-row md:items-center md:justify-between gap-4 hover:shadow-xl transition-all">
-                    <div class="flex items-center gap-6">
-                        <div class="flex flex-col items-center justify-center bg-gradient-to-br from-orange-500 to-blue-500 text-white rounded-xl px-4 py-2 min-w-[80px]">
-                            <div class="text-2xl font-bold">${new Date(item.tanggal).getDate()}</div>
-                            <div class="text-xs uppercase tracking-wider">${new Date(item.tanggal).toLocaleString('id-ID', { month: 'short', year: '2-digit' })}</div>
-                        </div>
-                        <div>
-                            <div class="text-lg font-bold text-gray-900 mb-1">${item.nama}</div>
-                            <div class="text-sm text-gray-500 mb-1"><i class="fas fa-map-marker-alt mr-1"></i>${item.lokasi}</div>
-                            <div class="text-sm text-gray-700">${item.deskripsi}</div>
-                        </div>
-                    </div>
-                </div>
-            `;
-        });
-        $('#agenda-wrapper').html(html);
-    }
+    loadArticles();
 });
+
+function loadArticles() {
+    $.ajax({
+        url: '/api/posts/agendas',
+        method: 'GET',
+        success: function(response) {
+            const agendaList = response.data || response; // jika response pakai format data: [...]
+            let html = '';
+
+            if (agendaList.length === 0) {
+                $('#agenda-empty').removeClass('hidden');
+            } else {
+                $('#agenda-empty').addClass('hidden');
+                agendaList.forEach(function(item) {
+                    const date = item.agenda_date;
+                    const [day, month, year] = date.split('/');
+
+                    html += `
+                        <div class="bg-white rounded-2xl shadow-lg border p-6 flex flex-col md:flex-row md:items-center md:justify-between gap-4 hover:shadow-xl transition-all">
+                            <div class="flex items-center gap-6">
+                                <div class="flex flex-col items-center justify-center bg-gradient-to-br from-orange-500 to-blue-500 text-white rounded-xl px-4 py-2 min-w-[80px]">
+                                    <div class="text-2xl font-bold">${day}</div>
+                                    <div class="text-xs uppercase tracking-wider">${month}/${year}</div>
+                                </div>
+                                <div>
+                                    <div class="text-lg font-bold text-gray-900 mb-1">${item.title}</div>
+                                    <div class="text-sm text-gray-500 mb-1"><i class="fas fa-map-marker-alt mr-1"></i>${item.location ?? '-'}</div>
+                                    <div class="text-sm text-gray-700">${item.description ?? ''}</div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                });
+                $('#agenda-wrapper').html(html);
+            }
+        },
+        error: function(err) {
+            console.error('Gagal mengambil data agenda:', err);
+            $('#agenda-empty').removeClass('hidden').find('h3').text('Gagal mengambil data agenda');
+        }
+    });
+}
 </script>
-@endsection 
+@endsection

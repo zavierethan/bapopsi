@@ -26,7 +26,6 @@ Route::get('/getKelasByCabor/{caborId}', [App\Http\Controllers\SportController::
 // Dashboards Summary
 Route::get('dashboard/store/get-data-summary/', [App\Http\Controllers\Dashboards\StoreDashboardController::class, 'getTransactionSummary']);
 
-// Berita
 Route::prefix('posts')->group(function () {
     Route::name('posts.')->group(function () {
         Route::prefix('news')->group(function () {
@@ -37,6 +36,12 @@ Route::prefix('posts')->group(function () {
         Route::prefix('galeries')->group(function () {
             Route::name('galeries.')->group(function () {
                 Route::get('/', [App\Http\Controllers\GaleryController::class, 'getLists'])->name('get-list');
+            });
+        });
+
+        Route::prefix('agendas')->group(function () {
+            Route::name('agendas.')->group(function () {
+                Route::get('/', [App\Http\Controllers\AgendaController::class, 'getLists'])->name('get-list');
             });
         });
     });

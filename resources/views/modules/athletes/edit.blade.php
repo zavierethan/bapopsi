@@ -12,179 +12,170 @@
 
                         <!-- Biodata Atlet -->
                         <div class="card mb-5">
-                            <div class="card-header">
+                            <div class="card-header d-flex justify-content-between align-items-center">
                                 <h3 class="card-title fw-bold">Biodata Atlet</h3>
+                                <!-- <button type="button" id="add-atlet" class="btn btn-sm btn-light-primary">
+                                <i class="fa fa-plus"></i> Tambah Atlet
+                            </button> -->
                             </div>
-                            <div class="card-body pt-5">
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <!-- Nama -->
-                                        <div class="mb-3">
-                                            <label class="form-label">Nama Lengkap</label>
-                                            <input type="text" name="nama_lengkap" class="form-control" value="{{ $atlet->nama_lengkap }}">
-                                        </div>
-                                        <!-- Tempat Lahir -->
-                                         <div class="separator my-5"></div>
-                                        <div class="mb-3">
-                                            <label class="form-label">Tempat Lahir</label>
-                                            <input type="text" name="tempat_lahir" class="form-control" value="{{ $atlet->tempat_lahir }}">
-                                        </div>
-                                        <!-- Tanggal Lahir -->
-                                         <div class="separator my-5"></div>
-                                        <div class="mb-3">
-                                            <label class="form-label">Tanggal Lahir</label>
-                                            <input type="date" name="tanggal_lahir" class="form-control" value="{{ $atlet->tanggal_lahir }}">
-                                        </div>
-                                        <!-- Jenis Kelamin -->
-                                         <div class="separator my-5"></div>
-                                        <div class="mb-3">
-                                            <label class="form-label">Jenis Kelamin</label>
-                                            <select name="jenis_kelamin" class="form-select" data-control="select2">
-                                                <option value="L" {{ $atlet->jenis_kelamin == 'L' ? 'selected' : '' }}>Laki-Laki</option>
-                                                <option value="P" {{ $atlet->jenis_kelamin == 'P' ? 'selected' : '' }}>Perempuan</option>
-                                            </select>
-                                        </div>
-                                        <!-- Nama Sekolah -->
-                                         <div class="separator my-5"></div>
-                                        <div class="mb-3">
-                                            <label class="form-label">Nama Sekolah</label>
-                                            <input type="text" name="nama_sekolah" class="form-control" value="{{ $atlet->nama_sekolah }}">
-                                        </div>
-                                        <!-- NISN -->
-                                         <div class="separator my-5"></div>
-                                        <div class="mb-3">
-                                            <label class="form-label">NISN</label>
-                                            <input type="text" name="nisn" class="form-control" value="{{ $atlet->nisn }}">
-                                        </div>
-                                        <!-- Cabang Olahraga -->
-                                         <div class="separator my-5"></div>
-                                        <div class="mb-3">
-                                            <label class="form-label">Cabang Olahraga</label>
-                                            <select name="cabang_olahraga" id="caborId" class="form-select" data-control="select2">
-                                                @foreach($cabor as $c)
-                                                <option value="{{ $c->id }}" {{ $c->id == $atlet->cabang_olahraga_id ? 'selected' : '' }}>
-                                                    {{ $c->name }}
-                                                </option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                        <!-- Kelas -->
-                                         <div class="separator my-5"></div>
-                                        <div class="mb-3">
-                                            <label class="form-label">Kelas Cabang</label>
-                                            <div id="radioContainer">
-                                                @foreach($kelas as $k)
-                                                <div class="form-check form-check-inline">
-                                                    <input class="form-check-input" type="radio" name="kelas_id" id="kelas_{{ $k->id }}" value="{{ $k->id }}" {{ $k->id == $atlet->kelas_id ? 'checked' : '' }}>
-                                                    <label class="form-check-label" for="kelas_{{ $k->id }}">{{ $k->name }}</label>
-                                                </div>
-                                                @endforeach
+                            <div class="card-body" id="atlet-wrapper">
+                                <div class="border p-4 mb-4 rounded position-relative atlet-item bg-light">
+                                    <button type="button"
+                                        class="btn btn-icon btn-danger btn-sm position-absolute top-0 end-0 mt-2 me-2 remove-atlet">
+                                        <i class="fa fa-times"></i>
+                                    </button>
+                                    <div class="row g-4">
+                                        <!-- Foto Profil -->
+                                        <div class="col-md-4 text-center">
+                                            <div class="mb-5">
+                                                <img src="{{ $atlet->pas_foto ? asset('storage/' . $atlet->pas_foto) : 'https://via.placeholder.com/150' }}"
+                                                    class="img-thumbnail preview-pas-foto"
+                                                    style="width: 150px; height: 150px; object-fit: cover;">
                                             </div>
+                                            <input type="file" name="pas_foto" accept="image/*"
+                                                class="form-control input-pas-foto">
                                         </div>
-                                    </div>
 
-                                    <div class="col-md-6">
-                                        <!-- Pas Foto -->
-                                        <div class="mb-3">
-                                            <label class="form-label">Pas Foto</label>
-                                            <input type="file" name="pas_foto" class="form-control" accept="image/*">
-                                            @if($atlet->pas_foto)
-                                            <img src="{{ asset('storage/' . $atlet->pas_foto) }}" class="mt-2" style="max-width:140px;">
-                                            @endif
-                                        </div>
-                                        <!-- Raport -->
-                                         <div class="separator my-5"></div>
-                                        <div class="mb-3">
-                                            <label class="form-label">Raport</label>
-                                            <input type="file" name="raport" class="form-control">
-                                            @if($atlet->raport)
-                                             <a href="#" class="text-primary" onclick="showPdfModal('{{ asset('storage/' . $atlet->raport) }}'); return false;">Lihat file Raport (PDF)</a>
-                                            @endif
-                                        </div>
-                                        <!-- Akta -->
-                                         <div class="separator my-5"></div>
-                                        <div class="mb-3">
-                                            <label class="form-label">Akta Lahir</label>
-                                            <input type="file" name="akta_lahir" class="form-control">
-                                            @if($atlet->akta_lahir)
-                                            <a href="#" class="text-primary" onclick="showPdfModal('{{ asset('storage/' . $atlet->akta_lahir) }}'); return false;">Lihat file Akta Lahir (PDF)</a>
-                                            @endif
+                                        <!-- Biodata -->
+                                        <div class="col-md-8">
+                                            <div class="row mb-3 align-items-center">
+                                                <label class="col-md-2 col-form-label">Nama Lengkap</label>
+                                                <div class="col-md-10">
+                                                    <input type="text" class="form-control"
+                                                        name="nama_lengkap"
+                                                        value="{{ $atlet->nama_lengkap }}" required>
+                                                    <input type="hidden" class="form-control"
+                                                        name="id" value="{{ $atlet->id }}" id="id"
+                                                        required>
+                                                </div>
+                                            </div>
+                                            <div class="row mb-3 align-items-center">
+                                                <label class="col-md-2 col-form-label">Tempat Lahir</label>
+                                                <div class="col-md-10">
+                                                    <input type="text" class="form-control"
+                                                        name="tempat_lahir"
+                                                        value="{{ $atlet->tempat_lahir }}">
+                                                </div>
+                                            </div>
+                                            <div class="row mb-3 align-items-center">
+                                                <label class="col-md-2 col-form-label">Tanggal Lahir</label>
+                                                <div class="col-md-10">
+                                                    <input type="date" class="form-control"
+                                                        name="tanggal_lahir"
+                                                        value="{{ $atlet->tanggal_lahir }}">
+                                                </div>
+                                            </div>
+                                            <div class="row mb-3 align-items-center">
+                                                <label class="col-md-2 col-form-label">Jenis Kelamin</label>
+                                                <div class="col-md-10">
+                                                    <select name="jenis_kelamin" class="form-select">
+                                                        <option value="">Pilih Jenis Kelamin</option>
+                                                        <option value="L"
+                                                            {{ $atlet->jenis_kelamin == 'L' ? 'selected' : '' }}>
+                                                            Laki-laki
+                                                        </option>
+                                                        <option value="P"
+                                                            {{ $atlet->jenis_kelamin == 'P' ? 'selected' : '' }}>
+                                                            Perempuan
+                                                        </option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="row mb-3 align-items-center">
+                                                <label class="col-md-2 col-form-label">Nama Sekolah</label>
+                                                <div class="col-md-10">
+                                                    <input type="text" class="form-control"
+                                                        name="nama_sekolah"
+                                                        value="{{ $atlet->nama_sekolah }}">
+                                                </div>
+                                            </div>
+                                            <div class="row mb-3 align-items-center">
+                                                <label class="col-md-2 col-form-label">NISN</label>
+                                                <div class="col-md-10">
+                                                    <input type="text" class="form-control"
+                                                        name="nisn" value="{{ $atlet->nisn }}">
+                                                </div>
+                                            </div>
+                                            <div class="row mb-3 align-items-center">
+                                                <label class="col-md-2 col-form-label">Rapor</label>
+                                                <div class="col-md-10">
+                                                    <input type="file" name="raport"
+                                                        class="form-control mt-1">
+                                                    @if($atlet->raport)
+                                                    <a href="#" class="text-primary"
+                                                        onclick="showPdfModal('{{ asset('storage/' . $atlet->raport) }}'); return false;">Lihat
+                                                        file Raport (PDF)</a><br>
+                                                    @endif
+                                                </div>
+                                            </div>
+                                            <div class="row mb-3 align-items-center">
+                                                <label class="col-md-2 col-form-label">Akta Lahir</label>
+                                                <div class="col-md-10">
+                                                    <input type="file" name="akta_lahir"
+                                                        class="form-control mt-1">
+                                                    @if($atlet->akta_lahir)
+                                                    <a href="#" class="text-primary"
+                                                        onclick="showPdfModal('{{ asset('storage/' . $atlet->akta_lahir) }}'); return false;">Lihat
+                                                        file Akta (PDF)</a><br>
+                                                    @endif
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-
-                        <!-- Officials Table -->
-                        <div class="card">
-                            <div class="card-header">
-                                <h3 class="card-title fw-bold">Official</h3>
+                        @if(Auth::user()->group_id == 16 || Auth::user()->group_id == 1)
+                        <div class="card mb-5">
+                            <div class="card-header d-flex justify-content-between align-items-center">
+                                <h3 class="card-title fw-bold">Perolehan Medali</h3>
+                                <button type="button" id="add-medals" class="btn btn-sm btn-light-primary">
+                                    <i class="fa fa-plus"></i> Tambah Medali
+                                </button>
                             </div>
-                            <div class="card-body pt-5" id="official-wrapper">
-                                <table class="table align-middle">
-                                    <thead>
-                                        <tr class="text-start text-gray-700 fw-bolder fs-7 text-uppercase gs-0">
-                                            <th style="width: 20%;">Foto</th>
-                                            <th style="width: 25%;">Jabatan</th>
-                                            <th style="width: 25%;">Nama</th>
-                                            <th style="width: 5%;">Aksi</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach($officials as $index => $o)
-                                        <tr class="official-item">
-                                            <td class="text-center">
-                                                <label for="official-foto-{{ $index }}" style="cursor:pointer;">
-                                                    <img src="{{ $o->foto ? asset('storage/' . $o->foto) : asset('assets/img/placeholder.jpg') }}"
-                                                        class="img-thumbnail official-preview mb-2" style="max-height: 100px;">
-                                                </label>
-                                                <input class="form-control d-none" type="file" name="officials[{{ $index }}][foto]"
-                                                    id="official-foto-{{ $index }}" onchange="previewImage(event, {{ $index }})">
-                                                <input type="hidden" name="officials[{{ $index }}][foto_existing]" value="{{ $o->foto }}">
-                                            </td>
-                                            <td>
-                                                <select name="officials[{{ $index }}][jabatan]" class="form-select" data-control="select2">
-                                                    <option value=""></option>
-                                                    @foreach($jabatan as $jab)
-                                                    <option value="{{ $jab->id }}" {{ $jab->id == $o->jabatan_id ? 'selected' : '' }}>
-                                                        {{ $jab->nama_jabatan }}
-                                                    </option>
-                                                    @endforeach
-                                                </select>
-                                            </td>
-                                            <td>
-                                                <input class="form-control" name="officials[{{ $index }}][nama]" value="{{ $o->nama }}">
-                                            </td>
-                                            <td class="text-center">
-                                                <button type="button" class="btn btn-danger btn-sm remove-official">X</button>
-                                            </td>
-                                        </tr>
-                                        @endforeach
-                                    </tbody>
-                                </table>
-
-                                <button type="button" id="add-official" class="btn btn-light-primary mt-3">Tambah Official</button>
-
-                                <div class="d-flex justify-content-end mt-4">
-                                    @if($atlet->appr_status == 1 && Auth::user()->group_id == 15)
-                                    <button type="submit" class="btn btn-primary ms-2">Update</button>
-                                    @endif
-
-                                    @if(is_null($atlet->appr_status) && (Auth::user()->group_id == 14 ||
-                                    Auth::user()->group_id == 1))
-                                    <a href="#" class="btn btn-primary ms-2" id="btn-approve">Approve</a>
-                                    <a href="#" class="btn btn-danger ms-2" id="btn-reject">Reject</a>
-                                    @endif
-
-                                    @if($atlet->appr_status == 1)
-                                    <a href="{{ route('athletes.idcard', $atlet->id) }}" class="btn btn-info ms-2"
-                                        target="_blank">
-                                        <i class="fa fa-id-card"></i> Cetak Id Card Tag (PDF)
-                                    </a>
-                                    @endif
-
-                                    <a href="{{ route('athletes.index') }}" class="btn btn-danger ms-2">Kembali</a>
+                            <div class="card-body" id="medals-wrapper">
+                                @foreach($medals as $medal)
+                                <div class="row g-3 align-items-center medal-item mb-3" data-index="">
+                                    <div class="col-md-3">
+                                        <label class="form-label mb-1">Medali</label>
+                                        <select name="medal_type" class="form-select">
+                                            <option value="">Pilih Medali</option>
+                                            <option value="emas" <?php echo ($medal->medal_type == 'emas') ? 'selected' : ''; ?>>Emas</option>
+                                            <option value="perak" <?php echo ($medal->medal_type == 'perak') ? 'selected' : ''; ?>>Perak</option>
+                                            <option value="perunggu" <?php echo ($medal->medal_type == 'perunggu') ? 'selected' : ''; ?>>Perunggu</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-5">
+                                        <label class="form-label mb-1">Nama Event</label>
+                                        <input type="text" name="event" class="form-control" placeholder="Contoh: PON 2024" value="{{$medal->event}}">
+                                    </div>
+                                    <div class="col-md-2">
+                                        <label class="form-label mb-1">Tahun</label>
+                                        <input type="number" name="tahun" class="form-control" placeholder="e.g. 2024" value="{{$medal->tahun}}">
+                                    </div>
+                                    <div class="col-md-2 d-flex align-items-end">
+                                        <button type="button" class="btn btn-danger btn-sm remove-medal mt-7">X</button>
+                                    </div>
                                 </div>
+                                @endforeach
+                            </div>
+                        </div>
+                        @endif
+                        <div class="d-flex justify-content-between mb-10">
+                            <div>
+                                <a href="/athletes" class="btn btn-danger">Kembali</a>
+                            </div>
+                            <div>
+                                @if(Auth::user()->group_id != 14 && Auth::user()->group_id != 1)
+                                    @if(($atlet->appr_status == null && $atlet->appr_status == 0) || Auth::user()->group_id == 16)
+                                    <button type="submit" class="btn btn-success me-2" id="submit">Submit</button>
+                                    @endif
+                                @endif
+
+                                @if(Auth::user()->group_id == 14 && is_null($atlet->appr_status))
+                                <button type="button" class="btn btn-success me-2" id="approve">Approve</button>
+                                <button type="button" class="btn btn-danger me-2" id="reject">Reject</button>
+                                @endif
                             </div>
                         </div>
                     </form>
@@ -212,87 +203,20 @@
 
 @section('script')
 <script>
-let officialIndex = {{ count($officials) }};
 
-function previewImage(event, index) {
-    const input = event.target;
-    const reader = new FileReader();
-    reader.onload = function () {
-        const img = input.closest('td').querySelector('.official-preview');
-        if (img) {
-            img.src = reader.result;
-        }
-    };
-    reader.readAsDataURL(input.files[0]);
-}
+$(document).on('click', '#print-id-card', function () {
+    const atletId = $(this).data('id');
+    const url = `/athletes/id-card/59`; // route to controller
 
-$('#add-official').on('click', function () {
-    const row = `
-        <tr class="official-item">
-            <td class="text-center">
-                <label for="official-foto-${officialIndex}" style="cursor:pointer;">
-                    <img src="{{ asset('assets/img/placeholder.jpg') }}" class="img-thumbnail official-preview mb-2" style="max-height: 100px;">
-                </label>
-                <input class="form-control d-none" type="file" name="officials[${officialIndex}][foto]" id="official-foto-${officialIndex}" onchange="previewImage(event, ${officialIndex})">
-                <input type="hidden" name="officials[${officialIndex}][foto_existing]" value="">
-            </td>
-            <td>
-                <select name="officials[${officialIndex}][jabatan]" class="form-select jabatan-select" data-control="select2">
-                    <option value=""></option>
-                    @foreach($jabatan as $jab)
-                    <option value="{{ $jab->id }}">{{ $jab->nama_jabatan }}</option>
-                    @endforeach
-                </select>
-            </td>
-            <td>
-                <input class="form-control" name="officials[${officialIndex}][nama]" value="">
-            </td>
-            <td class="text-center">
-                <button type="button" class="btn btn-danger btn-sm remove-official">X</button>
-            </td>
-        </tr>
-    `;
-    $('table tbody').append(row);
-    $(`select[name="officials[${officialIndex}][jabatan]"]`).select2();
-    officialIndex++;
+    // Set URL ke iframe untuk load konten
+    $('#pdfIframe').attr('src', url);
+
+    // Tampilkan modal
+    $('#pdfPreviewModal').modal('show');
 });
 
-$(document).on('click', '.remove-official', function () {
-    $(this).closest('tr').remove();
-});
-
-$('#form-atlet-edit').on('submit', function (e) {
-    e.preventDefault();
-    const formData = new FormData(this);
-    const id = $('#atlet_id').val();
-
-    $.ajax({
-        url: `/athletes/update/${id}`,
-        type: 'POST',
-        data: formData,
-        processData: false,
-        contentType: false,
-        success: function (res) {
-            Swal.fire({
-                icon: 'success',
-                title: 'Berhasil',
-                text: res.message
-            }).then(() => {
-                window.location.href = "{{ route('athletes.index') }}";
-            });
-        },
-        error: function (err) {
-            Swal.fire({
-                icon: 'error',
-                title: 'Gagal',
-                text: 'Terjadi kesalahan'
-            });
-        }
-    });
-});
-
-$(document).on('click', '#btn-approve', function() {
-    const id = $('#atlet_id').val();
+$(document).on('click', '#approve', function() {
+    const id = $('#id').val();
 
     Swal.fire({
         title: 'Approve Atlet?',
@@ -319,6 +243,7 @@ $(document).on('click', '#btn-approve', function() {
                         timer: 2000,
                         showConfirmButton: false
                     });
+                    $('#kt_groups_table').DataTable().ajax.reload(null, false);
                 },
                 error: function(xhr) {
                     console.error(xhr.responseText);
@@ -333,26 +258,36 @@ $(document).on('click', '#btn-approve', function() {
     });
 });
 
-
-$(document).on('click', '#btn-reject', function() {
-    const id = $('#atlet_id').val();
+$(document).on('click', '#reject', function() {
+    const id = $('#id').val();
 
     Swal.fire({
         title: 'Tolak Atlet?',
-        text: "Apakah kamu yakin ingin menolak atlet ini?",
+        text: "Masukkan alasan penolakan atlet ini:",
         icon: 'warning',
+        input: 'textarea',
+        inputPlaceholder: 'Contoh: Dokumen tidak lengkap...',
+        inputAttributes: {
+            'aria-label': 'Masukkan alasan penolakan'
+        },
         showCancelButton: true,
         confirmButtonColor: '#d33',
         cancelButtonColor: '#6c757d',
         confirmButtonText: 'Ya, Tolak!',
-        cancelButtonText: 'Batal'
+        cancelButtonText: 'Batal',
+        inputValidator: (value) => {
+            if (!value) {
+                return 'Alasan penolakan wajib diisi!';
+            }
+        }
     }).then((result) => {
         if (result.isConfirmed) {
             $.ajax({
                 url: `/athletes/reject/${id}`,
                 type: 'POST',
                 data: {
-                    _token: '{{ csrf_token() }}'
+                    _token: '{{ csrf_token() }}',
+                    reason: result.value
                 },
                 success: function() {
                     Swal.fire({
@@ -362,6 +297,7 @@ $(document).on('click', '#btn-reject', function() {
                         timer: 2000,
                         showConfirmButton: false
                     });
+                    $('#kt_groups_table').DataTable().ajax.reload();
                 },
                 error: function(xhr) {
                     console.error(xhr.responseText);
@@ -376,9 +312,102 @@ $(document).on('click', '#btn-reject', function() {
     });
 });
 
+let medalIndex = 0;
+
+$('#add-medals').on('click', function () {
+    const row = `
+        <div class="row g-3 align-items-center medal-item mb-3" data-index="${medalIndex}">
+            <div class="col-md-3">
+                <label class="form-label mb-1">Medali</label>
+                <select name="medals[${medalIndex}][medal_type]" class="form-select">
+                    <option value="">Pilih Medali</option>
+                    <option value="emas">Emas</option>
+                    <option value="perak">Perak</option>
+                    <option value="perunggu">Perunggu</option>
+                </select>
+            </div>
+            <div class="col-md-5">
+                <label class="form-label mb-1">Nama Event</label>
+                <input type="text" name="medals[${medalIndex}][event]" class="form-control" placeholder="Contoh: PON 2024">
+            </div>
+            <div class="col-md-2">
+                <label class="form-label mb-1">Tahun</label>
+                <input type="number" name="medals[${medalIndex}][tahun]" class="form-control" placeholder="e.g. 2024">
+            </div>
+            <div class="col-md-2 d-flex align-items-end">
+                <button type="button" class="btn btn-danger btn-sm remove-medal mt-7">X</button>
+            </div>
+        </div>
+    `;
+    $('#medals-wrapper').append(row);
+    medalIndex++;
+});
+
+
+$(document).on('click', '.remove-medal', function () {
+    $(this).closest('.medal-item').remove();
+});
+
+$('#form-atlet-edit').on('submit', function(e) {
+    e.preventDefault();
+
+    Swal.fire({
+        title: 'Simpan Perubahan?',
+        text: "Apakah kamu yakin ingin menyimpan perubahan data atlet?",
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonText: 'Ya, Simpan!',
+        cancelButtonText: 'Batal',
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+    }).then((result) => {
+        if (result.isConfirmed) {
+            const formData = new FormData($('#form-atlet-edit')[0]);
+            const id = $('#atlet_id').val();
+
+            $.ajax({
+                url: `/athletes/update/${id}`,
+                type: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function(res) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Berhasil',
+                        text: res.message
+                    }).then(() => {
+                        window.location.href = "{{ route('athletes.index') }}";
+                    });
+                },
+                error: function(err) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Gagal',
+                        text: 'Terjadi kesalahan'
+                    });
+                }
+            });
+        }
+    });
+});
+
+
 function showPdfModal(pdfUrl) {
     $('#pdfIframe').attr('src', pdfUrl);
     $('#pdfPreviewModal').modal('show');
+}
+
+function previewImage(event, index) {
+    const input = event.target;
+    const reader = new FileReader();
+    reader.onload = function() {
+        const img = input.closest('td').querySelector('.official-preview');
+        if (img) {
+            img.src = reader.result;
+        }
+    };
+    reader.readAsDataURL(input.files[0]);
 }
 </script>
 @endsection

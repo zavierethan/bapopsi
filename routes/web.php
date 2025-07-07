@@ -85,6 +85,22 @@ Route::group(['middleware' => ['auth']], function() {
         });
     });
 
+    Route::prefix('event-registrations')->group(function () {
+        Route::name('event-registrations.')->group(function () {
+            Route::get('/', [App\Http\Controllers\EventRegistrationController::class, 'index'])->name('index');
+            Route::get('/lists', [App\Http\Controllers\EventRegistrationController::class, 'getLists'])->name('get-lists');
+            Route::get('/create', [App\Http\Controllers\EventRegistrationController::class, 'create'])->name('create');
+            Route::post('/save', [App\Http\Controllers\EventRegistrationController::class, 'save'])->name('save');
+            Route::get('/detail/{id}', [App\Http\Controllers\EventRegistrationController::class, 'edit'])->name('edit');
+            Route::post('/update/{id}', [App\Http\Controllers\EventRegistrationController::class, 'update'])->name('update');
+
+            Route::post('/approve/{id}', [App\Http\Controllers\EventRegistrationController::class, 'approve']);
+            Route::post('/reject/{id}', [App\Http\Controllers\EventRegistrationController::class, 'reject']);
+
+            Route::get('/getApprovalSummary', [App\Http\Controllers\EventRegistrationController::class, 'getTotalApprovalSummary'])->name('summary');
+        });
+    });
+
     // Athlete
 
     Route::prefix('athletes')->group(function () {
@@ -93,13 +109,13 @@ Route::group(['middleware' => ['auth']], function() {
             Route::get('/lists', [App\Http\Controllers\AthleteController::class, 'getLists'])->name('get-lists');
             Route::get('/create', [App\Http\Controllers\AthleteController::class, 'create'])->name('create');
             Route::post('/save', [App\Http\Controllers\AthleteController::class, 'save'])->name('save');
-            Route::get('/edit/{id}', [App\Http\Controllers\AthleteController::class, 'edit'])->name('edit');
+            Route::get('/detail/{id}', [App\Http\Controllers\AthleteController::class, 'edit'])->name('edit');
             Route::post('/update/{id}', [App\Http\Controllers\AthleteController::class, 'update'])->name('update');
 
             Route::post('/approve/{id}', [App\Http\Controllers\AthleteController::class, 'approve']);
             Route::post('/reject/{id}', [App\Http\Controllers\AthleteController::class, 'reject']);
 
-            Route::get('/print-nametag/{id}', [\App\Http\Controllers\AthleteController::class, 'showIdCard'])->name('idcard');
+            Route::get('/id-card/{id}', [App\Http\Controllers\AthleteController::class, 'showIdCard']);
         });
     });
 
@@ -107,12 +123,17 @@ Route::group(['middleware' => ['auth']], function() {
 
     Route::prefix('officials')->group(function () {
         Route::name('officials.')->group(function () {
-            Route::get('/', [App\Http\Controllers\AthleteManagersController::class, 'index'])->name('index');
-            Route::get('/lists', [App\Http\Controllers\AthleteManagersController::class, 'getLists'])->name('get-lists');
-            Route::get('/create', [App\Http\Controllers\AthleteManagersController::class, 'create'])->name('create');
-            Route::post('/save', [App\Http\Controllers\AthleteManagersController::class, 'save'])->name('save');
-            Route::get('/edit/{id}', [App\Http\Controllers\AthleteManagersController::class, 'edit'])->name('edit');
-            Route::post('/update', [App\Http\Controllers\AthleteManagersController::class, 'update'])->name('update');
+            Route::get('/', [App\Http\Controllers\OfficialController::class, 'index'])->name('index');
+            Route::get('/lists', [App\Http\Controllers\OfficialController::class, 'getLists'])->name('get-lists');
+            Route::get('/create', [App\Http\Controllers\OfficialController::class, 'create'])->name('create');
+            Route::post('/save', [App\Http\Controllers\OfficialController::class, 'save'])->name('save');
+            Route::get('/detail/{id}', [App\Http\Controllers\OfficialController::class, 'edit'])->name('edit');
+            Route::post('/update/{id}', [App\Http\Controllers\OfficialController::class, 'update'])->name('update');
+
+            Route::post('/approve/{id}', [App\Http\Controllers\OfficialController::class, 'approve']);
+            Route::post('/reject/{id}', [App\Http\Controllers\OfficialController::class, 'reject']);
+
+            Route::get('/id-card/{id}', [App\Http\Controllers\OfficialController::class, 'showIdCard']);
         });
     });
 
@@ -182,6 +203,17 @@ Route::group(['middleware' => ['auth']], function() {
                     Route::delete('/delete/{id}', [App\Http\Controllers\GaleryController::class, 'delete'])->name('delete');
                 });
             });
+            Route::prefix('agendas')->group(function () {
+                Route::name('agendas.')->group(function () {
+                    Route::get('/', [App\Http\Controllers\AgendaController::class, 'index'])->name('index');
+                    Route::get('/lists', [App\Http\Controllers\AgendaController::class, 'getLists'])->name('get-lists');
+                    Route::get('/create', [App\Http\Controllers\AgendaController::class, 'create'])->name('create');
+                    Route::post('/save', [App\Http\Controllers\AgendaController::class, 'save'])->name('save');
+                    Route::get('/edit/{id}', [App\Http\Controllers\AgendaController::class, 'edit'])->name('edit');
+                    Route::post('/update/{id}', [App\Http\Controllers\AgendaController::class, 'update'])->name('update');
+                    Route::delete('/delete/{id}', [App\Http\Controllers\AgendaController::class, 'delete'])->name('delete');
+                });
+            });
         });
     });
 
@@ -232,6 +264,18 @@ Route::group(['middleware' => ['auth']], function() {
             Route::get('/edit/{id}', [App\Http\Controllers\SubRayonController::class, 'edit'])->name('edit');
             Route::post('/update/{id}', [App\Http\Controllers\SubRayonController::class, 'update'])->name('update');
             Route::post('/delete', [App\Http\Controllers\SubRayonController::class, 'delete'])->name('delete');
+        });
+    });
+
+    Route::prefix('events')->group(function () {
+        Route::name('events.')->group(function () {
+            Route::get('/', [App\Http\Controllers\EventController::class, 'index'])->name('index');
+            Route::get('/lists', [App\Http\Controllers\EventController::class, 'getLists'])->name('get-lists');
+            Route::get('/create', [App\Http\Controllers\EventController::class, 'create'])->name('create');
+            Route::post('/save', [App\Http\Controllers\EventController::class, 'save'])->name('save');
+            Route::get('/edit/{id}', [App\Http\Controllers\EventController::class, 'edit'])->name('edit');
+            Route::post('/update/{id}', [App\Http\Controllers\EventController::class, 'update'])->name('update');
+            Route::delete('/delete/{id}', [App\Http\Controllers\EventController::class, 'delete'])->name('delete');
         });
     });
 });

@@ -74,7 +74,7 @@ class RegistrationController extends Controller
                 return response()->json(['success' => false, 'message' => 'Registration not found.'], 404);
             }
 
-            DB::table('users')->insert([
+            $userId = DB::table('users')->insertGetId([
                 'name' => $registration->username,
                 'email' => $registration->email,
                 'password' => $registration->password_hash,
@@ -87,6 +87,15 @@ class RegistrationController extends Controller
             DB::table('registration_requests')->where('id', $id)->update([
                 'approval_status' => 1,
                 'approval_date' => now(),
+            ]);
+
+            DB::table('managers')->insert([
+                'name' => $registration->nama_lengkap,
+                'email' => $registration->email,
+                'password' => $registration->password_hash,
+                'kecamatan_id' => $registration->kecamatan_id,
+                'sub_rayon_id' => $registration->sub_rayon_id,
+                'user_id' => $userId
             ]);
 
             DB::commit();

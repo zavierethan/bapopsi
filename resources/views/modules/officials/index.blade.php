@@ -2,119 +2,76 @@
 
 @section('main-content')
 <div class="app-main flex-column flex-row-fluid" id="kt_app_main">
-    <!--begin::Content wrapper-->
     <div class="d-flex flex-column flex-column-fluid">
-        <!--begin::Toolbar-->
         <div id="kt_app_toolbar" class="app-toolbar py-3 py-lg-6">
-            <!--begin::Toolbar container-->
             <div id="kt_app_toolbar_container" class="app-container container-fluid d-flex flex-stack">
-                <!--begin::Page title-->
                 <div class="page-title d-flex flex-column justify-content-center flex-wrap me-3">
-                    <!--begin::Title-->
                     <h1 class="page-heading d-flex text-gray-900 fw-bold fs-3 flex-column justify-content-center my-0">
-                        Atlet</h1>
-                    <!--end::Title-->
-                    <!--begin::Breadcrumb-->
+                        Officials</h1>
                     <ul class="breadcrumb breadcrumb-separatorless fw-semibold fs-7 my-0 pt-1">
-                        <!--begin::Item-->
                         <li class="breadcrumb-item text-muted">
                             <a href="index.html" class="text-muted text-hover-primary">Data Atlet</a>
                         </li>
-                        <!--end::Item-->
-                        <!--begin::Item-->
                         <li class="breadcrumb-item">
                             <span class="bullet bg-gray-500 w-5px h-2px"></span>
                         </li>
-                        <!--end::Item-->
-                        <!--begin::Item-->
-                        <li class="breadcrumb-item text-muted">Atlet</li>
-                        <!--end::Item-->
+                        <li class="breadcrumb-item text-muted">Officials</li>
                     </ul>
-                    <!--end::Breadcrumb-->
                 </div>
-                <!--end::Page title-->
                 <div class="d-flex align-items-center gap-2 gap-lg-3">
-                    <!--begin::Primary button-->
-                    <a href="{{route('athletes.create')}}" class="btn btn-sm fw-bold btn-primary">New</a>
-                    <!--end::Primary button-->
+                    <a href="{{route('officials.create')}}" class="btn btn-sm fw-bold btn-primary">New</a>
                 </div>
             </div>
-            <!--end::Toolbar container-->
         </div>
-        <!--end::Toolbar-->
-        <!--begin::Content-->
         <div id="kt_app_content" class="app-content flex-column-fluid">
-            <!--begin::Content container-->
             <div id="kt_app_content_container" class="app-container container-fluid">
-                <!--begin::Row-->
                 <div class="row g-5 g-xl-10 mb-5 mb-xl-10">
-                    <!--begin::Table-->
                     <div class="card">
-                        <!--begin::Card header-->
                         <div class="card-header border-0 pt-6">
-                            <!--begin::Card title-->
                             <div class="card-title">
                                 <!--begin::Search-->
 
                                 <!--end::Search-->
                             </div>
-                            <!--begin::Card title-->
-                            <!--begin::Card toolbar-->
                             <div class="card-toolbar">
-                                <!--begin::Toolbar-->
-                                <div class="d-flex align-items-center position-relative my-1">
-                                    <!--begin::Svg Icon | path: icons/duotune/general/gen021.svg-->
-                                    <span class="svg-icon svg-icon-1 position-absolute ms-6">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                            viewBox="0 0 24 24" fill="none">
-                                            <rect opacity="0.5" x="17.0365" y="15.1223" width="8.15546" height="2"
-                                                rx="1" transform="rotate(45 17.0365 15.1223)" fill="black" />
-                                            <path
-                                                d="M11 19C6.55556 19 3 15.4444 3 11C3 6.55556 6.55556 3 11 3C15.4444 3 19 6.55556 19 11C19 15.4444 15.4444 19 11 19ZM11 5C7.53333 5 5 7.53333 5 11C5 14.4667 7.53333 17 11 17C14.4667 17 17 14.4667 17 11C17 7.53333 14.4667 5 11 5Z"
-                                                fill="black" />
-                                        </svg>
-                                    </span>
-                                    <!--end::Svg Icon-->
-                                    <input type="text" data-kt-customer-table-filter="search"
-                                        class="form-control form-control-solid w-250px ps-15" placeholder="Search" />
+                                <div class="d-flex flex-stack flex-wrap gap-4">
+                                    <div class="position-relative my-1">
+                                        <i
+                                            class="ki-duotone ki-magnifier fs-2 position-absolute top-50 translate-middle-y ms-4">
+                                            <span class="path1"></span>
+                                            <span class="path2"></span>
+                                        </i>
+                                        <input type="text" data-kt-menu-table-filter="search"
+                                            class="form-control form-control-solid w-250px ps-15"
+                                            placeholder="Search" />
+                                    </div>
                                 </div>
-                                <!--end::Toolbar-->
                             </div>
-                            <!--end::Card toolbar-->
                         </div>
-                        <!--end::Card header-->
-                        <!--begin::Card body-->
                         <div class="card-body pt-0 overflow-x-auto">
-                            <!--begin::Table-->
-                            <table class="table align-middle table-row-dashed fs-6 gy-5" id="kt_groups_table">
+                            <table class="table align-middle table-row-dashed fs-6 gy-5" id="kt_menus_table">
                                 <thead>
                                     <tr class="text-start text-gray-700 fw-bolder fs-7 text-uppercase gs-0">
                                         <th class="min-w-125px">Nama Lengkap</th>
+                                        <th class="min-w-125px">Jabatan</th>
                                         <th class="min-w-125px">Kecamatan</th>
                                         <th class="min-w-125px">Sub Rayon</th>
                                         <th class="min-w-125px">Cabang Olahraga</th>
                                         <th class="min-w-125px">Approval Status</th>
                                         <th class="min-w-125px">Catatan Approval</th>
                                         <th class="min-w-125px">Tanggal Approval</th>
-                                        <th class="min-w-125px text-center">Actions</th>
+                                        <th class="text-center min-w-70px">Actions</th>
                                     </tr>
                                 </thead>
-                                <tbody class="fw-semibold text-gray-700">
+                                <tbody class="fw-bold text-gray-600">
                                 </tbody>
                             </table>
-                            <!--end::Table-->
                         </div>
-                        <!--end::Card body-->
                     </div>
-                    <!--end::Table-->
                 </div>
-                <!--end::Row-->
             </div>
-            <!--end::Content container-->
         </div>
-        <!--end::Content-->
     </div>
-    <!--end::Content wrapper-->
 </div>
 
 <div class="modal fade" id="pdfPreviewModal" tabindex="-1" aria-labelledby="pdfPreviewModalLabel" aria-hidden="true">
@@ -135,21 +92,42 @@
 @section('script')
 <script>
 const userRoleId = {{ Auth::user()->group_id }};
-$("#kt_groups_table").DataTable({
+var table = $("#kt_menus_table").DataTable({
     processing: true,
     serverSide: true,
     paging: true,
     pageLength: 10,
     ajax: {
-        url: `{{ route('athletes.get-lists') }}`,
+        url: `{{route('officials.get-lists')}}`,
         type: 'GET',
-        dataSrc: 'data'
+        data: function(d) {
+            d.parent_id = $('#parent-id').val();
+        },
+        dataSrc: function(json) {
+            return json.data;
+        }
     },
     columns: [
-        { data: 'nama_lengkap', name: 'nama_lengkap' },
-        { data: 'nama_kecamatan', name: 'nama_kecamatan' },
-        { data: 'nama_sub_rayon', name: 'nama_sub_rayon' },
-        { data: 'cabang_olahraga', name: 'cabang_olahraga' },
+        {
+            data: 'nama',
+            name: 'nama'
+        },
+        {
+            data: 'nama_jabatan',
+            name: 'nama_jabatan'
+        },
+        {
+            data: 'nama_kecamatan',
+            name: 'nama_kecamatan'
+        },
+        {
+            data: 'nama_sub_rayon',
+            name: 'nama_sub_rayon'
+        },
+        {
+            data: 'nama_jabatan',
+            name: 'nama_jabatan'
+        },
         {
             data: 'approval_status',
             name: 'approval_status',
@@ -164,20 +142,25 @@ $("#kt_groups_table").DataTable({
                 return `<span class="${badgeClass}">${data}</span>`;
             }
         },
-        { data: 'appr_notes', name: 'appr_notes' },
-        { data: 'approval_date', name: 'approval_date' },
+        {
+            data: 'appr_notes',
+            name: 'appr_notes'
+        },
+        {
+            data: 'approval_date',
+            name: 'approval_date'
+        },
         {
             data: null,
             name: 'action',
             orderable: false,
             searchable: false,
             className: 'text-center',
-            render: function (data, type, row) {
+            render: function(data, type, row) {
                 if (row.approval_status === 'Waiting Approval') {
-                    if (userRoleId === 14) { // approval hanya bisa di lakukan oleh admin dan superadmin
+                    if (userRoleId === 14 || userRoleId === 1 ) { // approval hanya bisa di lakukan oleh admin dan superadmin
                         return `
                             <div class="flex justify-center gap-2">
-                                <a href="/athletes/detail/${row.id}" class="btn btn-sm btn-primary">Lihat</a>
                                 <button class="btn btn-sm btn-success btn-approve" data-id="${row.id}">Approve</button>
                                 <button class="btn btn-sm btn-danger btn-reject" data-id="${row.id}">Reject</button>
                             </div>
@@ -185,29 +168,37 @@ $("#kt_groups_table").DataTable({
                     } else {
                         return `
                             <div class="flex justify-center">
-                                <a href="/athletes/detail/${row.id}" class="btn btn-sm btn-primary">Lihat</a>
+                                <button class="btn btn-sm btn-success btn-print-id-card" data-id="${row.id}">Cetak ID Card</button>
                             </div>
                         `;
                     }
-                } else if (row.approval_status === 'Approved'){
+                } else {
                     return `
                         <div class="flex justify-center">
-                            <a href="/athletes/detail/${row.id}" class="btn btn-sm btn-primary">Lihat</a>
                             <button class="btn btn-sm btn-success btn-print-id-card" data-id="${row.id}">Cetak ID Card</button>
                         </div>
                     `;
-                } else {
-                   return `
-                            <div class="flex justify-center">
-                                <a href="/athletes/detail/${row.id}" class="btn btn-sm btn-primary">Lihat</a>
-                            </div>
-                        `;
                 }
             }
         }
     ]
 });
 
+$('[data-kt-menu-table-filter="search"]').on('keyup', function() {
+    const searchTerm = $(this).val();
+    table.search(searchTerm).draw();
+});
+
+$(document).on('click', '.btn-print-id-card', function () {
+    const officialId = $(this).data('id');
+    const url = `/officials/id-card/${officialId}`; // route to controller
+
+    // Set URL ke iframe untuk load konten
+    $('#pdfIframe').attr('src', url);
+
+    // Tampilkan modal
+    $('#pdfPreviewModal').modal('show');
+});
 
 $(document).on('click', '.btn-approve', function() {
     const id = $(this).data('id');
@@ -224,7 +215,7 @@ $(document).on('click', '.btn-approve', function() {
     }).then((result) => {
         if (result.isConfirmed) {
             $.ajax({
-                url: `/athletes/approve/${id}`,
+                url: `/officials/approve/${id}`,
                 type: 'POST',
                 data: {
                     _token: '{{ csrf_token() }}'
@@ -233,11 +224,11 @@ $(document).on('click', '.btn-approve', function() {
                     Swal.fire({
                         icon: 'success',
                         title: 'Berhasil!',
-                        text: 'Atlet berhasil disetujui.',
+                        text: 'Official berhasil disetujui.',
                         timer: 2000,
                         showConfirmButton: false
                     });
-                    $('#kt_groups_table').DataTable().ajax.reload(null, false);
+                    $('#kt_menus_table').DataTable().ajax.reload(null, false);
                 },
                 error: function(xhr) {
                     console.error(xhr.responseText);
@@ -257,31 +248,42 @@ $(document).on('click', '.btn-reject', function() {
     const id = $(this).data('id');
 
     Swal.fire({
-        title: 'Tolak Atlet?',
-        text: "Apakah kamu yakin ingin menolak atlet ini?",
+        title: 'Tolak Official?',
+        text: "Masukkan alasan penolakan Official ini:",
         icon: 'warning',
+        input: 'textarea',
+        inputPlaceholder: 'Contoh: Dokumen tidak lengkap...',
+        inputAttributes: {
+            'aria-label': 'Masukkan alasan penolakan'
+        },
         showCancelButton: true,
         confirmButtonColor: '#d33',
         cancelButtonColor: '#6c757d',
         confirmButtonText: 'Ya, Tolak!',
-        cancelButtonText: 'Batal'
+        cancelButtonText: 'Batal',
+        inputValidator: (value) => {
+            if (!value) {
+                return 'Alasan penolakan wajib diisi!';
+            }
+        }
     }).then((result) => {
         if (result.isConfirmed) {
             $.ajax({
-                url: `/athletes/reject/${id}`,
+                url: `/officials/reject/${id}`,
                 type: 'POST',
                 data: {
-                    _token: '{{ csrf_token() }}'
+                    _token: '{{ csrf_token() }}',
+                    reason: result.value
                 },
                 success: function() {
                     Swal.fire({
                         icon: 'success',
                         title: 'Berhasil!',
-                        text: 'Atlet berhasil ditolak.',
+                        text: 'Official berhasil ditolak.',
                         timer: 2000,
                         showConfirmButton: false
                     });
-                    $('#kt_groups_table').DataTable().ajax.reload();
+                    $('#kt_menus_table').DataTable().ajax.reload();
                 },
                 error: function(xhr) {
                     console.error(xhr.responseText);
@@ -296,15 +298,5 @@ $(document).on('click', '.btn-reject', function() {
     });
 });
 
-$(document).on('click', '.btn-print-id-card', function () {
-    const atletId = $(this).data('id');
-    const url = `/athletes/id-card/${atletId}`; // route to controller
-
-    // Set URL ke iframe untuk load konten
-    $('#pdfIframe').attr('src', url);
-
-    // Tampilkan modal
-    $('#pdfPreviewModal').modal('show');
-});
 </script>
 @endsection
