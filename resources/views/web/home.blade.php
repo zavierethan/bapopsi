@@ -221,29 +221,10 @@ let currentType = 'latest';
 
 $(document).ready(function() {
 
-    $('.kecamatan-row').on('click', function() {
-        var kecamatan = $(this).data('kecamatan');
-        var atlet = atletDetailData[kecamatan] || [];
-        currentAtletList = atlet;
-        renderAtletTable(atlet);
-        $('#atlet-detail-title').text('Daftar Atlet - ' + kecamatan);
-        $('#atlet-detail-wrapper').removeClass('hidden');
-        // Reset filter
-        $('#filter-sekolah').val('');
-        $('#filter-medali').val('');
-        $('#filter-allword').val('');
-        // Scroll ke tabel detail
-        $('html, body').animate({ scrollTop: $('#atlet-detail-wrapper').offset().top - 100 }, 500);
-    });
-    $('#filter-sekolah, #filter-medali').on('change', applyAtletFilter);
-    $('#filter-allword').on('input', applyAtletFilter);
-    $('#btn-back-kecamatan').on('click', function() {
-        $('#atlet-detail-wrapper').addClass('hidden');
-        $('html, body').animate({ scrollTop: $('#kecamatanTable').offset().top - 100 }, 500);
-    });
-
-    // Tambahkan script untuk load berita dengan kategori
     loadArticles(currentType);
+    loadGalery();
+    loadMedalSummary();
+    loadKecamatanTable();
 
     $('#news-tabs').on('click', '.tab-btn', function() {
         $('.tab-btn').removeClass(
@@ -256,240 +237,6 @@ $(document).ready(function() {
         const searchQuery = $('#searchInput').val();
         loadArticles(currentType, searchQuery);
     });
-
-    // Galeri Panel Home
-    $.ajax({
-        url: '/api/posts/galeries',
-        type: 'GET',
-        dataType: 'json',
-        success: function(response) {
-            let galleries = response.data.slice(0, 8); // tampilkan max 8 galeri
-            let html = '';
-            if (galleries.length === 0) {
-                $('#gallery-empty-home').removeClass('hidden');
-            } else {
-                $('#gallery-empty-home').addClass('hidden');
-                $.each(galleries, function(index, article) {
-                    html += `
-                        <div class="group bg-white rounded-xl shadow-lg border overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:scale-105 cursor-pointer">
-                            <div class="relative overflow-hidden">
-                                <img src="/storage/${article.image_url}" alt="${article.title}"
-                                    class="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-300" />
-                                <div class="absolute top-3 right-3">
-                                    <span class="bg-gradient-to-r from-orange-500 to-red-500 text-white px-3 py-1 rounded-full text-xs font-medium">${article.category}</span>
-                                </div>
-                            </div>
-                            <div class="p-4">
-                                <h3 class="font-bold text-gray-900 mb-2 line-clamp-2 text-sm leading-tight">${article.title || 'Judul Kegiatan'}</h3>
-                                <p class="text-gray-600 text-xs mb-3 line-clamp-2">${article.description || ''}</p>
-                                <div class="flex items-center justify-between text-xs text-gray-500">
-                                    <div class="flex items-center space-x-1">
-                                        <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 24 24">
-                                            <path d="M19 4h-1V2h-2v2H8V2H6v2H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2V6a2 2 0 00-2-2zM5 20V9h14v11H5z" />
-                                        </svg>
-                                        <span>${new Date(article.created_at).toLocaleDateString('id-ID')}</span>
-                                    </div>
-                                    <div class="flex items-center space-x-1">
-                                        <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 24 24">
-                                            <path d="M12 2a7 7 0 00-7 7c0 5.25 7 13 7 13s7-7.75 7-13a7 7 0 00-7-7zm0 9.5a2.5 2.5 0 110-5 2.5 2.5 0 010 5z" />
-                                        </svg>
-                                        <span class="truncate max-w-20">${article.location || 'Bandung'}</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    `;
-                });
-                $('#galleries-wrapper-home').html(html);
-            }
-        },
-        error: function(xhr, status, error) {
-            $('#galleries-wrapper-home').html('<div class="text-red-500">Gagal memuat data galeri.</div>');
-        }
-    });
-
-    // Dummy data kecamatan (20 data untuk contoh pagination)
-    const kecamatanData = [
-        { nama: 'Kec. Bandung Wetan', total: 8, emas: 3, perak: 2, perunggu: 3 },
-        { nama: 'Kec. Sumedang Selatan', total: 4, emas: 1, perak: 1, perunggu: 2 },
-        { nama: 'Kec. Cimahi Tengah', total: 3, emas: 1, perak: 1, perunggu: 1 },
-        { nama: 'Kec. Bojongsoang', total: 7, emas: 2, perak: 3, perunggu: 2 },
-        { nama: 'Kec. Cileunyi', total: 6, emas: 2, perak: 2, perunggu: 2 },
-        { nama: 'Kec. Dayeuhkolot', total: 5, emas: 1, perak: 2, perunggu: 2 },
-        { nama: 'Kec. Rancaekek', total: 9, emas: 4, perak: 3, perunggu: 2 },
-        { nama: 'Kec. Soreang', total: 10, emas: 5, perak: 3, perunggu: 2 },
-        { nama: 'Kec. Baleendah', total: 6, emas: 2, perak: 2, perunggu: 2 },
-        { nama: 'Kec. Cicalengka', total: 7, emas: 3, perak: 2, perunggu: 2 },
-        { nama: 'Kec. Ciparay', total: 8, emas: 3, perak: 3, perunggu: 2 },
-        { nama: 'Kec. Majalaya', total: 5, emas: 2, perak: 1, perunggu: 2 },
-        { nama: 'Kec. Katapang', total: 4, emas: 1, perak: 1, perunggu: 2 },
-        { nama: 'Kec. Cangkuang', total: 6, emas: 2, perak: 2, perunggu: 2 },
-        { nama: 'Kec. Pameungpeuk', total: 7, emas: 2, perak: 3, perunggu: 2 },
-        { nama: 'Kec. Banjaran', total: 8, emas: 3, perak: 3, perunggu: 2 },
-        { nama: 'Kec. Arjasari', total: 5, emas: 2, perak: 1, perunggu: 2 },
-        { nama: 'Kec. Cimaung', total: 4, emas: 1, perak: 1, perunggu: 2 },
-        { nama: 'Kec. Pacet', total: 6, emas: 2, perak: 2, perunggu: 2 },
-        { nama: 'Kec. Ibun', total: 7, emas: 3, perak: 2, perunggu: 2 }
-    ];
-    const rowsPerPage = 10;
-    let currentPage = 1;
-    let filteredKecamatan = [...kecamatanData];
-    function renderKecamatanTable(page = 1) {
-        const start = (page - 1) * rowsPerPage;
-        const end = start + rowsPerPage;
-        const pageData = filteredKecamatan.slice(start, end);
-        let html = '';
-        pageData.forEach(function(item, idx) {
-            html += `<tr>
-                <td class="px-6 py-4 whitespace-nowrap text-black">${start + idx + 1}</td>
-                <td class="px-6 py-4 whitespace-nowrap font-semibold text-blue-700 underline cursor-pointer kecamatan-nama" data-kecamatan="${item.nama}">${item.nama}</td>
-                <td class="px-6 py-4 whitespace-nowrap text-black">${item.total}</td>
-                <td class="px-6 py-4 whitespace-nowrap text-black">${item.emas}</td>
-                <td class="px-6 py-4 whitespace-nowrap text-black">${item.perak}</td>
-                <td class="px-6 py-4 whitespace-nowrap text-black">${item.perunggu}</td>
-            </tr>`;
-        });
-        $('#kecamatan-tbody').html(html);
-        // Attach click event for kecamatan name
-        $('.kecamatan-nama').off('click').on('click', function() {
-            const nama = $(this).data('kecamatan');
-            const atlet = atletDetailData[nama] || [];
-            let atletHtml = '';
-            if (atlet.length === 0) {
-                atletHtml = '<tr><td colspan="5" class="text-center py-8 text-gray-400">Belum ada data atlet untuk kecamatan ini.</td></tr>';
-            } else {
-                atlet.forEach(function(a, idx) {
-                    atletHtml += `<tr>
-                        <td class=\"px-4 py-4 whitespace-nowrap text-black\">${idx+1}</td>
-                        <td class=\"px-4 py-4 whitespace-nowrap font-semibold text-black\">${a.nama}</td>
-                        <td class=\"px-4 py-4 whitespace-nowrap text-black\">${a.sekolah}</td>
-                        <td class=\"px-4 py-4 whitespace-nowrap text-black\">${a.total}</td>
-                        <td class=\"px-4 py-4 whitespace-nowrap text-black\">${a.jenis}</td>
-                    </tr>`;
-                });
-            }
-            $('#modal-atlet-title').text('Daftar Atlet - ' + nama);
-            $('#modal-atlet-tbody').html(atletHtml);
-            $('#modal-atlet').removeClass('hidden');
-        });
-    }
-    function renderPagination() {
-        const totalPages = Math.ceil(filteredKecamatan.length / rowsPerPage);
-        let html = '';
-        for (let i = 1; i <= totalPages; i++) {
-            html += `<button class="px-4 py-2 mx-1 rounded-lg border ${i === currentPage ? 'bg-orange-500 text-white' : 'bg-white text-gray-700 hover:bg-orange-100'}" onclick="goToPage(${i})">${i}</button>`;
-        }
-        $('#pagination-wrapper').html(html);
-    }
-    function goToPage(page) {
-        currentPage = page;
-        renderKecamatanTable(page);
-        renderPagination();
-    }
-    function renderKecamatanDropdown() {
-        const kecamatanSet = new Set(kecamatanData.map(item => item.nama));
-        let html = '<option value="">Semua Kecamatan</option>';
-        kecamatanSet.forEach(function(nama) {
-            html += `<option value="${nama}">${nama}</option>`;
-        });
-        $('#filter-kecamatan').html(html);
-    }
-    $('#filter-kecamatan').on('change', function() {
-        const val = $(this).val();
-        if (val) {
-            filteredKecamatan = kecamatanData.filter(item => item.nama === val);
-        } else {
-            filteredKecamatan = [...kecamatanData];
-        }
-        currentPage = 1;
-        renderKecamatanTable(currentPage);
-        renderPagination();
-    });
-    $(document).ready(function() {
-        renderKecamatanDropdown();
-        renderKecamatanTable(1);
-        renderPagination();
-        renderMedaliSummary();
-    });
-    $('#close-modal-atlet').on('click', function() {
-        $('#modal-atlet').addClass('hidden');
-    });
-    $(document).on('keydown', function(e) {
-        if (e.key === 'Escape') {
-            $('#modal-atlet').addClass('hidden');
-        }
-    });
-    function renderModalAtletTable(list) {
-        let html = '';
-        if (list.length === 0) {
-            html = '<tr><td colspan="5" class="text-center py-8 text-gray-400">Belum ada data atlet untuk filter ini.</td></tr>';
-        } else {
-            list.forEach(function(a, idx) {
-                html += `<tr>
-                    <td class=\"px-4 py-4 whitespace-nowrap text-black\">${idx+1}</td>
-                    <td class=\"px-4 py-4 whitespace-nowrap font-semibold text-black\">${a.nama}</td>
-                    <td class=\"px-4 py-4 whitespace-nowrap text-black\">${a.sekolah}</td>
-                    <td class=\"px-4 py-4 whitespace-nowrap text-black\">${a.total}</td>
-                    <td class=\"px-4 py-4 whitespace-nowrap text-black\">${a.jenis}</td>
-                </tr>`;
-            });
-        }
-        $('#modal-atlet-tbody').html(html);
-    }
-    let modalAtletList = [];
-    // Attach click event for kecamatan name (replace previous logic)
-    $('.kecamatan-nama').off('click').on('click', function() {
-        const nama = $(this).data('kecamatan');
-        const atlet = atletDetailData[nama] || [];
-        modalAtletList = atlet;
-        renderModalAtletTable(atlet);
-        $('#modal-atlet-title').text('Daftar Atlet - ' + nama);
-        $('#modal-atlet').removeClass('hidden');
-        // Reset filter
-        $('#filter-nama-atlet').val('');
-        $('#filter-sekolah-atlet').val('');
-    });
-    // Filter logic for modal
-    $('#filter-nama-atlet, #filter-sekolah-atlet').on('input', function() {
-        let namaVal = $('#filter-nama-atlet').val().toLowerCase();
-        let sekolahVal = $('#filter-sekolah-atlet').val().toLowerCase();
-        let filtered = modalAtletList.filter(function(a) {
-            let matchNama = !namaVal || a.nama.toLowerCase().includes(namaVal);
-            let matchSekolah = !sekolahVal || a.sekolah.toLowerCase().includes(sekolahVal);
-            return matchNama && matchSekolah;
-        });
-        renderModalAtletTable(filtered);
-    });
-
-    // JS Section: Tambahkan perhitungan dan tampilan ringkasan medali
-    function renderMedaliSummary() {
-        let totalEmas = 0, totalPerak = 0, totalPerunggu = 0;
-        kecamatanData.forEach(function(item) {
-            totalEmas += item.emas;
-            totalPerak += item.perak;
-            totalPerunggu += item.perunggu;
-        });
-        const totalMedali = totalEmas + totalPerak + totalPerunggu;
-        const persen = (val) => totalMedali ? ((val/totalMedali)*100).toFixed(1) : '0.0';
-        const html = `
-            <div class='flex-1 flex items-center gap-3 bg-yellow-50 border-l-4 border-yellow-400 rounded-xl p-4 shadow'>
-                <span class='text-3xl font-bold text-yellow-500'><i class="fas fa-medal"></i> ${totalEmas}</span>
-                <span class='text-gray-700 font-semibold'>Emas</span>
-                <span class='ml-auto text-sm text-gray-500'>${persen(totalEmas)}%</span>
-            </div>
-            <div class='flex-1 flex items-center gap-3 bg-gray-100 border-l-4 border-gray-400 rounded-xl p-4 shadow'>
-                <span class='text-3xl font-bold text-gray-500'><i class="fas fa-medal"></i> ${totalPerak}</span>
-                <span class='text-gray-700 font-semibold'>Perak</span>
-                <span class='ml-auto text-sm text-gray-500'>${persen(totalPerak)}%</span>
-            </div>
-            <div class='flex-1 flex items-center gap-3 bg-orange-100 border-l-4 border-orange-400 rounded-xl p-4 shadow'>
-                <span class='text-3xl font-bold text-orange-500'><i class="fas fa-medal"></i> ${totalPerunggu}</span>
-                <span class='text-gray-700 font-semibold'>Perunggu</span>
-                <span class='ml-auto text-sm text-gray-500'>${persen(totalPerunggu)}%</span>
-            </div>
-        `;
-        $('#medali-summary').html(html);
-    }
 });
 
 function loadArticles(type = 'latest', search = '') {
@@ -558,5 +305,135 @@ function loadArticles(type = 'latest', search = '') {
         }
     });
 }
+
+function loadGalery() {
+    $.ajax({
+        url: '/api/posts/galeries',
+        type: 'GET',
+        dataType: 'json',
+        success: function(response) {
+            let galleries = response.data.slice(0, 8); // tampilkan max 8 galeri
+            let html = '';
+            if (galleries.length === 0) {
+                $('#gallery-empty-home').removeClass('hidden');
+            } else {
+                $('#gallery-empty-home').addClass('hidden');
+                $.each(galleries, function(index, article) {
+                    html += `
+                        <div class="group bg-white rounded-xl shadow-lg border overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:scale-105 cursor-pointer">
+                            <div class="relative overflow-hidden">
+                                <img src="/storage/${article.image_url}" alt="${article.title}"
+                                    class="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-300" />
+                                <div class="absolute top-3 right-3">
+                                    <span class="bg-gradient-to-r from-orange-500 to-red-500 text-white px-3 py-1 rounded-full text-xs font-medium">${article.category}</span>
+                                </div>
+                            </div>
+                            <div class="p-4">
+                                <h3 class="font-bold text-gray-900 mb-2 line-clamp-2 text-sm leading-tight">${article.title || 'Judul Kegiatan'}</h3>
+                                <p class="text-gray-600 text-xs mb-3 line-clamp-2">${article.description || ''}</p>
+                                <div class="flex items-center justify-between text-xs text-gray-500">
+                                    <div class="flex items-center space-x-1">
+                                        <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 24 24">
+                                            <path d="M19 4h-1V2h-2v2H8V2H6v2H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2V6a2 2 0 00-2-2zM5 20V9h14v11H5z" />
+                                        </svg>
+                                        <span>${new Date(article.created_at).toLocaleDateString('id-ID')}</span>
+                                    </div>
+                                    <div class="flex items-center space-x-1">
+                                        <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 24 24">
+                                            <path d="M12 2a7 7 0 00-7 7c0 5.25 7 13 7 13s7-7.75 7-13a7 7 0 00-7-7zm0 9.5a2.5 2.5 0 110-5 2.5 2.5 0 010 5z" />
+                                        </svg>
+                                        <span class="truncate max-w-20">${article.location || 'Bandung'}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                });
+                $('#galleries-wrapper-home').html(html);
+            }
+        },
+        error: function(xhr, status, error) {
+            $('#galleries-wrapper-home').html('<div class="text-red-500">Gagal memuat data galeri.</div>');
+        }
+    });
+}
+
+function loadMedalSummary() {
+    $.ajax({
+        url: '/api/getTotalMedalSummary',
+        method: 'GET',
+        dataType: 'json',
+        success: function(data) {
+            totalEmas = parseInt(data.emas) || 0;
+            totalPerak = parseInt(data.perak) || 0;
+            totalPerunggu = parseInt(data.perunggu) || 0;
+
+            const html = `
+                <div class='flex-1 flex items-center gap-3 bg-yellow-50 border-l-4 border-yellow-400 rounded-xl p-4 shadow'>
+                    <span class='text-3xl font-bold text-yellow-500'><i class="fas fa-medal"></i> ${totalEmas}</span>
+                    <span class='text-gray-700 font-semibold'>Emas</span>
+                    <span class='ml-auto text-sm text-gray-500'>${persen(totalEmas)}%</span>
+                </div>
+                <div class='flex-1 flex items-center gap-3 bg-gray-100 border-l-4 border-gray-400 rounded-xl p-4 shadow'>
+                    <span class='text-3xl font-bold text-gray-500'><i class="fas fa-medal"></i> ${totalPerak}</span>
+                    <span class='text-gray-700 font-semibold'>Perak</span>
+                    <span class='ml-auto text-sm text-gray-500'>${persen(totalPerak)}%</span>
+                </div>
+                <div class='flex-1 flex items-center gap-3 bg-orange-100 border-l-4 border-orange-400 rounded-xl p-4 shadow'>
+                    <span class='text-3xl font-bold text-orange-500'><i class="fas fa-medal"></i> ${totalPerunggu}</span>
+                    <span class='text-gray-700 font-semibold'>Perunggu</span>
+                    <span class='ml-auto text-sm text-gray-500'>${persen(totalPerunggu)}%</span>
+                </div>
+            `;
+
+            $('#medali-summary').html(html);
+        },
+        error: function(xhr, status, error) {
+            console.error('Gagal memuat data medali:', error);
+            $('#medali-summary').html('<p class="text-red-500">Gagal memuat data medali.</p>');
+        }
+    });
+}
+
+function loadKecamatanTable() {
+    $.ajax({
+        url: '/api/getKecamatanMedalSummary',
+        method: 'GET',
+        dataType: 'json',
+        success: function(data) {
+            let rows = '';
+
+            data.forEach((item, index) => {
+                rows += `
+                    <tr>
+                        <td class="px-6 py-4 whitespace-nowrap text-black">${index + 1}</td>
+                        <td class="px-6 py-4 whitespace-nowrap font-semibold text-blue-700 underline cursor-pointer kecamatan-nama" data-kecamatan="${item.nama}">${item.nama}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-black">${item.total}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-black">${item.emas}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-black">${item.perak}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-black">${item.perunggu}</td>
+                    </tr>
+                `;
+            });
+
+            $('#kecamatan-tbody').html(rows);
+        },
+        error: function(xhr, status, error) {
+            console.error('Gagal memuat data kecamatan:', error);
+            $('#modal-atlet-tbody').html('<tr><td colspan="6" class="text-center text-red-500 py-4">Gagal memuat data.</td></tr>');
+        }
+    });
+}
+
+let totalEmas = 0;
+let totalPerak = 0;
+let totalPerunggu = 0;
+
+function persen(count) {
+    const total = totalEmas + totalPerak + totalPerunggu;
+    if (total === 0) return 0;
+    return ((count / total) * 100).toFixed(1);
+}
+
 </script>
 @endsection

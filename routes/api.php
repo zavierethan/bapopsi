@@ -26,6 +26,9 @@ Route::get('/getKelasByCabor/{caborId}', [App\Http\Controllers\SportController::
 // Dashboards Summary
 Route::get('dashboard/store/get-data-summary/', [App\Http\Controllers\Dashboards\StoreDashboardController::class, 'getTransactionSummary']);
 
+Route::get('/getKecamatanMedalSummary', [App\Http\Controllers\EventRegistrationController::class, 'getKecamatanMedalSummary']);
+Route::get('/getTotalMedalSummary', [App\Http\Controllers\EventRegistrationController::class, 'getTotalMedalSummary']);
+
 Route::prefix('posts')->group(function () {
     Route::name('posts.')->group(function () {
         Route::prefix('news')->group(function () {

@@ -339,4 +339,45 @@ class EventRegistrationController extends Controller
             'rejected' => $summary->rejected,
         ]);
     }
+
+    public function getKecamatanMedalSummary(Request $request) {
+        $query = DB::table('kecamatan as k')
+            ->leftJoin('event_registrations as er', 'er.kecamatan_id', '=', 'k.id')
+            ->leftJoin('atlet as a', 'a.event_reg_id', '=', 'er.id')
+            ->leftJoin('medals as m', 'm.atlet_id', '=', 'a.id')
+            ->select(
+                'k.id',
+                'k.nama',
+                DB::raw('COUNT(m.id) as total'),
+                DB::raw("COUNT(CASE WHEN m.medal_type = 'emas' THEN 1 END) as emas"),
+                DB::raw("COUNT(CASE WHEN m.medal_type = 'perak' THEN 1 END) as perak"),
+                DB::raw("COUNT(CASE WHEN m.medal_type = 'perunggu' THEN 1 END) as perunggu")
+            )
+            ->groupBy('k.id', 'k.nama')
+            ->orderBy('k.nama');
+
+        if ($request->has('kecamatan_id')) {
+            $query->where('k.id', $request->input('kecamatan_id'));
+        }
+
+        $results = $query->get();
+
+        return response()->json($results);
+    }
+
+    public function getTotalMedalSummary() {
+        $result = DB::table('kecamatan as k')
+            ->leftJoin('event_registrations as er', 'er.kecamatan_id', '=', 'k.id')
+            ->leftJoin('atlet as a', 'a.event_reg_id', '=', 'er.id')
+            ->leftJoin('medals as m', 'm.atlet_id', '=', 'a.id')
+            ->selectRaw("
+                COUNT(m.id) AS total,
+                COUNT(CASE WHEN m.medal_type = 'emas' THEN 1 END) AS emas,
+                COUNT(CASE WHEN m.medal_type = 'perak' THEN 1 END) AS perak,
+                COUNT(CASE WHEN m.medal_type = 'perunggu' THEN 1 END) AS perunggu
+            ")
+            ->first();
+
+            return response()->json($result);
+    }
 }
