@@ -215,7 +215,12 @@ function applyAtletFilter() {
     });
     renderAtletTable(filtered);
 }
+
+let debounceTimer;
+let currentType = 'latest';
+
 $(document).ready(function() {
+
     $('.kecamatan-row').on('click', function() {
         var kecamatan = $(this).data('kecamatan');
         var atlet = atletDetailData[kecamatan] || [];
@@ -238,68 +243,18 @@ $(document).ready(function() {
     });
 
     // Tambahkan script untuk load berita dengan kategori
-    function loadArticles(type = 'latest') {
-        $.ajax({
-            url: '/api/posts/news?type=' + type,
-            type: 'GET',
-            dataType: 'json',
-            success: function(response) {
-                let articles = response.data;
-                let html = '';
-                $.each(articles, function(index, article) {
-                    let contentText = $('<div>').html(article.content).text().substring(0, 100);
-                    html += `
-                        <a href="/berita/${article.slug}">
-                        <div class="bg-white rounded-xl shadow-lg border overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:scale-105 cursor-pointer min-w-[320px] max-w-xs">
-                            <img src="/storage/${article.thumbnail_url}" alt="${article.title}" class="w-full h-48 object-cover" />
-                            <div class="p-6">
-                                <div class="flex items-center justify-between mb-3">
-                                    <span class="bg-gradient-to-r from-orange-500 to-red-500 text-white px-3 py-1 rounded-full text-xs font-medium">${article.category}</span>
-                                    <div class="flex items-center space-x-1 text-gray-500 text-xs">
-                                        <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 24 24">
-                                            <path d="M12 6v6l4 2" />
-                                            <path fill="none" d="M0 0h24v24H0z" />
-                                            <path d="M12 2a10 10 0 100 20 10 10 0 000-20z" />
-                                        </svg>
-                                        <span>3 menit</span>
-                                    </div>
-                                </div>
-                                <h3 class="text-lg font-bold text-gray-900 mb-2 line-clamp-2 leading-tight">${article.title}</h3>
-                                <p class="text-gray-600 text-sm mb-4 line-clamp-3">${contentText}...</p>
-                                <div class="flex items-center justify-between text-xs text-gray-500">
-                                    <div class="flex items-center space-x-1">
-                                        <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 24 24">
-                                            <path d="M12 12c2.7 0 5-2.3 5-5s-2.3-5-5-5-5 2.3-5 5 2.3 5 5 5zm0 2c-3.3 0-10 1.7-10 5v3h20v-3c0-3.3-6.7-5-10-5z" />
-                                        </svg>
-                                        <span>Admin</span>
-                                    </div>
-                                    <div class="flex items-center space-x-3">
-                                        <div class="flex items-center space-x-1">
-                                            <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 24 24">
-                                                <path d="M19 4h-1V2h-2v2H8V2H6v2H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2V6a2 2 0 00-2-2zM5 20V9h14v11H5z" />
-                                            </svg>
-                                            <span>${new Date(article.published_at).toLocaleDateString('id-ID')}</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        </a>
-                    `;
-                });
-                $('#articles-wrapper').html(html);
-            },
-            error: function(xhr, status, error) {
-                $('#articles-wrapper').html('<div class="text-red-500">Gagal memuat data artikel.</div>');
-            }
-        });
-    }
-    loadArticles('latest');
+    loadArticles(currentType);
+
     $('#news-tabs').on('click', '.tab-btn', function() {
-        $('.tab-btn').removeClass('bg-gradient-to-r from-orange-500 to-red-500 text-white shadow active').addClass('text-gray-700 bg-gray-100 hover:bg-orange-100');
-        $(this).addClass('bg-gradient-to-r from-orange-500 to-red-500 text-white shadow active').removeClass('text-gray-700 bg-gray-100 hover:bg-orange-100');
-        let type = $(this).data('type');
-        loadArticles(type);
+        $('.tab-btn').removeClass(
+                'bg-gradient-to-r from-orange-500 to-red-500 text-white shadow active')
+            .addClass('text-gray-700 bg-gray-100 hover:bg-orange-100');
+        $(this).addClass('bg-gradient-to-r from-orange-500 to-red-500 text-white shadow active')
+            .removeClass('text-gray-700 bg-gray-100 hover:bg-orange-100');
+
+        currentType = $(this).data('type');
+        const searchQuery = $('#searchInput').val();
+        loadArticles(currentType, searchQuery);
     });
 
     // Galeri Panel Home
@@ -536,5 +491,72 @@ $(document).ready(function() {
         $('#medali-summary').html(html);
     }
 });
+
+function loadArticles(type = 'latest', search = '') {
+    $.ajax({
+        url: '/api/posts/news',
+        type: 'GET',
+        data: {
+            type: type,
+            search: search
+        },
+        dataType: 'json',
+        success: function(response) {
+            let articles = response.data;
+            let html = '';
+            if (articles.length === 0) {
+                $('#articles-wrapper').html(
+                    '<div class="text-gray-500 text-center">Tidak ditemukan artikel.</div>');
+                return;
+            }
+
+            $.each(articles, function(index, article) {
+                let contentText = $('<div>').html(article.content).text().substring(0, 100);
+                html += `
+                    <a href="/berita/${article.slug}">
+                    <div class="bg-white rounded-xl shadow-lg border overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:scale-105 cursor-pointer">
+                        <img src="/storage/${article.thumbnail_url}" alt="${article.title}" class="w-full h-48 object-cover" />
+                        <div class="p-6">
+                            <div class="flex items-center justify-between mb-3">
+                                <span class="bg-gradient-to-r from-orange-500 to-red-500 text-white px-3 py-1 rounded-full text-xs font-medium">${article.category}</span>
+                                <div class="flex items-center space-x-1 text-gray-500 text-xs">
+                                    <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 24 24">
+                                        <path d="M12 6v6l4 2" />
+                                        <path fill="none" d="M0 0h24v24H0z" />
+                                        <path d="M12 2a10 10 0 100 20 10 10 0 000-20z" />
+                                    </svg>
+                                    <span>3 menit</span>
+                                </div>
+                            </div>
+                            <h3 class="text-lg font-bold text-gray-900 mb-2 line-clamp-2 leading-tight">${article.title}</h3>
+                            <p class="text-gray-600 text-sm mb-4 line-clamp-3">${contentText}...</p>
+                            <div class="flex items-center justify-between text-xs text-gray-500">
+                                <div class="flex items-center space-x-1">
+                                    <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 24 24">
+                                        <path d="M12 12c2.7 0 5-2.3 5-5s-2.3-5-5-5-5 2.3-5 5 2.3 5 5 5zm0 2c-3.3 0-10 1.7-10 5v3h20v-3c0-3.3-6.7-5-10-5z" />
+                                    </svg>
+                                    <span>${article.author ?? 'Admin'}</span>
+                                </div>
+                                <div class="flex items-center space-x-3">
+                                    <div class="flex items-center space-x-1">
+                                        <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 24 24">
+                                            <path d="M19 4h-1V2h-2v2H8V2H6v2H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2V6a2 2 0 00-2-2zM5 20V9h14v11H5z" />
+                                        </svg>
+                                        <span>${new Date(article.published_at).toLocaleDateString('id-ID')}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    </a>
+                `;
+            });
+            $('#articles-wrapper').html(html);
+        },
+        error: function() {
+            $('#articles-wrapper').html('<div class="text-red-500">Gagal memuat data artikel.</div>');
+        }
+    });
+}
 </script>
 @endsection

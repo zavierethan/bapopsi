@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
 use DB;
+use Auth;
 
 class NewsController extends Controller
 {
@@ -15,19 +16,25 @@ class NewsController extends Controller
 
     public function getLists(Request $request) {
 
-        $searchValue = $request->input('search.value');
+        $searchValue = $request->query('search');
         $start = $request->input('start', 0);
         $length = $request->input('length', 10);
+        $type = $request->query('type');
 
         $query = DB::table('posts')
-            ->select('posts.*', 'post_categories.name as category')
-            ->join('post_categories', 'post_categories.id', '=', 'posts.category_id');
+            ->select('posts.*', 'users.name as author', 'post_categories.name as category')
+            ->leftJoin('post_categories', 'post_categories.id', '=', 'posts.category_id')
+            ->leftJoin('users', 'users.id', '=', 'posts.author_id');
 
         $totalRecords = $query->count();
 
-        if (!empty($searchValue)) {
-            $query->where('posts.title', 'like', '%' . $searchValue . '%');
+        if (!empty($type)) {
+            $query->where('posts.tag', $type);
         }
+
+        // if (!empty($searchValue)) {
+        //     $query->where('posts.title', 'like', '%' . $searchValue . '%');
+        // }
 
         $filteredRecords = $query->count();
 
@@ -46,9 +53,11 @@ class NewsController extends Controller
 
     public function show($slug) {
         $post = DB::table('posts')
-            ->select('posts.*', 'post_categories.name as category')
-            ->join('post_categories', 'post_categories.id', '=', 'posts.category_id')
+            ->select('posts.*', 'users.name as author', 'post_categories.name as category')
+            ->leftJoin('post_categories', 'post_categories.id', '=', 'posts.category_id')
+            ->leftJoin('users', 'users.id', '=', 'posts.author_id')
             ->where('posts.slug', $slug)->first();
+
         $tags =  DB::table('post_categories')->get();
         return view('web.berita-detail', compact('post', 'tags'));
     }
@@ -77,7 +86,8 @@ class NewsController extends Controller
             'content'       => $request->content,
             'thumbnail_url' => $imagePath,
             'category_id'   => $request->category,
-            // 'status'        => $request->status,
+            'tag'           => $request->tag,
+            'author_id'     => Auth::user()->id,
             'published_at'  => now(),
         ]);
 
@@ -124,7 +134,7 @@ class NewsController extends Controller
             'content'       => $request->content,
             'thumbnail_url' => $imagePath,
             'category_id'   => $request->category,
-            // 'status'        => $request->status,
+            'tag'           => $request->tag,
             'updated_at'    => now(),
         ]);
 

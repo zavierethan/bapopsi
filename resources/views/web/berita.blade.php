@@ -21,7 +21,7 @@
                         <path stroke-linecap="round" stroke-linejoin="round"
                             d="M21 21l-4.35-4.35m0 0A7.5 7.5 0 104.5 4.5a7.5 7.5 0 0012.15 12.15z" />
                     </svg>
-                    <input type="text" placeholder="Cari berita atau artikel..."
+                    <input type="text" placeholder="Cari berita atau artikel..." id="searchInput"
                         class="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent text-black" />
                 </div>
             </div>
@@ -29,9 +29,15 @@
 
         <!-- Kategori Tabs -->
         <div class="flex space-x-4 mb-8 justify-center" id="news-tabs">
-            <button class="tab-btn px-6 py-2 rounded-full font-semibold text-white bg-gradient-to-r from-orange-500 to-red-500 shadow active" data-type="latest">Latest</button>
-            <button class="tab-btn px-6 py-2 rounded-full font-semibold text-gray-700 bg-gray-100 hover:bg-orange-100 transition" data-type="popular">Popular</button>
-            <button class="tab-btn px-6 py-2 rounded-full font-semibold text-gray-700 bg-gray-100 hover:bg-orange-100 transition" data-type="trending">Trending</button>
+            <button
+                class="tab-btn px-6 py-2 rounded-full font-semibold text-white bg-gradient-to-r from-orange-500 to-red-500 shadow active"
+                data-type="latest">Latest</button>
+            <button
+                class="tab-btn px-6 py-2 rounded-full font-semibold text-gray-700 bg-gray-100 hover:bg-orange-100 transition"
+                data-type="popular">Popular</button>
+            <button
+                class="tab-btn px-6 py-2 rounded-full font-semibold text-gray-700 bg-gray-100 hover:bg-orange-100 transition"
+                data-type="trending">Trending</button>
         </div>
 
         <!-- Articles Grid -->
@@ -57,24 +63,51 @@
 
 @section('script')
 <script>
-$(document).ready(function () {
-    loadArticles('latest');
+let debounceTimer;
+let currentType = 'latest';
+
+$(document).ready(function() {
+    loadArticles(currentType);
+
     $('#news-tabs').on('click', '.tab-btn', function() {
-        $('.tab-btn').removeClass('bg-gradient-to-r from-orange-500 to-red-500 text-white shadow active').addClass('text-gray-700 bg-gray-100 hover:bg-orange-100');
-        $(this).addClass('bg-gradient-to-r from-orange-500 to-red-500 text-white shadow active').removeClass('text-gray-700 bg-gray-100 hover:bg-orange-100');
-        let type = $(this).data('type');
-        loadArticles(type);
+        $('.tab-btn').removeClass(
+                'bg-gradient-to-r from-orange-500 to-red-500 text-white shadow active')
+            .addClass('text-gray-700 bg-gray-100 hover:bg-orange-100');
+        $(this).addClass('bg-gradient-to-r from-orange-500 to-red-500 text-white shadow active')
+            .removeClass('text-gray-700 bg-gray-100 hover:bg-orange-100');
+
+        currentType = $(this).data('type');
+        const searchQuery = $('#searchInput').val();
+        loadArticles(currentType, searchQuery);
+    });
+
+    $('#searchInput').on('keyup', function() {
+        const searchQuery = $(this).val();
+        clearTimeout(debounceTimer);
+        debounceTimer = setTimeout(() => {
+            loadArticles(currentType, searchQuery);
+        }, 500);
     });
 });
 
-function loadArticles(type = 'latest') {
+function loadArticles(type = 'latest', search = '') {
     $.ajax({
-        url: '/api/posts/news?type=' + type,
+        url: '/api/posts/news',
         type: 'GET',
+        data: {
+            type: type,
+            search: search
+        },
         dataType: 'json',
         success: function(response) {
             let articles = response.data;
             let html = '';
+            if (articles.length === 0) {
+                $('#articles-wrapper').html(
+                    '<div class="text-gray-500 text-center">Tidak ditemukan artikel.</div>');
+                return;
+            }
+
             $.each(articles, function(index, article) {
                 let contentText = $('<div>').html(article.content).text().substring(0, 100);
                 html += `
@@ -100,7 +133,7 @@ function loadArticles(type = 'latest') {
                                     <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 24 24">
                                         <path d="M12 12c2.7 0 5-2.3 5-5s-2.3-5-5-5-5 2.3-5 5 2.3 5 5 5zm0 2c-3.3 0-10 1.7-10 5v3h20v-3c0-3.3-6.7-5-10-5z" />
                                     </svg>
-                                    <span>Admin</span>
+                                    <span>${article.author ?? 'Admin'}</span>
                                 </div>
                                 <div class="flex items-center space-x-3">
                                     <div class="flex items-center space-x-1">
@@ -118,10 +151,11 @@ function loadArticles(type = 'latest') {
             });
             $('#articles-wrapper').html(html);
         },
-        error: function(xhr, status, error) {
+        error: function() {
             $('#articles-wrapper').html('<div class="text-red-500">Gagal memuat data artikel.</div>');
         }
     });
 }
 </script>
+
 @endsection

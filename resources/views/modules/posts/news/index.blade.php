@@ -84,6 +84,7 @@
                                     <tr class="text-start text-gray-400 fw-bolder fs-7 text-uppercase gs-0">
                                         <th class="min-w-125px">Title</th>
                                         <th class="min-w-125px">Category</th>
+                                        <th class="min-w-125px">Tags</th>
                                         <th class="min-w-125px">Author ID</th>
                                         <th class="min-w-125px text-center">Published At</th>
                                         <th class="text-center min-w-70px">Actions</th>
@@ -132,7 +133,8 @@
         columns: [
             { data: 'title', name: 'title' },
             { data: 'category', name: 'category' },
-            { data: 'author_id', name: 'author_id' },
+            { data: 'tag', name: 'tag' },
+            { data: 'author', name: 'author' },
             { data: 'published_at', name: 'published_at', className: 'text-center'},
             {
                 data: null,

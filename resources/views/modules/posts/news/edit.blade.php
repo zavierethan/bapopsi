@@ -35,7 +35,7 @@
                         </li>
                         <!--end::Item-->
                         <!--begin::Item-->
-                        <li class="breadcrumb-item text-muted">Create</li>
+                        <li class="breadcrumb-item text-muted">Edit</li>
                         <!--end::Item-->
                     </ul>
                     <!--end::Breadcrumb-->
@@ -98,6 +98,18 @@
                                             @foreach($categories as $category)
                                                 <option value="{{ $category->id }}" {{ $news->category_id == $category->id ? 'selected' : '' }}>{{ $category->name }}</option>
                                             @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="separator my-5"></div>
+                                <div class="mb-1">
+                                    <label class="form-label fw-bold fs-6 mb-2">Tags</label>
+                                    <div class="position-relative mb-3">
+                                        <select class="form-select form-select-solid" data-control="select2"
+                                            data-placeholder="-" name="tag">
+                                            <option value="latest" <?php echo ($news->tag == 'latest') ? 'selected' : ''; ?>>Latest</option>
+                                            <option value="popular" <?php echo ($news->tag == 'popular') ? 'selected' : ''; ?>>Popular</option>
+                                            <option value="trending" <?php echo ($news->tag == 'trending') ? 'selected' : ''; ?>>Trending</option>
                                         </select>
                                     </div>
                                 </div>
