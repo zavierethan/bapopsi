@@ -110,34 +110,6 @@
             </div>
         </div>
     </div>
-    <!-- Grafik -->
-    <div class="row mb-4">
-        <div class="col-lg-7 mb-3">
-            <div class="card shadow-card rounded-card p-4">
-                <div class="d-flex align-items-center mb-3">
-                    <div class="stat-icon orange me-2"><i class="fas fa-chart-bar"></i></div>
-                    <div>
-                        <div class="fw-bold fs-5 mb-0">Grafik Batang</div>
-                        <div class="text-muted small">Perbandingan medali per cabang</div>
-                    </div>
-                </div>
-                <canvas id="barChartDashboard" height="220"></canvas>
-            </div>
-        </div>
-        <div class="col-lg-5 mb-3">
-            <div class="card shadow-card rounded-card p-4">
-                <div class="d-flex align-items-center mb-3">
-                    <div class="stat-icon blue me-2"><i class="fas fa-chart-pie"></i></div>
-                    <div>
-                        <div class="fw-bold fs-5 mb-0">Grafik Lingkaran</div>
-                        <div class="text-muted small">Distribusi total medali</div>
-                    </div>
-                </div>
-                <canvas id="pieChartDashboard" height="220"></canvas>
-            </div>
-        </div>
-    </div>
-    <!-- Tabel Data Atlet -->
     <div class="card shadow-card rounded-card p-4 mt-4">
         <div class="d-flex justify-content-between align-items-center mb-3">
             <h5 class="fw-bold mb-0">Data Atlet</h5>

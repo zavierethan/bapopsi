@@ -59,9 +59,9 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <h2 class="text-4xl font-bold mb-10 text-white">Berita</h2>
         <div class="flex space-x-4 mb-8" id="news-tabs">
-            <button class="tab-btn px-6 py-2 rounded-full font-semibold text-white bg-gradient-to-r from-orange-500 to-red-500 shadow active" data-type="latest">Latest</button>
+            <button class="tab-btn px-6 py-2 rounded-full font-semibold text-gray-700 bg-gray-100 hover:bg-orange-100 shadow active" data-type="trending">Trending</button>
+            <button class="tab-btn px-6 py-2 rounded-full font-semibold text-white bg-gradient-to-r from-orange-500 to-red-500 transition" data-type="latest">Latest</button>
             <button class="tab-btn px-6 py-2 rounded-full font-semibold text-gray-700 bg-gray-100 hover:bg-orange-100 transition" data-type="popular">Popular</button>
-            <button class="tab-btn px-6 py-2 rounded-full font-semibold text-gray-700 bg-gray-100 hover:bg-orange-100 transition" data-type="trending">Trending</button>
         </div>
         <div class="flex space-x-6 overflow-x-auto pb-4 scrollbar-thin scrollbar-thumb-blue-300 scrollbar-track-blue-100" id="articles-wrapper">
 
@@ -149,7 +149,7 @@
                         <th class="px-6 py-4 text-left text-sm font-bold text-white uppercase tracking-wider">No</th>
                         <th class="px-6 py-4 text-left text-sm font-bold text-white uppercase tracking-wider">Nama Atlet</th>
                         <th class="px-6 py-4 text-left text-sm font-bold text-white uppercase tracking-wider">Asal Sekolah</th>
-                        <th class="px-6 py-4 text-left text-sm font-bold text-white uppercase tracking-wider">Perolehan Medali</th>
+                        <th class="px-6 py-4 text-left text-sm font-bold text-white uppercase tracking-wider">Total Medali</th>
                         <th class="px-6 py-4 text-left text-sm font-bold text-white uppercase tracking-wider">Jenis Medali</th>
                     </tr>
                 </thead>
@@ -239,7 +239,65 @@ $(document).ready(function() {
     });
 });
 
-function loadArticles(type = 'latest', search = '') {
+$(document).on('click', '.kecamatan', function () {
+    const kecamatanId = $(this).data('kecamatan');
+
+    // Debug: tampilkan id kecamatan
+    console.log("Kecamatan ID:", kecamatanId);
+
+    // Tampilkan modal
+    $('#modal-atlet').removeClass('hidden');
+
+    // (Opsional) ubah judul modal jika perlu
+    $('#modal-atlet-title').text(`Daftar Atlet Kecamatan ${kecamatanId}`);
+
+    // (Opsional) kosongkan isi tabel sebelumnya
+    $('#modal-atlet-tbody').empty();
+
+    $.ajax({
+        url: '/api/getAtletByKecamatanId',
+        type: 'GET',
+        data: { kecamatan_id: kecamatanId },
+        success: function (data) {
+            $('#modal-atlet-tbody').empty();
+
+            if (data.length === 0) {
+                $('#modal-atlet-tbody').append(`
+                    <tr>
+                        <td colspan="5" class="text-center py-4 text-gray-500">Tidak ada data atlet.</td>
+                    </tr>
+                `);
+            } else {
+                data.forEach((row, index) => {
+                    $('#modal-atlet-tbody').append(`
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap text-black">${index + 1}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-black">${row.nama_lengkap}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-black">${row.nama_sekolah}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-black">${row.total_medali}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-black">
+                                <span class="text-yellow-600 font-bold">🥇 ${row.emas}</span>,
+                                <span class="text-gray-500 font-bold">🥈 ${row.perak}</span>,
+                                <span class="text-orange-700 font-bold">🥉 ${row.perunggu}</span>
+                            </td>
+                        </tr>
+                    `);
+                });
+            }
+        },
+        error: function () {
+            alert("Gagal mengambil data atlet.");
+        }
+    });
+});
+
+$(document).on('click', '#close-modal-atlet', function () {
+    $('#modal-atlet').addClass('hidden');
+});
+
+
+
+function loadArticles(type = 'trending', search = '') {
     $.ajax({
         url: '/api/posts/news',
         type: 'GET',
@@ -407,7 +465,7 @@ function loadKecamatanTable() {
                 rows += `
                     <tr>
                         <td class="px-6 py-4 whitespace-nowrap text-black">${index + 1}</td>
-                        <td class="px-6 py-4 whitespace-nowrap font-semibold text-blue-700 underline cursor-pointer kecamatan-nama" data-kecamatan="${item.nama}">${item.nama}</td>
+                        <td class="px-6 py-4 whitespace-nowrap font-semibold text-blue-700 underline cursor-pointer kecamatan" data-kecamatan="${item.id}">${item.nama}</td>
                         <td class="px-6 py-4 whitespace-nowrap text-black">${item.total}</td>
                         <td class="px-6 py-4 whitespace-nowrap text-black">${item.emas}</td>
                         <td class="px-6 py-4 whitespace-nowrap text-black">${item.perak}</td>

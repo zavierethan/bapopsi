@@ -35,7 +35,7 @@
                 <!--end::Page title-->
                 <div class="d-flex align-items-center gap-2 gap-lg-3">
                     <!--begin::Primary button-->
-                    <a href="{{route('athletes.create')}}" class="btn btn-sm fw-bold btn-primary">New</a>
+                    <!-- <a href="{{route('athletes.create')}}" class="btn btn-sm fw-bold btn-primary">New</a> -->
                     <!--end::Primary button-->
                 </div>
             </div>
@@ -90,9 +90,10 @@
                                 <thead>
                                     <tr class="text-start text-gray-700 fw-bolder fs-7 text-uppercase gs-0">
                                         <th class="min-w-125px">Nama Lengkap</th>
+                                        <th class="min-w-125px">Cabang Olahraga</th>
+                                        <th class="min-w-125px">Event</th>
                                         <th class="min-w-125px">Kecamatan</th>
                                         <th class="min-w-125px">Sub Rayon</th>
-                                        <th class="min-w-125px">Cabang Olahraga</th>
                                         <th class="min-w-125px">Approval Status</th>
                                         <th class="min-w-125px">Catatan Approval</th>
                                         <th class="min-w-125px">Tanggal Approval</th>
@@ -147,9 +148,10 @@ $("#kt_groups_table").DataTable({
     },
     columns: [
         { data: 'nama_lengkap', name: 'nama_lengkap' },
+        { data: 'cabang_olahraga', name: 'cabang_olahraga' },
+        { data: 'nama_event', name: 'nama_event' },
         { data: 'nama_kecamatan', name: 'nama_kecamatan' },
         { data: 'nama_sub_rayon', name: 'nama_sub_rayon' },
-        { data: 'cabang_olahraga', name: 'cabang_olahraga' },
         {
             data: 'approval_status',
             name: 'approval_status',

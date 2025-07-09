@@ -365,6 +365,27 @@ class EventRegistrationController extends Controller
         return response()->json($results);
     }
 
+    public function getAtletByKecamatanId(Request $request) {
+
+        $query = DB::table('event_registrations as er')
+            ->leftJoin('atlet as a', 'a.event_reg_id', '=', 'er.id')
+            ->leftJoin('medals as m', 'm.atlet_id', '=', 'a.id')
+            ->select(
+                'a.id as atlet_id',
+                'a.nama_lengkap',
+                'a.nama_sekolah',
+                DB::raw('COUNT(m.id) as total_medali'),
+                DB::raw("SUM(CASE WHEN m.medal_type = 'emas' THEN 1 ELSE 0 END) as emas"),
+                DB::raw("SUM(CASE WHEN m.medal_type = 'perak' THEN 1 ELSE 0 END) as perak"),
+                DB::raw("SUM(CASE WHEN m.medal_type = 'perunggu' THEN 1 ELSE 0 END) as perunggu")
+            )
+            ->where('er.kecamatan_id', $request->kecamatan_id)
+            ->groupBy('a.id', 'a.nama_lengkap', 'a.nama_sekolah')
+            ->get();
+
+        return response()->json($query);
+    }
+
     public function getTotalMedalSummary() {
         $result = DB::table('kecamatan as k')
             ->leftJoin('event_registrations as er', 'er.kecamatan_id', '=', 'k.id')

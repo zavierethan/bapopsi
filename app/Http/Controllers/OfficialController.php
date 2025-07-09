@@ -22,7 +22,7 @@ class OfficialController extends Controller
             ->select(
                 'officials.*',
                 'jabatan_official.nama_jabatan',
-
+                'events.name as nama_event',
                 // Status approval
                 DB::raw("CASE
                     WHEN officials.appr_status IS NULL THEN 'Waiting Approval'
@@ -43,6 +43,7 @@ class OfficialController extends Controller
             )
             ->leftJoin('jabatan_official', 'jabatan_official.id', '=', 'officials.jabatan_id')
             ->leftJoin('event_registrations', 'event_registrations.id', '=', 'officials.event_reg_id')
+            ->leftJoin('events', 'events.id', '=', 'event_registrations.event_id')
             ->leftJoin('sports', 'sports.id', '=', 'event_registrations.sport_id')
             ->leftJoin('kecamatan', 'kecamatan.id', '=', 'event_registrations.kecamatan_id')
             ->leftJoin('sub_rayon', 'sub_rayon.id', '=', 'event_registrations.sub_rayon_id');
@@ -167,6 +168,7 @@ class OfficialController extends Controller
         $official = DB::table('officials')
             ->select(
                 'officials.*',
+                'events.name as nama_event',
                 'jabatan_official.nama_jabatan',
                 'event_registrations.kecamatan_id',
                 'event_registrations.sport_id',
@@ -177,6 +179,7 @@ class OfficialController extends Controller
             )
             ->leftJoin('jabatan_official', 'jabatan_official.id', '=', 'officials.jabatan_id')
             ->leftJoin('event_registrations', 'event_registrations.id', '=', 'officials.event_reg_id')
+            ->leftJoin('events', 'events.id', '=', 'event_registrations.event_id')
             ->leftJoin('sports', 'sports.id', '=', 'event_registrations.sport_id')
             ->leftJoin('kecamatan', 'kecamatan.id', '=', 'event_registrations.kecamatan_id')
             ->leftJoin('sub_rayon', 'sub_rayon.id', '=', 'event_registrations.sub_rayon_id')

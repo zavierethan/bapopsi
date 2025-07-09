@@ -19,7 +19,7 @@
                     </ul>
                 </div>
                 <div class="d-flex align-items-center gap-2 gap-lg-3">
-                    <a href="{{route('officials.create')}}" class="btn btn-sm fw-bold btn-primary">New</a>
+                    <!-- <a href="{{route('officials.create')}}" class="btn btn-sm fw-bold btn-primary">New</a> -->
                 </div>
             </div>
         </div>
@@ -53,6 +53,7 @@
                                 <thead>
                                     <tr class="text-start text-gray-700 fw-bolder fs-7 text-uppercase gs-0">
                                         <th class="min-w-125px">Nama Lengkap</th>
+                                        <th class="min-w-125px">Event</th>
                                         <th class="min-w-125px">Jabatan</th>
                                         <th class="min-w-125px">Kecamatan</th>
                                         <th class="min-w-125px">Sub Rayon</th>
@@ -113,6 +114,10 @@ var table = $("#kt_menus_table").DataTable({
             name: 'nama'
         },
         {
+            data: 'nama_event',
+            name: 'nama_event'
+        },
+        {
             data: 'nama_jabatan',
             name: 'nama_jabatan'
         },
@@ -125,8 +130,8 @@ var table = $("#kt_menus_table").DataTable({
             name: 'nama_sub_rayon'
         },
         {
-            data: 'nama_jabatan',
-            name: 'nama_jabatan'
+            data: 'cabang_olahraga',
+            name: 'cabang_olahraga'
         },
         {
             data: 'approval_status',

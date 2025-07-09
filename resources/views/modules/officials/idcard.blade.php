@@ -110,7 +110,7 @@
     <!-- Kartu ID -->
     <div class="idcard" id="idcard">
         <div class="idcard-header">
-            PORDA KABUPATEN<br>BANDUNG XVI 2025
+            {{ $official->nama_event }}
         </div>
         <div>
             <img

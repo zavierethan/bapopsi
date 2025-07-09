@@ -23,7 +23,7 @@ class AthleteController extends Controller
         $query = DB::table('atlet')
             ->select(
                 'atlet.*',
-
+                'events.name as nama_event',
                 DB::raw("TO_CHAR(atlet.tanggal_lahir, 'DD/MM/YYYY') AS tanggal_lahir"),
                 DB::raw("CASE
                     WHEN atlet.appr_status IS NULL THEN 'Waiting Approval'
@@ -40,6 +40,7 @@ class AthleteController extends Controller
             )
             ->leftJoin('sports', 'sports.id', '=', 'atlet.cabang_olahraga_id')
             ->leftJoin('event_registrations', 'event_registrations.id', '=', 'atlet.event_reg_id')
+            ->leftJoin('events', 'events.id', '=', 'event_registrations.event_id')
             ->leftJoin('kecamatan', 'kecamatan.id', '=', 'event_registrations.kecamatan_id')
             ->leftJoin('sub_rayon', 'sub_rayon.id', '=', 'event_registrations.sub_rayon_id');
 
@@ -317,8 +318,16 @@ class AthleteController extends Controller
 
     public function showIdCard($id) {
         $atlet = DB::table('atlet')
-            ->join('sports', 'sports.id', '=', 'atlet.cabang_olahraga_id')
-            ->select('atlet.*', 'sports.name as cabang_olahraga')
+            ->select(
+                'atlet.*',
+                'events.name as nama_event',
+                'sports.name as cabang_olahraga'
+            )
+            ->leftJoin('event_registrations', 'event_registrations.id', '=', 'atlet.event_reg_id')
+            ->leftJoin('events', 'events.id', '=', 'event_registrations.event_id')
+            ->leftJoin('sports', 'sports.id', '=', 'event_registrations.sport_id')
+            ->leftJoin('kecamatan', 'kecamatan.id', '=', 'event_registrations.kecamatan_id')
+            ->leftJoin('sub_rayon', 'sub_rayon.id', '=', 'event_registrations.sub_rayon_id')
             ->where('atlet.id', $id)
             ->first();
 
