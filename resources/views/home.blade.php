@@ -53,30 +53,28 @@
     <!-- Filter Wilayah, Jenis Medali, Cabang Olahraga, Export Excel -->
     <div class="row mb-4">
         <div class="col-lg-9 mb-2 d-flex gap-2 flex-wrap">
-            <select class="form-select w-auto" id="filterWilayah">
+            <select class="form-select w-auto" id="filter-kecamatan">
                 <option value="">Semua Wilayah</option>
-                <option>Bandung</option>
-                <option>Sumedang</option>
-                <option>Cimahi</option>
+                @foreach($kecamatan as $kec)
+                <option value="{{ $kec->id }}">{{ $kec->nama }}</option>
+                @endforeach
             </select>
-            <select class="form-select w-auto" id="filterMedali">
+            <select class="form-select w-auto" id="filter-medal">
                 <option value="">Semua Medali</option>
-                <option>Emas</option>
-                <option>Perak</option>
-                <option>Perunggu</option>
+                <option value="emas">Emas</option>
+                <option value="perak">Perak</option>
+                <option value="perunggu">Perunggu</option>
             </select>
-            <select class="form-select w-auto" id="filterCabang">
+            <select class="form-select w-auto" id="filter-sport">
                 <option value="">Semua Cabang</option>
-                <option>Badminton</option>
-                <option>Basket</option>
-                <option>Voli</option>
-                <option>Sepak Bola</option>
-                <option>Renang</option>
-                <option>Atletik</option>
+                @foreach($sports as $sport)
+                <option value="{{ $sport->id }}">{{ $sport->name }}</option>
+                @endforeach
             </select>
         </div>
         <div class="col-lg-3 mb-2 text-end">
-            <button class="btn btn-success px-4" id="btnExportExcel"><i class="fas fa-file-excel me-2"></i>Export Excel</button>
+            <button class="btn btn-success px-4" id="btnExportExcel"><i class="fas fa-file-excel me-2"></i>Export
+                Excel</button>
         </div>
     </div>
     <!-- Statistik Card -->
@@ -114,20 +112,11 @@
         <div class="d-flex justify-content-between align-items-center mb-3">
             <h5 class="fw-bold mb-0">Data Atlet</h5>
             <div class="d-flex gap-2">
-                <select class="form-select" id="sportFilterDashboard">
+                <select class="form-select" id="sport-filter">
                     <option value="">Semua Cabang</option>
-                    <option>Badminton</option>
-                    <option>Basket</option>
-                    <option>Voli</option>
-                    <option>Sepak Bola</option>
-                    <option>Renang</option>
-                    <option>Atletik</option>
-                </select>
-                <select class="form-select" id="schoolFilterDashboard">
-                    <option value="">Semua Sekolah</option>
-                    <option>SMA 1 Bantul</option>
-                    <option>SMA 2 Sewon</option>
-                    <option>SMA 3 Kasihan</option>
+                    @foreach($sports as $sport)
+                    <option value="{{ $sport->id }}">{{ $sport->name }}</option>
+                    @endforeach
                 </select>
             </div>
         </div>
@@ -153,7 +142,7 @@
 
 @section('script')
 <script>
-$("#kt_groups_table").DataTable({
+let table = $("#kt_groups_table").DataTable({
     processing: true,
     serverSide: true,
     paging: true,
@@ -161,43 +150,71 @@ $("#kt_groups_table").DataTable({
     ajax: {
         url: `{{ route('dashboards.get-lists') }}`,
         type: 'GET',
-        dataSrc: 'data'
+        dataSrc: 'data',
+        data: {
+                sport_id: $('#sport-filter').val()
+        },
     },
-    columns: [
-        {
+    columns: [{
             data: null,
             name: 'nomor',
             orderable: false,
             searchable: false,
-            render: function (data, type, row, meta) {
+            render: function(data, type, row, meta) {
                 return meta.row + meta.settings._iDisplayStart + 1;
             }
         },
-        { data: 'cabang_olahraga', name: 'cabang_olahraga' },
-        { data: 'medal_type', name: 'medal_type' },
-        { data: 'nama_sekolah', name: 'nama_sekolah' },
-        { data: 'cabang_olahraga', name: 'cabang_olahraga' },
+        {
+            data: 'cabang_olahraga',
+            name: 'cabang_olahraga'
+        },
+        {
+            data: 'medal_type',
+            name: 'medal_type'
+        },
+        {
+            data: 'nama_sekolah',
+            name: 'nama_sekolah'
+        },
+        {
+            data: 'cabang_olahraga',
+            name: 'cabang_olahraga'
+        },
     ]
 });
 
-$(document).ready(function () {
+$('#sport-filter').on('change', function () {
+    table.ajax.reload();
+});
+
+$(document).ready(function() {
+    fetchSummary();
+});
+
+$('#filter-kecamatan, #filter-medal, #filter-sport').on('change', function() {
+    fetchSummary();
+});
+
+function fetchSummary() {
     $.ajax({
         url: "{{ route('dashboards.summary') }}",
         method: "GET",
-        dataType: "json",
+        data: {
+            kecamatan_id: $('#filter-kecamatan').val(),
+            medal_type: $('#filter-medal').val(),
+            sport_id: $('#filter-sport').val()
+        },
         success: function(response) {
             if (response.success) {
                 $('#total-atlet').text(response.data.total_atlet);
                 $('#total-medali').text(response.data.total_medali);
                 $('#total-cabang').text(response.data.total_cabang_olahraga);
-            } else {
-                console.error("Data not found");
             }
         },
-        error: function(xhr, status, error) {
-            console.error("AJAX Error:", error);
+        error: function(xhr) {
+            console.error(xhr);
         }
     });
-});
+}
 </script>
 @endsection
