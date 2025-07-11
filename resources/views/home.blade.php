@@ -165,8 +165,8 @@ let table = $("#kt_groups_table").DataTable({
             }
         },
         {
-            data: 'cabang_olahraga',
-            name: 'cabang_olahraga'
+            data: 'nama_lengkap',
+            name: 'nama_lengkap'
         },
         {
             data: 'medal_type',
