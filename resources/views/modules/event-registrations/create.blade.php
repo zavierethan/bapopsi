@@ -80,7 +80,7 @@
                     <!-- Submit -->
                     <div class="text-end mb-10">
                         <button type="button" class="btn btn-success" id="submit-form">Simpan Pendaftaran</button>
-                        <button type="button" class="btn btn-danger">Batal</button>
+                        <a href="/event-registrations" class="btn btn-danger">Kembali</a>
                     </div>
                 </form>
             </div>

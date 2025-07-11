@@ -86,10 +86,17 @@
                         <div class="card-body" id="atlet-wrapper">
                             @foreach($atlets as $atlet)
                             <div class="border p-4 mb-4 rounded position-relative atlet-item bg-light">
-                                <button type="button"
-                                    class="btn btn-icon btn-danger btn-sm position-absolute top-0 end-0 mt-2 me-2 remove-atlet">
-                                    <i class="fa fa-times"></i>
-                                </button>
+                                <div class="d-flex justify-content-end gap-2 mt-2 mb-5 me-2">
+                                    <!-- Approve Button -->
+                                    <button type="button" class="btn btn-success btn-sm approve-atlet">
+                                        <i class="fa fa-check"></i>
+                                    </button>
+
+                                    <!-- Reject Button -->
+                                    <button type="button" class="btn btn-danger btn-sm reject-atlet">
+                                        <i class="fa fa-times"></i>
+                                    </button>
+                                </div>
                                 <div class="row g-4">
                                     <!-- Foto Profil -->
                                     <div class="col-md-4 text-center">
@@ -184,6 +191,12 @@
                                                 @endif
                                             </div>
                                         </div>
+                                        <div class="row mb-3 align-items-center">
+                                            <label class="col-md-2 col-form-label">Status Approval</label>
+                                            <div class="col-md-10">
+                                                <input type="text" class="form-control" name="atlets[${index}][nisn]" value="{{ $atlet->approval_status }}" readonly>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -202,10 +215,17 @@
                         <div class="card-body" id="official-wrapper">
                             @foreach($officials as $official)
                             <div class="border p-4 mb-4 rounded position-relative official-item bg-light">
-                                <button type="button"
-                                    class="btn btn-icon btn-danger btn-sm position-absolute top-0 end-0 mt-2 me-2 remove-official">
-                                    <i class="fa fa-times"></i>
-                                </button>
+                                <div class="d-flex justify-content-end gap-2 mt-2 mb-5 me-2 position-absolute top-0 end-0">
+                                    <!-- Approve Button -->
+                                    <button type="button" class="btn btn-success btn-sm approve-atlet">
+                                        <i class="fa fa-check"></i>
+                                    </button>
+
+                                    <!-- Reject Button -->
+                                    <button type="button" class="btn btn-danger btn-sm reject-atlet">
+                                        <i class="fa fa-times"></i>
+                                    </button>
+                                </div>
                                 <div class="row g-3 align-items-end">
                                     <div class="col-md-4 text-center">
                                         <img src="{{ $official->foto ? asset('storage/' . $official->foto) : 'https://via.placeholder.com/120' }}"
@@ -218,8 +238,7 @@
                                         <input type="text" name="officials[${index}][nama_lengkap]"
                                             placeholder="Nama Lengkap" class="form-control" value="{{$official->nama}}"
                                             required>
-                                        <input type="hidden" name="officials[${index}][id]"
-                                            placeholder="Nama Lengkap" class="form-control" value="{{$official->id}}"
+                                        <input type="hidden" name="officials[${index}][id]" class="form-control" value="{{$official->id}}"
                                             required>
                                     </div>
                                     <div class="col-md-4">

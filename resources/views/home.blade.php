@@ -84,28 +84,28 @@
         <div class="col-md-3 mb-3">
             <div class="card text-center shadow-card rounded-card p-3">
                 <div class="stat-icon blue mx-auto mb-2"><i class="fas fa-users"></i></div>
-                <div class="fw-bold fs-2">1,850</div>
+                <div class="fw-bold fs-2" id="total-atlet">0</div>
                 <div class="text-muted">Atlet Terdaftar</div>
             </div>
         </div>
         <div class="col-md-3 mb-3">
             <div class="card text-center shadow-card rounded-card p-3">
                 <div class="stat-icon orange mx-auto mb-2"><i class="fas fa-medal"></i></div>
-                <div class="fw-bold fs-2">240</div>
+                <div class="fw-bold fs-2" id="total-medali">0</div>
                 <div class="text-muted">Total Medali</div>
             </div>
         </div>
         <div class="col-md-3 mb-3">
             <div class="card text-center shadow-card rounded-card p-3">
                 <div class="stat-icon green mx-auto mb-2"><i class="fas fa-basketball-ball"></i></div>
-                <div class="fw-bold fs-2">24</div>
+                <div class="fw-bold fs-2" id="total-cabang">0</div>
                 <div class="text-muted">Cabang Olahraga</div>
             </div>
         </div>
         <div class="col-md-3 mb-3">
             <div class="card text-center shadow-card rounded-card p-3">
                 <div class="stat-icon purple mx-auto mb-2"><i class="fas fa-school"></i></div>
-                <div class="fw-bold fs-2">130</div>
+                <div class="fw-bold fs-2">0</div>
                 <div class="text-muted">Sekolah</div>
             </div>
         </div>
@@ -132,7 +132,7 @@
             </div>
         </div>
         <div class="table-responsive">
-            <table class="table align-middle">
+            <table class="table align-middle" id="kt_groups_table">
                 <thead class="table-light">
                     <tr>
                         <th>No</th>
@@ -143,27 +143,7 @@
                     </tr>
                 </thead>
                 <tbody id="athleteTableDashboard">
-                    <tr>
-                        <td>1</td>
-                        <td class="fw-semibold">Rizky Maulana</td>
-                        <td>Emas</td>
-                        <td>SMA 1 Bantul</td>
-                        <td>Badminton</td>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td class="fw-semibold">Dewi Lestari</td>
-                        <td>Perak</td>
-                        <td>SMA 2 Sewon</td>
-                        <td>Basket</td>
-                    </tr>
-                    <tr>
-                        <td>3</td>
-                        <td class="fw-semibold">Andi Saputra</td>
-                        <td>Perunggu</td>
-                        <td>SMA 3 Kasihan</td>
-                        <td>Voli</td>
-                    </tr>
+
                 </tbody>
             </table>
         </div>
@@ -172,64 +152,52 @@
 @endsection
 
 @section('script')
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-// Data dummy untuk grafik batang
-const barDataDashboard = {
-    labels: ['Badminton', 'Basket', 'Voli', 'Sepak Bola', 'Renang', 'Atletik'],
-    datasets: [
+$("#kt_groups_table").DataTable({
+    processing: true,
+    serverSide: true,
+    paging: true,
+    pageLength: 10,
+    ajax: {
+        url: `{{ route('dashboards.get-lists') }}`,
+        type: 'GET',
+        dataSrc: 'data'
+    },
+    columns: [
         {
-            label: 'Emas',
-            backgroundColor: '#FFD600',
-            data: [12, 6, 8, 4, 7, 15],
+            data: null,
+            name: 'nomor',
+            orderable: false,
+            searchable: false,
+            render: function (data, type, row, meta) {
+                return meta.row + meta.settings._iDisplayStart + 1;
+            }
         },
-        {
-            label: 'Perak',
-            backgroundColor: '#B0B0B0',
-            data: [8, 9, 11, 6, 10, 12],
-        },
-        {
-            label: 'Perunggu',
-            backgroundColor: '#FF9800',
-            data: [15, 12, 7, 8, 9, 18],
-        },
+        { data: 'cabang_olahraga', name: 'cabang_olahraga' },
+        { data: 'medal_type', name: 'medal_type' },
+        { data: 'nama_sekolah', name: 'nama_sekolah' },
+        { data: 'cabang_olahraga', name: 'cabang_olahraga' },
     ]
-};
-const barChartDashboard = new Chart(document.getElementById('barChartDashboard'), {
-    type: 'bar',
-    data: barDataDashboard,
-    options: {
-        responsive: true,
-        plugins: {
-            legend: { position: 'top' },
-            title: { display: false }
-        },
-        scales: {
-            x: { stacked: true },
-            y: { stacked: true }
-        }
-    }
 });
-// Data dummy untuk grafik lingkaran
-const pieDataDashboard = {
-    labels: ['Emas', 'Perak', 'Perunggu'],
-    datasets: [{
-        data: [45, 46, 60],
-        backgroundColor: ['#FFD600', '#B0B0B0', '#FF9800'],
-        borderColor: '#fff',
-        borderWidth: 2,
-    }]
-};
-const pieChartDashboard = new Chart(document.getElementById('pieChartDashboard'), {
-    type: 'doughnut',
-    data: pieDataDashboard,
-    options: {
-        cutout: '70%',
-        plugins: {
-            legend: { display: true, position: 'bottom' },
-            tooltip: { enabled: true }
+
+$(document).ready(function () {
+    $.ajax({
+        url: "{{ route('dashboards.summary') }}",
+        method: "GET",
+        dataType: "json",
+        success: function(response) {
+            if (response.success) {
+                $('#total-atlet').text(response.data.total_atlet);
+                $('#total-medali').text(response.data.total_medali);
+                $('#total-cabang').text(response.data.total_cabang_olahraga);
+            } else {
+                console.error("Data not found");
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error("AJAX Error:", error);
         }
-    }
+    });
 });
 </script>
 @endsection

@@ -192,7 +192,16 @@ class EventRegistrationController extends Controller
             abort(404, 'Data tidak ditemukan.');
         }
 
-        $atlets = DB::table('atlet')->where('event_reg_id', $id)->get();
+        $atlets = DB::table('atlet')
+            ->select(
+                'atlet.*',
+                 DB::raw("CASE
+                        WHEN atlet.appr_status IS NULL THEN 'Waiting Approval'
+                        WHEN atlet.appr_status = 1 THEN 'Approved'
+                        WHEN atlet.appr_status = 0 THEN 'Rejected'
+                    END as approval_status")
+            )
+            ->where('event_reg_id', $id)->get();
         $officials = DB::table('officials')->where('event_reg_id', $id)->get();
 
         return view('modules.event-registrations.edit', [

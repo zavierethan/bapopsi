@@ -65,9 +65,8 @@ Route::group(['middleware' => ['auth']], function() {
     Route::prefix('dashboards')->group(function () {
         Route::name('dashboards.')->group(function () {
             Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('general');
-            Route::get('/transaction-summary', [App\Http\Controllers\Dashboards\GeneralDashboardController::class, 'getTransactionSummary'])->name('transaction-summary');
-            Route::get('/sales-trend', [App\Http\Controllers\Dashboards\GeneralDashboardController::class, 'getWeeklySales'])->name('sales-trend');
-            Route::get('/top-selling-products', [App\Http\Controllers\Dashboards\GeneralDashboardController::class, 'topSellingProducts'])->name('top-selling-products');
+            Route::get('/lists', [App\Http\Controllers\HomeController::class, 'getLists'])->name('get-lists');
+            Route::get('/summary', [App\Http\Controllers\HomeController::class, 'getSummary'])->name('summary');
         });
     });
 
