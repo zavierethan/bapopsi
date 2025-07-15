@@ -53,9 +53,11 @@
                                     <tr class="text-start text-gray-400 fw-bolder fs-7 text-uppercase gs-0">
                                         <th class="min-w-125px">Event Name</th>
                                         <th class="min-w-125px">Description</th>
+                                        <th class="min-w-125px">Category</th>
                                         <th class="min-w-125px">Location</th>
                                         <th class="min-w-125px">Start Date</th>
                                         <th class="min-w-125px">End Date</th>
+                                        <th class="min-w-125px">Status</th>
                                         <th class="text-center min-w-70px">Actions</th>
                                     </tr>
                                 </thead>
@@ -97,6 +99,10 @@
                 name: 'description'
             },
             {
+                data: 'event_category',
+                name: 'event_category'
+            },
+            {
                 data: 'location',
                 name: 'location'
             },
@@ -107,6 +113,15 @@
             {
                 data: 'end_date',
                 name: 'end_date'
+            },
+            {
+                data: 'status',
+                name: 'status',
+                className: 'text-center',
+                render: function(data, type, row) {
+                    const badgeClass = row.status === 'Open' ? 'badge badge-success' : 'badge badge-warning';
+                    return `<span class="${badgeClass}">${row.status}</span>`;
+                }
             },
             {
                 data: null,

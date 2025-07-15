@@ -85,8 +85,8 @@
                             <table class="table align-middle table-row-dashed fs-6 gy-5" id="kt_groups_table">
                                 <thead>
                                     <tr class="text-start text-gray-700 fw-bolder fs-7 text-uppercase gs-0">
-                                        <th class="min-w-125px">Cabang Olahraga</th>
-                                        <th class="min-w-125px">Kelas</th>
+                                        <th class="min-w-200px">Cabang Olahraga</th>
+                                        <th class="min-w-125px">Kelas Cabang Olahraga</th>
                                         <th class="text-center min-w-70px">Actions</th>
                                     </tr>
                                 </thead>

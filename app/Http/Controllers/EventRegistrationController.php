@@ -19,6 +19,7 @@ class EventRegistrationController extends Controller
         $query = DB::table('event_registrations')
             ->select(
             'event_registrations.*',
+            'event_categories.name as event_category',
             'events.name',
             'events.description',
             DB::raw("TO_CHAR(event_registrations.approved_at, 'DD/MM/YYYY HH24:MI:SS') AS approval_date_formatted"),
@@ -32,6 +33,7 @@ class EventRegistrationController extends Controller
                     END as approval_status")
             )
             ->leftJoin('events', 'events.id', '=', 'event_registrations.event_id')
+            ->leftJoin('event_categories', 'event_categories.id', '=', 'events.event_category_id')
             ->leftJoin('kecamatan', 'kecamatan.id', '=', 'event_registrations.kecamatan_id')
             ->leftJoin('sub_rayon', 'sub_rayon.id', '=', 'event_registrations.sub_rayon_id');
 

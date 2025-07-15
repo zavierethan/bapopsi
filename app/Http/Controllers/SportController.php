@@ -39,7 +39,7 @@ class SportController extends Controller
 
         $totalRecords = $query->count();
         $filteredRecords = $query->count();
-        $data = $query->orderBy('id', 'desc')->skip($start)->take($length)->get();
+        $data = $query->orderBy('name', 'asc')->skip($start)->take($length)->get();
 
         return response()->json([
             'draw' => $request->input('draw'),
@@ -65,12 +65,14 @@ class SportController extends Controller
                 'created_at' => now(),
             ]);
 
-            foreach ($request->sport_classes as $class) {
-                DB::table('sport_classes')->insert([
-                    'sport_id' => $sportId,
-                    'name' => $class['name'],
-                    'created_at' => now(),
-                ]);
+            if(!is_null($request->sport_classes)) {
+                foreach ($request->sport_classes as $class) {
+                    DB::table('sport_classes')->insert([
+                        'sport_id' => $sportId,
+                        'name' => $class['name'],
+                        'created_at' => now(),
+                    ]);
+                }
             }
 
             DB::commit();
@@ -94,30 +96,52 @@ class SportController extends Controller
     }
 
     public function update(Request $request, $id) {
-
         DB::beginTransaction();
 
         try {
+            // Update data utama di tabel sports
             DB::table('sports')->where('id', $id)->update([
                 'name' => $request->name,
                 'description' => $request->description,
             ]);
 
-            DB::table('sport_classes')->where('sport_id', $id)->delete();
+            $existingClassIds = DB::table('sport_classes')
+                ->where('sport_id', $id)
+                ->pluck('id')
+                ->toArray();
 
-            foreach ($request->sport_classes as $class) {
-                DB::table('sport_classes')->insert([
-                    'sport_id' => $id,
-                    'name' => $class['name'],
-                ]);
+            $incomingClassIds = [];
+
+            if(!is_null($request->sport_classes)) {
+                foreach ($request->sport_classes as $class) {
+                    if (isset($class['id']) && in_array($class['id'], $existingClassIds)) {
+                        // Update jika ID sudah ada
+                        DB::table('sport_classes')->where('id', $class['id'])->update([
+                            'name' => $class['name'],
+                        ]);
+                        $incomingClassIds[] = $class['id'];
+                    } else {
+                        // Insert jika ID tidak ada (data baru)
+                        $newId = DB::table('sport_classes')->insertGetId([
+                            'sport_id' => $id,
+                            'name' => $class['name'],
+                        ]);
+                        $incomingClassIds[] = $newId;
+                    }
+                }
             }
+
+            // Hapus data kelas yang tidak ada di request
+            DB::table('sport_classes')
+                ->where('sport_id', $id)
+                ->whereNotIn('id', $incomingClassIds)
+                ->delete();
 
             DB::commit();
 
             return response()->json(['success' => true]);
         } catch (\Exception $e) {
             DB::rollBack();
-
             return response()->json([
                 'success' => false,
                 'message' => 'Gagal update data.',

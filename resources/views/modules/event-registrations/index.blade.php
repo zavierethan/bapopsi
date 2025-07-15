@@ -127,6 +127,7 @@
                                     <!--begin::Table row-->
                                     <tr class="text-start text-gray-700 fw-bolder fs-7 text-uppercase gs-0">
                                         <th class="min-w-125px">Nama Event</th>
+                                        <th class="min-w-125px">Kategori Event</th>
                                         <th class="min-w-125px">Kecamatan</th>
                                         <th class="min-w-125px">Sub Rayon</th>
                                         <th class="min-w-125px">Tanggal Registrasi</th>
@@ -173,9 +174,14 @@ $("#kt_registration_table").DataTable({
             return json.data;
         }
     },
-    columns: [{
+    columns: [
+        {
             data: 'name',
             name: 'name'
+        },
+        {
+            data: 'event_category',
+            name: 'event_category'
         },
         {
             data: 'nama_kecamatan',

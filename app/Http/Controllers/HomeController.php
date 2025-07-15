@@ -12,7 +12,8 @@ class HomeController extends Controller
     {
         $kecamatan = DB::table('kecamatan')->orderBy('id')->get();
         $sports = DB::table('sports')->orderBy('id')->get();
-        return view('home', compact('kecamatan', 'sports'));
+        $events = DB::table('events')->orderBy('id')->get();
+        return view('home', compact('kecamatan', 'sports', 'events'));
     }
 
     public function getLists(Request $request) {
@@ -22,9 +23,11 @@ class HomeController extends Controller
             ->select(
                 'atlet.*',
                 'sports.name as cabang_olahraga',
-                'medals.medal_type',
+                'sport_classes.name as nomor_cabang_olahraga',
+                'medals.medal_type'
             )
             ->leftJoin('sports', 'sports.id', '=', 'atlet.cabang_olahraga_id')
+            ->leftJoin('sport_classes', 'sport_classes.id', '=', 'atlet.kelas_id')
             ->leftJoin('medals', 'medals.atlet_id', '=', 'atlet.id');
 
         if (!empty($params['sport_id'])) {
@@ -65,8 +68,8 @@ class HomeController extends Controller
             ->leftJoin('event_registrations', 'event_registrations.id', '=', 'atlet.event_reg_id');
 
         // Filter by kecamatan (from event_registrations)
-        if ($request->filled('kecamatan_id')) {
-            $query->where('event_registrations.kecamatan_id', $request->kecamatan_id);
+        if ($request->filled('event_id')) {
+            $query->where('event_registrations.event_id', $request->event_id);
         }
 
         // Filter lainnya

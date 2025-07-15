@@ -15,8 +15,8 @@ class RayonController extends Controller
         $params = $request->all();
 
         $query = DB::table('rayon as r')
-                ->join('rayon_kecamatan as rk', 'rk.rayon_id', '=', 'r.id')
-                ->join('kecamatan as k', 'k.id', '=', 'rk.kecamatan_id')
+                ->leftJoin('rayon_kecamatan as rk', 'rk.rayon_id', '=', 'r.id')
+                ->leftJoin('kecamatan as k', 'k.id', '=', 'rk.kecamatan_id')
                 ->select(
                     'r.id',
                     'r.nama as nama_rayon',
@@ -59,7 +59,6 @@ class RayonController extends Controller
     public function save(Request $request) {
         $request->validate([
             'nama' => 'required|string|max:255',
-            'kecamatan_id' => 'required|array|min:1',
         ]);
 
         DB::beginTransaction();
@@ -68,11 +67,13 @@ class RayonController extends Controller
                 'nama' => $request->nama
             ]);
 
-            foreach ($request->kecamatan_id as $kecId) {
-                DB::table('rayon_kecamatan')->insert([
-                    'rayon_id' => $rayonId,
-                    'kecamatan_id' => $kecId
-                ]);
+            if(!is_null($request->kecamatan_id)) {
+                foreach ($request->kecamatan_id as $kecId) {
+                    DB::table('rayon_kecamatan')->insert([
+                        'rayon_id' => $rayonId,
+                        'kecamatan_id' => $kecId
+                    ]);
+                }
             }
 
             DB::commit();

@@ -50,7 +50,7 @@
                             <form id="sport-form" method="POST">
                                 @csrf
                                 <div class="mb-5">
-                                    <label class="form-label fw-bold">Nama</label>
+                                    <label class="form-label fw-bold">Cabang Olahraga</label>
                                     <input type="text" class="form-control form-control-solid" name="name">
                                 </div>
                                 <div class="separator my-5"></div>
@@ -60,17 +60,17 @@
                                         name="description"></textarea>
                                 </div>
                                 <div class="separator my-5"></div>
-                                <label class="form-label fw-bold">Kelas</label>
+                                <label class="form-label fw-bold">Kelas Cabang Olahraga</label>
                                 <div id="classes-wrapper">
-                                    <div class="class-item position-relative mb-3">
+                                    <!-- <div class="class-item position-relative mb-3">
                                         <input type="text" name="sport_classes[0][name]" class="form-control pe-10"
-                                            placeholder="Nama Kelas" required>
+                                            placeholder="Nama Kelas">
                                         <button type="button"
                                             class="btn btn-icon btn-sm btn-light-danger position-absolute top-50 translate-middle-y end-0 me-2 remove-class"
                                             style="display: none;" title="Hapus">
                                             <i class="fa fa-times"></i>
                                         </button>
-                                    </div>
+                                    </div> -->
                                 </div>
 
                                 <button type="button" id="add-class" class="btn btn-light-primary mb-5">
@@ -98,7 +98,7 @@ let classIndex = 1;
 $('#add-class').click(function() {
     const newClass = `
             <div class="class-item position-relative mb-3">
-                <input type="text" name="sport_classes[${classIndex}][name]" class="form-control pe-10" placeholder="Nama Kelas" required>
+                <input type="text" name="sport_classes[${classIndex}][name]" class="form-control pe-10" placeholder="Nama Kelas">
                 <button type="button" class="btn btn-icon btn-sm btn-light-danger position-absolute top-50 translate-middle-y end-0 me-2 remove-class" title="Hapus">
                     <i class="fa fa-times"></i>
                 </button>

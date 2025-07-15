@@ -50,7 +50,7 @@
                             <form id="sport-form" method="POST">
                                 @csrf
                                 <div class="mb-5">
-                                    <label class="form-label fw-bold">Nama</label>
+                                    <label class="form-label fw-bold">Cabang Olahraga</label>
                                     <input type="text" class="form-control form-control-solid" name="name" value="{{ $sport->name }}">
                                 </div>
                                 <div class="separator my-5"></div>
@@ -59,10 +59,11 @@
                                     <textarea type="text" class="form-control form-control-solid" name="description">{{ $sport->description }}</textarea>
                                 </div>
                                 <div class="separator my-5"></div>
-                                <label class="form-label fw-bold">Kelas</label>
+                                <label class="form-label fw-bold">Kelas Cabang Olahraga</label>
                                 <div id="classes-wrapper">
                                     @foreach($classes as $index => $class)
                                     <div class="class-item position-relative mb-3">
+                                        <input type="hidden" name="sport_classes[{{ $index }}][id]" value="{{ $class->id }}">
                                         <input type="text" name="sport_classes[{{ $index }}][name]"
                                             class="form-control pe-10" value="{{ $class->name }}" required>
                                         <button type="button"

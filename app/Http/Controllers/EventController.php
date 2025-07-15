@@ -20,9 +20,15 @@ class EventController extends Controller
         $query = DB::table('events')
             ->select(
                 'events.*',
+                'event_categories.name as event_category',
                 DB::raw("TO_CHAR(events.start_date, 'DD/MM/YYYY') AS start_date"),
-                DB::raw("TO_CHAR(events.end_date, 'DD/MM/YYYY') AS end_date")
-            );
+                DB::raw("TO_CHAR(events.end_date, 'DD/MM/YYYY') AS end_date"),
+                DB::raw("CASE
+                    WHEN CURRENT_DATE < events.end_date THEN 'Open'
+                    ELSE 'Closed'
+                END AS status")
+            )
+            ->leftJoin('event_categories', 'event_categories.id', '=', 'events.event_category_id');
 
         $totalRecords = $query->count();
 
@@ -47,7 +53,8 @@ class EventController extends Controller
 
 
     public function create() {
-        return view('modules.events.create');
+        $categories = DB::table('event_categories')->get();
+        return view('modules.events.create', compact('categories'));
     }
 
     public function save(Request $request) {
@@ -57,16 +64,18 @@ class EventController extends Controller
             'description' => 'required|string',
             'start_date'  => 'required|date',
             'end_date'    => 'required|date',
+            'category'    => 'required|exists:event_categories,id',
             'location'    => 'required|string',
         ]);
 
         $event = DB::table('events')->insert([
-            'name'        => $request->name,
-            'description' => $request->description,
-            'start_date'  => $request->start_date,
-            'end_date'    => $request->end_date,
-            'location'    => $request->location,
-            'created_at'  => now(),
+            'name'              => $request->name,
+            'description'       => $request->description,
+            'start_date'        => $request->start_date,
+            'end_date'          => $request->end_date,
+            'event_category_id' => $request->category,
+            'location'          => $request->location,
+            'created_at'        => now(),
         ]);
 
         return response()->json([
@@ -77,8 +86,9 @@ class EventController extends Controller
 
     public function edit($id){
         $event = DB::table('events')->where('id', $id)->first();
+        $categories = DB::table('event_categories')->get();
 
-        return view('modules.events.edit', compact('event'));
+        return view('modules.events.edit', compact('event', 'categories'));
     }
 
     public function update(Request $request, $id) {
@@ -87,6 +97,7 @@ class EventController extends Controller
             'description' => 'required|string',
             'start_date'  => 'required|date',
             'end_date'    => 'required|date',
+            'category'    => 'required|exists:event_categories,id',
             'location'    => 'required|string',
         ]);
 
@@ -97,12 +108,13 @@ class EventController extends Controller
         }
 
         DB::table('events')->where('id', $id)->update([
-            'name'        => $request->name,
-            'description' => $request->description,
-            'start_date'  => $request->start_date,
-            'end_date'    => $request->end_date,
-            'location'    => $request->location,
-            'updated_at'  => now(),
+            'name'              => $request->name,
+            'description'       => $request->description,
+            'start_date'        => $request->start_date,
+            'end_date'          => $request->end_date,
+            'event_category_id' => $request->category,
+            'location'          => $request->location,
+            'updated_at'        => now(),
         ]);
 
         $updated = DB::table('events')->where('id', $id)->first();
