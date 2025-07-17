@@ -1,63 +1,245 @@
 @extends('layouts.app')
 
 @section('content')
-<!-- Hero Section with Sporty Background -->
-<div class="bg-gradient-to-br from-blue-50 via-green-50 to-orange-50 min-h-screen">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 pt-24">
-        <!-- Page Title -->
-        <div class="text-center mb-12">
-            <h1 class="text-4xl md:text-5xl font-extrabold text-gray-900 mb-4">Berita Olahraga</h1>
-            <p class="text-xl text-gray-600 max-w-3xl mx-auto">Informasi terbaru seputar kegiatan dan prestasi olahraga
-                pelajar</p>
+<!-- Header Section -->
+<section class="pt-16 bg-gradient-to-r from-blue-600 to-blue-800 text-white py-16">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mt-5">
+            <h1 class="text-4xl md:text-5xl font-bold mb-4">Berita</h1>
+            <p class="text-xl text-blue-100">Informasi terkini seputar kegiatan olahraga pelajar Indonesia</p>
         </div>
+    </div>
+</section>
 
-        <!-- Search and Filter -->
-        <div class="bg-white p-6 rounded-xl shadow-lg border mb-8">
-            <div class="flex flex-col lg:flex-row gap-4">
-                <div class="flex-1 relative">
-                    <!-- Search Icon (use Heroicons or inline SVG) -->
-                    <svg class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" fill="none"
-                        stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round"
-                            d="M21 21l-4.35-4.35m0 0A7.5 7.5 0 104.5 4.5a7.5 7.5 0 0012.15 12.15z" />
-                    </svg>
-                    <input type="text" placeholder="Cari berita atau artikel..." id="searchInput"
-                        class="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent text-black" />
+<!-- Search Section -->
+<section class="py-8 bg-white border-b">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex flex-col md:flex-row gap-4 items-center justify-between">
+            <div class="flex-1 max-w-md">
+                <div class="relative">
+                    <input type="text" id="search-input" placeholder="Cari berita..."
+                        class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                    <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
+                </div>
+            </div>
+            <div class="flex gap-2">
+                <button id="search-btn"
+                    class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors">
+                    <i class="fas fa-search mr-2"></i>Cari
+                </button>
+                <button id="reset-search"
+                    class="bg-gray-500 text-white px-6 py-2 rounded-lg hover:bg-gray-600 transition-colors">
+                    Reset
+                </button>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- News Grid Section -->
+<section class="py-16 bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <!-- News Item 1 -->
+            <div class="news-item bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
+                <img src="https://images.pexels.com/photos/416978/pexels-photo-416978.jpeg?auto=compress&cs=tinysrgb&w=400"
+                    alt="Berita 1" class="w-full h-48 object-cover">
+                <div class="p-6">
+                    <div class="text-sm text-blue-600 font-medium mb-2">12 Januari 2024</div>
+                    <h3 class="text-lg font-semibold text-gray-900 mb-2">
+                        BAPOPSI Luncurkan Program Pembinaan Atlet Muda Berbakat
+                    </h3>
+                    <p class="text-gray-600 text-sm mb-4">
+                        Program pembinaan khusus untuk mengembangkan potensi atlet muda Indonesia di berbagai cabang
+                        olahraga prioritas. Program ini akan melibatkan pelatih bersertifikat internasional...
+                    </p>
+                    <a href="detail-berita.html?id=1"
+                        class="text-blue-600 hover:text-blue-700 font-medium text-sm flex items-center">
+                        Baca Selengkapnya
+                        <i class="fas fa-arrow-right ml-2"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- News Item 2 -->
+            <div class="news-item bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
+                <img src="https://images.pexels.com/photos/1103829/pexels-photo-1103829.jpeg?auto=compress&cs=tinysrgb&w=400"
+                    alt="Berita 2" class="w-full h-48 object-cover">
+                <div class="p-6">
+                    <div class="text-sm text-blue-600 font-medium mb-2">10 Januari 2024</div>
+                    <h3 class="text-lg font-semibold text-gray-900 mb-2">
+                        Prestasi Membanggakan Tim Badminton Indonesia di Kejuaraan Asia
+                    </h3>
+                    <p class="text-gray-600 text-sm mb-4">
+                        Tim badminton pelajar Indonesia berhasil meraih medali emas dalam kejuaraan tingkat Asia yang
+                        berlangsung di Thailand. Prestasi ini membuktikan kualitas pembinaan BAPOPSI...
+                    </p>
+                    <a href="detail-berita.html?id=2"
+                        class="text-blue-600 hover:text-blue-700 font-medium text-sm flex items-center">
+                        Baca Selengkapnya
+                        <i class="fas fa-arrow-right ml-2"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- News Item 3 -->
+            <div class="news-item bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
+                <img src="https://images.pexels.com/photos/863988/pexels-photo-863988.jpeg?auto=compress&cs=tinysrgb&w=400"
+                    alt="Berita 3" class="w-full h-48 object-cover">
+                <div class="p-6">
+                    <div class="text-sm text-blue-600 font-medium mb-2">8 Januari 2024</div>
+                    <h3 class="text-lg font-semibold text-gray-900 mb-2">
+                        Kerjasama BAPOPSI dengan Kementerian Pendidikan untuk Olahraga Sekolah
+                    </h3>
+                    <p class="text-gray-600 text-sm mb-4">
+                        Penandatanganan MoU antara BAPOPSI dan Kemendikbud untuk meningkatkan kualitas olahraga di
+                        sekolah-sekolah seluruh Indonesia. Kerjasama ini mencakup pelatihan guru...
+                    </p>
+                    <a href="detail-berita.html?id=3"
+                        class="text-blue-600 hover:text-blue-700 font-medium text-sm flex items-center">
+                        Baca Selengkapnya
+                        <i class="fas fa-arrow-right ml-2"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- News Item 4 -->
+            <div class="news-item bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
+                <img src="https://images.pexels.com/photos/1552242/pexels-photo-1552242.jpeg?auto=compress&cs=tinysrgb&w=400"
+                    alt="Berita 4" class="w-full h-48 object-cover">
+                <div class="p-6">
+                    <div class="text-sm text-blue-600 font-medium mb-2">5 Januari 2024</div>
+                    <h3 class="text-lg font-semibold text-gray-900 mb-2">
+                        Workshop Pelatih Olahraga Pelajar Se-Indonesia
+                    </h3>
+                    <p class="text-gray-600 text-sm mb-4">
+                        BAPOPSI menyelenggarakan workshop untuk meningkatkan kompetensi pelatih olahraga pelajar di
+                        seluruh Indonesia. Workshop ini dihadiri oleh 500 pelatih dari berbagai daerah...
+                    </p>
+                    <a href="detail-berita.html?id=4"
+                        class="text-blue-600 hover:text-blue-700 font-medium text-sm flex items-center">
+                        Baca Selengkapnya
+                        <i class="fas fa-arrow-right ml-2"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- News Item 5 -->
+            <div class="news-item bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
+                <img src="https://images.pexels.com/photos/209977/pexels-photo-209977.jpeg?auto=compress&cs=tinysrgb&w=400"
+                    alt="Berita 5" class="w-full h-48 object-cover">
+                <div class="p-6">
+                    <div class="text-sm text-blue-600 font-medium mb-2">3 Januari 2024</div>
+                    <h3 class="text-lg font-semibold text-gray-900 mb-2">
+                        Fasilitas Olahraga Baru untuk Sekolah-Sekolah di Daerah Terpencil
+                    </h3>
+                    <p class="text-gray-600 text-sm mb-4">
+                        Program bantuan fasilitas olahraga untuk sekolah-sekolah di daerah terpencil sebagai upaya
+                        pemerataan akses olahraga. Program ini akan menjangkau 100 sekolah di seluruh Indonesia...
+                    </p>
+                    <a href="detail-berita.html?id=5"
+                        class="text-blue-600 hover:text-blue-700 font-medium text-sm flex items-center">
+                        Baca Selengkapnya
+                        <i class="fas fa-arrow-right ml-2"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- News Item 6 -->
+            <div class="news-item bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
+                <img src="https://images.pexels.com/photos/1263349/pexels-photo-1263349.jpeg?auto=compress&cs=tinysrgb&w=400"
+                    alt="Berita 6" class="w-full h-48 object-cover">
+                <div class="p-6">
+                    <div class="text-sm text-blue-600 font-medium mb-2">1 Januari 2024</div>
+                    <h3 class="text-lg font-semibold text-gray-900 mb-2">
+                        Rencana Strategis BAPOPSI 2024: Menuju Prestasi Olahraga Pelajar Dunia
+                    </h3>
+                    <p class="text-gray-600 text-sm mb-4">
+                        BAPOPSI menetapkan target ambisius untuk membawa prestasi olahraga pelajar Indonesia ke tingkat
+                        dunia pada tahun 2024. Rencana strategis ini mencakup berbagai program inovatif...
+                    </p>
+                    <a href="detail-berita.html?id=6"
+                        class="text-blue-600 hover:text-blue-700 font-medium text-sm flex items-center">
+                        Baca Selengkapnya
+                        <i class="fas fa-arrow-right ml-2"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Hidden items for load more functionality -->
+            <div
+                class="news-item hidden-item bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
+                <img src="https://images.pexels.com/photos/1040881/pexels-photo-1040881.jpeg?auto=compress&cs=tinysrgb&w=400"
+                    alt="Berita 7" class="w-full h-48 object-cover">
+                <div class="p-6">
+                    <div class="text-sm text-blue-600 font-medium mb-2">28 Desember 2023</div>
+                    <h3 class="text-lg font-semibold text-gray-900 mb-2">
+                        Evaluasi Program BAPOPSI Tahun 2023
+                    </h3>
+                    <p class="text-gray-600 text-sm mb-4">
+                        Evaluasi komprehensif terhadap seluruh program BAPOPSI tahun 2023 menunjukkan peningkatan
+                        signifikan dalam prestasi olahraga pelajar Indonesia...
+                    </p>
+                    <a href="detail-berita.html?id=7"
+                        class="text-blue-600 hover:text-blue-700 font-medium text-sm flex items-center">
+                        Baca Selengkapnya
+                        <i class="fas fa-arrow-right ml-2"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div
+                class="news-item hidden-item bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
+                <img src="https://images.pexels.com/photos/1618200/pexels-photo-1618200.jpeg?auto=compress&cs=tinysrgb&w=400"
+                    alt="Berita 8" class="w-full h-48 object-cover">
+                <div class="p-6">
+                    <div class="text-sm text-blue-600 font-medium mb-2">25 Desember 2023</div>
+                    <h3 class="text-lg font-semibold text-gray-900 mb-2">
+                        Perayaan Hari Olahraga Nasional 2023
+                    </h3>
+                    <p class="text-gray-600 text-sm mb-4">
+                        Perayaan Hari Olahraga Nasional 2023 diselenggarakan dengan meriah di seluruh Indonesia. BAPOPSI
+                        mengkoordinasikan berbagai kegiatan olahraga pelajar...
+                    </p>
+                    <a href="detail-berita.html?id=8"
+                        class="text-blue-600 hover:text-blue-700 font-medium text-sm flex items-center">
+                        Baca Selengkapnya
+                        <i class="fas fa-arrow-right ml-2"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div
+                class="news-item hidden-item bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
+                <img src="https://images.pexels.com/photos/1263348/pexels-photo-1263348.jpeg?auto=compress&cs=tinysrgb&w=400"
+                    alt="Berita 9" class="w-full h-48 object-cover">
+                <div class="p-6">
+                    <div class="text-sm text-blue-600 font-medium mb-2">22 Desember 2023</div>
+                    <h3 class="text-lg font-semibold text-gray-900 mb-2">
+                        Turnamen Futsal Pelajar Nasional 2023
+                    </h3>
+                    <p class="text-gray-600 text-sm mb-4">
+                        Turnamen Futsal Pelajar Nasional 2023 berhasil diselenggarakan dengan partisipasi dari 34
+                        provinsi. Turnamen ini menjadi ajang pencarian bibit unggul futsal Indonesia...
+                    </p>
+                    <a href="detail-berita.html?id=9"
+                        class="text-blue-600 hover:text-blue-700 font-medium text-sm flex items-center">
+                        Baca Selengkapnya
+                        <i class="fas fa-arrow-right ml-2"></i>
+                    </a>
                 </div>
             </div>
         </div>
 
-        <!-- Kategori Tabs -->
-        <div class="flex space-x-4 mb-8 justify-center" id="news-tabs">
+        <!-- Load More Button -->
+        <div class="text-center mt-12">
             <button
-                class="tab-btn px-6 py-2 rounded-full font-semibold text-white bg-gradient-to-r from-orange-500 to-red-500 shadow active"
-                data-type="latest">Latest</button>
-            <button
-                class="tab-btn px-6 py-2 rounded-full font-semibold text-gray-700 bg-gray-100 hover:bg-orange-100 transition"
-                data-type="popular">Popular</button>
-            <button
-                class="tab-btn px-6 py-2 rounded-full font-semibold text-gray-700 bg-gray-100 hover:bg-orange-100 transition"
-                data-type="trending">Trending</button>
-        </div>
-
-        <!-- Articles Grid -->
-        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12" id="articles-wrapper">
-
-        </div>
-
-        <!-- Empty State -->
-        <div class="text-center py-12 hidden">
-            <svg class="w-16 h-16 text-gray-300 mx-auto mb-4" fill="none" stroke="currentColor" stroke-width="2"
-                viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round"
-                    d="M21 21l-4.35-4.35m0 0A7.5 7.5 0 104.5 4.5a7.5 7.5 0 0012.15 12.15z" />
-            </svg>
-            <h3 class="text-lg font-semibold text-gray-600 mb-2">Tidak ada artikel ditemukan</h3>
-            <p class="text-gray-500">Coba ubah kata kunci pencarian atau kategori</p>
+                class="load-more-btn bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg font-semibold transition-colors">
+                Muat Lebih Banyak
+            </button>
         </div>
     </div>
-</div>
-
+</section>
 @endsection
 
 

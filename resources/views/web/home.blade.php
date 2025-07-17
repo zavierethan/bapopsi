@@ -1,165 +1,354 @@
 @extends('layouts.app')
 
 @section('content')
-<!-- ✅ Hero Banner -->
-<section class="relative bg-gradient-to-br from-orange-500 via-red-500 to-blue-700 overflow-hidden">
-    <div class="absolute inset-0 bg-black opacity-10"></div>
-    <div class="absolute inset-0">
-        <div class="absolute top-20 left-10 w-32 h-32 bg-white opacity-5 rounded-full"></div>
-        <div class="absolute bottom-10 right-20 w-24 h-24 bg-white opacity-5 rounded-full"></div>
-        <div class="absolute top-1/2 right-10 w-16 h-16 bg-white opacity-5 rounded-full"></div>
-    </div>
-
-    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 lg:py-32">
-        <div class="grid lg:grid-cols-2 gap-12 items-center">
-            <div class="space-y-10">
-                <div class="space-y-6">
-                    <h1 class="text-6xl lg:text-7xl font-extrabold leading-tight text-white drop-shadow-lg">
-                        BAPOPSI
-                    </h1>
-                    <h2 class="text-3xl lg:text-4xl font-semibold text-blue-100 mb-2 drop-shadow">
-                        Badan Penyelenggara Olahraga Pelajar
-                    </h2>
-                    <p class="text-2xl text-blue-100 leading-relaxed max-w-2xl drop-shadow">
-                        Platform digital terpadu untuk mengelola kompetisi olahraga pelajar, memantau prestasi atlet, dan membangun ekosistem olahraga yang lebih baik.
-                    </p>
-                </div>
-                <div class="flex flex-col sm:flex-row gap-4">
-                    <a href="/login"
-                        class="group px-8 py-4 bg-gradient-to-r from-orange-500 to-red-500 text-white rounded-xl font-semibold hover:from-orange-600 hover:to-red-600 transition-all duration-300 transform hover:scale-105 shadow-lg flex items-center justify-center space-x-2 text-lg">
-                        <span>Masuk ke Sistem</span>
-                        <div
-                            class="w-5 h-5 bg-white bg-opacity-20 rounded-full flex items-center justify-center group-hover:bg-opacity-30 transition-colors">
-                            <div class="w-2 h-2 bg-white rounded-full"></div>
-                        </div>
-                    </a>
-                    <a href="/register"
-                        class="px-8 py-4 border-2 border-white text-white rounded-xl font-semibold hover:bg-white hover:text-blue-700 transition-all duration-300 transform hover:scale-105 flex items-center justify-center text-lg">
-                        Daftar Pengelola
-                    </a>
-                </div>
-                <div class="pt-4">
-                    <a href="https://www.instagram.com/bapopsi_kab.bandung/" target="_blank" class="inline-flex items-center space-x-2 px-4 py-2 bg-white bg-opacity-20 hover:bg-opacity-40 rounded-full text-white font-medium transition text-lg">
-                        <i class="fab fa-instagram text-pink-500 text-2xl"></i>
-                        <span class="text-base">@bapopsi_kab.bandung</span>
-                    </a>
+<!-- Hero Section - Event Slider -->
+    <section id="home" class="pt-16">
+        <div class="slider-container relative h-96 md:h-[500px] lg:h-[600px]">
+            <!-- Slide 1 -->
+            <div class="slide active relative w-full h-full">
+                <img src="https://images.pexels.com/photos/1552242/pexels-photo-1552242.jpeg?auto=compress&cs=tinysrgb&w=1200"
+                     alt="Event 1" class="w-full h-full object-cover">
+                <div class="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+                    <div class="text-center text-white px-4">
+                        <h1 class="text-3xl md:text-5xl font-bold mb-4">Kejuaraan Nasional Bola Basket Pelajar 2024</h1>
+                        <p class="text-lg md:text-xl mb-2">15-20 Januari 2024</p>
+                        <p class="text-base md:text-lg mb-6">Jakarta Convention Center</p>
+                        <button class="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg font-semibold transition-colors">
+                            Selengkapnya
+                        </button>
+                    </div>
                 </div>
             </div>
-            <div class="lg:justify-self-end flex justify-center lg:justify-end mt-12 lg:mt-0">
-                <div class="relative ml-0">
-                    <img src="/assets/media/bupati.png" alt="Bupati Bandung" class="h-[600px] max-h-[98vh] w-auto object-contain drop-shadow-2xl" style="margin:0 auto;" />
+
+            <!-- Slide 2 -->
+            <div class="slide relative w-full h-full">
+                <img src="https://images.pexels.com/photos/863988/pexels-photo-863988.jpeg?auto=compress&cs=tinysrgb&w=1200"
+                     alt="Event 2" class="w-full h-full object-cover">
+                <div class="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+                    <div class="text-center text-white px-4">
+                        <h1 class="text-3xl md:text-5xl font-bold mb-4">Festival Olahraga Pelajar Nusantara</h1>
+                        <p class="text-lg md:text-xl mb-2">5-10 Februari 2024</p>
+                        <p class="text-base md:text-lg mb-6">Gelora Bung Karno, Jakarta</p>
+                        <button class="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg font-semibold transition-colors">
+                            Selengkapnya
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 3 -->
+            <div class="slide relative w-full h-full">
+                <img src="https://images.pexels.com/photos/1103829/pexels-photo-1103829.jpeg?auto=compress&cs=tinysrgb&w=1200"
+                     alt="Event 3" class="w-full h-full object-cover">
+                <div class="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+                    <div class="text-center text-white px-4">
+                        <h1 class="text-3xl md:text-5xl font-bold mb-4">Kompetisi Badminton Antar Sekolah</h1>
+                        <p class="text-lg md:text-xl mb-2">20-25 Februari 2024</p>
+                        <p class="text-base md:text-lg mb-6">Istora Senayan, Jakarta</p>
+                        <button class="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg font-semibold transition-colors">
+                            Selengkapnya
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Navigation dots -->
+            <div class="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2">
+                <button class="slider-dot w-3 h-3 rounded-full bg-white bg-opacity-50 hover:bg-opacity-75" data-slide="0"></button>
+                <button class="slider-dot w-3 h-3 rounded-full bg-white bg-opacity-50 hover:bg-opacity-75" data-slide="1"></button>
+                <button class="slider-dot w-3 h-3 rounded-full bg-white bg-opacity-50 hover:bg-opacity-75" data-slide="2"></button>
+            </div>
+
+            <!-- Navigation arrows -->
+            <button class="absolute left-4 top-1/2 transform -translate-y-1/2 text-white text-2xl hover:text-gray-300" id="prev-slide">
+                <i class="fas fa-chevron-left"></i>
+            </button>
+            <button class="absolute right-4 top-1/2 transform -translate-y-1/2 text-white text-2xl hover:text-gray-300" id="next-slide">
+                <i class="fas fa-chevron-right"></i>
+            </button>
+        </div>
+    </section>
+
+    <!-- Medal Section -->
+    <section class="py-16 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-gray-900 mb-4">Rekapitulasi Prestasi 2024</h2>
+                <p class="text-lg text-gray-600">Total pencapaian medali dalam berbagai kompetisi internasional dan nasional</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12">
+                <div class="medal-card bg-gradient-to-br from-yellow-400 to-yellow-600 text-white p-6 rounded-xl text-center">
+                    <i class="fas fa-medal text-4xl mb-4"></i>
+                    <div class="counter text-3xl font-bold mb-2" data-target="45">0</div>
+                    <div class="text-yellow-100">Medali Emas</div>
+                </div>
+                <div class="medal-card bg-gradient-to-br from-gray-400 to-gray-600 text-white p-6 rounded-xl text-center">
+                    <i class="fas fa-medal text-4xl mb-4"></i>
+                    <div class="counter text-3xl font-bold mb-2" data-target="38">0</div>
+                    <div class="text-gray-100">Medali Perak</div>
+                </div>
+                <div class="medal-card bg-gradient-to-br from-orange-400 to-orange-600 text-white p-6 rounded-xl text-center">
+                    <i class="fas fa-medal text-4xl mb-4"></i>
+                    <div class="counter text-3xl font-bold mb-2" data-target="52">0</div>
+                    <div class="text-orange-100">Medali Perunggu</div>
+                </div>
+                <div class="medal-card bg-gradient-to-br from-blue-400 to-blue-600 text-white p-6 rounded-xl text-center">
+                    <i class="fas fa-trophy text-4xl mb-4"></i>
+                    <div class="counter text-3xl font-bold mb-2" data-target="135">0</div>
+                    <div class="text-blue-100">Total Medali</div>
+                </div>
+            </div>
+
+            <!-- Medal Table -->
+            <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+                <div class="px-6 py-4 bg-gray-50 border-b">
+                    <h3 class="text-lg font-semibold text-gray-900">Perolehan Medali per Cabang Olahraga</h3>
+                </div>
+                <div class="table-responsive">
+                    <table class="w-full">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Cabang Olahraga</th>
+                                <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    <i class="fas fa-medal text-yellow-500"></i> Emas
+                                </th>
+                                <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    <i class="fas fa-medal text-gray-400"></i> Perak
+                                </th>
+                                <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    <i class="fas fa-medal text-orange-500"></i> Perunggu
+                                </th>
+                                <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Total</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200">
+                            <tr class="hover:bg-gray-50">
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="flex items-center">
+                                        <i class="fas fa-shuttlecock text-green-600 mr-3"></i>
+                                        <span class="font-medium text-gray-900">Badminton</span>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-center text-sm font-semibold text-yellow-600">12</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-center text-sm font-semibold text-gray-600">8</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-center text-sm font-semibold text-orange-600">6</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-center text-sm font-bold text-blue-600">26</td>
+                            </tr>
+                            <tr class="hover:bg-gray-50">
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="flex items-center">
+                                        <i class="fas fa-swimmer text-blue-600 mr-3"></i>
+                                        <span class="font-medium text-gray-900">Renang</span>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-center text-sm font-semibold text-yellow-600">8</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-center text-sm font-semibold text-gray-600">10</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-center text-sm font-semibold text-orange-600">12</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-center text-sm font-bold text-blue-600">30</td>
+                            </tr>
+                            <tr class="hover:bg-gray-50">
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="flex items-center">
+                                        <i class="fas fa-running text-red-600 mr-3"></i>
+                                        <span class="font-medium text-gray-900">Atletik</span>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-center text-sm font-semibold text-yellow-600">10</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-center text-sm font-semibold text-gray-600">7</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-center text-sm font-semibold text-orange-600">9</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-center text-sm font-bold text-blue-600">26</td>
+                            </tr>
+                            <tr class="hover:bg-gray-50">
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="flex items-center">
+                                        <i class="fas fa-basketball-ball text-orange-600 mr-3"></i>
+                                        <span class="font-medium text-gray-900">Bola Basket</span>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-center text-sm font-semibold text-yellow-600">5</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-center text-sm font-semibold text-gray-600">4</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-center text-sm font-semibold text-orange-600">7</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-center text-sm font-bold text-blue-600">16</td>
+                            </tr>
+                            <tr class="hover:bg-gray-50">
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="flex items-center">
+                                        <i class="fas fa-volleyball-ball text-purple-600 mr-3"></i>
+                                        <span class="font-medium text-gray-900">Bola Voli</span>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-center text-sm font-semibold text-yellow-600">4</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-center text-sm font-semibold text-gray-600">5</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-center text-sm font-semibold text-orange-600">8</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-center text-sm font-bold text-blue-600">17</td>
+                            </tr>
+                            <tr class="hover:bg-gray-50">
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="flex items-center">
+                                        <i class="fas fa-futbol text-green-600 mr-3"></i>
+                                        <span class="font-medium text-gray-900">Sepak Bola</span>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-center text-sm font-semibold text-yellow-600">3</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-center text-sm font-semibold text-gray-600">2</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-center text-sm font-semibold text-orange-600">5</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-center text-sm font-bold text-blue-600">10</td>
+                            </tr>
+                            <tr class="hover:bg-gray-50">
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="flex items-center">
+                                        <i class="fas fa-table-tennis text-red-600 mr-3"></i>
+                                        <span class="font-medium text-gray-900">Tenis Meja</span>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-center text-sm font-semibold text-yellow-600">3</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-center text-sm font-semibold text-gray-600">2</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-center text-sm font-semibold text-orange-600">5</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-center text-sm font-bold text-blue-600">10</td>
+                            </tr>
+                        </tbody>
+                        <tfoot class="bg-gray-100">
+                            <tr>
+                                <td class="px-6 py-4 whitespace-nowrap font-bold text-gray-900">TOTAL</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-center font-bold text-yellow-600">45</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-center font-bold text-gray-600">38</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-center font-bold text-orange-600">52</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-center font-bold text-blue-600">135</td>
+                            </tr>
+                        </tfoot>
+                    </table>
                 </div>
             </div>
         </div>
-    </div>
-</section>
+    </section>
 
-<!-- CTA Section -->
-<section class="py-20 bg-gradient-to-r from-orange-500 via-red-500 to-blue-700 text-white">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h2 class="text-4xl font-bold mb-10 text-white">Berita</h2>
-        <div class="flex space-x-4 mb-8" id="news-tabs">
-            <button class="tab-btn px-6 py-2 rounded-full font-semibold text-gray-700 bg-gray-100 hover:bg-orange-100 shadow active" data-type="trending">Trending</button>
-            <button class="tab-btn px-6 py-2 rounded-full font-semibold text-white bg-gradient-to-r from-orange-500 to-red-500 transition" data-type="latest">Latest</button>
-            <button class="tab-btn px-6 py-2 rounded-full font-semibold text-gray-700 bg-gray-100 hover:bg-orange-100 transition" data-type="popular">Popular</button>
-        </div>
-        <div class="flex space-x-6 overflow-x-auto pb-4 scrollbar-thin scrollbar-thumb-blue-300 scrollbar-track-blue-100" id="articles-wrapper">
+    <!-- News Section -->
+    <section id="news" class="py-16 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Berita Terkini BAPOPSI</h2>
+                <p class="text-lg text-gray-600">Informasi terbaru seputar kegiatan olahraga pelajar di Indonesia</p>
+            </div>
 
-        </div>
-    </div>
-</section>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- News Item 1 -->
+                <div class="news-item bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
+                    <img src="https://images.pexels.com/photos/416978/pexels-photo-416978.jpeg?auto=compress&cs=tinysrgb&w=400"
+                         alt="Berita 1" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <div class="text-sm text-blue-600 font-medium mb-2">12 Januari 2024</div>
+                        <h3 class="text-lg font-semibold text-gray-900 mb-2 line-clamp-2">
+                            BAPOPSI Luncurkan Program Pembinaan Atlet Muda Berbakat
+                        </h3>
+                        <p class="text-gray-600 text-sm mb-4 line-clamp-2">
+                            Program pembinaan khusus untuk mengembangkan potensi atlet muda Indonesia di berbagai cabang olahraga prioritas...
+                        </p>
+                        <a href="pages/detail-berita.html?id=1" class="text-blue-600 hover:text-blue-700 font-medium text-sm flex items-center">
+                            Baca Selengkapnya
+                            <i class="fas fa-arrow-right ml-2"></i>
+                        </a>
+                    </div>
+                </div>
 
-<!-- Statistik Prestasi Section -->
-<section class="py-20 bg-gradient-to-br from-orange-50 to-blue-50">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center mb-16">
-            <h2 class="text-4xl font-bold text-gray-800 mb-4">Statistik Prestasi</h2>
-            <p class="text-xl text-gray-600 max-w-3xl mx-auto">
-                Pantau perkembangan prestasi olahraga pelajar dengan visualisasi data yang komprehensif
-            </p>
-        </div>
-        <div class="bg-white rounded-3xl shadow-lg border p-8 mt-8">
-            <h3 class="text-xl font-bold text-gray-900 mb-6">Statistik Prestasi</h3>
-            <!-- Ringkasan Medali -->
-            <div id="medali-summary" class="flex flex-col md:flex-row md:justify-between gap-4 mb-8"></div>
-            <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-6 gap-4">
-                <div class="flex items-center gap-2">
-                    <label for="filter-kecamatan" class="font-semibold text-gray-700">Filter Kecamatan:</label>
-                    <select id="filter-kecamatan" class="p-2 border rounded-xl text-black min-w-[180px]">
-                        <option value="">Semua Kecamatan</option>
-                    </select>
+                <!-- News Item 2 -->
+                <div class="news-item bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
+                    <img src="https://images.pexels.com/photos/1103829/pexels-photo-1103829.jpeg?auto=compress&cs=tinysrgb&w=400"
+                         alt="Berita 2" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <div class="text-sm text-blue-600 font-medium mb-2">10 Januari 2024</div>
+                        <h3 class="text-lg font-semibold text-gray-900 mb-2 line-clamp-2">
+                            Prestasi Membanggakan Tim Badminton Indonesia di Kejuaraan Asia
+                        </h3>
+                        <p class="text-gray-600 text-sm mb-4 line-clamp-2">
+                            Tim badminton pelajar Indonesia berhasil meraih medali emas dalam kejuaraan tingkat Asia yang berlangsung di Thailand...
+                        </p>
+                        <a href="pages/detail-berita.html?id=2" class="text-blue-600 hover:text-blue-700 font-medium text-sm flex items-center">
+                            Baca Selengkapnya
+                            <i class="fas fa-arrow-right ml-2"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- News Item 3 -->
+                <div class="news-item bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
+                    <img src="https://images.pexels.com/photos/863988/pexels-photo-863988.jpeg?auto=compress&cs=tinysrgb&w=400"
+                         alt="Berita 3" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <div class="text-sm text-blue-600 font-medium mb-2">8 Januari 2024</div>
+                        <h3 class="text-lg font-semibold text-gray-900 mb-2 line-clamp-2">
+                            Kerjasama BAPOPSI dengan Kementerian Pendidikan untuk Olahraga Sekolah
+                        </h3>
+                        <p class="text-gray-600 text-sm mb-4 line-clamp-2">
+                            Penandatanganan MoU antara BAPOPSI dan Kemendikbud untuk meningkatkan kualitas olahraga di sekolah-sekolah...
+                        </p>
+                        <a href="pages/detail-berita.html?id=3" class="text-blue-600 hover:text-blue-700 font-medium text-sm flex items-center">
+                            Baca Selengkapnya
+                            <i class="fas fa-arrow-right ml-2"></i>
+                        </a>
+                    </div>
                 </div>
             </div>
-            <div class="overflow-x-auto">
-                <table class="min-w-full divide-y divide-gray-200 rounded-xl overflow-hidden cursor-pointer" id="kecamatanTable">
-                    <thead class="bg-gradient-to-r from-orange-500 to-blue-600">
-                        <tr>
-                            <th class="px-6 py-3 text-left text-xs font-bold text-white uppercase tracking-wider">No</th>
-                            <th class="px-6 py-3 text-left text-xs font-bold text-white uppercase tracking-wider">Nama Kecamatan</th>
-                            <th class="px-6 py-3 text-left text-xs font-bold text-white uppercase tracking-wider">Perolehan Medali</th>
-                            <th class="px-6 py-3 text-left text-xs font-bold text-white uppercase tracking-wider">Medali Emas</th>
-                            <th class="px-6 py-3 text-left text-xs font-bold text-white uppercase tracking-wider">Medali Perak</th>
-                            <th class="px-6 py-3 text-left text-xs font-bold text-white uppercase tracking-wider">Medali Perunggu</th>
-                        </tr>
-                    </thead>
-                    <tbody id="kecamatan-tbody" class="bg-white divide-y divide-gray-100">
-                        <!-- Data akan diisi oleh JS -->
-                    </tbody>
-                </table>
+
+            <div class="text-center mt-12">
+                <a href="pages/berita.html" class="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg font-semibold transition-colors">
+                    Lihat Semua Berita
+                </a>
             </div>
-            <div class="flex justify-center mt-6" id="pagination-wrapper"></div>
         </div>
-    </div>
-</section>
+    </section>
 
-<!-- Galeri Section -->
-<section class="py-20 bg-gradient-to-br from-green-50 via-blue-50 to-red-50">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex items-center justify-between mb-10">
-            <h2 class="text-4xl font-bold text-gray-800">Galeri</h2>
-            <a href="/galery" class="px-6 py-2 rounded-full font-semibold text-white bg-gradient-to-r from-orange-500 to-red-500 shadow hover:from-orange-600 hover:to-red-600 transition-all">Lihat Semua</a>
-        </div>
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-4" id="galleries-wrapper-home">
-            <!-- Galeri akan diisi oleh JS -->
-        </div>
-        <div id="gallery-empty-home" class="text-center py-12 hidden">
-            <svg class="w-16 h-16 text-gray-300 mx-auto mb-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-4.35-4.35m0 0A7.5 7.5 0 104.5 4.5a7.5 7.5 0 0012.15 12.15z" />
-            </svg>
-            <h3 class="text-lg font-semibold text-gray-600 mb-2">Tidak ada foto ditemukan</h3>
-            <p class="text-gray-500">Coba kunjungi halaman galeri untuk koleksi lebih lengkap.</p>
-        </div>
-    </div>
-</section>
+    <!-- Gallery Section -->
+    <section id="gallery" class="py-16 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Galeri Kegiatan</h2>
+                <p class="text-lg text-gray-600">Dokumentasi kegiatan dan prestasi olahraga pelajar Indonesia</p>
+            </div>
 
-<!-- Modal Atlet per Kecamatan -->
-<div id="modal-atlet" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40 hidden">
-    <div class="bg-white rounded-3xl shadow-2xl border-2 border-orange-200 max-w-4xl w-full p-10 relative transition-all duration-300">
-        <button id="close-modal-atlet" class="absolute top-6 right-8 text-gray-500 hover:text-red-500 text-3xl font-bold transition">&times;</button>
-        <h3 class="text-3xl font-extrabold mb-6 text-gray-800 text-center tracking-wide" id="modal-atlet-title">Daftar Atlet</h3>
-        <!-- Filter Section -->
-        <div class="flex flex-col md:flex-row md:items-center gap-4 mb-8 justify-center">
-            <input type="text" id="filter-nama-atlet" class="p-3 border-2 border-orange-200 rounded-xl text-black w-full md:w-1/3 focus:ring-2 focus:ring-orange-400 focus:outline-none transition" placeholder="Cari Nama Atlet...">
-            <input type="text" id="filter-sekolah-atlet" class="p-3 border-2 border-orange-200 rounded-xl text-black w-full md:w-1/3 focus:ring-2 focus:ring-orange-400 focus:outline-none transition" placeholder="Cari Asal Sekolah...">
+            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                <!-- Gallery Items -->
+                <div class="gallery-item cursor-pointer overflow-hidden rounded-lg shadow-lg hover:shadow-xl transition-shadow">
+                    <img src="https://images.pexels.com/photos/1552242/pexels-photo-1552242.jpeg?auto=compress&cs=tinysrgb&w=400"
+                         alt="Galeri 1" class="w-full h-48 object-cover hover:scale-105 transition-transform duration-300">
+                </div>
+                <div class="gallery-item cursor-pointer overflow-hidden rounded-lg shadow-lg hover:shadow-xl transition-shadow">
+                    <img src="https://images.pexels.com/photos/863988/pexels-photo-863988.jpeg?auto=compress&cs=tinysrgb&w=400"
+                         alt="Galeri 2" class="w-full h-48 object-cover hover:scale-105 transition-transform duration-300">
+                </div>
+                <div class="gallery-item cursor-pointer overflow-hidden rounded-lg shadow-lg hover:shadow-xl transition-shadow">
+                    <img src="https://images.pexels.com/photos/1103829/pexels-photo-1103829.jpeg?auto=compress&cs=tinysrgb&w=400"
+                         alt="Galeri 3" class="w-full h-48 object-cover hover:scale-105 transition-transform duration-300">
+                </div>
+                <div class="gallery-item cursor-pointer overflow-hidden rounded-lg shadow-lg hover:shadow-xl transition-shadow">
+                    <img src="https://images.pexels.com/photos/416978/pexels-photo-416978.jpeg?auto=compress&cs=tinysrgb&w=400"
+                         alt="Galeri 4" class="w-full h-48 object-cover hover:scale-105 transition-transform duration-300">
+                </div>
+                <div class="gallery-item cursor-pointer overflow-hidden rounded-lg shadow-lg hover:shadow-xl transition-shadow">
+                    <img src="https://images.pexels.com/photos/209977/pexels-photo-209977.jpeg?auto=compress&cs=tinysrgb&w=400"
+                         alt="Galeri 5" class="w-full h-48 object-cover hover:scale-105 transition-transform duration-300">
+                </div>
+                <div class="gallery-item cursor-pointer overflow-hidden rounded-lg shadow-lg hover:shadow-xl transition-shadow">
+                    <img src="https://images.pexels.com/photos/1263349/pexels-photo-1263349.jpeg?auto=compress&cs=tinysrgb&w=400"
+                         alt="Galeri 6" class="w-full h-48 object-cover hover:scale-105 transition-transform duration-300">
+                </div>
+                <div class="gallery-item cursor-pointer overflow-hidden rounded-lg shadow-lg hover:shadow-xl transition-shadow">
+                    <img src="https://images.pexels.com/photos/1040881/pexels-photo-1040881.jpeg?auto=compress&cs=tinysrgb&w=400"
+                         alt="Galeri 7" class="w-full h-48 object-cover hover:scale-105 transition-transform duration-300">
+                </div>
+                <div class="gallery-item cursor-pointer overflow-hidden rounded-lg shadow-lg hover:shadow-xl transition-shadow">
+                    <img src="https://images.pexels.com/photos/1618200/pexels-photo-1618200.jpeg?auto=compress&cs=tinysrgb&w=400"
+                         alt="Galeri 8" class="w-full h-48 object-cover hover:scale-105 transition-transform duration-300">
+                </div>
+            </div>
+
+            <div class="text-center mt-12">
+                <a href="pages/galeri.html" class="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg font-semibold transition-colors">
+                    Lihat Semua Galeri
+                </a>
+            </div>
         </div>
-        <div class="overflow-x-auto rounded-xl">
-            <table class="min-w-full divide-y divide-gray-200 rounded-xl overflow-hidden shadow-md">
-                <thead class="bg-gradient-to-r from-orange-500 to-blue-600">
-                    <tr>
-                        <th class="px-6 py-4 text-left text-sm font-bold text-white uppercase tracking-wider">No</th>
-                        <th class="px-6 py-4 text-left text-sm font-bold text-white uppercase tracking-wider">Nama Atlet</th>
-                        <th class="px-6 py-4 text-left text-sm font-bold text-white uppercase tracking-wider">Asal Sekolah</th>
-                        <th class="px-6 py-4 text-left text-sm font-bold text-white uppercase tracking-wider">Total Medali</th>
-                        <th class="px-6 py-4 text-left text-sm font-bold text-white uppercase tracking-wider">Jenis Medali</th>
-                    </tr>
-                </thead>
-                <tbody id="modal-atlet-tbody" class="bg-white divide-y divide-gray-100">
-                    <!-- Data atlet akan diisi oleh JS -->
-                </tbody>
-            </table>
-        </div>
-    </div>
-</div>
+    </section>
 @endsection
 
 @section('script')
