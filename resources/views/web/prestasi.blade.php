@@ -5,8 +5,9 @@
 <section class="pt-16 bg-gradient-to-r from-blue-600 to-blue-800 text-white py-16">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mt-5">
-            <h1 class="text-4xl md:text-5xl font-bold mb-4">Rekapitulasi Prestasi 2024</h1>
-            <p class="text-xl text-blue-100">Total pencapaian medali dalam berbagai kompetisi internasional dan nasional</p>
+            <h1 class="text-4xl md:text-5xl font-bold mb-4">Rekapitulasi O2SN XIII 2025</h1>
+            <p class="text-xl text-blue-100">Total pencapaian medali dalam berbagai kompetisi internasional dan nasional
+            </p>
         </div>
     </div>
 </section>
@@ -34,6 +35,50 @@
                 <i class="fas fa-trophy text-4xl mb-4"></i>
                 <div class="counter text-3xl font-bold mb-2" data-target="135">0</div>
                 <div class="text-blue-100">Total Medali</div>
+            </div>
+        </div>
+
+        <div class="flex flex-col md:flex-row md:items-end justify-between mb-6 gap-4">
+            <div class="flex flex-col md:flex-row gap-4">
+                <!-- Cabang Olahraga Dropdown -->
+                <div>
+                    <label for="cabor" class="block text-sm font-medium text-gray-700 mb-1">Cabang Olahraga</label>
+                    <select id="cabor" name="cabor"
+                        class="w-full md:w-60 border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                        <option value="">Semua</option>
+                        <option value="Badminton">Badminton</option>
+                        <option value="Renang">Renang</option>
+                        <option value="Atletik">Atletik</option>
+                        <option value="Bola Basket">Bola Basket</option>
+                        <option value="Bola Voli">Bola Voli</option>
+                        <option value="Sepak Bola">Sepak Bola</option>
+                        <option value="Tenis Meja">Tenis Meja</option>
+                    </select>
+                </div>
+
+                <!-- No Pertandingan Input -->
+                <div>
+                    <label for="no" class="block text-sm font-medium text-gray-700 mb-1">No. Pertandingan</label>
+                    <select id="cabor" name="cabor"
+                        class="w-full md:w-60 border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                        <option value="">Semua</option>
+                        <option value="Badminton">Badminton</option>
+                        <option value="Renang">Renang</option>
+                        <option value="Atletik">Atletik</option>
+                        <option value="Bola Basket">Bola Basket</option>
+                        <option value="Bola Voli">Bola Voli</option>
+                        <option value="Sepak Bola">Sepak Bola</option>
+                        <option value="Tenis Meja">Tenis Meja</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Filter Button -->
+            <div>
+                <button type="button" id="filter-btn"
+                    class="bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700 text-sm shadow">
+                    Filter
+                </button>
             </div>
         </div>
 
@@ -69,7 +114,6 @@
                         <tr class="hover:bg-gray-50">
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <div class="flex items-center">
-                                    <i class="fas fa-shuttlecock text-green-600 mr-3"></i>
                                     <span class="font-medium text-gray-900">Badminton</span>
                                 </div>
                             </td>
@@ -84,7 +128,6 @@
                         <tr class="hover:bg-gray-50">
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <div class="flex items-center">
-                                    <i class="fas fa-swimmer text-blue-600 mr-3"></i>
                                     <span class="font-medium text-gray-900">Renang</span>
                                 </div>
                             </td>
@@ -99,7 +142,6 @@
                         <tr class="hover:bg-gray-50">
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <div class="flex items-center">
-                                    <i class="fas fa-running text-red-600 mr-3"></i>
                                     <span class="font-medium text-gray-900">Atletik</span>
                                 </div>
                             </td>
@@ -114,7 +156,6 @@
                         <tr class="hover:bg-gray-50">
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <div class="flex items-center">
-                                    <i class="fas fa-basketball-ball text-orange-600 mr-3"></i>
                                     <span class="font-medium text-gray-900">Bola Basket</span>
                                 </div>
                             </td>
@@ -129,7 +170,6 @@
                         <tr class="hover:bg-gray-50">
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <div class="flex items-center">
-                                    <i class="fas fa-volleyball-ball text-purple-600 mr-3"></i>
                                     <span class="font-medium text-gray-900">Bola Voli</span>
                                 </div>
                             </td>
@@ -144,7 +184,6 @@
                         <tr class="hover:bg-gray-50">
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <div class="flex items-center">
-                                    <i class="fas fa-futbol text-green-600 mr-3"></i>
                                     <span class="font-medium text-gray-900">Sepak Bola</span>
                                 </div>
                             </td>
@@ -159,7 +198,6 @@
                         <tr class="hover:bg-gray-50">
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <div class="flex items-center">
-                                    <i class="fas fa-table-tennis text-red-600 mr-3"></i>
                                     <span class="font-medium text-gray-900">Tenis Meja</span>
                                 </div>
                             </td>

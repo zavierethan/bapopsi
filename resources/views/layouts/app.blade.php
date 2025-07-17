@@ -30,7 +30,7 @@
                         Beranda
                     </a>
                     <a href="{{ url('/berita') }}"
-                        class="px-3 py-2 text-sm font-medium {{ request()->is('berita') ? 'text-blue-600 font-semibold' : 'text-gray-700 hover:text-blue-600' }}">
+                        class="px-3 py-2 text-sm font-medium {{ request()->is('berita*') ? 'text-blue-600 font-semibold' : 'text-gray-700 hover:text-blue-600' }}">
                         Berita
                     </a>
                     <a href="{{ url('/galery') }}"
