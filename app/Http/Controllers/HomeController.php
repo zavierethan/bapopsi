@@ -26,12 +26,21 @@ class HomeController extends Controller
                 'sport_classes.name as nomor_cabang_olahraga',
                 'medals.medal_type'
             )
+            ->leftJoin('event_registrations', 'event_registrations.id', '=', 'atlet.event_reg_id')
             ->leftJoin('sports', 'sports.id', '=', 'atlet.cabang_olahraga_id')
             ->leftJoin('sport_classes', 'sport_classes.id', '=', 'atlet.kelas_id')
             ->leftJoin('medals', 'medals.atlet_id', '=', 'atlet.id');
 
+        if (!empty($params['event_id'])) {
+            $query->where('event_registrations.event_id', $params['event_id']);
+        }
+
         if (!empty($params['sport_id'])) {
             $query->where('atlet.cabang_olahraga_id', $params['sport_id']);
+        }
+
+        if (!empty($params['medal_type'])) {
+            $query->where('medals.medal_type', $params['medal_type']);
         }
 
         $searchValue = $request->input('search.value');
@@ -74,7 +83,7 @@ class HomeController extends Controller
 
         // Filter lainnya
         if ($request->filled('sport_id')) {
-            $query->where('sports.name', $request->sport_id);
+           $query->where('atlet.cabang_olahraga_id', $request->sport_id);
         }
 
         if ($request->filled('medal_type')) {

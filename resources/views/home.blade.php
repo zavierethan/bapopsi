@@ -65,16 +65,8 @@
                     </div>
                 </div>
                 <div class="card shadow-card rounded-card p-4 mt-4">
-                    <div class="d-flex justify-content-between align-items-center mb-3">
-                        <h5 class="fw-bold mb-0">Data Atlet</h5>
-                        <div class="d-flex gap-2">
-                            <select class="form-select" id="sport-filter">
-                                <option value="">Semua Cabang</option>
-                                @foreach($sports as $sport)
-                                <option value="{{ $sport->id }}">{{ $sport->name }}</option>
-                                @endforeach
-                            </select>
-                        </div>
+                    <div class="card-header">
+                            <h3 class="card-title">Daftar Perolehan Medali Atlet</h3>
                     </div>
                     <div class="card-body pt-0 overflow-x-auto">
                         <table class="table align-middle table-row-dashed fs-6 gy-5" id="kt_groups_table">
@@ -86,7 +78,7 @@
                                     <th>Asal Sekolah</th>
                                     <th>Cabang Olahraga</th>
                                     <th>Nomor Cabang Olahraga</th>
-                                    <th>Juara</th>
+                                    <th>Perolehan Medali</th>
                                 </tr>
                             </thead>
                             <tbody id="athleteTableDashboard">
@@ -112,8 +104,10 @@ let table = $("#kt_groups_table").DataTable({
         url: `{{ route('dashboards.get-lists') }}`,
         type: 'GET',
         dataSrc: 'data',
-        data: {
-            sport_id: $('#sport-filter').val()
+        data: function (d) {
+            d.event_id = $('#filter-event').val();
+            d.medal_type = $('#filter-medal').val();
+            d.sport_id = $('#filter-sport').val();
         },
     },
     columns: [{
@@ -153,16 +147,13 @@ let table = $("#kt_groups_table").DataTable({
     ]
 });
 
-$('#sport-filter').on('change', function() {
-    table.ajax.reload();
-});
-
 $(document).ready(function() {
     fetchSummary();
 });
 
 $('#filter-event, #filter-medal, #filter-sport').on('change', function() {
     fetchSummary();
+    table.ajax.reload();
 });
 
 function fetchSummary() {

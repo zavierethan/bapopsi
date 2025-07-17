@@ -128,11 +128,10 @@
                                     <tr class="text-start text-gray-700 fw-bolder fs-7 text-uppercase gs-0">
                                         <th class="min-w-125px">Nama Event</th>
                                         <th class="min-w-125px">Kategori Event</th>
+                                        <th class="min-w-125px">Jenjang</th>
                                         <th class="min-w-125px">Kecamatan</th>
                                         <th class="min-w-125px">Sub Rayon</th>
                                         <th class="min-w-125px">Tanggal Registrasi</th>
-                                        <th class="min-w-125px text-center">Approval Status</th>
-                                        <th class="min-w-125px">Tanggal Approval</th>
                                         <th class="text-center min-w-70px">Actions</th>
                                     </tr>
                                     <!--end::Table row-->
@@ -184,44 +183,21 @@ $("#kt_registration_table").DataTable({
             name: 'event_category'
         },
         {
+            data: 'jenjang',
+            name: 'jenjang'
+        },
+        {
             data: 'nama_kecamatan',
             name: 'nama_kecamatan'
         },
         {
             data: 'sub_rayon',
-            name: 'sub_rayon'
+            name: 'sub_rayon',
+            className: 'text-center'
         },
         {
             data: 'created_at_formatted',
             name: 'created_at_formatted'
-        },
-        {
-            data: 'approval_status',
-            name: 'approval_status',
-            className: 'text-center',
-            render: function(data, type, row) {
-                let badgeClass = '';
-
-                switch (data) {
-                    case 'Waiting Approval':
-                        badgeClass = 'badge badge-warning';
-                        break;
-                    case 'Approved':
-                        badgeClass = 'badge badge-success';
-                        break;
-                    case 'Rejected':
-                        badgeClass = 'badge badge-danger';
-                        break;
-                    default:
-                        badgeClass = 'badge badge-secondary';
-                }
-
-                return `<span class="${badgeClass}">${data}</span>`;
-            }
-        },
-        {
-            data: 'approval_date_formatted',
-            name: 'approval_date_formatted'
         },
         {
             data: null,

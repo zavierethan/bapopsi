@@ -7,9 +7,11 @@
         <div id="kt_app_toolbar" class="app-toolbar py-3 py-lg-6">
             <div id="kt_app_toolbar_container" class="app-container container-fluid d-flex flex-stack">
                 <div class="page-title d-flex flex-column justify-content-center flex-wrap me-3">
-                    <h1 class="page-heading d-flex text-gray-900 fw-bold fs-3 flex-column justify-content-center my-0">Event Registrations</h1>
+                    <h1 class="page-heading d-flex text-gray-900 fw-bold fs-3 flex-column justify-content-center my-0">
+                        Event Registrations</h1>
                     <ul class="breadcrumb breadcrumb-separatorless fw-semibold fs-7 my-0 pt-1">
-                        <li class="breadcrumb-item text-muted"><a href="#" class="text-muted text-hover-primary">Data Atlet</a></li>
+                        <li class="breadcrumb-item text-muted"><a href="#" class="text-muted text-hover-primary">Data
+                                Atlet</a></li>
                         <li class="breadcrumb-item"><span class="bullet bg-gray-500 w-5px h-2px"></span></li>
                         <li class="breadcrumb-item text-muted">Event Registrations</li>
                         <li class="breadcrumb-item"><span class="bullet bg-gray-500 w-5px h-2px"></span></li>
@@ -33,25 +35,39 @@
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-md-6 mb-4">
-                                    <label class="form-label fw-bold fs-6">Event</label>
-                                    <select name="event_id" class="form-select form-select-solid" data-control="select2">
+                                    <label class="form-label fw-bold fs-6">Nama Event</label>
+                                    <select name="event_id" class="form-select form-select-solid"
+                                        data-control="select2">
                                         <option value="">Pilih Event</option>
                                         @foreach($events as $event)
-                                            <option value="{{ $event->id }}">{{ $event->name }}</option>
+                                        <option value="{{ $event->id }}">{{ $event->name }}</option>
                                         @endforeach
                                     </select>
                                 </div>
                                 <div class="col-md-6 mb-4">
-                                    <label class="form-label fw-bold fs-6">Cabang Olahraga</label>
-                                    <select name="cabang_olahraga_id" class="form-select form-select-solid" data-control="select2" id="cabor-id">
-                                        <option value="">Pilih Cabang</option>
-                                        @foreach($cabangOlahraga as $cabor)
-                                            <option value="{{ $cabor->id }}">{{ $cabor->name }}</option>
-                                        @endforeach
+                                    <label class="form-label fw-bold fs-6">Jenjang</label>
+                                    <select name="jenjang" class="form-select form-select-solid"
+                                        data-control="select2" id="jenjang">
+                                        <option value="">Pilih Jenjang</option>
+                                        <option value="SD">SD</option>
+                                        <option value="SMP">SMP</option>
                                     </select>
                                 </div>
                             </div>
-                            <div id="radioContainer"></div>
+                            <div class="row mt-5">
+                                <div class="col-md-6 mb-4">
+                                    <label class="form-label fw-bold fs-6">Cabang Olahraga</label>
+                                    <select name="cabang_olahraga_id" class="form-select form-select-solid"
+                                        data-control="select2" id="cabor-id">
+                                        <option value="">Pilih Cabang</option>
+                                        @foreach($cabangOlahraga as $cabor)
+                                        <option value="{{ $cabor->id }}">{{ $cabor->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="col-md-6 mb-4" id="radioContainer">
+                                </div>
+                            </div>
                         </div>
                     </div>
 
@@ -91,7 +107,7 @@
 
 @section('script')
 <script>
-$('#submit-form').on('click', function (e) {
+$('#submit-form').on('click', function(e) {
     e.preventDefault();
 
     Swal.fire({
@@ -113,7 +129,7 @@ $('#submit-form').on('click', function (e) {
                 data: formData,
                 processData: false,
                 contentType: false,
-                beforeSend: function () {
+                beforeSend: function() {
                     Swal.fire({
                         title: 'Menyimpan...',
                         text: 'Mohon tunggu sebentar',
@@ -123,16 +139,17 @@ $('#submit-form').on('click', function (e) {
                         }
                     });
                 },
-                success: function (response) {
+                success: function(response) {
                     Swal.fire({
                         title: 'Sukses!',
                         text: 'Data berhasil disimpan.',
                         icon: 'success'
                     }).then(() => {
-                        window.location.href = "{{ route('event-registrations.index') }}"; // redirect jika perlu
+                        window.location.href =
+                            "{{ route('event-registrations.index') }}"; // redirect jika perlu
                     });
                 },
-                error: function (xhr) {
+                error: function(xhr) {
                     console.log(xhr);
                     Swal.fire({
                         title: 'Gagal!',
@@ -234,29 +251,29 @@ function officialRow(index) {
     </div>`;
 }
 
-$('#add-atlet').on('click', function () {
+$('#add-atlet').on('click', function() {
     $('#atlet-wrapper').append(atletRow(atletIndex));
     atletIndex++;
 });
 
-$('#add-official').on('click', function () {
+$('#add-official').on('click', function() {
     $('#official-wrapper').append(officialRow(officialIndex));
     officialIndex++;
 });
 
-$(document).on('click', '.remove-atlet', function () {
+$(document).on('click', '.remove-atlet', function() {
     $(this).closest('.atlet-item').remove();
 });
 
-$(document).on('click', '.remove-official', function () {
+$(document).on('click', '.remove-official', function() {
     $(this).closest('.official-item').remove();
 });
 
-$(document).on('change', '.input-pas-foto', function () {
+$(document).on('change', '.input-pas-foto', function() {
     const input = this;
     const reader = new FileReader();
 
-    reader.onload = function (e) {
+    reader.onload = function(e) {
         $(input).closest('.atlet-item').find('.preview-pas-foto').attr('src', e.target.result);
     };
 
@@ -265,11 +282,11 @@ $(document).on('change', '.input-pas-foto', function () {
     }
 });
 
-$(document).on('change', '.input-foto-official', function () {
+$(document).on('change', '.input-foto-official', function() {
     const input = this;
     const reader = new FileReader();
 
-    reader.onload = function (e) {
+    reader.onload = function(e) {
         $(input).closest('.official-item').find('.preview-foto-official').attr('src', e.target.result);
     };
 
@@ -280,45 +297,41 @@ $(document).on('change', '.input-foto-official', function () {
 
 $('#cabor-id').on('change', function() {
     let sportId = $(this).val();
-    let $radioContainer = $('#radioContainer');
-    $radioContainer.empty();
+    let $container = $('#radioContainer'); // masih pakai id yg sama
+    $container.empty();
 
     if (sportId) {
         $.ajax({
             url: '/api/getKelasByCabor/' + sportId,
             method: 'GET',
             success: function(response) {
-                const $container = $('#radioContainer');
-                $container.empty();
+                // Buat elemen label dan select
+                const $label = $(
+                    '<label class="form-label fw-bold fs-6 d-block" for="sport_class_id">Nomor Cabang Olahraga</label>'
+                    );
+                const $select = $(
+                    '<select class="form-select form-select-solid" data-control="select2" id="sport_class_id" name="sport_class_id"></select>'
+                    );
 
-                // Buat struktur row dan col
-                const $row = $('<div class="row mt-5"></div>');
-                const $col = $('<div class="col-md-12 mb-4"></div>');
-                const $label = $('<label class="form-label fw-bold fs-6 d-block">Kelas Cabang Olahraga</label>');
+                // Tambahkan option default
+                $select.append('<option value="">-- Pilih Kelas --</option>');
 
-                // Tambahkan label ke col
-                $col.append($label);
-
-                // Loop hanya checkbox-nya
+                // Loop data kelas
                 $.each(response.data, function(index, item) {
-                    const $formCheck = $(`
-                        <div class="form-check form-check-inline me-4">
-                            <input class="form-check-input" type="radio" name="sport_class_id" id="kelas_${item.id}" value="${item.id}">
-                            <label class="form-check-label" for="kelas_${item.id}">${item.name}</label>
-                        </div>
-                    `);
-                    $col.append($formCheck);
+                    const $option = $('<option></option>')
+                        .attr('value', item.id)
+                        .text(item.name);
+                    $select.append($option);
                 });
 
-                $row.append($col);
-                $container.append($row);
+                // Masukkan ke container
+                $container.append($label).append($select);
             },
             error: function() {
-                $('#radioContainer').html('<p class="text-danger">Gagal memuat kelas.</p>');
+                $container.html('<p class="text-danger">Gagal memuat kelas.</p>');
             }
         });
     }
 });
-
 </script>
 @endsection
