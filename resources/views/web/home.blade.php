@@ -244,7 +244,7 @@
                         <p class="text-gray-600 text-sm mb-4 line-clamp-2">
                             Program pembinaan khusus untuk mengembangkan potensi atlet muda Indonesia di berbagai cabang olahraga prioritas...
                         </p>
-                        <a href="pages/detail-berita.html?id=1" class="text-blue-600 hover:text-blue-700 font-medium text-sm flex items-center">
+                        <a href="/berita/judul-berita" class="text-blue-600 hover:text-blue-700 font-medium text-sm flex items-center">
                             Baca Selengkapnya
                             <i class="fas fa-arrow-right ml-2"></i>
                         </a>
@@ -291,7 +291,7 @@
             </div>
 
             <div class="text-center mt-12">
-                <a href="pages/berita.html" class="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg font-semibold transition-colors">
+                <a href="/berita" class="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg font-semibold transition-colors">
                     Lihat Semua Berita
                 </a>
             </div>
@@ -343,7 +343,7 @@
             </div>
 
             <div class="text-center mt-12">
-                <a href="pages/galeri.html" class="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg font-semibold transition-colors">
+                <a href="/galery" class="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg font-semibold transition-colors">
                     Lihat Semua Galeri
                 </a>
             </div>

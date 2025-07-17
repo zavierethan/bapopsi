@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,26 +10,52 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="{{asset('assets/css/main.css')}}">
 </head>
+
 <body class="bg-gray-50">
     <!-- Navigation -->
     <nav class="bg-white shadow-lg fixed w-full top-0 z-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-16">
+                <!-- Logo & Title -->
                 <div class="flex items-center">
-                    <div class="flex-shrink-0">
+                    <div class="flex-shrink-0 flex items-center">
                         <i class="fas fa-trophy text-3xl text-blue-600"></i>
                         <span class="ml-2 text-xl font-bold text-gray-900">BAPOPSI</span>
                     </div>
                 </div>
-                <div class="hidden md:block">
-                    <div class="ml-10 flex items-baseline space-x-8">
-                        <a href="/" class="text-blue-600 px-3 py-2 text-sm font-medium">Beranda</a>
-                        <a href="/berita" class="text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium">Berita</a>
-                        <a href="/galery" class="text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium">Galeri</a>
-                        <a href="/prestasi" class="text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium">Cabor & Prestasi</a>
-                        <a href="" class="text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium">Kontak</a>
-                    </div>
+
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="{{ url('/') }}"
+                        class="px-3 py-2 text-sm font-medium {{ request()->is('/') ? 'text-blue-600 font-semibold' : 'text-gray-700 hover:text-blue-600' }}">
+                        Beranda
+                    </a>
+                    <a href="{{ url('/berita') }}"
+                        class="px-3 py-2 text-sm font-medium {{ request()->is('berita') ? 'text-blue-600 font-semibold' : 'text-gray-700 hover:text-blue-600' }}">
+                        Berita
+                    </a>
+                    <a href="{{ url('/galery') }}"
+                        class="px-3 py-2 text-sm font-medium {{ request()->is('galery') ? 'text-blue-600 font-semibold' : 'text-gray-700 hover:text-blue-600' }}">
+                        Galeri
+                    </a>
+                    <a href="{{ url('/prestasi') }}"
+                        class="px-3 py-2 text-sm font-medium {{ request()->is('prestasi') ? 'text-blue-600 font-semibold' : 'text-gray-700 hover:text-blue-600' }}">
+                        O2SN XIII 2025
+                    </a>
+                    <a href="{{ url('/kontak') }}"
+                        class="px-3 py-2 text-sm font-medium {{ request()->is('kontak') ? 'text-blue-600 font-semibold' : 'text-gray-700 hover:text-blue-600' }}">
+                        Kontak
+                    </a>
                 </div>
+
+                <!-- Login Button (desktop only) -->
+                <div class="hidden md:block">
+                    <a href="/login"
+                        class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium">
+                        Login
+                    </a>
+                </div>
+
+                <!-- Mobile Menu Toggle -->
                 <div class="md:hidden">
                     <button id="mobile-menu-btn" class="text-gray-700 hover:text-blue-600">
                         <i class="fas fa-bars text-xl"></i>
@@ -36,17 +63,25 @@
                 </div>
             </div>
         </div>
-        <!-- Mobile menu -->
+
+        <!-- Mobile Menu -->
         <div id="mobile-menu" class="md:hidden hidden">
             <div class="px-2 pt-2 pb-3 space-y-1 bg-white border-t">
                 <a href="/" class="block px-3 py-2 text-base font-medium text-blue-600">Beranda</a>
-                <a href="/berita" class="block px-3 py-2 text-base font-medium text-gray-700 hover:text-blue-600">Berita</a>
-                <a href="/galery" class="block px-3 py-2 text-base font-medium text-gray-700 hover:text-blue-600">Galeri</a>
-                <a href="/prestasi" class="block px-3 py-2 text-base font-medium text-gray-700 hover:text-blue-600">Cabor & Prestasi</a>
-                <a href="pages/kontak.html" class="block px-3 py-2 text-base font-medium text-gray-700 hover:text-blue-600">Kontak</a>
+                <a href="/berita"
+                    class="block px-3 py-2 text-base font-medium text-gray-700 hover:text-blue-600">Berita</a>
+                <a href="/galery"
+                    class="block px-3 py-2 text-base font-medium text-gray-700 hover:text-blue-600">Galeri</a>
+                <a href="/prestasi"
+                    class="block px-3 py-2 text-base font-medium text-gray-700 hover:text-blue-600">Cabor & Prestasi</a>
+                <a href="/kontak"
+                    class="block px-3 py-2 text-base font-medium text-gray-700 hover:text-blue-600">Kontak</a>
+                <a href="/login"
+                    class="block px-3 py-2 text-base font-medium text-white bg-blue-600 rounded-md text-center">Login</a>
             </div>
         </div>
     </nav>
+
 
     @yield('content')
 
@@ -60,7 +95,8 @@
                         <span class="ml-2 text-xl font-bold">BAPOPSI</span>
                     </div>
                     <p class="text-gray-400 mb-4 max-w-md">
-                        Badan Pembina Olahraga Pelajar Seluruh Indonesia - Membangun generasi pelajar yang sehat, berprestasi, dan berkarakter melalui olahraga.
+                        Badan Pembina Olahraga Pelajar Seluruh Indonesia - Membangun generasi pelajar yang sehat,
+                        berprestasi, dan berkarakter melalui olahraga.
                     </p>
                     <div class="flex space-x-4">
                         <a href="#" class="text-gray-400 hover:text-white transition-colors">
@@ -84,8 +120,10 @@
                         <li><a href="/" class="text-gray-400 hover:text-white transition-colors">Beranda</a></li>
                         <li><a href="/berita" class="text-gray-400 hover:text-white transition-colors">Berita</a></li>
                         <li><a href="/galery" class="text-gray-400 hover:text-white transition-colors">Galeri</a></li>
-                        <li><a href="pages/cabor-prestasi.html" class="text-gray-400 hover:text-white transition-colors">Cabor & Prestasi</a></li>
-                        <li><a href="pages/tentang.html" class="text-gray-400 hover:text-white transition-colors">Tentang</a></li>
+                        <li><a href="pages/cabor-prestasi.html"
+                                class="text-gray-400 hover:text-white transition-colors">Cabor & Prestasi</a></li>
+                        <li><a href="pages/tentang.html"
+                                class="text-gray-400 hover:text-white transition-colors">Tentang</a></li>
                     </ul>
                 </div>
 
@@ -94,15 +132,16 @@
                     <ul class="space-y-2">
                         <li class="text-gray-400">
                             <i class="fas fa-map-marker-alt mr-2"></i>
-                            Jakarta, Indonesia
+                            JL Raya Soreang Cipatik, Kopo, Kutawaringin, Komplek Sarana Olahraga Jalak Harupat, Bandung,
+                            40911, Indonesia
                         </li>
                         <li class="text-gray-400">
                             <i class="fas fa-phone mr-2"></i>
-                            +62 21 1234567
+                            022 5893 833
                         </li>
                         <li class="text-gray-400">
                             <i class="fas fa-envelope mr-2"></i>
-                            info@bapopsi.org
+                            bapopsi@bandungkab.go.id
                         </li>
                     </ul>
                 </div>
@@ -123,10 +162,26 @@
     </div>
 
     <!-- Back to Top Button -->
-    <button id="back-to-top" class="fixed bottom-4 right-4 bg-blue-600 text-white p-3 rounded-full shadow-lg hover:bg-blue-700 transition-colors hidden">
+    <button id="back-to-top"
+        class="fixed bottom-4 right-4 bg-blue-600 text-white p-3 rounded-full shadow-lg hover:bg-blue-700 transition-colors hidden">
         <i class="fas fa-arrow-up"></i>
     </button>
 
     <script src="{{asset('assets/js/main.js')}}"></script>
+    <script>
+    $(document).ready(function() {
+        const currentPath = window.location.pathname;
+
+        $(".main-nav a").each(function() {
+            const linkPath = $(this).attr("href");
+            if (currentPath === linkPath) {
+                $(this).addClass("text-blue-600 font-semibold");
+            } else {
+                $(this).removeClass("text-blue-600 font-semibold").addClass("text-gray-700");
+            }
+        });
+    });
+    </script>
 </body>
+
 </html>

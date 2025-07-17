@@ -250,6 +250,7 @@ $('.gallery-item img').click(function() {
     $('#lightbox-description').text(description);
     $('#lightbox').fadeIn(300);
 });
+
 $(document).ready(function() {
     $.ajax({
         url: '/api/posts/galeries', // pastikan URL endpoint sesuai

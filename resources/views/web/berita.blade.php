@@ -11,27 +11,24 @@
     </div>
 </section>
 
-<!-- Search Section -->
 <section class="py-8 bg-white border-b">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex flex-col md:flex-row gap-4 items-center justify-between">
-            <div class="flex-1 max-w-md">
-                <div class="relative">
-                    <input type="text" id="search-input" placeholder="Cari berita..."
-                        class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                    <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
-                </div>
-            </div>
-            <div class="flex gap-2">
-                <button id="search-btn"
-                    class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors">
-                    <i class="fas fa-search mr-2"></i>Cari
-                </button>
-                <button id="reset-search"
-                    class="bg-gray-500 text-white px-6 py-2 rounded-lg hover:bg-gray-600 transition-colors">
-                    Reset
-                </button>
-            </div>
+        <div class="flex flex-wrap gap-4 justify-center">
+            <button
+                class="filter-btn bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-gray-300 transition-colors"
+                data-filter="latest">
+                Latest
+            </button>
+            <button
+                class="filter-btn bg-gray-200 text-gray-700 px-6 py-2 rounded-lg hover:bg-gray-300 transition-colors"
+                data-filter="popular">
+                Popular
+            </button>
+            <button
+                class="filter-btn bg-gray-200 text-gray-700 px-6 py-2 rounded-lg hover:bg-gray-300 transition-colors"
+                data-filter="trending">
+                Trending
+            </button>
         </div>
     </div>
 </section>
