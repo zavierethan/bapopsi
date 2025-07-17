@@ -226,7 +226,7 @@ $(document).ready(function() {
     });
 
     // Tooltip functionality
-    $('[data-tooltip]').hover(
+    $('[data-toolip]').hover(
         function() {
             const tooltip = $(this).data('tooltip');
             $(this).append('<div class="tooltip absolute bg-gray-800 text-white text-xs rounded py-1 px-2 -top-8 left-1/2 transform -translate-x-1/2">' + tooltip + '</div>');

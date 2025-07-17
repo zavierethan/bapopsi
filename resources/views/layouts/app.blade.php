@@ -25,7 +25,7 @@
                         <a href="/" class="text-blue-600 px-3 py-2 text-sm font-medium">Beranda</a>
                         <a href="/berita" class="text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium">Berita</a>
                         <a href="/galery" class="text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium">Galeri</a>
-                        <a href="pages/cabor-prestasi.html" class="text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium">Cabor & Prestasi</a>
+                        <a href="/prestasi" class="text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium">Cabor & Prestasi</a>
                         <a href="pages/kontak.html" class="text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium">Kontak</a>
                     </div>
                 </div>
