@@ -11,9 +11,8 @@
     </div>
 </section>
 
-<div class="bg-gradient-to-br from-blue-50 to-orange-50 min-h-screen py-32">
+<div class="bg-gradient-to-br from-blue-50 to-orange-50 min-h-screen">
     <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 mt-16">
-        <h1 class="text-4xl font-bold text-gray-800 mb-8">Info Kontak</h1>
         <div class="bg-white rounded-2xl shadow-lg border p-8 space-y-6">
             <div>
                 <h2 class="text-xl font-bold text-gray-900 mb-2">Alamat</h2>

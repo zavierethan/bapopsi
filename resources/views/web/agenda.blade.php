@@ -1,11 +1,16 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="bg-gradient-to-br from-blue-50 to-orange-50 min-h-screen py-32">
-    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 mt-16">
-        <div class="flex items-center justify-between mb-10">
-            <h1 class="text-4xl font-bold text-gray-800">Agenda</h1>
+<section class="pt-16 bg-gradient-to-r from-blue-600 to-blue-800 text-white py-16">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mt-5">
+            <h1 class="text-4xl md:text-5xl font-bold mb-4">Agenda</h1>
+            <p class="text-xl text-blue-100">Agenda kegiatan dan prestasi olahraga pelajar Indonesia</p>
         </div>
+    </div>
+</section>
+<div class="bg-gradient-to-br from-blue-50 to-orange-50 min-h-screen">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 mt-16">
         <div class="space-y-6" id="agenda-wrapper">
             <!-- Agenda akan diisi oleh JS -->
         </div>

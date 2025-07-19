@@ -50,3 +50,5 @@ Route::prefix('posts')->group(function () {
         });
     });
 });
+
+Route::get('/jadwal-pertandingan', [App\Http\Controllers\JadwalPertandinganController::class, 'getLists']);

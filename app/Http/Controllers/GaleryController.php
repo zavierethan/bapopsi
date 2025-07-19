@@ -17,12 +17,17 @@ class GaleryController extends Controller
         $searchValue = $request->input('search.value');
         $start = $request->input('start', 0);
         $length = $request->input('length', 10);
+        $type = $request->query('type');
 
         $query = DB::table('galleries')
             ->join('gallery_categories', 'gallery_categories.id', '=', 'galleries.category_id')
             ->select('galleries.*', 'gallery_categories.name as category');
 
         $totalRecords = $query->count();
+
+        if (!empty($type)) {
+            $query->where('galleries.category_id', $type);
+        }
 
         if (!empty($searchValue)) {
             $query->where('galleries.title', 'like', '%' . $searchValue . '%');

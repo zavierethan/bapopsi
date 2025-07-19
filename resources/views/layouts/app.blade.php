@@ -37,13 +37,17 @@
                         class="px-3 py-2 text-sm font-medium {{ request()->is('galery') ? 'text-blue-600 font-semibold' : 'text-gray-700 hover:text-blue-600' }}">
                         Galeri
                     </a>
-                    <a href="{{ url('/prestasi') }}"
-                        class="px-3 py-2 text-sm font-medium {{ request()->is('prestasi') ? 'text-blue-600 font-semibold' : 'text-gray-700 hover:text-blue-600' }}">
-                        O2SN XIII 2025
+                    <a href="{{ url('/agenda') }}"
+                        class="px-3 py-2 text-sm font-medium {{ request()->is('agenda') ? 'text-blue-600 font-semibold' : 'text-gray-700 hover:text-blue-600' }}">
+                        Agenda
                     </a>
                     <a href="{{ url('/kontak') }}"
                         class="px-3 py-2 text-sm font-medium {{ request()->is('kontak') ? 'text-blue-600 font-semibold' : 'text-gray-700 hover:text-blue-600' }}">
                         Kontak
+                    </a>
+                    <a href="{{ url('/prestasi') }}"
+                        class="px-3 py-2 text-sm font-medium {{ request()->is('prestasi') ? 'text-blue-600 font-semibold' : 'text-gray-700 hover:text-blue-600' }}">
+                        O2SN XIII 2025
                     </a>
                 </div>
 
@@ -72,10 +76,10 @@
                     class="block px-3 py-2 text-base font-medium text-gray-700 hover:text-blue-600">Berita</a>
                 <a href="/galery"
                     class="block px-3 py-2 text-base font-medium text-gray-700 hover:text-blue-600">Galeri</a>
-                <a href="/prestasi"
-                    class="block px-3 py-2 text-base font-medium text-gray-700 hover:text-blue-600">Cabor & Prestasi</a>
                 <a href="/kontak"
                     class="block px-3 py-2 text-base font-medium text-gray-700 hover:text-blue-600">Kontak</a>
+                <a href="/prestasi"
+                    class="block px-3 py-2 text-base font-medium text-gray-700 hover:text-blue-600">Cabor & Prestasi</a>
                 <a href="/login"
                     class="block px-3 py-2 text-base font-medium text-white bg-blue-600 rounded-md text-center">Login</a>
             </div>
@@ -182,6 +186,7 @@
         });
     });
     </script>
+    @yield('script')
 </body>
 
 </html>
