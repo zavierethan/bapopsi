@@ -45,10 +45,12 @@
                         class="px-3 py-2 text-sm font-medium {{ request()->is('kontak') ? 'text-blue-600 font-semibold' : 'text-gray-700 hover:text-blue-600' }}">
                         Kontak
                     </a>
+                    @if($activeEvent)
                     <a href="{{ url('/prestasi') }}"
                         class="px-3 py-2 text-sm font-medium {{ request()->is('prestasi') ? 'text-blue-600 font-semibold' : 'text-gray-700 hover:text-blue-600' }}">
-                        O2SN XIII 2025
+                        {{$activeEvent->name}}
                     </a>
+                    @endif
                 </div>
 
                 <!-- Login Button (desktop only) -->
@@ -76,10 +78,12 @@
                     class="block px-3 py-2 text-base font-medium text-gray-700 hover:text-blue-600">Berita</a>
                 <a href="/galery"
                     class="block px-3 py-2 text-base font-medium text-gray-700 hover:text-blue-600">Galeri</a>
+                <a href="/agenda"
+                    class="block px-3 py-2 text-base font-medium text-gray-700 hover:text-blue-600">Agenda</a>
                 <a href="/kontak"
                     class="block px-3 py-2 text-base font-medium text-gray-700 hover:text-blue-600">Kontak</a>
                 <a href="/prestasi"
-                    class="block px-3 py-2 text-base font-medium text-gray-700 hover:text-blue-600">Cabor & Prestasi</a>
+                    class="block px-3 py-2 text-base font-medium text-gray-700 hover:text-blue-600">O2SN XIII 2025</a>
                 <a href="/login"
                     class="block px-3 py-2 text-base font-medium text-white bg-blue-600 rounded-md text-center">Login</a>
             </div>

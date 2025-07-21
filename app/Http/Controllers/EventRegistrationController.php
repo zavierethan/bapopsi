@@ -353,7 +353,10 @@ class EventRegistrationController extends Controller
 
     public function getKecamatanMedalSummary(Request $request) {
         $query = DB::table('kecamatan as k')
-            ->leftJoin('event_registrations as er', 'er.kecamatan_id', '=', 'k.id')
+            ->leftJoin('event_registrations as er', function ($join) use ($request) {
+                $join->on('er.kecamatan_id', '=', 'k.id')
+                    ->where('er.event_id', '=', $request->input('event_id'));
+            })
             ->leftJoin('atlet as a', 'a.event_reg_id', '=', 'er.id')
             ->leftJoin('medals as m', 'm.atlet_id', '=', 'a.id')
             ->select(
@@ -410,6 +413,10 @@ class EventRegistrationController extends Controller
             ")
             ->first();
 
-            return response()->json($result);
+        return response()->json($result);
+    }
+
+    public function prestasiByKecamatan($kecamatanId) {
+        return view('web.prestasi-detail');
     }
 }

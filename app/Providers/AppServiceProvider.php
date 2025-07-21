@@ -26,6 +26,11 @@ class AppServiceProvider extends ServiceProvider
     {
         // Defer the menu population logic until views are being rendered
         View::composer('*', function ($view) {
+            $activeEvent = DB::table('events')
+                ->where('status', 1)
+                ->orderByDesc('created_at')
+                ->first();
+
             if (Auth::check()) {
                 $userId = Auth::id(); // Get logged-in user's ID
                 $groupId = Auth::user()->group_id; // Get the group ID of the user
@@ -52,12 +57,14 @@ class AppServiceProvider extends ServiceProvider
                 $view->with([
                     'parent_menus' => $parentMenus,
                     'child_menus' => $childMenus,
+                    'activeEvent' => $activeEvent,
                 ]);
             } else {
                 // No user is logged in, share empty menus
                 $view->with([
                     'parent_menus' => [],
                     'child_menus' => [],
+                    'activeEvent' => $activeEvent,
                 ]);
             }
         });

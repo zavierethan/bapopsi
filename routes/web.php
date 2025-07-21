@@ -22,10 +22,6 @@ Route::get('/', function () {
     return view('web.home');
 });
 
-Route::get('/prestasi', function () {
-    return view('web.prestasi');
-});
-
 Route::get('/berita-detail', function () {
     return view('web.berita-detail');
 });
@@ -37,6 +33,16 @@ Route::prefix('berita')->group(function () {
         });
 
         Route::get('/{slug}', [App\Http\Controllers\NewsController::class, 'show']);
+    });
+});
+
+Route::prefix('prestasi')->group(function () {
+    Route::name('prestasi.')->group(function () {
+        Route::get('/', function () {
+            return view('web.prestasi');
+        });
+
+        Route::get('/{kecamatanId}', [App\Http\Controllers\EventRegistrationController::class, 'prestasiByKecamatan']);
     });
 });
 
@@ -211,6 +217,18 @@ Route::group(['middleware' => ['auth']], function() {
                     Route::get('/edit/{id}', [App\Http\Controllers\AgendaController::class, 'edit'])->name('edit');
                     Route::post('/update/{id}', [App\Http\Controllers\AgendaController::class, 'update'])->name('update');
                     Route::delete('/delete/{id}', [App\Http\Controllers\AgendaController::class, 'delete'])->name('delete');
+                });
+            });
+
+            Route::prefix('jadwal')->group(function () {
+                Route::name('jadwal.')->group(function () {
+                    Route::get('/', [App\Http\Controllers\JadwalPertandinganController::class, 'index'])->name('index');
+                    Route::get('/lists', [App\Http\Controllers\JadwalPertandinganController::class, 'getLists'])->name('get-lists');
+                    Route::get('/create', [App\Http\Controllers\JadwalPertandinganController::class, 'create'])->name('create');
+                    Route::post('/save', [App\Http\Controllers\JadwalPertandinganController::class, 'save'])->name('save');
+                    Route::get('/edit/{id}', [App\Http\Controllers\JadwalPertandinganController::class, 'edit'])->name('edit');
+                    Route::post('/update/{id}', [App\Http\Controllers\JadwalPertandinganController::class, 'update'])->name('update');
+                    Route::delete('/delete/{id}', [App\Http\Controllers\JadwalPertandinganController::class, 'delete'])->name('delete');
                 });
             });
         });

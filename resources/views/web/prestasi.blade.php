@@ -4,7 +4,7 @@
 <!-- Hero Section -->
 <section class="pt-16 bg-gradient-to-r from-blue-600 to-blue-800 text-white py-16">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center mt-5">
-        <h1 class="text-4xl md:text-5xl font-bold mb-4">Rekapitulasi O2SN XIII 2025</h1>
+        <h1 class="text-4xl md:text-5xl font-bold mb-4">Rekapitulasi {{$activeEvent->name}}</h1>
         <p class="text-xl text-blue-100">Total pencapaian medali dalam berbagai kompetisi nasional & daerah</p>
     </div>
 </section>
@@ -63,6 +63,7 @@
                             <option value="Sepak Bola">Sepak Bola</option>
                             <option value="Tenis Meja">Tenis Meja</option>
                         </select>
+                        <input type="hidden" value="{{$activeEvent->id}}" id="eventId"/>
                     </div>
 
                     <!-- No Pertandingan Input -->
@@ -230,9 +231,17 @@ function loadMedalSummary() {
 
 // Fetch table data
 function loadKecamatanMedalTable() {
+    let caborId = '';
+    let noPertandinganId = '';
+    let eventId = $("#eventId").val() | "";
     $.ajax({
         url: '/api/getKecamatanMedalSummary',
         method: 'GET',
+        data: {
+            cabor_id: caborId,
+            no_pertandingan_id: noPertandinganId,
+            event_id: eventId
+        },
         success: function(data) {
             let emas = 0,
                 perak = 0,
@@ -248,7 +257,11 @@ function loadKecamatanMedalTable() {
 
                 rows += `
                     <tr>
-                        <td class="px-6 py-4 font-medium text-xs">${item.nama}</td>
+                        <td class="px-6 py-4 font-medium text-xs">
+                            <a href="/prestasi/${item.id}" class="text-blue-700 hover:underline">
+                                ${item.nama}
+                            </a>
+                        </td>
                         <td class="px-6 py-4 text-center text-xs text-yellow-600 font-semibold">${item.emas}</td>
                         <td class="px-6 py-4 text-center text-xs text-gray-600 font-semibold">${item.perak}</td>
                         <td class="px-6 py-4 text-center text-xs text-orange-600 font-semibold">${item.perunggu}</td>
@@ -261,10 +274,10 @@ function loadKecamatanMedalTable() {
             $('#medalTableFooter').html(`
                 <tr>
                     <td class="px-6 py-4 font-medium text-xs">TOTAL</td>
-                    <td class="px-6 py-4 text-center font-bold text-yellow-600">${emas}</td>
-                    <td class="px-6 py-4 text-center font-bold text-gray-600">${perak}</td>
-                    <td class="px-6 py-4 text-center font-bold text-orange-600">${perunggu}</td>
-                    <td class="px-6 py-4 text-center font-bold text-blue-600">${total}</td>
+                    <td class="px-6 py-4 text-center text-xs font-bold text-yellow-600">${emas}</td>
+                    <td class="px-6 py-4 text-center text-xs font-bold text-gray-600">${perak}</td>
+                    <td class="px-6 py-4 text-center text-xs font-bold text-orange-600">${perunggu}</td>
+                    <td class="px-6 py-4 text-center text-xs font-bold text-blue-600">${total}</td>
                 </tr>
             `);
         },

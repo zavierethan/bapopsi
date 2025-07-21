@@ -4,66 +4,10 @@
 <!-- Hero Section - Event Slider -->
 <section id="home" class="pt-16">
     <div class="slider-container relative h-96 md:h-[500px] lg:h-[600px]">
-        <!-- Slide 1 -->
-        <div class="slide active relative w-full h-full">
-            <img src="https://images.pexels.com/photos/1552242/pexels-photo-1552242.jpeg?auto=compress&cs=tinysrgb&w=1200"
-                alt="Event 1" class="w-full h-full object-cover">
-            <div class="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-                <div class="text-center text-white px-4">
-                    <h1 class="text-3xl md:text-5xl font-bold mb-4">Kejuaraan Nasional Bola Basket Pelajar 2024</h1>
-                    <p class="text-lg md:text-xl mb-2">15-20 Januari 2024</p>
-                    <p class="text-base md:text-lg mb-6">Jakarta Convention Center</p>
-                    <button
-                        class="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg font-semibold transition-colors">
-                        Selengkapnya
-                    </button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Slide 2 -->
-        <div class="slide relative w-full h-full">
-            <img src="https://images.pexels.com/photos/863988/pexels-photo-863988.jpeg?auto=compress&cs=tinysrgb&w=1200"
-                alt="Event 2" class="w-full h-full object-cover">
-            <div class="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-                <div class="text-center text-white px-4">
-                    <h1 class="text-3xl md:text-5xl font-bold mb-4">Festival Olahraga Pelajar Nusantara</h1>
-                    <p class="text-lg md:text-xl mb-2">5-10 Februari 2024</p>
-                    <p class="text-base md:text-lg mb-6">Gelora Bung Karno, Jakarta</p>
-                    <button
-                        class="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg font-semibold transition-colors">
-                        Selengkapnya
-                    </button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Slide 3 -->
-        <div class="slide relative w-full h-full">
-            <img src="https://images.pexels.com/photos/1103829/pexels-photo-1103829.jpeg?auto=compress&cs=tinysrgb&w=1200"
-                alt="Event 3" class="w-full h-full object-cover">
-            <div class="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-                <div class="text-center text-white px-4">
-                    <h1 class="text-3xl md:text-5xl font-bold mb-4">Kompetisi Badminton Antar Sekolah</h1>
-                    <p class="text-lg md:text-xl mb-2">20-25 Februari 2024</p>
-                    <p class="text-base md:text-lg mb-6">Istora Senayan, Jakarta</p>
-                    <button
-                        class="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg font-semibold transition-colors">
-                        Selengkapnya
-                    </button>
-                </div>
-            </div>
-        </div>
+        <div id="sliderWrapper" class="w-full h-full"></div>
 
         <!-- Navigation dots -->
-        <div class="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2">
-            <button class="slider-dot w-3 h-3 rounded-full bg-white bg-opacity-50 hover:bg-opacity-75"
-                data-slide="0"></button>
-            <button class="slider-dot w-3 h-3 rounded-full bg-white bg-opacity-50 hover:bg-opacity-75"
-                data-slide="1"></button>
-            <button class="slider-dot w-3 h-3 rounded-full bg-white bg-opacity-50 hover:bg-opacity-75"
-                data-slide="2"></button>
-        </div>
+        <div id="sliderDots" class="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2"></div>
 
         <!-- Navigation arrows -->
         <button class="absolute left-4 top-1/2 transform -translate-y-1/2 text-white text-2xl hover:text-gray-300"
@@ -77,11 +21,12 @@
     </div>
 </section>
 
+
 <!-- Medal Section -->
 <section class="py-16 bg-gray-50">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-12">
-            <h2 class="text-3xl font-bold text-gray-900 mb-4">Rekapitulasi O2SN XIII 2025</h2>
+            <h2 class="text-3xl font-bold text-gray-900 mb-4">Rekapitulasi {{$activeEvent->name}}</h2>
             <p class="text-lg text-gray-600">Total pencapaian medali dalam berbagai kompetisi
             </p>
         </div>
@@ -114,7 +59,7 @@
                 <!-- Cabang Olahraga Dropdown -->
                 <div>
                     <label for="cabor" class="block text-sm font-medium text-gray-700 mb-1">Cabang Olahraga</label>
-                    <select id="cabor" name="cabor"
+                    <select id="caborId" name="cabor"
                         class="w-full md:w-60 border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
                         <option value="">Semua</option>
                         <option value="Badminton">Badminton</option>
@@ -125,12 +70,13 @@
                         <option value="Sepak Bola">Sepak Bola</option>
                         <option value="Tenis Meja">Tenis Meja</option>
                     </select>
+                    <input type="hidden" value="{{$activeEvent->id}}" id="eventId"/>
                 </div>
 
                 <!-- No Pertandingan Input -->
                 <div>
                     <label for="no" class="block text-sm font-medium text-gray-700 mb-1">No. Pertandingan</label>
-                    <select id="cabor" name="cabor"
+                    <select id="noPertandinganId" name="cabor"
                         class="w-full md:w-60 border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
                         <option value="">Semua</option>
                         <option value="Badminton">Badminton</option>
@@ -261,12 +207,14 @@
 @section('script')
 <script>
 let currentFilter = 'latest'; // default filter
+let currentSlide = 0;
 let start = 0; // pagination offset
 let length = 3; // limit per fetch
 let loading = false;
 
 // Inisialisasi pertama
 $(document).ready(function() {
+    loadNewsInSlider();
     loadMedalSummary();
     loadKecamatanMedalTable();
     loadNews();
@@ -306,11 +254,120 @@ function renderNews(newsArray) {
     });
 }
 
-function loadNews(reset = false) {
-    if (loading) return;
-    loading = true;
-    $('#loadMoreBtn').prop('disabled', true).text('Memuat...');
+function loadNewsInSlider(reset = false) {
+    $.ajax({
+        url: `/api/posts/news`,
+        method: 'GET',
+        data: {
+            type: 'latest',
+            start: start,
+            length: 6
+        },
+        success: function (response) {
+            if (reset) {
+                $('#sliderWrapper').empty();
+            }
+            renderNewsInSlider(response.data);
+        },
+        error: function (xhr, status, error) {
+            console.error('Gagal memuat berita:', error);
+        },
+        complete: function () {
+            loading = false;
+        }
+    });
+}
 
+function renderNewsInSlider(newsItems) {
+    const sliderWrapper = $('#sliderWrapper');
+    sliderWrapper.empty();
+
+    newsItems.forEach((news, index) => {
+        const isActive = index === 0 ? 'active' : '';
+        const slide = `
+            <div class="slide ${isActive} relative w-full h-full">
+                <img src="/storage/${news.thumbnail_url}" alt="${news.title}" class="w-full h-full object-cover">
+                <div class="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+                    <div class="text-center text-white px-4">
+                        <h1 class="text-3xl md:text-5xl font-bold mb-10">${news.title}</h1>
+                        <a href="/berita/${news.slug}" class="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg font-semibold transition-colors">
+                            Selengkapnya
+                        </a>
+                    </div>
+                </div>
+            </div>
+        `;
+        sliderWrapper.append(slide);
+    });
+
+    renderSliderDots(newsItems.length);
+    showSlide(0); // Reset to first slide
+}
+
+// Generate and bind navigation dots
+function renderSliderDots(count) {
+    const dotContainer = $('#sliderDots');
+    dotContainer.empty();
+
+    for (let i = 0; i < count; i++) {
+        dotContainer.append(`
+            <button class="slider-dot w-3 h-3 rounded-full bg-white bg-opacity-50 hover:bg-opacity-75"
+                data-slide="${i}"></button>
+        `);
+    }
+
+    attachDotEvents();
+}
+
+// Show slide by index
+function showSlide(index) {
+    const slides = $('.slide');
+    const dots = $('.slider-dot');
+
+    slides.removeClass('active').eq(index).addClass('active');
+    dots.removeClass('bg-white').addClass('bg-opacity-50');
+    dots.eq(index).removeClass('bg-opacity-50').addClass('bg-white');
+
+    currentSlide = index;
+}
+
+// Move to next slide
+function nextSlide() {
+    const totalSlides = $('.slide').length;
+    const next = (currentSlide + 1) % totalSlides;
+    showSlide(next);
+}
+
+// Move to previous slide
+function prevSlide() {
+    const totalSlides = $('.slide').length;
+    const prev = (currentSlide - 1 + totalSlides) % totalSlides;
+    showSlide(prev);
+}
+
+// Bind dot click events
+function attachDotEvents() {
+    $('.slider-dot').off('click').on('click', function () {
+        const index = $(this).data('slide');
+        showSlide(index);
+    });
+}
+
+// Auto-slide
+setInterval(() => {
+    nextSlide();
+}, 5000); // every 5 seconds
+
+function formatDate(dateStr) {
+    const options = {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+    };
+    return new Date(dateStr).toLocaleDateString('id-ID', options);
+}
+
+function loadNews(reset = false) {
     $.ajax({
         url: `/api/posts/news`,
         method: 'GET',
@@ -325,18 +382,9 @@ function loadNews(reset = false) {
             }
 
             renderNews(response.data);
-
-            start += length;
-
-            if (response.data.length < length) {
-                $('#loadMoreBtn').hide();
-            } else {
-                $('#loadMoreBtn').show().prop('disabled', false).text('Muat Lebih Banyak');
-            }
         },
         error: function(xhr, status, error) {
             console.error('Gagal memuat berita:', error);
-            $('#loadMoreBtn').prop('disabled', false).text('Muat Lebih Banyak');
         },
         complete: function() {
             loading = false;
@@ -395,9 +443,18 @@ function loadMedalSummary() {
 }
 
 function loadKecamatanMedalTable() {
+    let caborId = $("#caborId").val() | "";
+    let noPertandinganId = $("#noPertandinganId").val() | "";
+    let eventId = $("#eventId").val() | "";
+
     $.ajax({
         url: '/api/getKecamatanMedalSummary',
         method: 'GET',
+        data: {
+            cabor_id: caborId,
+            no_pertandingan_id: noPertandinganId,
+            event_id: eventId
+        },
         success: function(data) {
             let emas = 0,
                 perak = 0,
