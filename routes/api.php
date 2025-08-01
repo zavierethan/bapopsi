@@ -21,6 +21,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::get('/getSubRayonByKecamatan/{kecId}', [App\Http\Controllers\SubRayonController::class, 'getSubRayonByKec']);
 
+
 Route::get('/getKelasByCabor/{caborId}', [App\Http\Controllers\SportController::class, 'getKelasByCabor']);
 
 // Dashboards Summary
@@ -29,6 +30,12 @@ Route::get('dashboard/store/get-data-summary/', [App\Http\Controllers\Dashboards
 Route::get('/getKecamatanMedalSummary', [App\Http\Controllers\EventRegistrationController::class, 'getKecamatanMedalSummary']);
 Route::get('/getAtletByKecamatanId', [App\Http\Controllers\EventRegistrationController::class, 'getAtletByKecamatanId']);
 Route::get('/getTotalMedalSummary', [App\Http\Controllers\EventRegistrationController::class, 'getTotalMedalSummary']);
+
+Route::prefix('cabor')->group(function () {
+    Route::name('cabor.')->group(function () {
+        Route::get('/', [App\Http\Controllers\SportController::class, 'getLists'])->name('get-lists');
+    });
+});
 
 Route::prefix('posts')->group(function () {
     Route::name('posts.')->group(function () {

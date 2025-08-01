@@ -59,8 +59,9 @@
                                     <div class="mb-1">
                                         <label class="form-label fw-bold fs-6 mb-2">Nama Event</label>
                                         <div class="position-relative mb-3">
-                                            <input class="form-control form-control-md form-control-solid" type="text"
-                                                name="title" id="title" />
+                                            <select name="event_id" class="form-select form-select-solid" data-control="select2">
+                                                <option value="">Pilih</option>
+                                            </select>
                                         </div>
                                     </div>
                                 </div>
@@ -81,6 +82,57 @@
                                         <div class="position-relative mb-3">
                                             <input class="form-control form-control-md form-control-solid" type="text"
                                                 name="location" id="location" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="separator my-5"></div>
+                                <div class="fv-row mb-5">
+                                    <div class="mb-1">
+                                        <label class="form-label fw-bold fs-6 mb-2">Cabor</label>
+                                        <div class="position-relative mb-3">
+                                            <select name="event_id" class="form-select form-select-solid"
+                                                data-control="select2">
+                                                <option value="">Pilih</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="separator my-5"></div>
+                                <div class="fv-row mb-5">
+                                    <div class="mb-1">
+                                        <label class="form-label fw-bold fs-6 mb-2">No. Pertandingan</label>
+                                        <div class="position-relative mb-3">
+                                            <select name="event_id" class="form-select form-select-solid"
+                                                data-control="select2">
+                                                <option value="">Pilih</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="separator my-5"></div>
+                                <div class="fv-row mb-5">
+                                    <div class="mb-1">
+                                        <label class="form-label fw-bold fs-6 mb-2">Kategori</label>
+                                        <div class="position-relative mb-3">
+                                            <select name="event_id" class="form-select form-select-solid"
+                                                data-control="select2">
+                                                <option value="Pi">Pi</option>
+                                                <option value="Pa">Pa</option>
+                                                <option value="Campuran">Campuran</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="separator my-5"></div>
+                                <div class="fv-row mb-5">
+                                    <div class="mb-1">
+                                        <label class="form-label fw-bold fs-6 mb-2">Status</label>
+                                        <div class="position-relative mb-3">
+                                            <select name="event_id" class="form-select form-select-solid"
+                                                data-control="select2">
+                                                <option value="1">Active</option>
+                                                <option value="0">Non Active</option>
+                                            </select>
                                         </div>
                                     </div>
                                 </div>

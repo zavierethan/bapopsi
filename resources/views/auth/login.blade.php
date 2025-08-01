@@ -22,7 +22,6 @@
                             @csrf
                             <div class="text-center mb-11">
                                 <h1 class="text-gray-900 fw-bolder mb-3">Masuk</h1>
-                                <div class="text-gray-500 fw-semibold fs-6">ke Akun BAPOPSI Anda</div>
                             </div>
                             @if(session('error'))
                                 <div class="alert alert-danger">

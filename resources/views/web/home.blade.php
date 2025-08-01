@@ -26,12 +26,10 @@
 <section class="py-16 bg-gray-50">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-12">
-            <h2 class="text-3xl font-bold text-gray-900 mb-4">Rekapitulasi {{$activeEvent->name}}</h2>
-            <p class="text-lg text-gray-600">Total pencapaian medali dalam berbagai kompetisi
-            </p>
+            <h2 class="text-3xl font-bold text-gray-900 mb-4">Rekapitulasi Pencapaian Medali</h2>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-10">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
             <div class="bg-gradient-to-br from-yellow-400 to-yellow-600 text-white p-6 rounded-xl text-center">
                 <i class="fas fa-medal text-4xl mb-4"></i>
                 <div class="text-3xl font-bold mb-1" id="emas">0</div>
@@ -47,91 +45,183 @@
                 <div class="text-3xl font-bold mb-1" id="perunggu">0</div>
                 <div class="text-orange-100">Medali Perunggu</div>
             </div>
-            <div class="bg-gradient-to-br from-blue-400 to-blue-600 text-white p-6 rounded-xl text-center">
-                <i class="fas fa-trophy text-4xl mb-4"></i>
-                <div class="text-3xl font-bold mb-1" id="total-medal">0</div>
-                <div class="text-blue-100">Total Medali</div>
+        </div>
+
+        <div class="flex border-b mb-8">
+            <button class="tab-btn px-6 py-3 font-semibold border-b-2 text-blue-600 border-blue-600 font-bold"
+                data-tab="o2sn">O2SN</button>
+            <button class="tab-btn px-6 py-3 font-semibold text-gray-600 hover:text-blue-600 font-bold"
+                data-tab="popda">POPDA</button>
+            <button class="tab-btn px-6 py-3 font-semibold text-gray-600 hover:text-blue-600 font-bold"
+                data-tab="popwill">POPWIL</button>
+        </div>
+
+        <div id="tab-o2sn" class="tab-content">
+            <div class="flex flex-col md:flex-row md:items-end justify-between mb-6 gap-4">
+                <div class="flex flex-col md:flex-row gap-4">
+                    <div>
+                        <label for="jenjang" class="block text-sm font-medium text-gray-700 mb-1">Jenjang</label>
+                        <select id="jenjang" name="cabor"
+                            class="w-full md:w-60 border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                            <option value="">SEMUA</option>
+                            <option value="SD" selected>SD</option>
+                            <option value="SMP">SMP</option>
+                        </select>
+                    </div>
+                    <!-- Cabang Olahraga Dropdown -->
+                    <div>
+                        <label for="cabor" class="block text-sm font-medium text-gray-700 mb-1">Cabang Olahraga</label>
+                        <select id="cabor" name="cabor"
+                            class="cabor w-full md:w-60 border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                            <option value="">SEMUA</option>
+                        </select>
+                        <input type="hidden" value="{{$activeEvent->id}}" id="eventId" />
+                    </div>
+                </div>
+
+                <!-- Filter Button -->
+                <div>
+                    <button type="button" id="filter-btn"
+                        class="bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700 text-sm shadow">
+                        Filter
+                    </button>
+                </div>
+            </div>
+
+            <!-- Medal Table -->
+            <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+                <div class="px-6 py-4 bg-gray-50 border-b">
+                    <h3 class="text-lg font-semibold text-gray-900">Perolehan Medali (O2SN)</h3>
+                </div>
+                <div class="table-responsive">
+                    <table class="w-full">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th
+                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Cabang Olahraga</th>
+                                <th
+                                    class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    <i class="fas fa-medal text-yellow-500"></i> Emas
+                                </th>
+                                <th
+                                    class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    <i class="fas fa-medal text-gray-400"></i> Perak
+                                </th>
+                                <th
+                                    class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    <i class="fas fa-medal text-orange-500"></i> Perunggu
+                                </th>
+                                <th
+                                    class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Total</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200" id="medalTableBody">
+                        </tbody>
+                        <tfoot class="bg-gray-100" id="medalTableFooter">
+                        </tfoot>
+                    </table>
+                </div>
             </div>
         </div>
 
-        <div class="flex flex-col md:flex-row md:items-end justify-between mb-6 gap-4">
-            <div class="flex flex-col md:flex-row gap-4">
-                <!-- Cabang Olahraga Dropdown -->
-                <div>
-                    <label for="cabor" class="block text-sm font-medium text-gray-700 mb-1">Cabang Olahraga</label>
-                    <select id="caborId" name="cabor"
-                        class="w-full md:w-60 border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
-                        <option value="">Semua</option>
-                        <option value="Badminton">Badminton</option>
-                        <option value="Renang">Renang</option>
-                        <option value="Atletik">Atletik</option>
-                        <option value="Bola Basket">Bola Basket</option>
-                        <option value="Bola Voli">Bola Voli</option>
-                        <option value="Sepak Bola">Sepak Bola</option>
-                        <option value="Tenis Meja">Tenis Meja</option>
-                    </select>
-                    <input type="hidden" value="{{$activeEvent->id}}" id="eventId"/>
+        <div id="tab-popda" class="tab-content hidden">
+            <div class="flex flex-col md:flex-row md:items-end justify-between mb-6 gap-4">
+                <div class="flex flex-col md:flex-row gap-4">
+                    <!-- Cabang Olahraga Dropdown -->
+                    <div>
+                        <label for="cabor" class="block text-sm font-medium text-gray-700 mb-1">Cabang Olahraga</label>
+                        <select id="cabor" name="cabor"
+                            class="cabor w-full md:w-60 border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                            <option value="">SEMUA</option>
+                        </select>
+                        <input type="hidden" value="{{$activeEvent->id}}" id="eventId" />
+                    </div>
                 </div>
 
-                <!-- No Pertandingan Input -->
+                <!-- Filter Button -->
                 <div>
-                    <label for="no" class="block text-sm font-medium text-gray-700 mb-1">No. Pertandingan</label>
-                    <select id="noPertandinganId" name="cabor"
-                        class="w-full md:w-60 border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
-                        <option value="">Semua</option>
-                        <option value="Badminton">Badminton</option>
-                        <option value="Renang">Renang</option>
-                        <option value="Atletik">Atletik</option>
-                        <option value="Bola Basket">Bola Basket</option>
-                        <option value="Bola Voli">Bola Voli</option>
-                        <option value="Sepak Bola">Sepak Bola</option>
-                        <option value="Tenis Meja">Tenis Meja</option>
-                    </select>
+                    <button type="button" id="filter-btn"
+                        class="bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700 text-sm shadow">
+                        Filter
+                    </button>
                 </div>
             </div>
 
-            <!-- Filter Button -->
-            <div>
-                <button type="button" id="filter-btn"
-                    class="bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700 text-sm shadow">
-                    Filter
-                </button>
+            <!-- Medal Table -->
+            <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+                <div class="px-6 py-4 bg-gray-50 border-b">
+                    <h3 class="text-lg font-semibold text-gray-900">Perolehan Medali (POPDA)</h3>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="min-w-full">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Nama Atlet
+                                </th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Cabang Olahraga</th>
+                                </th>
+                                <th class="px-6 py-3 text-left font-medium text-xs text-gray-500 uppercase">No. Kelas Pertandingan</th>
+                                <th class="px-6 py-3 text-left font-medium text-xs text-gray-500 uppercase">Asal Sekolah
+                                </th>
+                                <th class="px-6 py-3 font-medium text-xs text-gray-500 uppercase">Perolehan Medali</th>
+                            </tr>
+                        </thead>
+                        <tbody id="scheduleTableBody" class="bg-white divide-y divide-gray-200">
+                            <!-- Rows via jQuery -->
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
+        <div id="tab-popwill" class="tab-content hidden">
+            <div class="flex flex-col md:flex-row md:items-end justify-between mb-6 gap-4">
+                <div class="flex flex-col md:flex-row gap-4">
+                    <!-- Cabang Olahraga Dropdown -->
+                    <div>
+                        <label for="cabor" class="block text-sm font-medium text-gray-700 mb-1">Cabang Olahraga</label>
+                        <select id="cabor" name="cabor"
+                            class="cabor w-full md:w-60 border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                            <option value="">SEMUA</option>
+                        </select>
+                        <input type="hidden" value="{{$activeEvent->id}}" id="eventId" />
+                    </div>
+                </div>
 
-        <!-- Medal Table -->
-        <div class="bg-white rounded-lg shadow-lg overflow-hidden">
-            <div class="px-6 py-4 bg-gray-50 border-b">
-                <h3 class="text-lg font-semibold text-gray-900">Perolehan Medali Per Kecamatan</h3>
+                <!-- Filter Button -->
+                <div>
+                    <button type="button" id="filter-btn"
+                        class="bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700 text-sm shadow">
+                        Filter
+                    </button>
+                </div>
             </div>
-            <div class="table-responsive">
-                <table class="w-full">
-                    <thead class="bg-gray-50">
-                        <tr>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Cabang Olahraga</th>
-                            <th
-                                class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                <i class="fas fa-medal text-yellow-500"></i> Emas
-                            </th>
-                            <th
-                                class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                <i class="fas fa-medal text-gray-400"></i> Perak
-                            </th>
-                            <th
-                                class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                <i class="fas fa-medal text-orange-500"></i> Perunggu
-                            </th>
-                            <th
-                                class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Total</th>
-                        </tr>
-                    </thead>
-                    <tbody class="bg-white divide-y divide-gray-200" id="medalTableBody">
-                    </tbody>
-                    <tfoot class="bg-gray-100" id="medalTableFooter">
-                    </tfoot>
-                </table>
+
+            <!-- Medal Table -->
+            <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+                <div class="px-6 py-4 bg-gray-50 border-b">
+                    <h3 class="text-lg font-semibold text-gray-900">Perolehan Medali (POPWIL)</h3>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="min-w-full">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Nama Atlet
+                                </th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Cabang Olahraga</th>
+                                </th>
+                                <th class="px-6 py-3 text-left font-medium text-xs text-gray-500 uppercase">No. Kelas Pertandingan</th>
+                                <th class="px-6 py-3 text-left font-medium text-xs text-gray-500 uppercase">Asal Sekolah
+                                </th>
+                                <th class="px-6 py-3 font-medium text-xs text-gray-500 uppercase">Perolehan Medali</th>
+                            </tr>
+                        </thead>
+                        <tbody id="scheduleTableBody" class="bg-white divide-y divide-gray-200">
+                            <!-- Rows via jQuery -->
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
@@ -171,7 +261,7 @@
         <div class="text-center mt-12">
             <a href="/berita"
                 class="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg font-semibold transition-colors">
-                Lihat Semua Berita
+                Lihat SEMUA Berita
             </a>
         </div>
     </div>
@@ -186,18 +276,12 @@
         </div>
 
         <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4" id="galeriesGrid">
-            <!-- Gallery Items -->
-            <!-- <div
-                class="gallery-item cursor-pointer overflow-hidden rounded-lg shadow-lg hover:shadow-xl transition-shadow">
-                <img src="https://images.pexels.com/photos/1552242/pexels-photo-1552242.jpeg?auto=compress&cs=tinysrgb&w=400"
-                    alt="Galeri 1" class="w-full h-48 object-cover hover:scale-105 transition-transform duration-300">
-            </div> -->
         </div>
 
         <div class="text-center mt-12">
             <a href="/galery"
                 class="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg font-semibold transition-colors">
-                Lihat Semua Galeri
+                Lihat SEMUA Galeri
             </a>
         </div>
     </div>
@@ -214,8 +298,17 @@ let loading = false;
 
 // Inisialisasi pertama
 $(document).ready(function() {
+    $('.tab-btn').on('click', function() {
+        $('.tab-btn').removeClass('text-blue-600 border-blue-600 border-b-2').addClass('text-gray-600');
+        $(this).addClass('text-blue-600 border-blue-600 border-b-2');
+
+        const target = $(this).data('tab');
+        $('.tab-content').addClass('hidden');
+        $('#tab-' + target).removeClass('hidden');
+    });
     loadNewsInSlider();
     loadMedalSummary();
+    getCabor();
     loadKecamatanMedalTable();
     loadNews();
     loadGaleries(true);
@@ -241,7 +334,10 @@ function renderNews(newsArray) {
                 <div class="news-item bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
                     <img src="/storage/${news.thumbnail_url}" alt="${news.title}" class="w-full h-48 object-cover">
                     <div class="p-6 bg-white">
-                        <div class="text-sm text-blue-600 font-medium mb-2">${formatDate(news.published_at)}</div>
+                        <div class="flex justify-between items-center text-sm text-blue-600 font-medium mb-2">
+                            <span>${formatDate(news.published_at)}</span>
+                            <span>${news.category}</span>
+                        </div>
                         <h3 class="text-lg font-semibold text-gray-900 mb-2">${news.title}</h3>
                         <p class="text-gray-600 text-sm mb-4">${content}</p>
                         <a href="berita/${news.slug}" class="text-blue-600 hover:text-blue-700 font-medium text-sm flex items-center">
@@ -263,16 +359,16 @@ function loadNewsInSlider(reset = false) {
             start: start,
             length: 6
         },
-        success: function (response) {
+        success: function(response) {
             if (reset) {
                 $('#sliderWrapper').empty();
             }
             renderNewsInSlider(response.data);
         },
-        error: function (xhr, status, error) {
+        error: function(xhr, status, error) {
             console.error('Gagal memuat berita:', error);
         },
-        complete: function () {
+        complete: function() {
             loading = false;
         }
     });
@@ -285,17 +381,30 @@ function renderNewsInSlider(newsItems) {
     newsItems.forEach((news, index) => {
         const isActive = index === 0 ? 'active' : '';
         const slide = `
-            <div class="slide ${isActive} relative w-full h-full">
+           <div class="slide ${isActive} relative w-full h-full">
                 <img src="/storage/${news.thumbnail_url}" alt="${news.title}" class="w-full h-full object-cover">
                 <div class="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-                    <div class="text-center text-white px-4">
-                        <h1 class="text-3xl md:text-5xl font-bold mb-10">${news.title}</h1>
-                        <a href="/berita/${news.slug}" class="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg font-semibold transition-colors">
+                    <div class="text-center text-white px-4 max-w-3xl">
+                        <div class="flex flex-wrap justify-center items-center gap-4 text-sm mb-6">
+                            <span class="bg-blue-600 px-3 py-1 rounded-full uppercase tracking-wide font-semibold">
+                                ${news.category}
+                            </span>
+                            <span class="text-gray-200 italic">
+                                ${formatDate(news.published_at)}
+                            </span>
+                        </div>
+
+                        <h1 class="text-3xl md:text-5xl font-bold mb-8 leading-tight drop-shadow-md">
+                            ${news.title}
+                        </h1>
+
+                        <a href="/berita/${news.slug}" class="inline-block bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg font-semibold transition-colors shadow-lg">
                             Selengkapnya
                         </a>
                     </div>
                 </div>
             </div>
+
         `;
         sliderWrapper.append(slide);
     });
@@ -347,7 +456,7 @@ function prevSlide() {
 
 // Bind dot click events
 function attachDotEvents() {
-    $('.slider-dot').off('click').on('click', function () {
+    $('.slider-dot').off('click').on('click', function() {
         const index = $(this).data('slide');
         showSlide(index);
     });
@@ -410,7 +519,7 @@ function loadGaleries(reset = false) {
         method: 'GET',
         data: {
             start: start,
-            length: length
+            length: 8
         },
         success: function(response) {
             if (reset) {
@@ -470,7 +579,11 @@ function loadKecamatanMedalTable() {
 
                 rows += `
                     <tr>
-                        <td class="px-6 py-4 font-medium text-xs">${item.nama}</td>
+                        <td class="px-6 py-4 font-medium text-xs">
+                            <a href="/prestasi/${item.id}" class="text-blue-700 hover:underline">
+                                ${item.nama}
+                            </a>
+                        </td>
                         <td class="px-6 py-4 text-center text-xs text-yellow-600 font-semibold">${item.emas}</td>
                         <td class="px-6 py-4 text-center text-xs text-gray-600 font-semibold">${item.perak}</td>
                         <td class="px-6 py-4 text-center text-xs text-orange-600 font-semibold">${item.perunggu}</td>
@@ -493,7 +606,29 @@ function loadKecamatanMedalTable() {
         error: function() {
             $('#medalTableBody').html(
                 '<tr><td colspan="5" class="text-center text-red-500 py-4">Gagal memuat data.</td></tr>'
-                );
+            );
+        }
+    });
+}
+
+function getCabor() {
+    $.ajax({
+        url: '/api/cabor',
+        method: 'GET',
+        success: function(response) {
+            if (response && response.data) {
+                $.each(response.data, function(index, cabor) {
+                    $('.cabor').append(
+                        $('<option>', {
+                            value: cabor.id,
+                            text: cabor.name
+                        })
+                    );
+                });
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error('Gagal memuat data cabor:', error);
         }
     });
 }

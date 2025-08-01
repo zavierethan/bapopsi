@@ -72,8 +72,11 @@ class JadwalPertandinganController extends Controller
 
 
     public function create() {
-        $categories = DB::table('event_categories')->get();
-        return view('modules.jadwal-pertandingan.create', compact('categories'));
+        return view('modules.jadwal-pertandingan.create', [
+            'events' => DB::table('events')->get(),
+            'cabangOlahraga' => DB::table('sports')->get(),
+            'kelasOlahraga' => DB::table('sport_classes')->where('sport_id')->get()
+        ]);
     }
 
     public function save(Request $request) {

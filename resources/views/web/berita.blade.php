@@ -98,7 +98,10 @@ function renderNews(newsArray) {
                 <div class="news-item bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
                     <img src="/storage/${news.thumbnail_url}" alt="${news.title}" class="w-full h-48 object-cover">
                     <div class="p-6 bg-white">
-                        <div class="text-sm text-blue-600 font-medium mb-2">${formatDate(news.published_at)}</div>
+                        <div class="flex justify-between items-center text-sm text-blue-600 font-medium mb-2">
+                            <span>${formatDate(news.published_at)}</span>
+                            <span>${news.category}</span>
+                        </div>
                         <h3 class="text-lg font-semibold text-gray-900 mb-2">${news.title}</h3>
                         <p class="text-gray-600 text-sm mb-4">${content}</p>
                         <a href="berita/${news.slug}" class="text-blue-600 hover:text-blue-700 font-medium text-sm flex items-center">

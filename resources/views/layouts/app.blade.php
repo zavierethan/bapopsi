@@ -45,12 +45,12 @@
                         class="px-3 py-2 text-sm font-medium {{ request()->is('kontak') ? 'text-blue-600 font-semibold' : 'text-gray-700 hover:text-blue-600' }}">
                         Kontak
                     </a>
-                    @if($activeEvent)
+                    <!-- @if($activeEvent)
                     <a href="{{ url('/prestasi') }}"
                         class="px-3 py-2 text-sm font-medium {{ request()->is('prestasi') ? 'text-blue-600 font-semibold' : 'text-gray-700 hover:text-blue-600' }}">
                         {{$activeEvent->name}}
                     </a>
-                    @endif
+                    @endif -->
                 </div>
 
                 <!-- Login Button (desktop only) -->
@@ -73,19 +73,36 @@
         <!-- Mobile Menu -->
         <div id="mobile-menu" class="md:hidden hidden">
             <div class="px-2 pt-2 pb-3 space-y-1 bg-white border-t">
-                <a href="/" class="block px-3 py-2 text-base font-medium text-blue-600">Beranda</a>
-                <a href="/berita"
-                    class="block px-3 py-2 text-base font-medium text-gray-700 hover:text-blue-600">Berita</a>
-                <a href="/galery"
-                    class="block px-3 py-2 text-base font-medium text-gray-700 hover:text-blue-600">Galeri</a>
-                <a href="/agenda"
-                    class="block px-3 py-2 text-base font-medium text-gray-700 hover:text-blue-600">Agenda</a>
-                <a href="/kontak"
-                    class="block px-3 py-2 text-base font-medium text-gray-700 hover:text-blue-600">Kontak</a>
-                <a href="/prestasi"
-                    class="block px-3 py-2 text-base font-medium text-gray-700 hover:text-blue-600">O2SN XIII 2025</a>
-                <a href="/login"
-                    class="block px-3 py-2 text-base font-medium text-white bg-blue-600 rounded-md text-center">Login</a>
+                <a href="{{ url('/') }}"
+                    class="block px-3 py-2 text-base font-medium {{ request()->is('/') ? 'text-blue-600 font-semibold' : 'text-gray-700 hover:text-blue-600' }}">
+                    Beranda
+                </a>
+                <a href="{{ url('/berita') }}"
+                    class="block px-3 py-2 text-base font-medium {{ request()->is('berita*') ? 'text-blue-600 font-semibold' : 'text-gray-700 hover:text-blue-600' }}">
+                    Berita
+                </a>
+                <a href="{{ url('/galery') }}"
+                    class="block px-3 py-2 text-base font-medium {{ request()->is('galery') ? 'text-blue-600 font-semibold' : 'text-gray-700 hover:text-blue-600' }}">
+                    Galeri
+                </a>
+                <a href="{{ url('/agenda') }}"
+                    class="block px-3 py-2 text-base font-medium {{ request()->is('agenda') ? 'text-blue-600 font-semibold' : 'text-gray-700 hover:text-blue-600' }}">
+                    Agenda
+                </a>
+                <a href="{{ url('/kontak') }}"
+                    class="block px-3 py-2 text-base font-medium {{ request()->is('kontak') ? 'text-blue-600 font-semibold' : 'text-gray-700 hover:text-blue-600' }}">
+                    Kontak
+                </a>
+                <!-- @if($activeEvent)
+                <a href="{{ url('/prestasi') }}"
+                    class="block px-3 py-2 text-base font-medium {{ request()->is('prestasi') ? 'text-blue-600 font-semibold' : 'text-gray-700 hover:text-blue-600' }}">
+                    {{ $activeEvent->name }}
+                </a>
+                @endif -->
+                <a href="{{ url('/login') }}"
+                    class="block px-3 py-2 text-base font-medium text-white bg-blue-600 rounded-md text-center">
+                    Login
+                </a>
             </div>
         </div>
     </nav>
