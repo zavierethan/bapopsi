@@ -54,15 +54,6 @@
         <div class="mt-8 pt-8 border-t border-gray-200">
             <h3 class="text-lg font-semibold text-gray-900 mb-4">Bagikan Berita</h3>
             <div class="flex flex-col sm:flex-row sm:space-x-4 space-y-2 sm:space-y-0">
-                <a href="#" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">
-                    <i class="fab fa-facebook-f mr-2"></i>Facebook
-                </a>
-                <a href="#" class="bg-blue-400 text-white px-4 py-2 rounded-lg hover:bg-blue-500 transition-colors">
-                    <i class="fab fa-twitter mr-2"></i>Twitter
-                </a>
-                <a href="#" class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors">
-                    <i class="fab fa-whatsapp mr-2"></i>WhatsApp
-                </a>
                 <button onclick="copyToClipboard()"
                     class="bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-700 transition-colors">
                     <i class="fas fa-link mr-2"></i>Salin Link

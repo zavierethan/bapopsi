@@ -51,12 +51,13 @@
                             <table class="table align-middle table-row-dashed fs-6 gy-5" id="kt_menus_table">
                                 <thead>
                                     <tr class="text-start text-gray-400 fw-bolder fs-7 text-uppercase gs-0">
-                                        <th class="min-w-125px">Event Name</th>
-                                        <th class="min-w-125px">Description</th>
-                                        <th class="min-w-125px">Category</th>
-                                        <th class="min-w-125px">Location</th>
-                                        <th class="min-w-125px">Start Date</th>
-                                        <th class="min-w-125px">End Date</th>
+                                        <th class="min-w-125px">Nama Event</th>
+                                        <th class="min-w-125px">Deskripsi</th>
+                                        <th class="min-w-125px">Categori</th>
+                                        <th class="min-w-125px">Lokasi</th>
+                                        <th class="min-w-125px">Tahun</th>
+                                        <th class="min-w-125px">Tanggal Mulai Pendaftaran</th>
+                                        <th class="min-w-125px">Tanggal Berakhir Pendaftaran</th>
                                         <th class="min-w-125px">Status</th>
                                         <th class="text-center min-w-70px">Actions</th>
                                     </tr>
@@ -107,19 +108,23 @@
                 name: 'location'
             },
             {
-                data: 'start_date',
-                name: 'start_date'
+                data: 'year',
+                name: 'year'
             },
             {
-                data: 'end_date',
-                name: 'end_date'
+                data: 'open_reg_date',
+                name: 'open_reg_date'
+            },
+            {
+                data: 'close_reg_date',
+                name: 'close_reg_date'
             },
             {
                 data: 'status',
                 name: 'status',
                 className: 'text-center',
                 render: function(data, type, row) {
-                    const badgeClass = row.status === 'Open' ? 'badge badge-success' : 'badge badge-warning';
+                    const badgeClass = row.status === 'Open' ? 'badge badge-success' : 'badge badge-danger';
                     return `<span class="${badgeClass}">${row.status}</span>`;
                 }
             },
@@ -132,7 +137,6 @@
                     return `
                             <div class="text-center">
                                 <a href="/events/edit/${row.id}" class="btn btn-sm btn-light btn-active-light-primary">Edit</a>
-                                <button class="btn btn-sm btn-light btn-active-light-danger btn-delete" data-id="${row.id}">Delete</button>
                             <div>
                         `;
                 }

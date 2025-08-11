@@ -2,7 +2,6 @@
 
 @section('main-content')
 <div class="app-main flex-column flex-row-fluid" id="kt_app_main">
-    <!--begin::Content wrapper-->
     <div class="d-flex flex-column flex-column-fluid">
         <!--begin::Toolbar-->
         <div id="kt_app_toolbar" class="app-toolbar py-3 py-lg-6">
@@ -12,7 +11,7 @@
                 <div class="page-title d-flex flex-column justify-content-center flex-wrap me-3">
                     <!--begin::Title-->
                     <h1 class="page-heading d-flex text-gray-900 fw-bold fs-3 flex-column justify-content-center my-0">
-                        Registrations</h1>
+                        Perolehan Medali</h1>
                     <!--end::Title-->
                     <!--begin::Breadcrumb-->
                     <ul class="breadcrumb breadcrumb-separatorless fw-semibold fs-7 my-0 pt-1">
@@ -27,24 +26,21 @@
                         </li>
                         <!--end::Item-->
                         <!--begin::Item-->
-                        <li class="breadcrumb-item text-muted">Registrations</li>
+                        <li class="breadcrumb-item text-muted">Perolehan Medali</li>
                         <!--end::Item-->
                     </ul>
                     <!--end::Breadcrumb-->
                 </div>
                 <!--end::Page title-->
-                <!--begin::Actions-->
                 <div class="d-flex align-items-center gap-2 gap-lg-3">
-                    <!--begin::Primary button-->
-                    <a href="{{route('event-registrations.create')}}" class="btn btn-sm fw-bold btn-primary">New</a>
-                    <!--end::Primary button-->
+                    <a href="/perolehan-medali/create" class="btn btn-sm fw-bold btn-primary">
+                        Input Perolehan Medali
+                    </a>
                 </div>
-                <!--end::Actions-->
             </div>
             <!--end::Toolbar container-->
         </div>
         <!--end::Toolbar-->
-
         <!--begin::Content-->
         <div id="kt_app_content" class="app-content flex-column-fluid">
             <!--begin::Content container-->
@@ -63,7 +59,7 @@
                                         <a class="nav-link active" data-bs-toggle="tab" href="#tab_o2sn">O2SN</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link" data-bs-toggle="tab" href="#tab_popsi">POPDA</a>
+                                        <a class="nav-link" data-bs-toggle="tab" href="#tab_popda">POPDA</a>
                                     </li>
                                     <li class="nav-item">
                                         <a class="nav-link" data-bs-toggle="tab" href="#tab_popwill">POPWIL</a>
@@ -72,13 +68,12 @@
                             </div>
                         </div>
                         <!--end::Card header-->
-
                         <!--begin::Card body-->
                         <div class="card-body pt-0 overflow-x-auto">
                             <div class="tab-content" id="tabContent">
                                 <!-- Tab O2SN -->
                                 <div class="tab-pane fade show active" id="tab_o2sn">
-                                    <div class="card-toolbar mb-5">
+                                    <div class="card-toolbar">
                                         <div class="d-flex justify-content-between flex-wrap gap-3 w-100">
                                             <div class="d-flex align-items-center gap-4">
                                                 <div class="d-flex align-items-center fw-bold">
@@ -122,11 +117,9 @@
                                                         @endforeach
                                                     </select>
                                                 </div>
-
                                                 <div class="d-flex align-items-center fw-bold">
-                                                    <a href="javascript:void(0);"
-                                                        class="btn btn-sm fw-bold btn-primary" id="btn-export-popwil">
-                                                        Export Album Atlet
+                                                    <a href="javascript:void(0);" class="btn btn-sm fw-bold btn-primary">
+                                                        Export Hasil Pertandingan
                                                     </a>
                                                 </div>
                                             </div>
@@ -136,35 +129,35 @@
                                                     <span class="path1"></span>
                                                     <span class="path2"></span>
                                                 </i>
-                                                <input type="text" data-kt-customer-table-filter="search" class="form-control w-250px ps-15" placeholder="Cari"/>
+                                                <input type="text" data-kt-customer-table-filter="search"
+                                                    class="form-control w-250px ps-15" placeholder="Cari" />
                                             </div>
                                         </div>
                                     </div>
-                                    <table class="table align-middle table-row-dashed fs-6 gy-5" id="O2SN">
+                                    <table class="table align-middle table-row-dashed fs-6 gy-5 mt-2" id="O2SN">
                                         <thead class="bg-primary text-white">
                                             <tr class="text-start text-white fw-bolder fs-7 text-uppercase gs-0">
-                                                <th class="ps-3">Nomor Registrasi</th>
-                                                <th class="ps-3">Nama Event</th>
-                                                <th class="ps-3">Jenjang</th>
+                                                <th class="ps-3">Nama Lengkap</th>
                                                 <th class="ps-3">Cabang Olahraga</th>
-                                                <th class="ps-3">Tanggal Registrasi</th>
+                                                <th class="ps-3">Jenjang</th>
+                                                <th class="ps-3">Kecamatan</th>
+                                                <th class="ps-3">Sub Rayon</th>
+                                                <th class="ps-3">Perolehan Medali (Juara)</th>
                                                 <th class="ps-3 text-center">Actions</th>
                                             </tr>
                                         </thead>
-                                        <tbody>
-                                            {{-- Data O2SN di sini --}}
+                                        <tbody class="fw-semibold text-gray-700">
                                         </tbody>
                                     </table>
                                 </div>
 
-                                <!-- Tab POPSI -->
-                                <div class="tab-pane fade" id="tab_popsi">
+                                <div class="tab-pane fade" id="tab_popda">
                                     <div class="card-toolbar">
                                         <div class="d-flex justify-content-between flex-wrap gap-3 w-100">
                                             <div class="d-flex align-items-center gap-4">
                                                 <div class="d-flex align-items-center fw-bold">
                                                     <div class="text-gray-500 fs-7 me-2" style="white-space: nowrap;">
-                                                        Kategori</div>
+                                                        Kategori Event</div>
                                                     <select
                                                         class="form-select form-select-transparent text-graY-800 fs-base lh-1 fw-bold py-0 ps-3 w-auto"
                                                         data-control="select2" data-hide-search="true"
@@ -175,18 +168,6 @@
                                                     </select>
                                                 </div>
                                                 <div class="d-flex align-items-center fw-bold">
-                                                    <div class="text-gray-500 fs-7 me-2" style="white-space: nowrap;">Tahun</div>
-                                                    <select
-                                                        class="form-select form-select-transparent text-graY-800 fs-base lh-1 fw-bold py-0 ps-3 w-auto"
-                                                        data-control="select2" data-hide-search="true"
-                                                        data-dropdown-css-class="w-150px"
-                                                        data-placeholder="Select an option" id="popdaTahun">
-                                                        <option value="2023">2023</option>
-                                                        <option value="2024">2024</option>
-                                                        <option value="2025" selected>2025</option>
-                                                    </select>
-                                                </div>
-                                                <div class="d-flex align-items-center fw-bold">
                                                     <div class="text-gray-500 fs-7 me-2" style="white-space: nowrap;">
                                                         Cabang Olahraga
                                                     </div>
@@ -194,7 +175,7 @@
                                                         class="form-select form-select-transparent text-gray-900 fs-7 lh-1 fw-bold py-0 ps-3 w-auto"
                                                         data-control="select2" data-hide-search="true"
                                                         data-dropdown-css-class="w-150px"
-                                                        data-placeholder="Select an option" id="customer">
+                                                        data-placeholder="Select an option" id="cabang-olahraga">
                                                         <option value=" " selected="selected">Semua</option>
                                                         @foreach($cabangOlahraga as $co)
                                                         <option value="{{$co->id}}">{{$co->name}}</option>
@@ -202,9 +183,8 @@
                                                     </select>
                                                 </div>
                                                 <div class="d-flex align-items-center fw-bold">
-                                                    <a href="javascript:void(0);"
-                                                        class="btn btn-sm fw-bold btn-primary" id="btn-export-popda">
-                                                        Export Album Atlet
+                                                    <a href="javascript:void(0);" class="btn btn-sm fw-bold btn-primary">
+                                                        Export Data Atlet
                                                     </a>
                                                 </div>
                                             </div>
@@ -214,28 +194,27 @@
                                                     <span class="path1"></span>
                                                     <span class="path2"></span>
                                                 </i>
-                                                <input type="text" data-kt-customer-table-filter="search" class="form-control w-250px ps-15" placeholder="Cari"/>
+                                                <input type="text" data-kt-customer-table-filter="search"
+                                                    class="form-control w-250px ps-15" placeholder="Cari" />
                                             </div>
                                         </div>
                                     </div>
-
                                     <table class="table align-middle table-row-dashed fs-6 gy-5" id="POPDA">
                                         <thead class="bg-primary text-white">
                                             <tr class="text-start text-white fw-bolder fs-7 text-uppercase gs-0">
-                                                <th class="ps-3">Nomor Registrasi</th>
-                                                <th class="ps-3">Nama Event</th>
+                                                <th class="ps-3">Nama Lengkap</th>
                                                 <th class="ps-3">Cabang Olahraga</th>
-                                                <th class="ps-3">Tanggal Registrasi</th>
+                                                <th class="ps-3">No. Kelas Pertandingan</th>
+                                                <th class="ps-3">Asal Sekolah</th>
+                                                <th class="ps-3">Perolehan Medali (Juara)</th>
                                                 <th class="ps-3 text-center">Actions</th>
                                             </tr>
                                         </thead>
-                                        <tbody>
-                                            {{-- Data POPSI di sini --}}
+                                        <tbody class="fw-semibold text-gray-700">
                                         </tbody>
                                     </table>
                                 </div>
 
-                                <!-- Tab POPWILL -->
                                 <div class="tab-pane fade" id="tab_popwill">
                                     <div class="card-toolbar">
                                         <div class="d-flex justify-content-between flex-wrap gap-3 w-100">
@@ -253,18 +232,6 @@
                                                     </select>
                                                 </div>
                                                 <div class="d-flex align-items-center fw-bold">
-                                                    <div class="text-gray-500 fs-7 me-2" style="white-space: nowrap;">Tahun</div>
-                                                    <select
-                                                        class="form-select form-select-transparent text-graY-800 fs-base lh-1 fw-bold py-0 ps-3 w-auto"
-                                                        data-control="select2" data-hide-search="true"
-                                                        data-dropdown-css-class="w-150px"
-                                                        data-placeholder="Select an option" id="popwilTahun">
-                                                        <option value="2023">2023</option>
-                                                        <option value="2024">2024</option>
-                                                        <option value="2025" selected>2025</option>
-                                                    </select>
-                                                </div>
-                                                <div class="d-flex align-items-center fw-bold">
                                                     <div class="text-gray-500 fs-7 me-2" style="white-space: nowrap;">
                                                         Cabang Olahraga
                                                     </div>
@@ -272,7 +239,7 @@
                                                         class="form-select form-select-transparent text-gray-900 fs-7 lh-1 fw-bold py-0 ps-3 w-auto"
                                                         data-control="select2" data-hide-search="true"
                                                         data-dropdown-css-class="w-150px"
-                                                        data-placeholder="Select an option" id="customer">
+                                                        data-placeholder="Select an option" id="cabang-olahraga">
                                                         <option value=" " selected="selected">Semua</option>
                                                         @foreach($cabangOlahraga as $co)
                                                         <option value="{{$co->id}}">{{$co->name}}</option>
@@ -280,9 +247,8 @@
                                                     </select>
                                                 </div>
                                                 <div class="d-flex align-items-center fw-bold">
-                                                    <a href="javascript:void(0);"
-                                                        class="btn btn-sm fw-bold btn-primary" id="btn-export-popwil">
-                                                        Export Album Atlet
+                                                    <a href="javascript:void(0);" class="btn btn-sm fw-bold btn-primary">
+                                                        Export Data Atlet
                                                     </a>
                                                 </div>
                                             </div>
@@ -292,66 +258,68 @@
                                                     <span class="path1"></span>
                                                     <span class="path2"></span>
                                                 </i>
-                                                <input type="text" data-kt-customer-table-filter="search" class="form-control w-250px ps-15" placeholder="Cari"/>
+                                                <input type="text" data-kt-customer-table-filter="search"
+                                                    class="form-control w-250px ps-15" placeholder="Cari" />
                                             </div>
                                         </div>
                                     </div>
                                     <table class="table align-middle table-row-dashed fs-6 gy-5" id="POPWIL">
                                         <thead class="bg-primary text-white">
                                             <tr class="text-start text-white fw-bolder fs-7 text-uppercase gs-0">
-                                                <th class="ps-3">Nomor Registrasi</th>
-                                                <th class="ps-3">Nama Event</th>
+                                                <th class="ps-3">Nama Lengkap</th>
                                                 <th class="ps-3">Cabang Olahraga</th>
-                                                <th class="ps-3">Tanggal Registrasi</th>
+                                                <th class="ps-3">No. Kelas Pertandingan</th>
+                                                <th class="ps-3">Asal Sekolah</th>
+                                                <th class="ps-3">Perolehan Medali (Juara)</th>
                                                 <th class="ps-3 text-center">Actions</th>
                                             </tr>
                                         </thead>
-                                        <tbody>
-                                            {{-- Data POPWILL di sini --}}
+                                        <tbody class="fw-semibold text-gray-700">
                                         </tbody>
                                     </table>
                                 </div>
                             </div>
+                            <!--end::Card body-->
                         </div>
-                        <!--end::Card body-->
+                        <!--end::Table-->
                     </div>
-                    <!--end::Table-->
+                    <!--end::Row-->
                 </div>
-                <!--end::Row-->
+                <!--end::Content container-->
             </div>
-            <!--end::Content container-->
+            <!--end::Content-->
         </div>
-        <!--end::Content-->
+        <!--end::Content wrapper-->
     </div>
-    <!--end::Content wrapper-->
 </div>
 @endsection
 
 @section('script')
 <script>
-$("#O2SN").DataTable({
+let o2snTable = $("#O2SN").DataTable({
     processing: true,
     serverSide: true,
     paging: true,
     pageLength: 10,
     ajax: {
-        url: `{{route('event-registrations.get-lists')}}`,
+        url: `{{ route('athletes.get-lists') }}`,
         type: 'GET',
-        data: function (d) {
+        data: function(d) {
             d.eventCategory = 1;
+            d.jenjang = $('#jenjang').val();
         },
-        dataSrc: function (json) {
+        dataSrc: function(json) {
             return json.data;
         }
     },
     columns: [{
-            data: 'name',
-            name: 'name',
+            data: 'nama_lengkap',
+            name: 'nama_lengkap',
             className: 'ps-3'
         },
         {
-            data: 'name',
-            name: 'name',
+            data: 'cabang_olahraga',
+            name: 'cabang_olahraga',
             className: 'ps-3'
         },
         {
@@ -360,13 +328,18 @@ $("#O2SN").DataTable({
             className: 'ps-3'
         },
         {
-            data: 'cabang_olahraga',
-            name: 'cabang_olahraga',
+            data: 'nama_kecamatan',
+            name: 'nama_kecamatan',
             className: 'ps-3'
         },
         {
-            data: 'created_at_formatted',
-            name: 'created_at_formatted',
+            data: 'nama_sub_rayon',
+            name: 'nama_sub_rayon',
+            className: 'ps-3 text-center'
+        },
+        {
+            data: 'perolehan_medali',
+            name: 'perolehan_medali',
             className: 'ps-3'
         },
         {
@@ -375,19 +348,20 @@ $("#O2SN").DataTable({
             className: 'ps-3',
             orderable: false,
             searchable: false,
+            className: 'text-center',
             render: function(data, type, row) {
-                if (row.approval_status === 'Waiting Approval') {
-                    return `
-                            <div class="text-center">
-                                <a href="/event-registrations/detail/${row.id}" class="btn btn-sm btn-primary btn-active-light-primary w-80" data-id="${row.id}">Detail</a>
+                return `
+                            <div class="flex justify-center">
+                                <a href="/athletes/detail/${row.id}" class="btn btn-sm btn-primary">Lihat</a>
                             </div>
                         `;
-                } else {
-                    return `<div class="text-center text-muted">-</div>`;
-                }
             }
         }
     ]
+});
+
+$('#jenjang').on('change', function() {
+    o2snTable.draw(); // Trigger DataTable redraw with updated filter values
 });
 
 $("#POPDA").DataTable({
@@ -396,23 +370,18 @@ $("#POPDA").DataTable({
     paging: true,
     pageLength: 10,
     ajax: {
-        url: `{{route('event-registrations.get-lists')}}`,
+        url: `{{ route('athletes.get-lists') }}`,
         type: 'GET',
-        data: function (d) {
+        data: function(d) {
             d.eventCategory = 2;
         },
-        dataSrc: function (json) {
+        dataSrc: function(json) {
             return json.data;
         }
     },
     columns: [{
-            data: 'name',
-            name: 'name',
-            className: 'ps-3'
-        },
-        {
-            data: 'name',
-            name: 'name',
+            data: 'nama_lengkap',
+            name: 'nama_lengkap',
             className: 'ps-3'
         },
         {
@@ -421,8 +390,18 @@ $("#POPDA").DataTable({
             className: 'ps-3'
         },
         {
-            data: 'created_at_formatted',
-            name: 'created_at_formatted',
+            data: 'nama_sekolah',
+            name: 'nama_sekolah',
+            className: 'ps-3'
+        },
+        {
+            data: 'nama_sekolah',
+            name: 'nama_sekolah',
+            className: 'ps-3'
+        },
+        {
+            data: 'perolehan_medali',
+            name: 'perolehan_medali',
             className: 'ps-3'
         },
         {
@@ -431,16 +410,13 @@ $("#POPDA").DataTable({
             className: 'ps-3',
             orderable: false,
             searchable: false,
+            className: 'text-center',
             render: function(data, type, row) {
-                if (row.approval_status === 'Waiting Approval') {
-                    return `
-                            <div class="text-center">
-                                <a href="/event-registrations/detail/${row.id}" class="btn btn-sm btn-primary btn-active-light-primary w-80" data-id="${row.id}">Detail</a>
+                return `
+                            <div class="flex justify-center">
+                                <a href="/athletes/detail/${row.id}" class="btn btn-sm btn-primary">Lihat</a>
                             </div>
                         `;
-                } else {
-                    return `<div class="text-center text-muted">-</div>`;
-                }
             }
         }
     ]
@@ -452,23 +428,18 @@ $("#POPWIL").DataTable({
     paging: true,
     pageLength: 10,
     ajax: {
-        url: `{{route('event-registrations.get-lists')}}`,
+        url: `{{ route('athletes.get-lists') }}`,
         type: 'GET',
-        data: function (d) {
+        data: function(d) {
             d.eventCategory = 3;
         },
-        dataSrc: function (json) {
+        dataSrc: function(json) {
             return json.data;
         }
     },
     columns: [{
-            data: 'name',
-            name: 'name',
-            className: 'ps-3'
-        },
-        {
-            data: 'name',
-            name: 'name',
+            data: 'nama_lengkap',
+            name: 'nama_lengkap',
             className: 'ps-3'
         },
         {
@@ -477,8 +448,18 @@ $("#POPWIL").DataTable({
             className: 'ps-3'
         },
         {
-            data: 'created_at_formatted',
-            name: 'created_at_formatted',
+            data: 'nama_sekolah',
+            name: 'nama_sekolah',
+            className: 'ps-3'
+        },
+        {
+            data: 'nama_sekolah',
+            name: 'nama_sekolah',
+            className: 'ps-3'
+        },
+        {
+            data: 'perolehan_medali',
+            name: 'perolehan_medali',
             className: 'ps-3'
         },
         {
@@ -487,16 +468,13 @@ $("#POPWIL").DataTable({
             className: 'ps-3',
             orderable: false,
             searchable: false,
+            className: 'text-center',
             render: function(data, type, row) {
-                if (row.approval_status === 'Waiting Approval') {
-                    return `
-                            <div class="text-center">
-                                <a href="/event-registrations/detail/${row.id}" class="btn btn-sm btn-primary btn-active-light-primary w-80" data-id="${row.id}">Detail</a>
+                return `
+                            <div class="flex justify-center">
+                                <a href="/athletes/detail/${row.id}" class="btn btn-sm btn-primary">Lihat</a>
                             </div>
                         `;
-                } else {
-                    return `<div class="text-center text-muted">-</div>`;
-                }
             }
         }
     ]
@@ -506,7 +484,7 @@ $("#btn-export-popda").on('click', function() {
     let eventCategory = $("#popdaEventCategory").val();
     let tahun = $("#popdaTahun").val();
     $.ajax({
-        url: `/event-registrations/export`,
+        url: `/perolehan-medali/export`,
         method: 'GET',
         data: {
             eventCategory: eventCategory,
@@ -538,7 +516,7 @@ $("#btn-export-popwil").on('click', function() {
     let eventCategory = $("#popwilEventCategory").val();
     let tahun = $("#popwilTahun").val();
     $.ajax({
-        url: `/event-registrations/export`,
+        url: `/perolehan-medali/export`,
         method: 'GET',
         data: {
             eventCategory: eventCategory,
@@ -565,6 +543,5 @@ $("#btn-export-popwil").on('click', function() {
         }
     });
 });
-
 </script>
 @endsection

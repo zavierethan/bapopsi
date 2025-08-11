@@ -37,7 +37,7 @@
                                 <div class="col-md-6 mb-4">
                                     <label class="form-label fw-bold fs-6">Event</label>
                                     <select name="event_id" class="form-select form-select-solid"
-                                        data-control="select2">
+                                        data-control="select2" disabled>
                                         <option value="">Pilih Event</option>
                                         @foreach($events as $event)
                                         <option value="{{ $event->id }}"
@@ -47,9 +47,24 @@
                                     </select>
                                 </div>
                                 <div class="col-md-6 mb-4">
+                                    <label class="form-label fw-bold fs-6">Jenjang</label>
+                                    <select name="jenjang" class="form-select form-select-solid" data-control="select2"
+                                        id="jenjang" disabled>
+                                        <option value="">Pilih Jenjang</option>
+                                        <option value="SD"
+                                            <?php echo ($eventRegistration->jenjang == 'SD') ? 'selected' : '' ;?>>SD
+                                        </option>
+                                        <option value="SMP"
+                                            <?php echo ($eventRegistration->jenjang == 'SMP') ? 'selected' : '' ;?>>SMP
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row mt-5">
+                                <div class="col-md-6 mb-4">
                                     <label class="form-label fw-bold fs-6">Cabang Olahraga</label>
                                     <select name="cabang_olahraga_id" class="form-select form-select-solid"
-                                        data-control="select2" id="cabor-id">
+                                        data-control="select2" id="cabor-id" disabled>
                                         <option value="">Pilih Cabang</option>
                                         @foreach($cabangOlahraga as $cabor)
                                         <option value="{{ $cabor->id }}"
@@ -58,18 +73,17 @@
                                         @endforeach
                                     </select>
                                 </div>
-                            </div>
-                            <div class="row mt-5" id="radioContainer">
-                                <div class="col-md-12 mb-4">
-                                    <label class="form-label fw-bold fs-6 d-block">Kelas Cabang Olahraga</label>
-                                    @foreach($kelasOlahraga as $kelas)
-                                    <div class="form-check form-check-inline me-4">
-                                        <input class="form-check-input" type="radio" name="sport_class_id"
-                                            id="kelas_{{$kelas->id}}" value="{{$kelas->id}}"
-                                            <?php echo ($kelas->id == $eventRegistration->sport_class_id) ? 'checked' : '' ;?>>
-                                        <label class="form-check-label" for="kelas_1">{{$kelas->name}}</label>
-                                    </div>
-                                    @endforeach
+                                <div class="col-md-6 mb-4">
+                                    <label class="form-label fw-bold fs-6 d-block">No. Kelas Pertandingan</label>
+                                    <select name="kelas_olahraga_id" class="form-select form-select-solid"
+                                        data-control="select2" id="kelas-cabor-id">
+                                        <option value="">Pilih Cabang</option>
+                                        @foreach($kelasOlahraga as $kelas)
+                                        <option value="{{ $cabor->id }}"
+                                            <?php echo ($kelas->id == $eventRegistration->sport_class_id) ? 'selected' : '' ;?>>
+                                            {{$kelas->name}}</option>
+                                        @endforeach
+                                    </select>
                                 </div>
                             </div>
                         </div>
@@ -79,22 +93,27 @@
                     <div class="card mb-5">
                         <div class="card-header d-flex justify-content-between align-items-center">
                             <h3 class="card-title fw-bold">Data Atlet</h3>
-                            <!-- <button type="button" id="add-atlet" class="btn btn-sm btn-light-primary">
-                                <i class="fa fa-plus"></i> Tambah Atlet
-                            </button> -->
                         </div>
                         <div class="card-body" id="atlet-wrapper">
                             @foreach($atlets as $atlet)
                             <div class="border p-4 mb-4 rounded position-relative atlet-item bg-light">
                                 <div class="d-flex justify-content-end gap-2 mt-2 mb-5 me-2">
                                     <!-- Approve Button -->
-                                    <button type="button" class="btn btn-success btn-sm approve-atlet">
+                                    <button type="button" class="btn btn-success btn-sm approve-atlet"
+                                        data-id="{{$atlet->id}}">
                                         <i class="fa fa-check"></i>
                                     </button>
 
                                     <!-- Reject Button -->
-                                    <button type="button" class="btn btn-danger btn-sm reject-atlet">
+                                    <button type="button" class="btn btn-danger btn-sm reject-atlet"
+                                        data-id="{{$atlet->id}}">
                                         <i class="fa fa-times"></i>
+                                    </button>
+
+                                    <!-- Update Button -->
+                                    <button type="button" class="btn btn-primary btn-sm edit-atlet"
+                                        data-id="{{$atlet->id}}">
+                                        <i class="fa fa-pen-to-square"></i>
                                     </button>
                                 </div>
                                 <div class="row g-4">
@@ -105,7 +124,7 @@
                                                 class="img-thumbnail preview-pas-foto"
                                                 style="width: 150px; height: 150px; object-fit: cover;">
                                         </div>
-                                        <input type="file" name="atlets[${index}][pas_foto]" accept="image/*"
+                                        <input type="file" name="atlets[{{ $atlet->id }}][pas_foto]" accept="image/*"
                                             class="form-control input-pas-foto">
                                     </div>
 
@@ -115,10 +134,9 @@
                                             <label class="col-md-2 col-form-label">Nama Lengkap</label>
                                             <div class="col-md-10">
                                                 <input type="text" class="form-control"
-                                                    name="atlets[${index}][nama_lengkap]"
-                                                    value="{{ $atlet->nama_lengkap }}" required>
-                                                <input type="hidden" class="form-control"
-                                                    name="atlets[${index}][id]"
+                                                    name="atlets[{{ $atlet->id }}][nama_lengkap]"
+                                                    value="{{ $atlet->nama_lengkap }}" readonly required>
+                                                <input type="hidden" class="form-control" name="atlets[${index}][id]"
                                                     value="{{ $atlet->id }}" required>
                                             </div>
                                         </div>
@@ -126,22 +144,22 @@
                                             <label class="col-md-2 col-form-label">Tempat Lahir</label>
                                             <div class="col-md-10">
                                                 <input type="text" class="form-control"
-                                                    name="atlets[${index}][tempat_lahir]"
-                                                    value="{{ $atlet->tempat_lahir }}">
+                                                    name="atlets[{{ $atlet->id }}][tempat_lahir]"
+                                                    value="{{ $atlet->tempat_lahir }}" readonly>
                                             </div>
                                         </div>
                                         <div class="row mb-3 align-items-center">
                                             <label class="col-md-2 col-form-label">Tanggal Lahir</label>
                                             <div class="col-md-10">
                                                 <input type="date" class="form-control"
-                                                    name="atlets[${index}][tanggal_lahir]"
-                                                    value="{{ $atlet->tanggal_lahir }}">
+                                                    name="atlets[{{ $atlet->id }}][tanggal_lahir]"
+                                                    value="{{ $atlet->tanggal_lahir }}" readonly>
                                             </div>
                                         </div>
                                         <div class="row mb-3 align-items-center">
                                             <label class="col-md-2 col-form-label">Jenis Kelamin</label>
                                             <div class="col-md-10">
-                                                <select name="atlets[${index}][jenis_kelamin]" class="form-select">
+                                                <select name="atlets[{{ $atlet->id }}][jenis_kelamin]" class="form-select" disabled>
                                                     <option value="">Pilih Jenis Kelamin</option>
                                                     <option value="L"
                                                         {{ $atlet->jenis_kelamin == 'L' ? 'selected' : '' }}>Laki-laki
@@ -156,23 +174,35 @@
                                             <label class="col-md-2 col-form-label">Nama Sekolah</label>
                                             <div class="col-md-10">
                                                 <input type="text" class="form-control"
-                                                    name="atlets[${index}][nama_sekolah]"
-                                                    value="{{ $atlet->nama_sekolah }}">
+                                                    name="atlets[{{ $atlet->id }}][nama_sekolah]"
+                                                    value="{{ $atlet->nama_sekolah }}" readonly>
                                             </div>
                                         </div>
                                         <div class="row mb-3 align-items-center">
                                             <label class="col-md-2 col-form-label">NISN</label>
                                             <div class="col-md-10">
-                                                <input type="text" class="form-control" name="atlets[${index}][nisn]"
-                                                    value="{{ $atlet->nisn }}">
+                                                <input type="text" class="form-control" name="atlets[{{ $atlet->id }}][nisn]"
+                                                    value="{{ $atlet->nisn }}" readonly>
                                             </div>
                                         </div>
                                         <div class="row mb-3 align-items-center">
-                                            <label class="col-md-2 col-form-label">Rapor</label>
+                                            <label class="col-md-2 col-form-label">Raport</label>
                                             <div class="col-md-10">
-                                                <input type="file" name="atlets[${index}][raport]"
-                                                    class="form-control mt-1">
+                                                <!-- <input type="file" name="atlets[{{ $atlet->id }}][raport]"
+                                                    class="form-control mt-1"> -->
                                                 @if($atlet->raport)
+                                                <a href="#" class="text-primary"
+                                                    onclick="showPdfModal('{{ asset('storage/' . $atlet->raport) }}'); return false;">Lihat
+                                                    file Raport (PDF)</a><br>
+                                                @endif
+                                            </div>
+                                        </div>
+                                        <div class="row mb-3 align-items-center">
+                                            <label class="col-md-2 col-form-label">SK</label>
+                                            <div class="col-md-10">
+                                                <!-- <input type="file" name="atlets[{{ $atlet->id }}][sk]"
+                                                    class="form-control mt-1"> -->
+                                                @if($atlet->sk)
                                                 <a href="#" class="text-primary"
                                                     onclick="showPdfModal('{{ asset('storage/' . $atlet->raport) }}'); return false;">Lihat
                                                     file Raport (PDF)</a><br>
@@ -182,8 +212,8 @@
                                         <div class="row mb-3 align-items-center">
                                             <label class="col-md-2 col-form-label">Akta Lahir</label>
                                             <div class="col-md-10">
-                                                <input type="file" name="atlets[${index}][akta_lahir]"
-                                                    class="form-control mt-1">
+                                                <!-- <input type="file" name="atlets[{{ $atlet->id }}][akta_lahir]"
+                                                    class="form-control mt-1"> -->
                                                 @if($atlet->akta_lahir)
                                                 <a href="#" class="text-primary"
                                                     onclick="showPdfModal('{{ asset('storage/' . $atlet->akta_lahir) }}'); return false;">Lihat
@@ -194,7 +224,15 @@
                                         <div class="row mb-3 align-items-center">
                                             <label class="col-md-2 col-form-label">Status Approval</label>
                                             <div class="col-md-10">
-                                                <input type="text" class="form-control" name="atlets[${index}][nisn]" value="{{ $atlet->approval_status }}" readonly>
+                                                <input type="text" class="form-control" name="atlets[{{ $atlet->id }}][nisn]"
+                                                    value="{{ $atlet->approval_status }}" readonly>
+                                            </div>
+                                        </div>
+                                        <div class="row mb-3 align-items-center">
+                                            <label class="col-md-2 col-form-label">Catatan Approval</label>
+                                            <div class="col-md-10">
+                                                <textarea type="text" class="form-control"
+                                                    name="atlets[{{ $atlet->id }}][appr_notes]" readonly>{{ $atlet->appr_notes }}</textarea>
                                             </div>
                                         </div>
                                     </div>
@@ -215,7 +253,8 @@
                         <div class="card-body" id="official-wrapper">
                             @foreach($officials as $official)
                             <div class="border p-4 mb-4 rounded position-relative official-item bg-light">
-                                <div class="d-flex justify-content-end gap-2 mt-2 mb-5 me-2 position-absolute top-0 end-0">
+                                <div
+                                    class="d-flex justify-content-end gap-2 mt-2 mb-5 me-2 position-absolute top-0 end-0">
                                     <!-- Approve Button -->
                                     <button type="button" class="btn btn-success btn-sm approve-atlet">
                                         <i class="fa fa-check"></i>
@@ -231,18 +270,18 @@
                                         <img src="{{ $official->foto ? asset('storage/' . $official->foto) : 'https://via.placeholder.com/120' }}"
                                             class="img-thumbnail preview-foto-official mb-2"
                                             style="width: 150px; height: 150px; object-fit: cover;">
-                                        <input type="file" name="officials[${index}][foto]"
+                                        <input type="file" name="officials[ {{$official->id}} ][foto]"
                                             class="form-control input-foto-official">
                                     </div>
                                     <div class="col-md-4">
                                         <input type="text" name="officials[${index}][nama_lengkap]"
                                             placeholder="Nama Lengkap" class="form-control" value="{{$official->nama}}"
                                             required>
-                                        <input type="hidden" name="officials[${index}][id]" class="form-control" value="{{$official->id}}"
-                                            required>
+                                        <input type="hidden" name="officials[{{$official->id}}][id]" class="form-control"
+                                            value="{{$official->id}}" required>
                                     </div>
                                     <div class="col-md-4">
-                                        <select name="officials[${index}][jabatan]" class="form-select" required>
+                                        <select name="officials[{{$official->id}}][jabatan]" class="form-select" required>
                                             <option value="">Pilih Jabatan</option>
                                             @foreach($jabatans as $jab)
                                             <option value="{{$jab->id}}"
@@ -260,7 +299,7 @@
                     <!-- Submit -->
                     <div class="text-end mb-10">
                         <button type="button" class="btn btn-success" id="submit-form">Submit</button>
-                        <a href="/event-registrations" class="btn btn-danger">Batal</a>
+                        <a href="/event-registrations" class="btn btn-danger">Kembali</a>
                     </div>
                 </form>
             </div>
@@ -303,7 +342,7 @@ $('#submit-form').on('click', function(e) {
             const form = $('#form-atlet')[0];
             const formData = new FormData(form);
             $.ajax({
-                url: "{{ route('event-registrations.update', ['id' => $eventRegistration->id]) }}", // Ganti dengan route sesuai kebutuhan
+                url: "{{ route('event-registrations.update', ['id' => $eventRegistration->id]) }}",
                 method: "POST",
                 data: formData,
                 processData: false,
@@ -345,90 +384,6 @@ let atletIndex = 0;
 let officialIndex = 0;
 
 const jabatanOptions = @json($jabatans);
-
-function atletRow(index) {
-    return `
-    <div class="border p-4 mb-4 rounded position-relative atlet-item bg-light">
-        <button type="button" class="btn btn-icon btn-danger btn-sm position-absolute top-0 end-0 mt-2 me-2 remove-atlet">
-            <i class="fa fa-times"></i>
-        </button>
-        <div class="row g-4">
-            <!-- Foto Profil -->
-            <div class="col-md-4 text-center">
-                <label class="form-label fw-bold">Pas Foto</label>
-                <div class="mb-3">
-                    <img src="https://via.placeholder.com/150" class="img-thumbnail preview-pas-foto" style="width: 150px; height: 150px; object-fit: cover;">
-                </div>
-                <input type="file" name="atlets[${index}][pas_foto]" accept="image/*" class="form-control input-pas-foto">
-            </div>
-
-            <!-- Biodata -->
-            <div class="col-md-8">
-                <div class="row g-3">
-                    <div class="col-md-6">
-                        <input type="text" class="form-control" name="atlets[${index}][nama_lengkap]" placeholder="Nama Lengkap" required>
-                    </div>
-                    <div class="col-md-6">
-                        <input type="text" class="form-control" name="atlets[${index}][tempat_lahir]" placeholder="Tempat Lahir">
-                    </div>
-                    <div class="col-md-6">
-                        <input type="date" class="form-control" name="atlets[${index}][tanggal_lahir]">
-                    </div>
-                    <div class="col-md-6">
-                        <select name="atlets[${index}][jenis_kelamin]" class="form-select" data-control="select2">
-                            <option value="">Jenis Kelamin</option>
-                            <option value="L">Laki-laki</option>
-                            <option value="P">Perempuan</option>
-                        </select>
-                    </div>
-                    <div class="col-md-6">
-                        <input type="text" class="form-control" name="atlets[${index}][nama_sekolah]" placeholder="Nama Sekolah">
-                    </div>
-                    <div class="col-md-6">
-                        <input type="text" class="form-control" name="atlets[${index}][nisn]" placeholder="NISN">
-                    </div>
-                    <div class="col-md-6">
-                        <label>Rapor</label>
-                        <input type="file" name="atlets[${index}][raport]" class="form-control">
-                    </div>
-                    <div class="col-md-6">
-                        <label>Akta Lahir</label>
-                        <input type="file" name="atlets[${index}][akta_lahir]" class="form-control">
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>`;
-}
-
-function officialRow(index) {
-    // Buat elemen <option> dari jabatanOptions
-    const jabatanSelectOptions = jabatanOptions.map(j =>
-        `<option value="${j.id}">${j.nama_jabatan}</option>`
-    ).join('');
-
-    return `
-    <div class="border p-4 mb-4 rounded position-relative official-item bg-light">
-        <button type="button" class="btn btn-icon btn-danger btn-sm position-absolute top-0 end-0 mt-2 me-2 remove-official">
-            <i class="fa fa-times"></i>
-        </button>
-        <div class="row g-3 align-items-end">
-            <div class="col-md-4 text-center">
-                <img src="https://via.placeholder.com/120" class="img-thumbnail preview-foto-official mb-2" style="width: 120px; height: 120px; object-fit: cover;">
-                <input type="file" name="officials[${index}][foto]" class="form-control input-foto-official">
-            </div>
-            <div class="col-md-4">
-                <input type="text" name="officials[${index}][nama_lengkap]" placeholder="Nama Lengkap" class="form-control" required>
-            </div>
-            <div class="col-md-4">
-                <select name="officials[${index}][jabatan]" class="form-select" required>
-                    <option value="">Pilih Jabatan</option>
-                    ${jabatanSelectOptions}
-                </select>
-            </div>
-        </div>
-    </div>`;
-}
 
 $('#add-atlet').on('click', function() {
     $('#atlet-wrapper').append(atletRow(atletIndex));
@@ -516,6 +471,106 @@ $('#cabor-id').on('change', function() {
             }
         });
     }
+});
+
+$(document).on('click', '.approve-atlet', function() {
+    const id = $(this).data('id');
+
+    Swal.fire({
+        title: 'Approve Atlet?',
+        text: "Apakah kamu yakin ingin menyetujui atlet ini?",
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Ya, Setujui!',
+        cancelButtonText: 'Batal'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            $.ajax({
+                url: `/athletes/approve/${id}`,
+                type: 'POST',
+                data: {
+                    _token: '{{ csrf_token() }}'
+                },
+                success: function() {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Berhasil!',
+                        text: 'Atlet berhasil disetujui.',
+                        timer: 2000,
+                        showConfirmButton: false
+                    });
+
+                    location.href = location.href;
+                },
+                error: function(xhr) {
+                    console.error(xhr.responseText);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Gagal!',
+                        text: 'Gagal menyetujui atlet.'
+                    });
+                }
+            });
+        }
+    });
+});
+
+
+$(document).on('click', '.reject-atlet', function() {
+    const id = $(this).data('id');
+
+    Swal.fire({
+        title: 'Tolak Atlet?',
+        text: "Masukkan alasan penolakan atlet ini:",
+        icon: 'warning',
+        input: 'textarea',
+        inputPlaceholder: 'Contoh: Dokumen tidak lengkap...',
+        inputAttributes: {
+            'aria-label': 'Masukkan alasan penolakan'
+        },
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#6c757d',
+        confirmButtonText: 'Ya, Tolak!',
+        cancelButtonText: 'Batal',
+        inputValidator: (value) => {
+            if (!value) {
+                return 'Alasan penolakan wajib diisi!';
+            }
+        }
+    }).then((result) => {
+        if (result.isConfirmed) {
+            $.ajax({
+                url: `/athletes/reject/${id}`,
+                type: 'POST',
+                data: {
+                    _token: '{{ csrf_token() }}',
+                    reason: result.value
+                },
+                success: function() {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Berhasil!',
+                        text: 'Atlet berhasil ditolak.',
+                        timer: 2000,
+                        showConfirmButton: false
+                    });
+
+                    location.href = location.href;
+                },
+                error: function(xhr) {
+                    console.error(xhr.responseText);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Gagal!',
+                        text: 'Gagal menolak atlet.'
+                    });
+                }
+            });
+        }
+    });
 });
 
 function showPdfModal(pdfUrl) {

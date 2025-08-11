@@ -103,6 +103,22 @@ Route::group(['middleware' => ['auth']], function() {
             Route::post('/reject/{id}', [App\Http\Controllers\EventRegistrationController::class, 'reject']);
 
             Route::get('/getApprovalSummary', [App\Http\Controllers\EventRegistrationController::class, 'getTotalApprovalSummary'])->name('summary');
+
+            Route::get('/export', [App\Http\Controllers\EventRegistrationController::class, 'export']);
+        });
+    });
+
+    Route::prefix('perolehan-medali')->group(function () {
+        Route::name('perolehan-medali.')->group(function () {
+            Route::get('/', [App\Http\Controllers\PerolehanMedaliController::class, 'index'])->name('index');
+            Route::get('/lists', [App\Http\Controllers\PerolehanMedaliController::class, 'getLists'])->name('get-lists');
+            Route::get('/create', [App\Http\Controllers\PerolehanMedaliController::class, 'create'])->name('create');
+            Route::get('/create2', [App\Http\Controllers\PerolehanMedaliController::class, 'create2'])->name('create2');
+            Route::post('/save', [App\Http\Controllers\PerolehanMedaliController::class, 'save'])->name('save');
+            Route::get('/detail/{id}', [App\Http\Controllers\PerolehanMedaliController::class, 'edit'])->name('edit');
+            Route::post('/update/{id}', [App\Http\Controllers\PerolehanMedaliController::class, 'update'])->name('update');
+
+            Route::get('/export', [App\Http\Controllers\PerolehanMedaliController::class, 'export']);
         });
     });
 
@@ -112,6 +128,7 @@ Route::group(['middleware' => ['auth']], function() {
         Route::name('athletes.')->group(function () {
             Route::get('/', [App\Http\Controllers\AthleteController::class, 'index'])->name('index');
             Route::get('/lists', [App\Http\Controllers\AthleteController::class, 'getLists'])->name('get-lists');
+            Route::get('/lists-popda-popwil', [App\Http\Controllers\AthleteController::class, 'getListsPopdaPopwil'])->name('get-lists.popda.popwil');
             Route::get('/create', [App\Http\Controllers\AthleteController::class, 'create'])->name('create');
             Route::post('/save', [App\Http\Controllers\AthleteController::class, 'save'])->name('save');
             Route::get('/detail/{id}', [App\Http\Controllers\AthleteController::class, 'edit'])->name('edit');

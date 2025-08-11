@@ -93,12 +93,6 @@
                     class="block px-3 py-2 text-base font-medium {{ request()->is('kontak') ? 'text-blue-600 font-semibold' : 'text-gray-700 hover:text-blue-600' }}">
                     Kontak
                 </a>
-                <!-- @if($activeEvent)
-                <a href="{{ url('/prestasi') }}"
-                    class="block px-3 py-2 text-base font-medium {{ request()->is('prestasi') ? 'text-blue-600 font-semibold' : 'text-gray-700 hover:text-blue-600' }}">
-                    {{ $activeEvent->name }}
-                </a>
-                @endif -->
                 <a href="{{ url('/login') }}"
                     class="block px-3 py-2 text-base font-medium text-white bg-blue-600 rounded-md text-center">
                     Login

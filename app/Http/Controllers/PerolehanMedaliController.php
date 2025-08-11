@@ -1,0 +1,146 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use DB;
+
+class PerolehanMedaliController extends Controller
+{
+    public function index() {
+        $cabangOlahraga = DB::table('sports')->get();
+        $eventCategories = DB::table('event_categories')->get();
+        return view('modules.perolehan-medali.index', compact('cabangOlahraga', 'eventCategories'));
+    }
+
+    public function getLists(Request $request){
+        $params = $request->all();
+
+        $query = DB::table('atlet')
+            ->select(
+                'atlet.*',
+                'events.name as nama_event',
+                DB::raw("TO_CHAR(atlet.tanggal_lahir, 'DD/MM/YYYY') AS tanggal_lahir"),
+                DB::raw("CASE
+                    WHEN atlet.appr_status IS NULL THEN 'Waiting Approval'
+                    WHEN atlet.appr_status = 1 THEN 'Approved'
+                    WHEN atlet.appr_status = 0 THEN 'Rejected'
+                END as approval_status"),
+                DB::raw("TO_CHAR(atlet.appr_date, 'DD/MM/YYYY HH24:MI:SS') AS approval_date"),
+                'atlet.appr_notes',
+                'sports.name as cabang_olahraga',
+                'event_registrations.kecamatan_id',
+                'event_registrations.sub_rayon_id',
+                'kecamatan.nama as nama_kecamatan',
+                'sub_rayon.nama as nama_sub_rayon'
+            )
+            ->leftJoin('sports', 'sports.id', '=', 'atlet.cabang_olahraga_id')
+            ->leftJoin('event_registrations', 'event_registrations.id', '=', 'atlet.event_reg_id')
+            ->leftJoin('events', 'events.id', '=', 'event_registrations.event_id')
+            ->leftJoin('kecamatan', 'kecamatan.id', '=', 'event_registrations.kecamatan_id')
+            ->leftJoin('sub_rayon', 'sub_rayon.id', '=', 'event_registrations.sub_rayon_id');
+
+        if (!empty($params['nama_lengkap'])) {
+            $query->where('atlet.nama_lengkap', $params['nama_lengkap']);
+        }
+
+        $user = Auth::user();
+
+        if (!in_array($user->group_id, [1, 14])) {
+
+            if($user->group_id == 16) {
+
+            } else {
+                $query->where('atlet.created_by', $user->id);
+            }
+        }
+
+        $searchValue = $request->input('search.value');
+        if (!empty($searchValue)) {
+            $query->where(function ($q) use ($searchValue) {
+                $q->where('atlet.nama_lengkap', 'like', '%' . strtoupper($searchValue) . '%');
+            });
+        }
+
+        $start = $request->input('start', 0);
+        $length = $request->input('length', 10);
+
+        $totalRecords = $query->count();
+        $filteredRecords = $query->count();
+        $data = $query->orderBy('atlet.id', 'desc')->skip($start)->take($length)->get();
+
+        return response()->json([
+            'draw' => $request->input('draw'),
+            'recordsTotal' => $totalRecords,
+            'recordsFiltered' => $filteredRecords,
+            'data' => $data
+        ]);
+    }
+
+    public function create() {
+        return view('modules.perolehan-medali.create');
+    }
+
+    public function create2() {
+        return view('modules.perolehan-medali.create2');
+    }
+
+    public function save(Request $request) {
+
+    }
+
+    public function edit($id) {
+
+    }
+
+    public function update(Request $request, $id) {
+
+    }
+
+    public function export(Request $request) {
+        $query = DB::table('atlet')
+            ->select(
+                'atlet.*',
+                'events.name as nama_event',
+                DB::raw("TO_CHAR(atlet.tanggal_lahir, 'DD/MM/YYYY') AS tanggal_lahir"),
+                DB::raw("CASE
+                    WHEN atlet.appr_status IS NULL THEN 'Waiting Approval'
+                    WHEN atlet.appr_status = 1 THEN 'Approved'
+                    WHEN atlet.appr_status = 0 THEN 'Rejected'
+                END as approval_status"),
+                DB::raw("TO_CHAR(atlet.appr_date, 'DD/MM/YYYY HH24:MI:SS') AS approval_date"),
+                'atlet.appr_notes',
+                'sports.name as cabang_olahraga',
+                'event_registrations.jenjang',
+                'event_registrations.kecamatan_id',
+                'event_registrations.sub_rayon_id',
+                'kecamatan.nama as nama_kecamatan',
+                'sub_rayon.nama as nama_sub_rayon',
+            )
+            ->leftJoin('sports', 'sports.id', '=', 'atlet.cabang_olahraga_id')
+            ->leftJoin('event_registrations', 'event_registrations.id', '=', 'atlet.event_reg_id')
+            ->leftJoin('events', 'events.id', '=', 'event_registrations.event_id')
+            ->leftJoin('kecamatan', 'kecamatan.id', '=', 'event_registrations.kecamatan_id')
+            ->leftJoin('sub_rayon', 'sub_rayon.id', '=', 'event_registrations.sub_rayon_id');
+
+        if ($request->filled('eventCategory')) {
+            $query->where('events.event_category_id', $request->eventCategory);
+        }
+
+        if ($request->filled('tahun')) {
+            $query->where('events.year', $request->tahun);
+        }
+
+        $data = $query->orderBy('sports.name')->get();
+
+        $groupedData = $data->groupBy('cabang_olahraga');
+
+        $pdf = Pdf::loadView('modules.event-registrations.export', compact('data', 'groupedData'))
+                  ->setPaper('A4', 'landscape');
+
+        return response($pdf->output(), 200)
+            ->header('Content-Type', 'application/pdf')
+            ->header('Content-Disposition', 'attachment; filename="Album Atlet ' . date('Y-m-d') . '.pdf"')
+            ->header('X-Filename', 'Album Atlet ' . date('Y-m-d') . '.pdf');
+    }
+}

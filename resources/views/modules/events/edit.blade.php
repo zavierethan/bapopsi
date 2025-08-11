@@ -57,7 +57,7 @@
                                 @csrf
                                 <div class="fv-row mb-5">
                                     <div class="mb-1">
-                                        <label class="form-label fw-bold fs-6 mb-2">Event Name</label>
+                                        <label class="form-label fw-bold fs-6 mb-2">Nama Event</label>
                                         <div class="position-relative mb-3">
                                             <input class="form-control form-control-md form-control-solid" type="text"
                                                 name="name" id="name" value="{{$event->name}}"/>
@@ -81,10 +81,10 @@
                                 <div class="separator my-5"></div>
                                 <div class="fv-row mb-5">
                                     <div class="mb-1">
-                                        <label class="form-label fw-bold fs-6 mb-2">Kategory</label>
+                                        <label class="form-label fw-bold fs-6 mb-2">Kategori Event</label>
                                         <div class="position-relative mb-3">
                                             <select class="form-select form-select-solid" data-control="select2"
-                                                data-placeholder="-" name="kategory">
+                                                data-placeholder="-" name="category">
                                                 @foreach($categories as $category)
                                                 <option value="{{$category->id}}" <?php echo ($category->id == $event->event_category_id) ? 'selected' : ''; ?>>{{$category->name}}</option>
                                                 @endforeach
@@ -95,7 +95,7 @@
                                 <div class="separator my-5"></div>
                                 <div class="fv-row mb-5">
                                     <div class="mb-1">
-                                        <label class="form-label fw-bold fs-6 mb-2">Location</label>
+                                        <label class="form-label fw-bold fs-6 mb-2">Lokasi</label>
                                         <div class="position-relative mb-3">
                                             <input class="form-control form-control-md form-control-solid" type="text"
                                                 name="location" id="location" value="{{$event->location}}"/>
@@ -105,7 +105,7 @@
                                 <div class="separator my-5"></div>
                                 <div class="fv-row mb-5">
                                     <div class="mb-1">
-                                        <label class="form-label fw-bold fs-6 mb-2">Start Date</label>
+                                        <label class="form-label fw-bold fs-6 mb-2">Tanggal Mulai Event</label>
                                         <div class="position-relative mb-3">
                                             <input class="form-control form-control-md form-control-solid" type="date"
                                                 name="start_date" id="start_date" value="{{$event->start_date}}" style="max-width: 250px;"/>
@@ -115,10 +115,40 @@
                                 <div class="separator my-5"></div>
                                 <div class="fv-row mb-5">
                                     <div class="mb-1">
-                                        <label class="form-label fw-bold fs-6 mb-2">End Date</label>
+                                        <label class="form-label fw-bold fs-6 mb-2">Tanggal Berakhir Event</label>
                                         <div class="position-relative mb-3">
                                             <input class="form-control form-control-md form-control-solid" type="date"
                                                 name="end_date" id="end_date" value="{{$event->end_date}}" style="max-width: 250px;"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="separator my-5"></div>
+                                <div class="fv-row mb-5">
+                                    <div class="mb-1">
+                                        <label class="form-label fw-bold fs-6 mb-2">Tahun Event</label>
+                                        <div class="position-relative mb-3">
+                                            <input class="form-control form-control-md form-control-solid" type="number"
+                                                name="year" id="year" value="{{$event->year}}" style="max-width: 250px;"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="separator my-5"></div>
+                                <div class="fv-row mb-5">
+                                    <div class="mb-1">
+                                        <label class="form-label fw-bold fs-6 mb-2">Tanggal Mulai Pendaftaran</label>
+                                        <div class="position-relative mb-3">
+                                            <input class="form-control form-control-md form-control-solid" type="date"
+                                                name="open_reg_date" id="open_reg_date" value="{{$event->open_reg_date}}" style="max-width: 250px;"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="separator my-5"></div>
+                                <div class="fv-row mb-5">
+                                    <div class="mb-1">
+                                        <label class="form-label fw-bold fs-6 mb-2">Tanggal Berakhir Pendaftaran</label>
+                                        <div class="position-relative mb-3">
+                                            <input class="form-control form-control-md form-control-solid" type="date"
+                                                name="close_reg_date" id="close_reg_date" value="{{$event->close_reg_date}}" style="max-width: 250px;"/>
                                         </div>
                                     </div>
                                 </div>

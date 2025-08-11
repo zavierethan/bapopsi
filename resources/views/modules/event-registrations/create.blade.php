@@ -40,10 +40,11 @@
                                         data-control="select2">
                                         <option value="">Pilih Event</option>
                                         @foreach($events as $event)
-                                        <option value="{{ $event->id }}">{{ $event->name }}</option>
+                                        <option value="{{ $event->id }}" <?php echo ($event->event_category_id == 1) ? 'selected' : ''; ?>>{{ $event->name }}</option>
                                         @endforeach
                                     </select>
                                 </div>
+                                @if(Auth::user()->group_id == 15)
                                 <div class="col-md-6 mb-4">
                                     <label class="form-label fw-bold fs-6">Jenjang</label>
                                     <select name="jenjang" class="form-select form-select-solid"
@@ -53,6 +54,7 @@
                                         <option value="SMP">SMP</option>
                                     </select>
                                 </div>
+                                @endif
                             </div>
                             <div class="row mt-5">
                                 <div class="col-md-6 mb-4">
@@ -82,6 +84,7 @@
                         <div class="card-body" id="atlet-wrapper"></div>
                     </div>
 
+                    @if(Auth::user()->group_id == 15)
                     <!-- Data Official -->
                     <div class="card mb-5">
                         <div class="card-header d-flex justify-content-between align-items-center">
@@ -92,10 +95,11 @@
                         </div>
                         <div class="card-body" id="official-wrapper"></div>
                     </div>
+                    @endif
 
                     <!-- Submit -->
                     <div class="text-end mb-10">
-                        <button type="button" class="btn btn-success" id="submit-form">Simpan Pendaftaran</button>
+                        <button type="button" class="btn btn-success" id="submit-form">Simpan</button>
                         <a href="/event-registrations" class="btn btn-danger">Kembali</a>
                     </div>
                 </form>
@@ -150,10 +154,14 @@ $('#submit-form').on('click', function(e) {
                     });
                 },
                 error: function(xhr) {
-                    console.log(xhr);
+                    let message = 'Terjadi kesalahan saat menyimpan data.';
+                    if (xhr.responseJSON && xhr.responseJSON.message) {
+                        message = xhr.responseJSON.message;
+                    }
+
                     Swal.fire({
                         title: 'Gagal!',
-                        text: 'Terjadi kesalahan saat menyimpan data.',
+                        text: message,
                         icon: 'error'
                     });
                 }
@@ -176,51 +184,81 @@ function atletRow(index) {
         <div class="row g-4">
             <!-- Foto Profil -->
             <div class="col-md-4 text-center">
-                <label class="form-label fw-bold">Pas Foto</label>
-                <div class="mb-3">
-                    <img src="https://via.placeholder.com/150" class="img-thumbnail preview-pas-foto" style="width: 150px; height: 150px; object-fit: cover;">
+                <div class="mb-5">
+                    <img src="https://via.placeholder.com/150"
+                         class="img-thumbnail preview-pas-foto"
+                         style="width: 150px; height: 150px; object-fit: cover;">
                 </div>
-                <input type="file" name="atlets[${index}][pas_foto]" accept="image/*" class="form-control input-pas-foto">
+                <input type="file" name="atlets[${index}][pas_foto]" accept="image/*"
+                       class="form-control input-pas-foto">
             </div>
 
             <!-- Biodata -->
             <div class="col-md-8">
-                <div class="row g-3">
-                    <div class="col-md-6">
-                        <input type="text" class="form-control" name="atlets[${index}][nama_lengkap]" placeholder="Nama Lengkap" required>
+                <div class="row mb-3 align-items-center">
+                    <label class="col-md-2 col-form-label">Nama Lengkap</label>
+                    <div class="col-md-10">
+                        <input type="text" class="form-control" name="atlets[${index}][nama_lengkap]" required>
                     </div>
-                    <div class="col-md-6">
-                        <input type="text" class="form-control" name="atlets[${index}][tempat_lahir]" placeholder="Tempat Lahir">
+                </div>
+                <div class="row mb-3 align-items-center">
+                    <label class="col-md-2 col-form-label">Tempat Lahir</label>
+                    <div class="col-md-10">
+                        <input type="text" class="form-control" name="atlets[${index}][tempat_lahir]">
                     </div>
-                    <div class="col-md-6">
+                </div>
+                <div class="row mb-3 align-items-center">
+                    <label class="col-md-2 col-form-label">Tanggal Lahir</label>
+                    <div class="col-md-10">
                         <input type="date" class="form-control" name="atlets[${index}][tanggal_lahir]">
                     </div>
-                    <div class="col-md-6">
-                        <select name="atlets[${index}][jenis_kelamin]" class="form-select" data-control="select2">
-                            <option value="">Jenis Kelamin</option>
+                </div>
+                <div class="row mb-3 align-items-center">
+                    <label class="col-md-2 col-form-label">Jenis Kelamin</label>
+                    <div class="col-md-10">
+                        <select name="atlets[${index}][jenis_kelamin]" class="form-select">
+                            <option value="">Pilih Jenis Kelamin</option>
                             <option value="L">Laki-laki</option>
                             <option value="P">Perempuan</option>
                         </select>
                     </div>
-                    <div class="col-md-6">
-                        <input type="text" class="form-control" name="atlets[${index}][nama_sekolah]" placeholder="Nama Sekolah">
+                </div>
+                <div class="row mb-3 align-items-center">
+                    <label class="col-md-2 col-form-label">Nama Sekolah</label>
+                    <div class="col-md-10">
+                        <input type="text" class="form-control" name="atlets[${index}][nama_sekolah]">
                     </div>
-                    <div class="col-md-6">
-                        <input type="text" class="form-control" name="atlets[${index}][nisn]" placeholder="NISN">
+                </div>
+                <div class="row mb-3 align-items-center">
+                    <label class="col-md-2 col-form-label">NISN</label>
+                    <div class="col-md-10">
+                        <input type="text" class="form-control" name="atlets[${index}][nisn]">
                     </div>
-                    <div class="col-md-6">
-                        <label>Rapor</label>
-                        <input type="file" name="atlets[${index}][raport]" class="form-control">
+                </div>
+                <div class="row mb-3 align-items-center">
+                    <label class="col-md-2 col-form-label">Rapor</label>
+                    <div class="col-md-10">
+                        <input type="file" name="atlets[${index}][raport]" class="form-control mt-1">
                     </div>
-                    <div class="col-md-6">
-                        <label>Akta Lahir</label>
-                        <input type="file" name="atlets[${index}][akta_lahir]" class="form-control">
+                </div>
+                <div class="row mb-3 align-items-center">
+                    <label class="col-md-2 col-form-label">SK</label>
+                    <div class="col-md-10">
+                        <input type="file" name="atlets[${index}][sk]" class="form-control mt-1">
+                    </div>
+                </div>
+                <div class="row mb-3 align-items-center">
+                    <label class="col-md-2 col-form-label">Akta Lahir</label>
+                    <div class="col-md-10">
+                        <input type="file" name="atlets[${index}][akta_lahir]" class="form-control mt-1">
                     </div>
                 </div>
             </div>
         </div>
-    </div>`;
+    </div>
+    `;
 }
+
 
 function officialRow(index) {
     // Buat elemen <option> dari jabatanOptions
@@ -307,7 +345,7 @@ $('#cabor-id').on('change', function() {
             success: function(response) {
                 // Buat elemen label dan select
                 const $label = $(
-                    '<label class="form-label fw-bold fs-6 d-block" for="sport_class_id">Nomor Cabang Olahraga</label>'
+                    '<label class="form-label fw-bold fs-6 d-block" for="sport_class_id">No. Kelas Pertandingan</label>'
                     );
                 const $select = $(
                     '<select class="form-select form-select-solid" data-control="select2" id="sport_class_id" name="sport_class_id"></select>'

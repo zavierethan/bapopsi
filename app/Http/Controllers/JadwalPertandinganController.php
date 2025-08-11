@@ -19,9 +19,9 @@ class JadwalPertandinganController extends Controller
         $baseQuery = DB::table('jadwal_pertandingan')
             ->select(
                 'jadwal_pertandingan.*',
+                'events.name as event_name',
                 'sports.name as cabor',
                 'sport_classes.name as nomor_pertandingan',
-                'events.name as event_name',
                 'events.status as event_status',
                 DB::raw("CASE
                     WHEN jadwal_pertandingan.status = '0' THEN 'Belum dimulai'
@@ -72,94 +72,77 @@ class JadwalPertandinganController extends Controller
 
 
     public function create() {
+
+        $kelasOlahraga = DB::table('sport_classes')
+            ->select('sport_classes.*', 'sports.name as sport_name')
+            ->join('sports', 'sports.id', '=', 'sport_classes.sport_id')
+            ->get();
+
         return view('modules.jadwal-pertandingan.create', [
-            'events' => DB::table('events')->get(),
+            'events' => DB::table('events')->where('status', 1)->get(),
             'cabangOlahraga' => DB::table('sports')->get(),
-            'kelasOlahraga' => DB::table('sport_classes')->where('sport_id')->get()
+            'kelasOlahraga' => $kelasOlahraga
         ]);
     }
 
     public function save(Request $request) {
 
-        $validated = $request->validate([
-            'name'        => 'required|string|max:255',
-            'description' => 'required|string',
-            'start_date'  => 'required|date',
-            'end_date'    => 'required|date',
-            'category'    => 'required|exists:event_categories,id',
-            'location'    => 'required|string',
-        ]);
+        $caborId = DB::table('sport_classes')->where('id', $request->nomor_pertandingan)->value('sport_id');
 
-        $event = DB::table('events')->insert([
-            'name'              => $request->name,
-            'description'       => $request->description,
-            'start_date'        => $request->start_date,
-            'end_date'          => $request->end_date,
-            'event_category_id' => $request->category,
-            'location'          => $request->location,
-            'created_at'        => now(),
+        $event = DB::table('jadwal_pertandingan')->insert([
+            'event_id'           => $request->event_id,
+            'tanggal'            => $request->tanggal,
+            'tempat'             => $request->tempat,
+            'cabor_id'           => $caborId,
+            'nomor_pertandingan' => $request->nomor_pertandingan,
+            'kategori'           => $request->kategori,
+            'status'             => $request->status,
+            'created_at'         => now(),
         ]);
 
         return response()->json([
-            'message' => 'Event berhasil disimpan',
+            'message' => 'Jadwal Pertandingan berhasil disimpan',
             'data'    => $event
         ]);
     }
 
     public function edit($id){
-        $event = DB::table('events')->where('id', $id)->first();
-        $categories = DB::table('event_categories')->get();
+        $jadwal = DB::table('jadwal_pertandingan')->where('id', $id)->first();
+        $kelasOlahraga = DB::table('sport_classes')
+            ->select('sport_classes.*', 'sports.name as sport_name')
+            ->join('sports', 'sports.id', '=', 'sport_classes.sport_id')
+            ->get();
+        $events = DB::table('events')->where('status', 1)->get();
+        $cabangOlahraga = DB::table('sports')->get();
 
-        return view('modules.jadwal-pertandingan.edit', compact('event', 'categories'));
+        return view('modules.jadwal-pertandingan.edit', compact('jadwal', 'kelasOlahraga', 'events', 'cabangOlahraga'));
     }
 
     public function update(Request $request, $id) {
-        $validated = $request->validate([
-            'name'        => 'required|string|max:255',
-            'description' => 'required|string',
-            'start_date'  => 'required|date',
-            'end_date'    => 'required|date',
-            'category'    => 'required|exists:event_categories,id',
-            'location'    => 'required|string',
+
+        $updated = DB::table('jadwal_pertandingan')->where('id', $id)->update([
+            'event_id'           => $request->name,
+            'tanggal'            => $request->description,
+            'tempat'             => $request->location,
+            'cabor_id'           => $request->start_date,
+            'nomor_pertandingan' => $request->end_date,
+            'kategori'           => $request->category,
+            'status'             => $request->location,
+            'updated_at'         => now(),
         ]);
-
-        $agenda = DB::table('events')->where('id', $id)->first();
-
-        if (!$agenda) {
-            return response()->json(['message' => 'Events tidak ditemukan'], 404);
-        }
-
-        DB::table('events')->where('id', $id)->update([
-            'name'              => $request->name,
-            'description'       => $request->description,
-            'start_date'        => $request->start_date,
-            'end_date'          => $request->end_date,
-            'event_category_id' => $request->category,
-            'location'          => $request->location,
-            'updated_at'        => now(),
-        ]);
-
-        $updated = DB::table('events')->where('id', $id)->first();
 
         return response()->json([
-            'message' => 'Events berhasil diperbarui',
+            'message' => 'Jadwal Pertandingan berhasil diperbarui',
             'data'    => $updated,
         ]);
     }
 
     public function delete($id) {
-        $event = DB::table('events')->where('id', $id)->first();
 
-        if (!$event) {
-            return response()->json([
-                'message' => 'Events tidak ditemukan',
-            ], 404);
-        }
-
-        DB::table('events')->where('id', $id)->delete();
+        DB::table('jadwal_pertandingan')->where('id', $id)->delete();
 
         return response()->json([
-            'message' => 'Events berhasil dihapus',
+            'message' => 'Jadwal Pertandingan berhasil dihapus',
         ]);
     }
 }

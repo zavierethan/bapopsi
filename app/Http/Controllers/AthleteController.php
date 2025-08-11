@@ -33,10 +33,11 @@ class AthleteController extends Controller
                 DB::raw("TO_CHAR(atlet.appr_date, 'DD/MM/YYYY HH24:MI:SS') AS approval_date"),
                 'atlet.appr_notes',
                 'sports.name as cabang_olahraga',
+                'event_registrations.jenjang',
                 'event_registrations.kecamatan_id',
                 'event_registrations.sub_rayon_id',
                 'kecamatan.nama as nama_kecamatan',
-                'sub_rayon.nama as nama_sub_rayon'
+                'sub_rayon.nama as nama_sub_rayon',
             )
             ->leftJoin('sports', 'sports.id', '=', 'atlet.cabang_olahraga_id')
             ->leftJoin('event_registrations', 'event_registrations.id', '=', 'atlet.event_reg_id')
@@ -44,20 +45,24 @@ class AthleteController extends Controller
             ->leftJoin('kecamatan', 'kecamatan.id', '=', 'event_registrations.kecamatan_id')
             ->leftJoin('sub_rayon', 'sub_rayon.id', '=', 'event_registrations.sub_rayon_id');
 
-        if (!empty($params['nama_lengkap'])) {
-            $query->where('atlet.nama_lengkap', $params['nama_lengkap']);
+        if (!empty($params['eventCategory']) && $params['eventCategory'] !== ' ') {
+            $query->where('events.event_category_id', $params['eventCategory']);
         }
 
-        $user = Auth::user();
-
-        if (!in_array($user->group_id, [1, 14])) {
-
-            if($user->group_id == 16) {
-
-            } else {
-                $query->where('atlet.created_by', $user->id);
-            }
+        if (!empty($params['jenjang']) && $params['jenjang'] !== ' ') {
+            $query->where('event_registrations.jenjang', $params['jenjang']);
         }
+
+        // $user = Auth::user();
+
+        // if (!in_array($user->group_id, [1, 14])) {
+
+        //     if($user->group_id == 16) {
+
+        //     } else {
+        //         $query->where('atlet.created_by', $user->id);
+        //     }
+        // }
 
         $searchValue = $request->input('search.value');
         if (!empty($searchValue)) {

@@ -23,8 +23,10 @@ class EventController extends Controller
                 'event_categories.name as event_category',
                 DB::raw("TO_CHAR(events.start_date, 'DD/MM/YYYY') AS start_date"),
                 DB::raw("TO_CHAR(events.end_date, 'DD/MM/YYYY') AS end_date"),
+                DB::raw("TO_CHAR(events.open_reg_date, 'DD/MM/YYYY') AS open_reg_date"),
+                DB::raw("TO_CHAR(events.close_reg_date, 'DD/MM/YYYY') AS close_reg_date"),
                 DB::raw("CASE
-                    WHEN CURRENT_DATE < events.end_date THEN 'Open'
+                    WHEN CURRENT_DATE < events.close_reg_date THEN 'Open'
                     ELSE 'Closed'
                 END AS status")
             )
@@ -60,12 +62,15 @@ class EventController extends Controller
     public function save(Request $request) {
 
         $validated = $request->validate([
-            'name'        => 'required|string|max:255',
-            'description' => 'required|string',
-            'start_date'  => 'required|date',
-            'end_date'    => 'required|date',
-            'category'    => 'required|exists:event_categories,id',
-            'location'    => 'required|string',
+            'name'          => 'required|string|max:255',
+            'description'   => 'required|string',
+            'start_date'    => 'required|date',
+            'end_date'      => 'required|date',
+            'category'      => 'required|exists:event_categories,id',
+            'location'      => 'required|string',
+            'year'          => 'required',
+            'open_reg_date' => 'required|date',
+            'close_reg_date'=> 'required|date',
         ]);
 
         $event = DB::table('events')->insert([
@@ -73,6 +78,9 @@ class EventController extends Controller
             'description'       => $request->description,
             'start_date'        => $request->start_date,
             'end_date'          => $request->end_date,
+            'open_reg_date'     => $request->open_reg_date,
+            'close_reg_date'    => $request->close_reg_date,
+            'year'              => $request->year,
             'event_category_id' => $request->category,
             'location'          => $request->location,
             'created_at'        => now(),
@@ -93,12 +101,14 @@ class EventController extends Controller
 
     public function update(Request $request, $id) {
         $validated = $request->validate([
-            'name'        => 'required|string|max:255',
-            'description' => 'required|string',
-            'start_date'  => 'required|date',
-            'end_date'    => 'required|date',
-            'category'    => 'required|exists:event_categories,id',
-            'location'    => 'required|string',
+            'name'          => 'required|string|max:255',
+            'description'   => 'required|string',
+            'start_date'    => 'required|date',
+            'end_date'      => 'required|date',
+            'category'      => 'required|exists:event_categories,id',
+            'location'      => 'required|string',
+            'open_reg_date' => 'required|date',
+            'close_reg_date'=> 'required|date',
         ]);
 
         $agenda = DB::table('events')->where('id', $id)->first();
@@ -112,6 +122,9 @@ class EventController extends Controller
             'description'       => $request->description,
             'start_date'        => $request->start_date,
             'end_date'          => $request->end_date,
+            'year'              => $request->year,
+            'open_reg_date'     => $request->open_reg_date,
+            'close_reg_date'    => $request->close_reg_date,
             'event_category_id' => $request->category,
             'location'          => $request->location,
             'updated_at'        => now(),

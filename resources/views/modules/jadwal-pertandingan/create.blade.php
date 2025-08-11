@@ -12,7 +12,7 @@
                 <div class="page-title d-flex flex-column justify-content-center flex-wrap me-3">
                     <!--begin::Title-->
                     <h1 class="page-heading d-flex text-gray-900 fw-bold fs-3 flex-column justify-content-center my-0">
-                        Agendas</h1>
+                        Jadwal Pertandingan</h1>
                     <!--end::Title-->
                     <!--begin::Breadcrumb-->
                     <ul class="breadcrumb breadcrumb-separatorless fw-semibold fs-7 my-0 pt-1">
@@ -61,6 +61,9 @@
                                         <div class="position-relative mb-3">
                                             <select name="event_id" class="form-select form-select-solid" data-control="select2">
                                                 <option value="">Pilih</option>
+                                                @foreach($events as $event)
+                                                <option value="{{$event->id}}">{{$event->name}}</option>
+                                                @endforeach
                                             </select>
                                         </div>
                                     </div>
@@ -71,7 +74,7 @@
                                         <label class="form-label fw-bold fs-6 mb-2">Tanggal & Waktu</label>
                                         <div class="position-relative mb-3">
                                             <input class="form-control form-control-md form-control-solid" type="date"
-                                                name="agenda_date" id="agenda_date" style="max-width: 250px;"/>
+                                                name="tanggal" id="tanggal" style="max-width: 250px;"/>
                                         </div>
                                     </div>
                                 </div>
@@ -81,19 +84,7 @@
                                         <label class="form-label fw-bold fs-6 mb-2">Tempat</label>
                                         <div class="position-relative mb-3">
                                             <input class="form-control form-control-md form-control-solid" type="text"
-                                                name="location" id="location" />
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="separator my-5"></div>
-                                <div class="fv-row mb-5">
-                                    <div class="mb-1">
-                                        <label class="form-label fw-bold fs-6 mb-2">Cabor</label>
-                                        <div class="position-relative mb-3">
-                                            <select name="event_id" class="form-select form-select-solid"
-                                                data-control="select2">
-                                                <option value="">Pilih</option>
-                                            </select>
+                                                name="tempat" id="tempat" />
                                         </div>
                                     </div>
                                 </div>
@@ -102,9 +93,12 @@
                                     <div class="mb-1">
                                         <label class="form-label fw-bold fs-6 mb-2">No. Pertandingan</label>
                                         <div class="position-relative mb-3">
-                                            <select name="event_id" class="form-select form-select-solid"
+                                            <select name="nomor_pertandingan" class="form-select form-select-solid"
                                                 data-control="select2">
                                                 <option value="">Pilih</option>
+                                                @foreach($kelasOlahraga as $kelas)
+                                                <option value="{{$kelas->id}}">{{$kelas->sport_name}} - {{$kelas->name}}</option>
+                                                @endforeach
                                             </select>
                                         </div>
                                     </div>
@@ -114,7 +108,7 @@
                                     <div class="mb-1">
                                         <label class="form-label fw-bold fs-6 mb-2">Kategori</label>
                                         <div class="position-relative mb-3">
-                                            <select name="event_id" class="form-select form-select-solid"
+                                            <select name="kategori" class="form-select form-select-solid"
                                                 data-control="select2">
                                                 <option value="Pi">Pi</option>
                                                 <option value="Pa">Pa</option>
@@ -128,7 +122,7 @@
                                     <div class="mb-1">
                                         <label class="form-label fw-bold fs-6 mb-2">Status</label>
                                         <div class="position-relative mb-3">
-                                            <select name="event_id" class="form-select form-select-solid"
+                                            <select name="status" class="form-select form-select-solid"
                                                 data-control="select2">
                                                 <option value="1">Active</option>
                                                 <option value="0">Non Active</option>
@@ -177,7 +171,7 @@ $('#newsForm').on('submit', function(e) {
                 timer: 2000,
                 showConfirmButton: false
             }).then(() => {
-                window.location.href = "{{ route('posts.agendas.index') }}";
+                window.location.href = "{{ route('posts.jadwal.index') }}";
             });
         },
         error: function(xhr) {

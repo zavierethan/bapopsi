@@ -53,7 +53,6 @@
                                     <tr class="text-start text-gray-400 fw-bolder fs-7 text-uppercase gs-0">
                                         <th class="min-w-125px">Nama Event</th>
                                         <th class="min-w-125px">Tanggal</th>
-                                        <th class="min-w-125px">Waktu</th>
                                         <th class="min-w-125px">Tempat</th>
                                         <th class="min-w-125px">Cabor</th>
                                         <th class="min-w-125px">Nomor Pertandingan</th>
@@ -101,10 +100,6 @@
                 name: 'date'
             },
             {
-                data: 'waktu',
-                name: 'waktu'
-            },
-            {
                 data: 'tempat',
                 name: 'tempat'
             },
@@ -132,7 +127,7 @@
                 render: function(data, type, row) {
                     return `
                             <div class="text-center">
-                                <a href="/posts/agendas/edit/${row.id}" class="btn btn-sm btn-light btn-active-light-primary">Edit</a>
+                                <a href="/posts/jadwal/edit/${row.id}" class="btn btn-sm btn-light btn-active-light-primary">Edit</a>
                                 <button class="btn btn-sm btn-light btn-active-light-danger btn-delete" data-id="${row.id}">Delete</button>
                             <div>
                         `;

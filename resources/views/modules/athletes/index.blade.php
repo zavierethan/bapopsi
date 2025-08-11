@@ -11,8 +11,7 @@
                 <!--begin::Page title-->
                 <div class="page-title d-flex flex-column justify-content-center flex-wrap me-3">
                     <!--begin::Title-->
-                    <h1 class="page-heading d-flex text-gray-900 fw-bold fs-3 flex-column justify-content-center my-0">
-                        Atlet</h1>
+                    <h1 class="page-heading d-flex text-gray-900 fw-bold fs-3 flex-column justify-content-center my-0">Atlet</h1>
                     <!--end::Title-->
                     <!--begin::Breadcrumb-->
                     <ul class="breadcrumb breadcrumb-separatorless fw-semibold fs-7 my-0 pt-1">
@@ -176,7 +175,7 @@ $("#kt_groups_table").DataTable({
             className: 'text-center',
             render: function (data, type, row) {
                 if (row.approval_status === 'Waiting Approval') {
-                    if (userRoleId === 14) { // approval hanya bisa di lakukan oleh admin dan superadmin
+                    if (userRoleId === 14) {
                         return `
                             <div class="flex justify-center gap-2">
                                 <a href="/athletes/detail/${row.id}" class="btn btn-sm btn-primary">Lihat</a>
