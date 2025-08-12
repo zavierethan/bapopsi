@@ -70,15 +70,15 @@
                     </div>
                     <div class="card-body pt-0 overflow-x-auto">
                         <table class="table align-middle table-row-dashed fs-6 gy-5" id="kt_groups_table">
-                            <thead>
+                            <thead class="bg-primary text-white">
                                 <tr class="text-start text-gray-700 fw-bolder fs-7 text-uppercase gs-0">
-                                    <th>No</th>
-                                    <th>Nama Atlet</th>
-                                    <th>L/P</th>
-                                    <th>Asal Sekolah</th>
-                                    <th>Cabang Olahraga</th>
-                                    <th>Nomor Cabang Olahraga</th>
-                                    <th>Perolehan Medali</th>
+                                    <th class="ps-3">No</th>
+                                    <th class="ps-3">Nama Atlet</th>
+                                    <th class="ps-3">L/P</th>
+                                    <th class="ps-3">Asal Sekolah</th>
+                                    <th class="ps-3">Cabang Olahraga</th>
+                                    <th class="ps-3">Nomor Cabang Olahraga</th>
+                                    <th class="ps-3">Perolehan Medali</th>
                                 </tr>
                             </thead>
                             <tbody id="athleteTableDashboard">
@@ -113,20 +113,22 @@ let table = $("#kt_groups_table").DataTable({
     columns: [{
             data: null,
             name: 'nomor',
+            className: 'ps-3',
             orderable: false,
             searchable: false,
             render: function(data, type, row, meta) {
-                return meta.row + meta.settings._iDisplayStart + 1;
+                return meta.row + meta.settings._iDisplayStart + 1 + '.';
             }
         },
         {
             data: 'nama_lengkap',
-            name: 'nama_lengkap'
+            name: 'nama_lengkap',
+            className: 'ps-3'
         },
         {
             data: 'jenis_kelamin',
             name: 'jenis_kelamin',
-            className: 'text-center'
+            className: 'ps-3 text-center'
         },
         {
             data: 'nama_sekolah',

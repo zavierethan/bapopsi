@@ -9,6 +9,8 @@
         th, td {
             border: 1px solid #000;
             padding: 4px;
+        }
+        .text-center {
             text-align: center;
         }
         th {
@@ -44,7 +46,7 @@
             <tbody>
                 @foreach($atlets as $index => $atlet)
                     <tr>
-                        <td>{{ $index + 1 }}</td>
+                        <td class="text-center">{{ $index + 1 }}</td>
                         <td>{{ $atlet->nama_lengkap }}</td>
                         <td>{{ $atlet->cabang_olahraga }}</td>
                         <td></td>

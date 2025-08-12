@@ -30,6 +30,12 @@ class AthleteController extends Controller
                     WHEN atlet.appr_status = 1 THEN 'Approved'
                     WHEN atlet.appr_status = 0 THEN 'Rejected'
                 END as approval_status"),
+                DB::raw("CASE
+                    WHEN atlet.perolehan_medali IS NULL THEN '-'
+                    WHEN atlet.perolehan_medali = 1 THEN 'Emas (1)'
+                    WHEN atlet.perolehan_medali = 2 THEN 'Perak (2)'
+                    WHEN atlet.perolehan_medali = 3 THEN 'Perunggu (3)'
+                END as perolehan_medali"),
                 DB::raw("TO_CHAR(atlet.appr_date, 'DD/MM/YYYY HH24:MI:SS') AS approval_date"),
                 'atlet.appr_notes',
                 'sports.name as cabang_olahraga',
@@ -52,17 +58,6 @@ class AthleteController extends Controller
         if (!empty($params['jenjang']) && $params['jenjang'] !== ' ') {
             $query->where('event_registrations.jenjang', $params['jenjang']);
         }
-
-        // $user = Auth::user();
-
-        // if (!in_array($user->group_id, [1, 14])) {
-
-        //     if($user->group_id == 16) {
-
-        //     } else {
-        //         $query->where('atlet.created_by', $user->id);
-        //     }
-        // }
 
         $searchValue = $request->input('search.value');
         if (!empty($searchValue)) {
@@ -212,6 +207,7 @@ class AthleteController extends Controller
                 'jenis_kelamin'      => $request->jenis_kelamin,
                 'nama_sekolah'       => $request->nama_sekolah,
                 'nisn'               => $request->nisn,
+                'perolehan_medali'   => $request->perolehan_medali,
                 'appr_status'        => null,
                 'updated_at'         => now()
             ];
@@ -234,21 +230,6 @@ class AthleteController extends Controller
 
             // Update atlet data
             DB::table('atlet')->where('id', $id)->update($updateData);
-
-            // Hapus semua existing officials dan insert ulang
-            DB::table('medals')->where('atlet_id', $id)->delete();
-
-            $medals = $request->input('medals', []);
-            foreach ($medals as $index => $o) {
-                DB::table('medals')->insert([
-                    'atlet_id'   => $id,
-                    'medal_type' => $o['medal_type'],
-                    'event'      => $o['event'],
-                    'tahun'      => $o['tahun'],
-                    'created_at' => now(),
-                    'updated_at' => now(),
-                ]);
-            }
 
             DB::commit();
 

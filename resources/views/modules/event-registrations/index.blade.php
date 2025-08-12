@@ -59,15 +59,19 @@
                             <div class="card-title">
                                 <!-- Tabs -->
                                 <ul class="nav nav-tabs nav-line-tabs mb-5 fs-6">
+                                    @if(Auth::user()->group_id == 14 || Auth::user()->group_id == 15)
                                     <li class="nav-item">
-                                        <a class="nav-link active" data-bs-toggle="tab" href="#tab_o2sn">O2SN</a>
+                                        <a class="nav-link {{ Auth::user()->group_id == 14 || Auth::user()->group_id == 15 ? 'active' : '' }}" data-bs-toggle="tab" href="#tab_o2sn">O2SN</a>
                                     </li>
+                                    @endif
+                                    @if(Auth::user()->group_id == 16)
                                     <li class="nav-item">
-                                        <a class="nav-link" data-bs-toggle="tab" href="#tab_popsi">POPDA</a>
+                                        <a class="nav-link {{ Auth::user()->group_id == 16 ? 'active' : '' }}" data-bs-toggle="tab" href="#tab_popsi">POPDA</a>
                                     </li>
                                     <li class="nav-item">
                                         <a class="nav-link" data-bs-toggle="tab" href="#tab_popwill">POPWIL</a>
                                     </li>
+                                    @endif
                                 </ul>
                             </div>
                         </div>
@@ -77,8 +81,8 @@
                         <div class="card-body pt-0 overflow-x-auto">
                             <div class="tab-content" id="tabContent">
                                 <!-- Tab O2SN -->
-                                <div class="tab-pane fade show active" id="tab_o2sn">
-                                    <div class="card-toolbar mb-5">
+                                <div class="tab-pane fade {{ Auth::user()->group_id == 14 || Auth::user()->group_id == 15 ? 'show active' : '' }}" id="tab_o2sn">
+                                    <div class="card-toolbar mb-2">
                                         <div class="d-flex justify-content-between flex-wrap gap-3 w-100">
                                             <div class="d-flex align-items-center gap-4">
                                                 <div class="d-flex align-items-center fw-bold">
@@ -94,8 +98,19 @@
                                                     </select>
                                                 </div>
                                                 <div class="d-flex align-items-center fw-bold">
-                                                    <div class="text-gray-500 fs-7 me-2" style="white-space: nowrap;">
-                                                        Jenjang</div>
+                                                    <div class="text-gray-500 fs-7 me-2" style="white-space: nowrap;">Tahun</div>
+                                                    <select
+                                                        class="form-select form-select-transparent text-graY-800 fs-base lh-1 fw-bold py-0 ps-3 w-auto"
+                                                        data-control="select2" data-hide-search="true"
+                                                        data-dropdown-css-class="w-150px"
+                                                        data-placeholder="Select an option" id="popwilTahun">
+                                                        <option value="2023">2023</option>
+                                                        <option value="2024">2024</option>
+                                                        <option value="2025" selected>2025</option>
+                                                    </select>
+                                                </div>
+                                                <div class="d-flex align-items-center fw-bold">
+                                                    <div class="text-gray-500 fs-7 me-2" style="white-space: nowrap;">Jenjang</div>
                                                     <select
                                                         class="form-select form-select-transparent text-graY-800 fs-base lh-1 fw-bold py-0 ps-3 w-auto"
                                                         data-control="select2" data-hide-search="true"
@@ -104,6 +119,36 @@
                                                         <option value=" " selected="selected">Semua</option>
                                                         <option value="SD">SD</option>
                                                         <option value="SMP">SMP</option>
+                                                    </select>
+                                                </div>
+
+                                                <div class="d-flex align-items-center fw-bold" id="filterKecamatan">
+                                                    <div class="text-gray-500 fs-7 me-2" style="white-space: nowrap;">
+                                                        Kecamatan</div>
+                                                    <select
+                                                        class="form-select form-select-transparent text-graY-800 fs-base lh-1 fw-bold py-0 ps-3 w-auto"
+                                                        data-control="select2" data-hide-search="true"
+                                                        data-dropdown-css-class="w-150px"
+                                                        data-placeholder="Select an option" id="kecamatan">
+                                                        <option value=" " selected="selected">Semua</option>
+                                                        @foreach($kecamatan as $k)
+                                                        <option value="{{$k->id}}">{{$k->nama}}</option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+
+                                                <div class="d-flex align-items-center fw-bold" id="filterSubRayon">
+                                                    <div class="text-gray-500 fs-7 me-2" style="white-space: nowrap;">
+                                                        Sub Rayon</div>
+                                                    <select
+                                                        class="form-select form-select-transparent text-graY-800 fs-base lh-1 fw-bold py-0 ps-3 w-auto"
+                                                        data-control="select2" data-hide-search="true"
+                                                        data-dropdown-css-class="w-150px"
+                                                        data-placeholder="Select an option" id="subRayon">
+                                                        <option value=" " selected="selected">Semua</option>
+                                                        @foreach($subRayon as $sr)
+                                                        <option value="{{$sr->id}}">{{$sr->nama}}</option>
+                                                        @endforeach
                                                     </select>
                                                 </div>
 
@@ -130,14 +175,6 @@
                                                     </a>
                                                 </div>
                                             </div>
-                                            <div class="position-relative my-1">
-                                                <i
-                                                    class="ki-duotone ki-magnifier fs-2 position-absolute top-50 translate-middle-y ms-4">
-                                                    <span class="path1"></span>
-                                                    <span class="path2"></span>
-                                                </i>
-                                                <input type="text" data-kt-customer-table-filter="search" class="form-control w-250px ps-15" placeholder="Cari"/>
-                                            </div>
                                         </div>
                                     </div>
                                     <table class="table align-middle table-row-dashed fs-6 gy-5" id="O2SN">
@@ -158,13 +195,13 @@
                                 </div>
 
                                 <!-- Tab POPSI -->
-                                <div class="tab-pane fade" id="tab_popsi">
-                                    <div class="card-toolbar">
+                                <div class="tab-pane fade {{ Auth::user()->group_id == 16 ? 'show active' : '' }}" id="tab_popsi">
+                                    <div class="card-toolbar mb-2">
                                         <div class="d-flex justify-content-between flex-wrap gap-3 w-100">
                                             <div class="d-flex align-items-center gap-4">
                                                 <div class="d-flex align-items-center fw-bold">
                                                     <div class="text-gray-500 fs-7 me-2" style="white-space: nowrap;">
-                                                        Kategori</div>
+                                                        Kategori Event</div>
                                                     <select
                                                         class="form-select form-select-transparent text-graY-800 fs-base lh-1 fw-bold py-0 ps-3 w-auto"
                                                         data-control="select2" data-hide-search="true"
@@ -237,7 +274,7 @@
 
                                 <!-- Tab POPWILL -->
                                 <div class="tab-pane fade" id="tab_popwill">
-                                    <div class="card-toolbar">
+                                    <div class="card-toolbar mb-2">
                                         <div class="d-flex justify-content-between flex-wrap gap-3 w-100">
                                             <div class="d-flex align-items-center gap-4">
                                                 <div class="d-flex align-items-center fw-bold">
@@ -329,6 +366,7 @@
 
 @section('script')
 <script>
+$("#filterKecamatan").hide();
 $("#O2SN").DataTable({
     processing: true,
     serverSide: true,
@@ -564,6 +602,24 @@ $("#btn-export-popwil").on('click', function() {
             alert('Failed to download PDF.');
         }
     });
+});
+
+
+$("#jenjang").on("change", function() {
+
+    const value = $(this).val();
+
+    if(value === "SD") {
+        $("#filterKecamatan").show();
+    }
+
+    if(value === "") {
+        $("#filterKecamatan").hide();
+    }
+
+    if(value === "SMP") {
+        $("#filterSubRayon").hide();
+    }
 });
 
 </script>

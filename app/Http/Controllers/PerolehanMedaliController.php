@@ -10,7 +10,9 @@ class PerolehanMedaliController extends Controller
     public function index() {
         $cabangOlahraga = DB::table('sports')->get();
         $eventCategories = DB::table('event_categories')->get();
-        return view('modules.perolehan-medali.index', compact('cabangOlahraga', 'eventCategories'));
+        $kecamatan = DB::table('kecamatan')->orderBy('nama')->get();
+        $subRayon = DB::table('sub_rayon')->orderBy('nama')->get();
+        return view('modules.perolehan-medali.index', compact('cabangOlahraga', 'eventCategories', 'kecamatan', 'subRayon'));
     }
 
     public function getLists(Request $request){
@@ -26,6 +28,12 @@ class PerolehanMedaliController extends Controller
                     WHEN atlet.appr_status = 1 THEN 'Approved'
                     WHEN atlet.appr_status = 0 THEN 'Rejected'
                 END as approval_status"),
+                DB::raw("CASE
+                    WHEN atlet.perolehan_medali IS NULL THEN '-'
+                    WHEN atlet.perolehan_medali = 1 THEN 'Emas (1)'
+                    WHEN atlet.perolehan_medali = 2 THEN 'Perak (2)'
+                    WHEN atlet.perolehan_medali = 3 THEN 'Perunggu (3)'
+                END as perolehan_medaliiiii"),
                 DB::raw("TO_CHAR(atlet.appr_date, 'DD/MM/YYYY HH24:MI:SS') AS approval_date"),
                 'atlet.appr_notes',
                 'sports.name as cabang_olahraga',

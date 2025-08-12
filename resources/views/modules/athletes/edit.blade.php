@@ -20,10 +20,6 @@
                             </div>
                             <div class="card-body" id="atlet-wrapper">
                                 <div class="border p-4 mb-4 rounded position-relative atlet-item bg-light">
-                                    <button type="button"
-                                        class="btn btn-icon btn-danger btn-sm position-absolute top-0 end-0 mt-2 me-2 remove-atlet">
-                                        <i class="fa fa-times"></i>
-                                    </button>
                                     <div class="row g-4">
                                         <!-- Foto Profil -->
                                         <div class="col-md-4 text-center">
@@ -70,12 +66,10 @@
                                                 <div class="col-md-10">
                                                     <select name="jenis_kelamin" class="form-select">
                                                         <option value="">Pilih Jenis Kelamin</option>
-                                                        <option value="L"
-                                                            {{ $atlet->jenis_kelamin == 'L' ? 'selected' : '' }}>
+                                                        <option value="L" {{ $atlet->jenis_kelamin == 'L' ? 'selected' : '' }}>
                                                             Laki-laki
                                                         </option>
-                                                        <option value="P"
-                                                            {{ $atlet->jenis_kelamin == 'P' ? 'selected' : '' }}>
+                                                        <option value="P" {{ $atlet->jenis_kelamin == 'P' ? 'selected' : '' }}>
                                                             Perempuan
                                                         </option>
                                                     </select>
@@ -120,62 +114,28 @@
                                                     @endif
                                                 </div>
                                             </div>
+                                            <div class="row mb-3 align-items-center">
+                                                <label class="col-md-2 col-form-label">Perolehan Medali</label>
+                                                <div class="col-md-10">
+                                                    <select class="form-select form-select perolehan-medali" name="perolehan_medali">
+                                                        <option value="">Pilih Medali</option>
+                                                        <option value="1" {{ $atlet->perolehan_medali == 1 ? 'selected' : '' }}>Emas (1)</option>
+                                                        <option value="2" {{ $atlet->perolehan_medali == 2 ? 'selected' : '' }}>Perak (2)</option>
+                                                        <option value="3" {{ $atlet->perolehan_medali == 3 ? 'selected' : '' }}>Perunggu (3)</option>
+                                                    </select>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        @if(Auth::user()->group_id == 16 || Auth::user()->group_id == 1)
-                        <div class="card mb-5">
-                            <div class="card-header d-flex justify-content-between align-items-center">
-                                <h3 class="card-title fw-bold">Perolehan Medali</h3>
-                                <button type="button" id="add-medals" class="btn btn-sm btn-light-primary">
-                                    <i class="fa fa-plus"></i> Tambah Medali
-                                </button>
-                            </div>
-                            <div class="card-body" id="medals-wrapper">
-                                @foreach($medals as $medal)
-                                <div class="row g-3 align-items-center medal-item mb-3" data-index="">
-                                    <div class="col-md-3">
-                                        <label class="form-label mb-1">Medali</label>
-                                        <select name="medal_type" class="form-select">
-                                            <option value="">Pilih Medali</option>
-                                            <option value="emas" <?php echo ($medal->medal_type == 'emas') ? 'selected' : ''; ?>>Emas</option>
-                                            <option value="perak" <?php echo ($medal->medal_type == 'perak') ? 'selected' : ''; ?>>Perak</option>
-                                            <option value="perunggu" <?php echo ($medal->medal_type == 'perunggu') ? 'selected' : ''; ?>>Perunggu</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-md-5">
-                                        <label class="form-label mb-1">Nama Event</label>
-                                        <input type="text" name="event" class="form-control" placeholder="Contoh: PON 2024" value="{{$medal->event}}">
-                                    </div>
-                                    <div class="col-md-2">
-                                        <label class="form-label mb-1">Tahun</label>
-                                        <input type="number" name="tahun" class="form-control" placeholder="e.g. 2024" value="{{$medal->tahun}}">
-                                    </div>
-                                    <div class="col-md-2 d-flex align-items-end">
-                                        <button type="button" class="btn btn-danger btn-sm remove-medal mt-7">X</button>
-                                    </div>
-                                </div>
-                                @endforeach
-                            </div>
-                        </div>
-                        @endif
                         <div class="d-flex justify-content-between mb-10">
                             <div>
-                                <a href="/athletes" class="btn btn-danger">Kembali</a>
+                                <a href="/perolehan-medali" class="btn btn-danger">Kembali</a>
                             </div>
                             <div>
-                                @if(Auth::user()->group_id != 14 && Auth::user()->group_id != 1)
-                                    @if(($atlet->appr_status == null && $atlet->appr_status == 0) || Auth::user()->group_id == 16)
-                                    <button type="submit" class="btn btn-success me-2" id="submit">Submit</button>
-                                    @endif
-                                @endif
-
-                                @if(Auth::user()->group_id == 14 && is_null($atlet->appr_status))
-                                <button type="button" class="btn btn-success me-2" id="approve">Approve</button>
-                                <button type="button" class="btn btn-danger me-2" id="reject">Reject</button>
-                                @endif
+                                <button type="submit" class="btn btn-success me-2" id="submit">Submit</button>
                             </div>
                         </div>
                     </form>
@@ -377,7 +337,7 @@ $('#form-atlet-edit').on('submit', function(e) {
                         title: 'Berhasil',
                         text: res.message
                     }).then(() => {
-                        window.location.href = "{{ route('athletes.index') }}";
+                        window.location.href = "{{ route('perolehan-medali.index') }}";
                     });
                 },
                 error: function(err) {

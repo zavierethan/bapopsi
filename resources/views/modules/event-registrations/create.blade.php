@@ -26,7 +26,6 @@
             <div id="kt_app_content_container" class="app-container container-fluid">
                 <form id="form-atlet" method="POST" action="" enctype="multipart/form-data">
                     @csrf
-
                     <!-- Informasi Event -->
                     <div class="card mb-5">
                         <div class="card-header">
@@ -44,17 +43,6 @@
                                         @endforeach
                                     </select>
                                 </div>
-                                @if(Auth::user()->group_id == 15)
-                                <div class="col-md-6 mb-4">
-                                    <label class="form-label fw-bold fs-6">Jenjang</label>
-                                    <select name="jenjang" class="form-select form-select-solid"
-                                        data-control="select2" id="jenjang">
-                                        <option value="">Pilih Jenjang</option>
-                                        <option value="SD">SD</option>
-                                        <option value="SMP">SMP</option>
-                                    </select>
-                                </div>
-                                @endif
                             </div>
                             <div class="row mt-5">
                                 <div class="col-md-6 mb-4">

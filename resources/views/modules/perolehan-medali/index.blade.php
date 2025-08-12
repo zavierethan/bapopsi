@@ -89,8 +89,7 @@
                                                     </select>
                                                 </div>
                                                 <div class="d-flex align-items-center fw-bold">
-                                                    <div class="text-gray-500 fs-7 me-2" style="white-space: nowrap;">
-                                                        Jenjang</div>
+                                                    <div class="text-gray-500 fs-7 me-2" style="white-space: nowrap;">Jenjang</div>
                                                     <select
                                                         class="form-select form-select-transparent text-graY-800 fs-base lh-1 fw-bold py-0 ps-3 w-auto"
                                                         data-control="select2" data-hide-search="true"
@@ -99,6 +98,36 @@
                                                         <option value=" " selected="selected">Semua</option>
                                                         <option value="SD">SD</option>
                                                         <option value="SMP">SMP</option>
+                                                    </select>
+                                                </div>
+
+                                                <div class="d-flex align-items-center fw-bold" id="filterKecamatan">
+                                                    <div class="text-gray-500 fs-7 me-2" style="white-space: nowrap;">
+                                                        Kecamatan</div>
+                                                    <select
+                                                        class="form-select form-select-transparent text-graY-800 fs-base lh-1 fw-bold py-0 ps-3 w-auto"
+                                                        data-control="select2" data-hide-search="true"
+                                                        data-dropdown-css-class="w-150px"
+                                                        data-placeholder="Select an option" id="kecamatan">
+                                                        <option value=" " selected="selected">Semua</option>
+                                                        @foreach($kecamatan as $k)
+                                                        <option value="{{$k->id}}">{{$k->nama}}</option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+
+                                                <div class="d-flex align-items-center fw-bold" id="filterSubRayon">
+                                                    <div class="text-gray-500 fs-7 me-2" style="white-space: nowrap;">
+                                                        Sub Rayon</div>
+                                                    <select
+                                                        class="form-select form-select-transparent text-graY-800 fs-base lh-1 fw-bold py-0 ps-3 w-auto"
+                                                        data-control="select2" data-hide-search="true"
+                                                        data-dropdown-css-class="w-150px"
+                                                        data-placeholder="Select an option" id="subRayon">
+                                                        <option value=" " selected="selected">Semua</option>
+                                                        @foreach($subRayon as $sr)
+                                                        <option value="{{$sr->id}}">{{$sr->nama}}</option>
+                                                        @endforeach
                                                     </select>
                                                 </div>
 
@@ -270,7 +299,7 @@
                                                 <th class="ps-3">Cabang Olahraga</th>
                                                 <th class="ps-3">No. Kelas Pertandingan</th>
                                                 <th class="ps-3">Asal Sekolah</th>
-                                                <th class="ps-3">Perolehan Medali (Juara)</th>
+                                                <th class="ps-3 text-center">Perolehan Medali (Juara)</th>
                                                 <th class="ps-3 text-center">Actions</th>
                                             </tr>
                                         </thead>
@@ -340,7 +369,7 @@ let o2snTable = $("#O2SN").DataTable({
         {
             data: 'perolehan_medali',
             name: 'perolehan_medali',
-            className: 'ps-3'
+            className: 'ps-3 text-center'
         },
         {
             data: null,
@@ -402,7 +431,7 @@ $("#POPDA").DataTable({
         {
             data: 'perolehan_medali',
             name: 'perolehan_medali',
-            className: 'ps-3'
+            className: 'ps-3 text-center'
         },
         {
             data: null,
@@ -460,7 +489,7 @@ $("#POPWIL").DataTable({
         {
             data: 'perolehan_medali',
             name: 'perolehan_medali',
-            className: 'ps-3'
+            className: 'ps-3 text-center'
         },
         {
             data: null,

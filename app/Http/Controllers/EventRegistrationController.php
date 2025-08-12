@@ -13,7 +13,9 @@ class EventRegistrationController extends Controller
     public function index() {
         $cabangOlahraga = DB::table('sports')->get();
         $eventCategories = DB::table('event_categories')->get();
-        return view('modules.event-registrations.index', compact('cabangOlahraga', 'eventCategories'));
+        $kecamatan = DB::table('kecamatan')->orderBy('nama')->get();
+        $subRayon = DB::table('sub_rayon')->orderBy('nama')->get();
+        return view('modules.event-registrations.index', compact('cabangOlahraga', 'eventCategories', 'kecamatan', 'subRayon'));
     }
 
     public function getLists(Request $request){
@@ -80,7 +82,7 @@ class EventRegistrationController extends Controller
             $events = DB::table('events')->whereNotIn('event_category_id', [1])->get();
             return view('modules.event-registrations.create', compact('events', 'cabangOlahraga', 'jabatan'));
         } else {
-            abort(404);
+            abort(401);
         }
     }
 

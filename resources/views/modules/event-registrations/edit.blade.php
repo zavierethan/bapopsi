@@ -26,7 +26,6 @@
             <div id="kt_app_content_container" class="app-container container-fluid">
                 <form id="form-atlet" method="POST" action="" enctype="multipart/form-data">
                     @csrf
-
                     <!-- Informasi Event -->
                     <div class="card mb-5">
                         <div class="card-header">
@@ -44,19 +43,6 @@
                                             <?php echo ($eventRegistration->event_id == $event->id) ? 'selected' : ''; ?>>
                                             {{ $event->name }}</option>
                                         @endforeach
-                                    </select>
-                                </div>
-                                <div class="col-md-6 mb-4">
-                                    <label class="form-label fw-bold fs-6">Jenjang</label>
-                                    <select name="jenjang" class="form-select form-select-solid" data-control="select2"
-                                        id="jenjang" disabled>
-                                        <option value="">Pilih Jenjang</option>
-                                        <option value="SD"
-                                            <?php echo ($eventRegistration->jenjang == 'SD') ? 'selected' : '' ;?>>SD
-                                        </option>
-                                        <option value="SMP"
-                                            <?php echo ($eventRegistration->jenjang == 'SMP') ? 'selected' : '' ;?>>SMP
-                                        </option>
                                     </select>
                                 </div>
                             </div>
@@ -98,23 +84,36 @@
                             @foreach($atlets as $atlet)
                             <div class="border p-4 mb-4 rounded position-relative atlet-item bg-light">
                                 <div class="d-flex justify-content-end gap-2 mt-2 mb-5 me-2">
-                                    <!-- Approve Button -->
-                                    <button type="button" class="btn btn-success btn-sm approve-atlet"
-                                        data-id="{{$atlet->id}}">
-                                        <i class="fa fa-check"></i>
-                                    </button>
 
-                                    <!-- Reject Button -->
-                                    <button type="button" class="btn btn-danger btn-sm reject-atlet"
-                                        data-id="{{$atlet->id}}">
-                                        <i class="fa fa-times"></i>
-                                    </button>
+                                    @if(Auth::user()->group_id == 14)
+                                        @if($atlet->appr_status == '0' || $atlet->appr_status == NULL)
+                                        <!-- Approve Button -->
+                                        <button type="button" class="btn btn-success btn-sm approve-atlet"
+                                            data-id="{{$atlet->id}}">
+                                            <i class="fa fa-check"></i>
+                                        </button>
 
+                                        <!-- Reject Button -->
+                                        <button type="button" class="btn btn-danger btn-sm reject-atlet"
+                                            data-id="{{$atlet->id}}">
+                                            <i class="fa fa-times"></i>
+                                        </button>
+                                        @endif
+                                    @endif
+
+                                    @if(Auth::user()->group_id == 15)
                                     <!-- Update Button -->
                                     <button type="button" class="btn btn-primary btn-sm edit-atlet"
                                         data-id="{{$atlet->id}}">
                                         <i class="fa fa-pen-to-square"></i>
                                     </button>
+
+                                    <!-- Update Button -->
+                                    <button type="button" class="btn btn-primary btn-print-id-card"
+                                        data-id="{{$atlet->id}}">
+                                        <i class="fa fa-print"></i>
+                                    </button>
+                                    @endif
                                 </div>
                                 <div class="row g-4">
                                     <!-- Foto Profil -->
@@ -122,10 +121,10 @@
                                         <div class="mb-5">
                                             <img src="{{ $atlet->pas_foto ? asset('storage/' . $atlet->pas_foto) : 'https://via.placeholder.com/150' }}"
                                                 class="img-thumbnail preview-pas-foto"
-                                                style="width: 150px; height: 150px; object-fit: cover;">
+                                                style="width: 300px; height: 300px; object-fit: cover;">
                                         </div>
-                                        <input type="file" name="atlets[{{ $atlet->id }}][pas_foto]" accept="image/*"
-                                            class="form-control input-pas-foto">
+                                        <!-- <input type="file" name="atlets[{{ $atlet->id }}][pas_foto]" accept="image/*"
+                                            class="form-control input-pas-foto"> -->
                                     </div>
 
                                     <!-- Biodata -->
@@ -224,10 +223,11 @@
                                         <div class="row mb-3 align-items-center">
                                             <label class="col-md-2 col-form-label">Status Approval</label>
                                             <div class="col-md-10">
-                                                <input type="text" class="form-control" name="atlets[{{ $atlet->id }}][nisn]"
-                                                    value="{{ $atlet->approval_status }}" readonly>
+                                                <span class="badge badge-warning">{{ $atlet->approval_status }}</span>
                                             </div>
                                         </div>
+
+                                        @if($atlet->appr_status == '0')
                                         <div class="row mb-3 align-items-center">
                                             <label class="col-md-2 col-form-label">Catatan Approval</label>
                                             <div class="col-md-10">
@@ -235,6 +235,7 @@
                                                     name="atlets[{{ $atlet->id }}][appr_notes]" readonly>{{ $atlet->appr_notes }}</textarea>
                                             </div>
                                         </div>
+                                        @endif
                                     </div>
                                 </div>
                             </div>
@@ -242,6 +243,7 @@
                         </div>
                     </div>
 
+                    @if(Auth::user()->group_id == 15)
                     <!-- Data Official -->
                     <div class="card mb-5">
                         <div class="card-header d-flex justify-content-between align-items-center">
@@ -295,7 +297,7 @@
                             @endforeach
                         </div>
                     </div>
-
+                    @endif
                     <!-- Submit -->
                     <div class="text-end mb-10">
                         <button type="button" class="btn btn-success" id="submit-form">Submit</button>
@@ -577,5 +579,16 @@ function showPdfModal(pdfUrl) {
     $('#pdfIframe').attr('src', pdfUrl);
     $('#pdfPreviewModal').modal('show');
 }
+
+$(document).on('click', '.btn-print-id-card', function () {
+    const atletId = $(this).data('id');
+    const url = `/athletes/id-card/${atletId}`; // route to controller
+
+    // Set URL ke iframe untuk load konten
+    $('#pdfIframe').attr('src', url);
+
+    // Tampilkan modal
+    $('#pdfPreviewModal').modal('show');
+});
 </script>
 @endsection
