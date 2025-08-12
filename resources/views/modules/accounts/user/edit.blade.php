@@ -54,10 +54,24 @@
                                     <div class="mb-1">
                                         <label class="form-label fw-bold fs-6 mb-2">Group</label>
                                         <div class="position-relative mb-3">
-                                            <select class="form-select form-select-solid" data-control="select2" data-placeholder="-" name="group_id">
+                                            <select class="form-select form-select-solid" data-control="select2" data-placeholder="-" name="group_id" id="groupId">
                                                 <option value=""></option>
                                                 @foreach($groups as $group)
                                                 <option value="{{$group->id}}" <?php echo ($user->group_id == $group->id) ? "selected" : ""; ?>>{{$group->code}} - {{$group->name}}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="separator my-5 cabor"></div>
+                                <div class="fv-row mb-5 cabor">
+                                    <div class="mb-1">
+                                        <label class="form-label fw-bold fs-6 mb-2">Cabang Olahraga</label>
+                                        <div class="position-relative mb-3">
+                                            <select class="form-select form-select-solid" data-control="select2" data-placeholder="-" name="cabor_id">
+                                                <option value=""></option>
+                                                @foreach($cabangOlahraga as $cabor)
+                                                <option value="{{$cabor->id}}" <?php echo ($user->cabor_id == $cabor->id) ? "selected" : ""; ?>>{{$cabor->name}}</option>
                                                 @endforeach
                                             </select>
                                         </div>
@@ -92,5 +106,17 @@
 @endsection
 
 @section('script')
+<script>
+$(document).ready(function() {
+    $(".cabor").hide();
 
+    $("#groupId").on("change", function() {
+        if ($(this).val() === "16") { // Compare as string
+            $(".cabor").show();
+        } else {
+            $(".cabor").hide();
+        }
+    });
+});
+</script>
 @endsection

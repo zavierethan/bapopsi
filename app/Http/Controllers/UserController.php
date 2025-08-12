@@ -19,11 +19,23 @@ class UserController extends Controller
 
         // Base query
         $query = DB::table('users')
-            ->select('users.id', 'users.name as username', 'users.email', 'groups.name as group_name','users.is_active', 'users.created_at')
-            ->leftJoin('groups', 'groups.id', '=', 'users.group_id');
+            ->select(
+                'users.id',
+                'users.name as username',
+                'users.email',
+                DB::raw("CASE
+                    WHEN users.cabor_id IS NOT NULL
+                    THEN CONCAT(groups.name, ' (', sports.name, ')')
+                    ELSE groups.name
+                END AS group_name"
+                ),
+                'users.is_active',
+                'users.created_at')
+            ->leftJoin('groups', 'groups.id', '=', 'users.group_id')
+            ->leftJoin('sports', 'sports.id', '=', 'users.cabor_id');
 
         // Apply global search if provided
-        $searchValue = $request->input('search.value'); // This is where DataTables sends the search input
+        $searchValue = $request->input('search.value');
         if (!empty($searchValue)) {
             $query->where(function ($q) use ($searchValue) {
                 $q->where('users.name', 'like', '%' . $searchValue . '%')
@@ -33,16 +45,15 @@ class UserController extends Controller
         }
 
         // Get total and filtered records count
-        $totalRecords = DB::table('users')->count(); // Total records without filtering
-        $filteredRecords = $query->count(); // Total records after filtering
+        $totalRecords = DB::table('users')->count();
+        $filteredRecords = $query->count();
 
         // Pagination and sorting
         $start = $request->input('start', 0);
         $length = $request->input('length', 10);
         $orderColumnIndex = $request->input('order.0.column', 0);
-        $orderColumn = $request->input("columns.$orderColumnIndex.data", 'id'); // Column name
-        $orderDirection = $request->input('order.0.dir', 'desc'); // asc or desc
-
+        $orderColumn = $request->input("columns.$orderColumnIndex.data", 'id');
+        $orderDirection = $request->input('order.0.dir', 'desc');
         $data = $query->orderBy($orderColumn, $orderDirection)
                     ->skip($start)
                     ->take($length)
@@ -60,7 +71,8 @@ class UserController extends Controller
 
     public function create() {
         $groups = DB::table('groups')->get();
-        return view('modules.accounts.user.create', compact('groups'));
+        $cabangOlahraga = DB::table('sports')->orderBy('name')->get();
+        return view('modules.accounts.user.create', compact('groups', 'cabangOlahraga'));
     }
 
     public function save(Request $request) {
@@ -70,6 +82,7 @@ class UserController extends Controller
             "email" => $request->email,
             "password" => Hash::make("Abcd12345"),
             "group_id" => $request->group_id,
+            "cabor_id" => $request->cabor_id,
             "is_active" => $request->is_active,
             "created_at" => date('Y-m-d h:i:s'),
         ]);
@@ -80,7 +93,8 @@ class UserController extends Controller
     public function edit($id) {
         $user = DB::table('users')->where('id', $id)->first();
         $groups = DB::table('groups')->get();
-        return view('modules.accounts.user.edit', compact('user', 'groups'));
+        $cabangOlahraga = DB::table('sports')->orderBy('name')->get();
+        return view('modules.accounts.user.edit', compact('user', 'groups', 'cabangOlahraga'));
     }
 
     public function update(Request $request) {
@@ -89,6 +103,7 @@ class UserController extends Controller
             "name" => $request->username,
             "email" => $request->email,
             "group_id" => $request->group_id,
+            "cabor_id" => $request->cabor_id,
             "is_active" => $request->is_active,
         ]);
 
