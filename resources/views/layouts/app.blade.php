@@ -139,10 +139,7 @@
                         <li><a href="/" class="text-gray-400 hover:text-white transition-colors">Beranda</a></li>
                         <li><a href="/berita" class="text-gray-400 hover:text-white transition-colors">Berita</a></li>
                         <li><a href="/galery" class="text-gray-400 hover:text-white transition-colors">Galeri</a></li>
-                        <li><a href="pages/cabor-prestasi.html"
-                                class="text-gray-400 hover:text-white transition-colors">Cabor & Prestasi</a></li>
-                        <li><a href="pages/tentang.html"
-                                class="text-gray-400 hover:text-white transition-colors">Tentang</a></li>
+                        <li><a href="/kontak" class="text-gray-400 hover:text-white transition-colors">Kontak</a></li>
                     </ul>
                 </div>
 

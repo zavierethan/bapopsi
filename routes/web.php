@@ -38,11 +38,8 @@ Route::prefix('berita')->group(function () {
 
 Route::prefix('prestasi')->group(function () {
     Route::name('prestasi.')->group(function () {
-        Route::get('/', function () {
-            return view('web.prestasi');
-        });
-
-        Route::get('/{kecamatanId}', [App\Http\Controllers\EventRegistrationController::class, 'prestasiByKecamatan']);
+        Route::get('/kecamatan/{kecamatanId}', [App\Http\Controllers\EventRegistrationController::class, 'prestasiByKecamatan']);
+        Route::get('/subrayon/{subRayonId}', [App\Http\Controllers\EventRegistrationController::class, 'prestasiBySubRayon']);
     });
 });
 

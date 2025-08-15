@@ -26,10 +26,10 @@
 <section class="py-16 bg-gray-50">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-12">
-            <h2 class="text-3xl font-bold text-gray-900 mb-4">Rekapitulasi Pencapaian Medali</h2>
+            <h2 class="text-3xl font-bold text-gray-900 mb-4">Rekapitulasi Perolehan Medali</h2>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+        <!-- <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
             <div class="bg-gradient-to-br from-yellow-400 to-yellow-600 text-white p-6 rounded-xl text-center">
                 <i class="fas fa-medal text-4xl mb-4"></i>
                 <div class="text-3xl font-bold mb-1" id="emas">0</div>
@@ -45,7 +45,7 @@
                 <div class="text-3xl font-bold mb-1" id="perunggu">0</div>
                 <div class="text-orange-100">Medali Perunggu</div>
             </div>
-        </div>
+        </div> -->
 
         <div class="flex border-b mb-8">
             <button class="tab-btn px-6 py-3 font-semibold border-b-2 text-blue-600 border-blue-600 font-bold"
@@ -61,21 +61,11 @@
                 <div class="flex flex-col md:flex-row gap-4">
                     <div>
                         <label for="jenjang" class="block text-sm font-medium text-gray-700 mb-1">Jenjang</label>
-                        <select id="jenjang" name="cabor"
+                        <select id="jenjang" name="jenjang"
                             class="w-full md:w-60 border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
-                            <option value="">SEMUA</option>
                             <option value="SD" selected>SD</option>
                             <option value="SMP">SMP</option>
                         </select>
-                    </div>
-                    <!-- Cabang Olahraga Dropdown -->
-                    <div>
-                        <label for="cabor" class="block text-sm font-medium text-gray-700 mb-1">Cabang Olahraga</label>
-                        <select id="cabor" name="cabor"
-                            class="cabor w-full md:w-60 border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
-                            <option value="">SEMUA</option>
-                        </select>
-                        <input type="hidden" value="{{$activeEvent->id}}" id="eventId" />
                     </div>
                 </div>
 
@@ -93,13 +83,13 @@
                 <div class="px-6 py-4 bg-gray-50 border-b">
                     <h3 class="text-lg font-semibold text-gray-900">Perolehan Medali (O2SN)</h3>
                 </div>
-                <div class="table-responsive">
+                <div class="table-responsive" id="o2sn-sd-table">
                     <table class="w-full">
                         <thead class="bg-gray-50">
                             <tr>
                                 <th
                                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Cabang Olahraga</th>
+                                    Kecamatan</th>
                                 <th
                                     class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                                     <i class="fas fa-medal text-yellow-500"></i> Emas
@@ -123,6 +113,37 @@
                         </tfoot>
                     </table>
                 </div>
+
+                <div class="table-responsive" id="o2sn-smp-table">
+                    <table class="w-full">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th
+                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Sub Rayon</th>
+                                <th
+                                    class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    <i class="fas fa-medal text-yellow-500"></i> Emas
+                                </th>
+                                <th
+                                    class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    <i class="fas fa-medal text-gray-400"></i> Perak
+                                </th>
+                                <th
+                                    class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    <i class="fas fa-medal text-orange-500"></i> Perunggu
+                                </th>
+                                <th
+                                    class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Total</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200" id="medalSubRayonTableBody">
+                        </tbody>
+                        <tfoot class="bg-gray-100" id="medalSubRayonTableFooter">
+                        </tfoot>
+                    </table>
+                </div>
             </div>
         </div>
 
@@ -132,7 +153,7 @@
                     <!-- Cabang Olahraga Dropdown -->
                     <div>
                         <label for="cabor" class="block text-sm font-medium text-gray-700 mb-1">Cabang Olahraga</label>
-                        <select id="cabor" name="cabor"
+                        <select id="caborPopda" name="cabor"
                             class="cabor w-full md:w-60 border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
                             <option value="">SEMUA</option>
                         </select>
@@ -165,10 +186,10 @@
                                 <th class="px-6 py-3 text-left font-medium text-xs text-gray-500 uppercase">No. Kelas Pertandingan</th>
                                 <th class="px-6 py-3 text-left font-medium text-xs text-gray-500 uppercase">Asal Sekolah
                                 </th>
-                                <th class="px-6 py-3 font-medium text-xs text-gray-500 uppercase">Perolehan Medali</th>
+                                <th class="px-6 py-3 font-medium text-xs text-gray-500 uppercase">Perolehan Medali (Juara)</th>
                             </tr>
                         </thead>
-                        <tbody id="scheduleTableBody" class="bg-white divide-y divide-gray-200">
+                        <tbody id="medalPOPDATableBody" class="bg-white divide-y divide-gray-200">
                             <!-- Rows via jQuery -->
                         </tbody>
                     </table>
@@ -181,7 +202,7 @@
                     <!-- Cabang Olahraga Dropdown -->
                     <div>
                         <label for="cabor" class="block text-sm font-medium text-gray-700 mb-1">Cabang Olahraga</label>
-                        <select id="cabor" name="cabor"
+                        <select id="caborPopwil" name="cabor"
                             class="cabor w-full md:w-60 border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
                             <option value="">SEMUA</option>
                         </select>
@@ -214,10 +235,10 @@
                                 <th class="px-6 py-3 text-left font-medium text-xs text-gray-500 uppercase">No. Kelas Pertandingan</th>
                                 <th class="px-6 py-3 text-left font-medium text-xs text-gray-500 uppercase">Asal Sekolah
                                 </th>
-                                <th class="px-6 py-3 font-medium text-xs text-gray-500 uppercase">Perolehan Medali</th>
+                                <th class="px-6 py-3 font-medium text-xs text-gray-500 uppercase">Perolehan Medali (Juara)</th>
                             </tr>
                         </thead>
-                        <tbody id="scheduleTableBody" class="bg-white divide-y divide-gray-200">
+                        <tbody id="medalPOPWILTableBody" class="bg-white divide-y divide-gray-200">
                             <!-- Rows via jQuery -->
                         </tbody>
                     </table>
@@ -298,6 +319,9 @@ let loading = false;
 
 // Inisialisasi pertama
 $(document).ready(function() {
+    let caborPopda = $('#caborPopda').val();
+    let caborPopwil = $('#caborPopwil').val();
+
     $('.tab-btn').on('click', function() {
         $('.tab-btn').removeClass('text-blue-600 border-blue-600 border-b-2').addClass('text-gray-600');
         $(this).addClass('text-blue-600 border-blue-600 border-b-2');
@@ -308,24 +332,36 @@ $(document).ready(function() {
     });
     loadNewsInSlider();
     loadMedalSummary();
-    getCabor();
     loadKecamatanMedalTable();
+    loadSubRayonMedalTable();
+    loadPOPDAMedalTable(caborPopda);
+    loadPOPWILMedalTable(caborPopwil);
     loadNews();
     loadGaleries(true);
+    getCabor();
+
+    $('#o2sn-smp-table').hide();
+    $('#jenjang').on('change', function() {
+        let value = $(this).val();
+        if(value === 'SMP') {
+            $('#o2sn-smp-table').show();
+            $('#o2sn-sd-table').hide();
+        } else {
+            $('#o2sn-smp-table').hide();
+            $('#o2sn-sd-table').show();
+        }
+    });
+
+    $('#caborPopda').on('change', function() {
+        let cabangOlahraga = $(this).val();
+        loadPOPDAMedalTable(cabangOlahraga);
+    });
+
+    $('#caborPopwil').on('change', function() {
+        let cabangOlahraga = $(this).val();
+        loadPOPWILMedalTable(cabangOlahraga);
+    });
 });
-
-function formatDate(dateStr) {
-    const options = {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric'
-    };
-    return new Date(dateStr).toLocaleDateString('id-ID', options);
-}
-
-function stripHtml(html) {
-    return $('<div>').html(html).text();
-}
 
 function renderNews(newsArray) {
     newsArray.forEach(news => {
@@ -552,18 +588,9 @@ function loadMedalSummary() {
 }
 
 function loadKecamatanMedalTable() {
-    let caborId = $("#caborId").val() | "";
-    let noPertandinganId = $("#noPertandinganId").val() | "";
-    let eventId = $("#eventId").val() | "";
-
     $.ajax({
         url: '/api/getKecamatanMedalSummary',
         method: 'GET',
-        data: {
-            cabor_id: caborId,
-            no_pertandingan_id: noPertandinganId,
-            event_id: eventId
-        },
         success: function(data) {
             let emas = 0,
                 perak = 0,
@@ -580,7 +607,7 @@ function loadKecamatanMedalTable() {
                 rows += `
                     <tr>
                         <td class="px-6 py-4 font-medium text-xs">
-                            <a href="/prestasi/${item.id}" class="text-blue-700 hover:underline">
+                            <a href="/prestasi/kecamatan/${item.id}" class="text-blue-700 hover:underline">
                                 ${item.nama}
                             </a>
                         </td>
@@ -611,6 +638,125 @@ function loadKecamatanMedalTable() {
     });
 }
 
+function loadSubRayonMedalTable() {
+    $.ajax({
+        url: '/api/getSubRayonMedalSummary',
+        method: 'GET',
+        success: function(data) {
+            let emas = 0,
+                perak = 0,
+                perunggu = 0,
+                total = 0;
+            let rows = '';
+
+            $.each(data, function(i, item) {
+                emas += item.emas;
+                perak += item.perak;
+                perunggu += item.perunggu;
+                total += item.total;
+
+                rows += `
+                    <tr>
+                        <td class="px-6 py-4 font-medium text-xs">
+                            <a href="/prestasi/subrayon/${item.id}" class="text-blue-700 hover:underline">
+                                Sub Rayon ${item.nama}
+                            </a>
+                        </td>
+                        <td class="px-6 py-4 text-center text-xs text-yellow-600 font-semibold">${item.emas}</td>
+                        <td class="px-6 py-4 text-center text-xs text-gray-600 font-semibold">${item.perak}</td>
+                        <td class="px-6 py-4 text-center text-xs text-orange-600 font-semibold">${item.perunggu}</td>
+                        <td class="px-6 py-4 text-center text-xs text-blue-600 font-bold">${item.total}</td>
+                    </tr>
+                `;
+            });
+
+            $('#medalSubRayonTableBody').html(rows);
+            $('#medalSubRayonTableFooter').html(`
+                <tr>
+                    <td class="px-6 py-4 font-medium text-xs">TOTAL</td>
+                    <td class="px-6 py-4 text-center font-bold text-yellow-600">${emas}</td>
+                    <td class="px-6 py-4 text-center font-bold text-gray-600">${perak}</td>
+                    <td class="px-6 py-4 text-center font-bold text-orange-600">${perunggu}</td>
+                    <td class="px-6 py-4 text-center font-bold text-blue-600">${total}</td>
+                </tr>
+            `);
+        },
+        error: function() {
+            $('#medalSubRayonTableBody').html(
+                '<tr><td colspan="5" class="text-center text-red-500 py-4">Gagal memuat data.</td></tr>'
+            );
+        }
+    });
+}
+
+function loadPOPDAMedalTable(cabangOlahragaId = '') {
+    $.ajax({
+        url: '/api/getPOPDAMedalSummary',
+        method: 'GET',
+        data: {
+            cabang_olahraga_id: cabangOlahragaId
+        },
+        success: function(data) {
+            let rows = '';
+
+            $.each(data, function(i, item) {
+                rows += `
+                    <tr>
+                        <td class="px-6 py-4 font-medium text-xs">
+                            ${escapeHtml(item.nama_lengkap)}
+                        </td>
+                        <td class="px-6 py-4 text-xs font-semibold">${escapeHtml(item.cabang_olahraga)}</td>
+                        <td class="px-6 py-4 text-xs font-semibold">${escapeHtml(item.no_pertandingan)}</td>
+                        <td class="px-6 py-4 text-xs font-semibold">${escapeHtml(item.asal_sekolah)}</td>
+                        <td class="px-6 py-4 text-xs font-bold text-center">${escapeHtml(medalName(item.perolehan_medali))}</td>
+                    </tr>
+                `;
+            });
+
+            $('#medalPOPDATableBody').html(rows);
+        },
+        error: function() {
+            $('#medalPOPDATableBody').html(
+                '<tr><td colspan="5" class="text-center text-red-500 py-4">Gagal memuat data.</td></tr>'
+            );
+        }
+    });
+}
+
+function loadPOPWILMedalTable(cabangOlahragaId = '') {
+    $.ajax({
+        url: '/api/getPOPWILMedalSummary',
+        method: 'GET',
+        data: {
+            cabang_olahraga_id: cabangOlahragaId
+        },
+        success: function(data) {
+            let rows = '';
+
+            $.each(data, function(i, item) {
+                rows += `
+                    <tr>
+                        <td class="px-6 py-4 font-medium text-xs">
+                            ${escapeHtml(item.nama_lengkap)}
+                        </td>
+                        <td class="px-6 py-4 text-xs font-semibold">${escapeHtml(item.cabang_olahraga)}</td>
+                        <td class="px-6 py-4 text-xs font-semibold">${escapeHtml(item.no_pertandingan)}</td>
+                        <td class="px-6 py-4 text-xs font-semibold">${escapeHtml(item.asal_sekolah)}</td>
+                        <td class="px-6 py-4 text-xs font-bold text-center">${escapeHtml(medalName(item.perolehan_medali))}</td>
+                    </tr>
+                `;
+            });
+
+            $('#medalPOPWILTableBody').html(rows);
+        },
+        error: function() {
+            $('#medalPOPWILTableBody').html(
+                '<tr><td colspan="5" class="text-center text-red-500 py-4">Gagal memuat data.</td></tr>'
+            );
+        }
+    });
+}
+
 function getCabor() {
     $.ajax({
         url: '/api/cabor',
@@ -631,6 +777,32 @@ function getCabor() {
             console.error('Gagal memuat data cabor:', error);
         }
     });
+}
+
+function medalName(code) {
+    switch (code) {
+        case 1: return 'I';
+        case 2: return 'II';
+        case 3: return 'III';
+        default: return '-';
+    }
+}
+
+function escapeHtml(text) {
+    return $('<div>').text(text || '-').html();
+}
+
+function formatDate(dateStr) {
+    const options = {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+    };
+    return new Date(dateStr).toLocaleDateString('id-ID', options);
+}
+
+function stripHtml(html) {
+    return $('<div>').html(html).text();
 }
 </script>
 @endsection

@@ -401,19 +401,23 @@ class EventRegistrationController extends Controller
 
     public function getKecamatanMedalSummary(Request $request) {
         $query = DB::table('kecamatan as k')
-            ->leftJoin('event_registrations as er', function ($join) use ($request) {
-                $join->on('er.kecamatan_id', '=', 'k.id')
-                    ->where('er.event_id', '=', $request->input('event_id'));
+            ->leftJoin('event_registrations as er', 'er.kecamatan_id', '=', 'k.id')
+            ->leftJoin('events as e', function($join) {
+                $join->on('e.id', '=', 'er.event_id')
+                    ->where('e.event_category_id', '=', 1);
             })
-            ->leftJoin('atlet as a', 'a.event_reg_id', '=', 'er.id')
-            ->leftJoin('medals as m', 'm.atlet_id', '=', 'a.id')
+            ->leftJoin('event_categories as ec', 'ec.id', '=', 'e.event_category_id')
+            ->leftJoin('atlet as a', function($join) {
+                $join->on('a.event_reg_id', '=', 'er.id')
+                    ->where('a.appr_status', '=', 1);
+            })
             ->select(
                 'k.id',
                 'k.nama',
-                DB::raw('COUNT(m.id) as total'),
-                DB::raw("COUNT(CASE WHEN m.medal_type = 'emas' THEN 1 END) as emas"),
-                DB::raw("COUNT(CASE WHEN m.medal_type = 'perak' THEN 1 END) as perak"),
-                DB::raw("COUNT(CASE WHEN m.medal_type = 'perunggu' THEN 1 END) as perunggu")
+                DB::raw('COUNT(a.id) as total'),
+                DB::raw("COUNT(CASE WHEN a.perolehan_medali = 1 THEN 1 END) as emas"),
+                DB::raw("COUNT(CASE WHEN a.perolehan_medali = 2 THEN 1 END) as perak"),
+                DB::raw("COUNT(CASE WHEN a.perolehan_medali = 3 THEN 1 END) as perunggu")
             )
             ->groupBy('k.id', 'k.nama')
             ->orderBy('k.nama');
@@ -427,25 +431,149 @@ class EventRegistrationController extends Controller
         return response()->json($results);
     }
 
-    public function getAtletByKecamatanId(Request $request) {
-
-        $query = DB::table('event_registrations as er')
-            ->leftJoin('atlet as a', 'a.event_reg_id', '=', 'er.id')
-            ->leftJoin('medals as m', 'm.atlet_id', '=', 'a.id')
+    public function getSubRayonMedalSummary(Request $request) {
+        $query = DB::table('sub_rayon as k')
+            ->leftJoin('event_registrations as er', 'er.sub_rayon_id', '=', 'k.id')
+            ->leftJoin('events as e', function($join) {
+                $join->on('e.id', '=', 'er.event_id')
+                    ->where('e.event_category_id', '=', 1);
+            })
+            ->leftJoin('event_categories as ec', 'ec.id', '=', 'e.event_category_id')
+            ->leftJoin('atlet as a', function($join) {
+                $join->on('a.event_reg_id', '=', 'er.id')
+                    ->where('a.appr_status', '=', 1);
+            })
             ->select(
-                'a.id as atlet_id',
-                'a.nama_lengkap',
-                'a.nama_sekolah',
-                DB::raw('COUNT(m.id) as total_medali'),
-                DB::raw("SUM(CASE WHEN m.medal_type = 'emas' THEN 1 ELSE 0 END) as emas"),
-                DB::raw("SUM(CASE WHEN m.medal_type = 'perak' THEN 1 ELSE 0 END) as perak"),
-                DB::raw("SUM(CASE WHEN m.medal_type = 'perunggu' THEN 1 ELSE 0 END) as perunggu")
+                'k.id',
+                'k.nama',
+                DB::raw('COUNT(a.id) as total'),
+                DB::raw("COUNT(CASE WHEN a.perolehan_medali = 1 THEN 1 END) as emas"),
+                DB::raw("COUNT(CASE WHEN a.perolehan_medali = 2 THEN 1 END) as perak"),
+                DB::raw("COUNT(CASE WHEN a.perolehan_medali = 3 THEN 1 END) as perunggu")
             )
-            ->where('er.kecamatan_id', $request->kecamatan_id)
-            ->groupBy('a.id', 'a.nama_lengkap', 'a.nama_sekolah')
-            ->get();
+            ->groupBy('k.id', 'k.nama')
+            ->orderBy('k.nama');
 
-        return response()->json($query);
+        if ($request->has('kecamatan_id')) {
+            $query->where('k.id', $request->input('kecamatan_id'));
+        }
+
+        $results = $query->get();
+
+        return response()->json($results);
+    }
+
+    public function getPOPDAMedalSummary(Request $request) {
+        $query = DB::table('atlet as a')
+            ->join('event_registrations as er', 'er.id', '=', 'a.event_reg_id')
+            ->join('events as e', 'e.id', '=', 'er.event_id')
+            ->join('event_categories as ec', 'ec.id', '=', 'e.event_category_id')
+            ->leftJoin('sports as s', 's.id', '=', 'a.cabang_olahraga_id')
+            ->leftJoin('sport_classes as sc', 'sc.id', '=', 'a.kelas_id')
+            ->where('ec.id', 2)
+            ->select(
+                'a.id',
+                'a.nama_lengkap',
+                's.name as cabang_olahraga',
+                'sc.name as no_pertandingan',
+                'a.nama_sekolah as asal_sekolah',
+                'a.perolehan_medali'
+            )
+            ->orderBy('a.perolehan_medali');
+
+        if ($request->filled('cabang_olahraga_id')) {
+            $query->where('a.cabang_olahraga_id', $request->input('cabang_olahraga_id'));
+        }
+
+        $results = $query->get();
+
+        return response()->json($results);
+    }
+
+    public function getPOPWILMedalSummary(Request $request) {
+        $query = DB::table('atlet as a')
+            ->join('event_registrations as er', 'er.id', '=', 'a.event_reg_id')
+            ->join('events as e', 'e.id', '=', 'er.event_id')
+            ->join('event_categories as ec', 'ec.id', '=', 'e.event_category_id')
+            ->leftJoin('sports as s', 's.id', '=', 'a.cabang_olahraga_id')
+            ->leftJoin('sport_classes as sc', 'sc.id', '=', 'a.kelas_id')
+            ->where('ec.id', 3)
+            ->select(
+                'a.id',
+                'a.nama_lengkap',
+                's.name as cabang_olahraga',
+                'sc.name as no_pertandingan',
+                'a.nama_sekolah as asal_sekolah',
+                'a.perolehan_medali'
+            )
+            ->orderBy('a.perolehan_medali');
+
+        if ($request->filled('cabang_olahraga_id')) {
+            $query->where('a.cabang_olahraga_id', $request->input('cabang_olahraga_id'));
+        }
+
+        $results = $query->get();
+
+        return response()->json($results);
+    }
+
+    public function getAtletByKecamatan(Request $request) {
+
+        $query = DB::table('atlet as a')
+            ->select(
+                'a.id',
+                'a.nama_lengkap',
+                'a.jenis_kelamin',
+                's.name as cabang_olahraga',
+                'sc.name as no_pertandingan',
+                'a.nama_sekolah as asal_sekolah',
+                'a.perolehan_medali'
+            )
+            ->join('event_registrations as er', 'er.id', '=', 'a.event_reg_id')
+            ->join('events as e', 'e.id', '=', 'er.event_id')
+            ->join('event_categories as ec', 'ec.id', '=', 'e.event_category_id')
+            ->leftJoin('sports as s', 's.id', '=', 'a.cabang_olahraga_id')
+            ->leftJoin('sport_classes as sc', 'sc.id', '=', 'a.kelas_id')
+            ->where('ec.id', 1)
+            ->where('er.kecamatan_id', $request->input('kecamatan_id'))
+            ->orderBy('a.perolehan_medali');
+
+        if ($request->filled('cabang_olahraga_id')) {
+            $query->where('a.cabang_olahraga_id', $request->input('cabang_olahraga_id'));
+        }
+
+        $results = $query->get();
+
+        return response()->json($results);
+    }
+
+    public function getAtletBySubRayon(Request $request) {
+        $query = DB::table('atlet as a')
+            ->join('event_registrations as er', 'er.id', '=', 'a.event_reg_id')
+            ->join('events as e', 'e.id', '=', 'er.event_id')
+            ->join('event_categories as ec', 'ec.id', '=', 'e.event_category_id')
+            ->leftJoin('sports as s', 's.id', '=', 'a.cabang_olahraga_id')
+            ->leftJoin('sport_classes as sc', 'sc.id', '=', 'a.kelas_id')
+            ->where('ec.id', 1)
+            ->where('er.sub_rayon_id', $request->input('sub_rayon_id'))
+            ->select(
+                'a.id',
+                'a.nama_lengkap',
+                'a.jenis_kelamin',
+                's.name as cabang_olahraga',
+                'sc.name as no_pertandingan',
+                'a.nama_sekolah as asal_sekolah',
+                'a.perolehan_medali'
+            )
+            ->orderBy('a.perolehan_medali');
+
+        if ($request->filled('cabang_olahraga_id')) {
+            $query->where('a.cabang_olahraga_id', $request->input('cabang_olahraga_id'));
+        }
+
+        $results = $query->get();
+
+        return response()->json($results);
     }
 
     public function getTotalMedalSummary() {
@@ -465,7 +593,15 @@ class EventRegistrationController extends Controller
     }
 
     public function prestasiByKecamatan($kecamatanId) {
-        return view('web.prestasi-detail');
+        $cabangOlahraga = DB::table('sports')->orderBy('name')->get();
+        $kecamatan = DB::table('kecamatan')->where('id', $kecamatanId)->first();
+        return view('web.prestasi-kecamatan', compact('cabangOlahraga', 'kecamatan'));
+    }
+
+    public function prestasiBySubRayon($subRayonId) {
+        $cabangOlahraga = DB::table('sports')->orderBy('name')->get();
+        $subRayon = DB::table('sub_rayon')->where('id', $subRayonId)->first();
+        return view('web.prestasi-subrayon', compact('cabangOlahraga', 'subRayon'));
     }
 
     public function getEventCategory($eventId) {
