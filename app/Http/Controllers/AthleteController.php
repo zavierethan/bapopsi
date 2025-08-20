@@ -179,19 +179,12 @@ class AthleteController extends Controller
         return view('modules.athletes.edit', compact('atlet', 'officials', 'cabor', 'kelas', 'jabatan', 'medals'));
     }
 
-    public function update(Request $request, $id) {
-        $request->validate([
-            'nama_lengkap'    => 'required|string|max:255',
-            'tempat_lahir'    => 'required|string|max:255',
-            'tanggal_lahir'   => 'required|date',
-            'jenis_kelamin'   => 'required|in:L,P',
-            'nama_sekolah'    => 'required|string|max:255',
-            'nisn'            => 'required|string|max:20',
-            'pas_foto'        => 'nullable|image|mimes:jpeg,jpg,png|max:2048',
-            'raport'          => 'nullable|mimes:pdf|max:2048',
-            'akta_lahir'      => 'nullable|mimes:pdf|max:2048'
-        ]);
+    public function editAtlet($id) {
+        $data = DB::table('atlet')->where('id', $id)->first();
+        return response()->json($data);
+    }
 
+    public function update(Request $request, $id) {
         DB::beginTransaction();
 
         try {

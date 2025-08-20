@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use DB;
+use Auth;
 
 class HomeController extends Controller
 {
@@ -12,8 +13,21 @@ class HomeController extends Controller
     {
         $kecamatan = DB::table('kecamatan')->orderBy('id')->get();
         $sports = DB::table('sports')->orderBy('id')->get();
-        $events = DB::table('events')->orderBy('id')->get();
-        return view('home', compact('kecamatan', 'sports', 'events'));
+        $events = DB::table('events')->where('events.event_category_id', 1)->get();
+
+        $user = Auth::user();
+
+        if($user->group_id == 14) {
+            return view('modules.dashboards.admin', compact('kecamatan', 'sports', 'events'));
+        }
+        if($user->group_id == 15) {
+            return view('modules.dashboards.manager', compact('kecamatan', 'sports', 'events'));
+        }
+        if ($user->group_id == 16) {
+            return view('modules.dashboards.sport-admin', compact('kecamatan', 'sports', 'events'));
+        }
+
+        return view('modules.dashboards.superadmin', compact('kecamatan', 'sports', 'events'));
     }
 
     public function getLists(Request $request) {
@@ -27,9 +41,13 @@ class HomeController extends Controller
                 'medals.medal_type'
             )
             ->leftJoin('event_registrations', 'event_registrations.id', '=', 'atlet.event_reg_id')
+            ->leftJoin('events', 'events.id', '=', 'event_registrations.event_id')
+            ->leftJoin('event_categories', 'event_categories.id', '=', 'events.event_category_id')
             ->leftJoin('sports', 'sports.id', '=', 'atlet.cabang_olahraga_id')
             ->leftJoin('sport_classes', 'sport_classes.id', '=', 'atlet.kelas_id')
-            ->leftJoin('medals', 'medals.atlet_id', '=', 'atlet.id');
+            ->leftJoin('medals', 'medals.atlet_id', '=', 'atlet.id')
+            ->where('events.event_category_id', 1)
+            ->where('atlet.appr_status', 1);
 
         if (!empty($params['event_id'])) {
             $query->where('event_registrations.event_id', $params['event_id']);
@@ -55,7 +73,7 @@ class HomeController extends Controller
 
         $totalRecords = $query->count();
         $filteredRecords = $query->count();
-        $data = $query->orderBy('atlet.id', 'desc')->skip($start)->take($length)->get();
+        $data = $query->orderBy('sports.name', 'ASC')->orderBy('atlet.perolehan_medali', 'ASC')->skip($start)->take($length)->get();
 
         return response()->json([
             'draw' => $request->input('draw'),
@@ -74,7 +92,12 @@ class HomeController extends Controller
             )
             ->leftJoin('sports', 'sports.id', '=', 'atlet.cabang_olahraga_id')
             ->leftJoin('medals', 'medals.atlet_id', '=', 'atlet.id')
-            ->leftJoin('event_registrations', 'event_registrations.id', '=', 'atlet.event_reg_id');
+            ->leftJoin('event_registrations', 'event_registrations.id', '=', 'atlet.event_reg_id')
+            ->leftJoin('events', 'events.id', '=', 'event_registrations.event_id')
+            ->leftJoin('event_categories', 'event_categories.id', '=', 'events.event_category_id')
+            ->where('events.event_category_id', 1)
+            ->where('atlet.appr_status', 1);
+
 
         // Filter by kecamatan (from event_registrations)
         if ($request->filled('event_id')) {

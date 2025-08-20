@@ -36,9 +36,27 @@ class AuthController extends Controller
 
 
             $user = Auth::user();
+            $role = $user->group_id;
 
             if (false) {
                 return redirect('/transactions');
+            }
+
+            switch($role) {
+                case 1 :
+                    return redirect()->route('dashboards.general');
+                    break;
+                case 14 :
+                    return redirect()->route('dashboards.general');
+                    break;
+                case 15 :
+                    return redirect()->route('dashboards.general');
+                    break;
+                case 16 :
+                    return redirect()->route('dashboards.general');
+                    break;
+                default:
+
             }
 
             return redirect()->route('dashboards.general');
@@ -58,9 +76,7 @@ class AuthController extends Controller
             'email'          => 'required|email|unique:registration_requests,email',
             'jenjang'        => 'required|in:SD,SMP',
             'username'       => 'required|string|unique:registration_requests,username',
-            'password'       => 'required|min:8|confirmed', // 'password_confirmation' harus dikirim
-            'kecamatan_id'   => 'required|exists:kecamatan,id',
-            'sub_rayon_id'   => 'nullable|exists:sub_rayon,id',
+            'password'       => 'required|min:8|confirmed'
         ]);
 
         DB::beginTransaction();

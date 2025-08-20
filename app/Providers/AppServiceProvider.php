@@ -28,6 +28,7 @@ class AppServiceProvider extends ServiceProvider
         View::composer('*', function ($view) {
             $activeEvent = DB::table('events')
                 ->where('status', 1)
+                ->where('event_category_id', 1)
                 ->orderByDesc('created_at')
                 ->first();
 

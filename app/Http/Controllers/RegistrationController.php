@@ -41,14 +41,6 @@ class RegistrationController extends Controller
             });
         }
 
-        // if ($request->has('order') && $request->order) {
-        //     $columnIndex = $request->order[0]['column'];
-        //     $sortDirection = $request->order[0]['dir'];
-        //     $columnName = $request->columns[$columnIndex]['data'];
-
-        //     $query->orderBy($columnName, $sortDirection);
-        // }
-
         $start = $request->input('start', 0);
         $length = $request->input('length', 10);
 
@@ -95,7 +87,8 @@ class RegistrationController extends Controller
                 'password' => $registration->password_hash,
                 'kecamatan_id' => $registration->kecamatan_id,
                 'sub_rayon_id' => $registration->sub_rayon_id,
-                'user_id' => $userId
+                'user_id' => $userId,
+                'jenjang' => $registration->jenjang
             ]);
 
             DB::commit();

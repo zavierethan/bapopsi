@@ -99,11 +99,16 @@ class UserController extends Controller
 
     public function update(Request $request) {
 
+        $caborId = null;
+        if($request->group_id == 16) {
+            $caborId = $request->cabor_id;
+        }
+
         DB::table('users')->where('id', $request->id)->update([
             "name" => $request->username,
             "email" => $request->email,
             "group_id" => $request->group_id,
-            "cabor_id" => $request->cabor_id,
+            "cabor_id" => $caborId,
             "is_active" => $request->is_active,
         ]);
 

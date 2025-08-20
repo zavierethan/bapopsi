@@ -40,22 +40,30 @@
                             </div>
                             <div class="fv-row mb-8">
                                 <select name="jenjang" class="form-control bg-transparent" id="jenjang" required>
-                                    <option disabled selected>-- Pilih Jenjang --</option>
+                                    <option disabled selected>Pilih Jenjang</option>
                                     <option value="SD">SD</option>
                                     <option value="SMP">SMP</option>
                                 </select>
                             </div>
-                            <div class="fv-row mb-8">
-                                <select name="kecamatan_id" class="form-control bg-transparent" id="kecamatan" required>
-                                    <option disabled selected>-- Pilih Kecamatan --</option>
+                            <div class="fv-row mb-8" id="kecamatan">
+                                <select name="kecamatan_id" class="form-control bg-transparent" id="kecamatan">
+                                    <option value="">Pilih Kecamatan</option>
                                     @foreach($kecamatan as $k)
                                     <option value="{{ $k->id }}">{{ $k->nama }}</option>
                                     @endforeach
                                 </select>
                             </div>
-                            <div class="fv-row mb-8" id="sub-rayon" style="display:none;">
+                            <div class="fv-row mb-8" id="sub-rayon">
                                 <select name="sub_rayon_id" class="form-control bg-transparent" id="subRayonSelect">
-                                    <option disabled selected>-- Pilih Sub Rayon --</option>
+                                    <option value="">Pilih Sub Rayon</option>
+                                    <option value="1">Sub Rayon 1</option>
+                                    <option value="2">Sub Rayon 2</option>
+                                    <option value="3">Sub Rayon 3</option>
+                                    <option value="4">Sub Rayon 4</option>
+                                    <option value="5">Sub Rayon 5</option>
+                                    <option value="6">Sub Rayon 6</option>
+                                    <option value="7">Sub Rayon 7</option>
+                                    <option value="8">Sub Rayon 8</option>
                                 </select>
                             </div>
                             <div class="fv-row mb-8">
@@ -147,11 +155,19 @@
 
     <script>
     $(function() {
+        $('#kecamatan').hide();
+        $('#sub-rayon').hide();
+
         // Toggle Sub Rayon based on Jenjang
         $('#jenjang').change(function() {
-            $('#sub-rayon').toggle($(this).val() === "SMP");
-            if ($(this).val() !== "SMP") {
-                $('#subRayonSelect').val('');
+            if ($(this).val() === "SMP") {
+                $('#kecamatan').hide();
+                $('#sub-rayon').show();
+                $('#kecamatan').val("");
+            } else {
+                $('#kecamatan').show();
+                $('#sub-rayon').hide();
+                $('#sub-rayon').val("");
             }
         });
 

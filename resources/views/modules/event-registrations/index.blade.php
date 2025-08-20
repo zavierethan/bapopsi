@@ -182,6 +182,7 @@
                                             <tr class="text-start text-white fw-bolder fs-7 text-uppercase gs-0">
                                                 <th class="ps-3">Nomor Registrasi</th>
                                                 <th class="ps-3">Nama Event</th>
+                                                <th class="ps-3">Tahun</th>
                                                 <th class="ps-3">Jenjang</th>
                                                 <th class="ps-3">Cabang Olahraga</th>
                                                 <th class="ps-3">Tanggal Registrasi</th>
@@ -231,10 +232,10 @@
                                                         class="form-select form-select-transparent text-gray-900 fs-7 lh-1 fw-bold py-0 ps-3 w-auto"
                                                         data-control="select2" data-hide-search="true"
                                                         data-dropdown-css-class="w-150px"
-                                                        data-placeholder="Select an option" id="customer">
+                                                        data-placeholder="Select an option" id="popdaCaborId" disabled>
                                                         <option value=" " selected="selected">Semua</option>
                                                         @foreach($cabangOlahraga as $co)
-                                                        <option value="{{$co->id}}">{{$co->name}}</option>
+                                                        <option value="{{$co->id}}" <?php echo (Auth::user()->group_id == 16 && Auth::user()->cabor_id == $co->id) ? 'selected' : '';?>>{{$co->name}}</option>
                                                         @endforeach
                                                     </select>
                                                 </div>
@@ -259,8 +260,8 @@
                                     <table class="table align-middle table-row-dashed fs-6 gy-5" id="POPDA">
                                         <thead class="bg-primary text-white">
                                             <tr class="text-start text-white fw-bolder fs-7 text-uppercase gs-0">
-                                                <th class="ps-3">Nomor Registrasi</th>
                                                 <th class="ps-3">Nama Event</th>
+                                                <th class="ps-3">Tahun</th>
                                                 <th class="ps-3">Cabang Olahraga</th>
                                                 <th class="ps-3">Tanggal Registrasi</th>
                                                 <th class="ps-3 text-center">Actions</th>
@@ -309,10 +310,10 @@
                                                         class="form-select form-select-transparent text-gray-900 fs-7 lh-1 fw-bold py-0 ps-3 w-auto"
                                                         data-control="select2" data-hide-search="true"
                                                         data-dropdown-css-class="w-150px"
-                                                        data-placeholder="Select an option" id="customer">
+                                                        data-placeholder="Select an option" id="popwilCaborId" disabled>
                                                         <option value=" " selected="selected">Semua</option>
                                                         @foreach($cabangOlahraga as $co)
-                                                        <option value="{{$co->id}}">{{$co->name}}</option>
+                                                        <option value="{{$co->id}}" <?php echo (Auth::user()->group_id == 16 && Auth::user()->cabor_id == $co->id) ? 'selected' : '';?>>{{$co->name}}</option>
                                                         @endforeach
                                                     </select>
                                                 </div>
@@ -336,8 +337,8 @@
                                     <table class="table align-middle table-row-dashed fs-6 gy-5" id="POPWIL">
                                         <thead class="bg-primary text-white">
                                             <tr class="text-start text-white fw-bolder fs-7 text-uppercase gs-0">
-                                                <th class="ps-3">Nomor Registrasi</th>
                                                 <th class="ps-3">Nama Event</th>
+                                                <th class="ps-3">Tahun</th>
                                                 <th class="ps-3">Cabang Olahraga</th>
                                                 <th class="ps-3">Tanggal Registrasi</th>
                                                 <th class="ps-3 text-center">Actions</th>
@@ -367,6 +368,15 @@
 @section('script')
 <script>
 $("#filterKecamatan").hide();
+
+$(document).on("click", "#popdaTahun", function() {
+    alert("Button clicked with .on!");
+});
+
+$(document).on("click", "#popwilTahun", function() {
+    alert("Button clicked with .on!");
+});
+
 $("#O2SN").DataTable({
     processing: true,
     serverSide: true,
@@ -382,14 +392,20 @@ $("#O2SN").DataTable({
             return json.data;
         }
     },
-    columns: [{
-            data: 'name',
-            name: 'name',
+    columns: [
+        {
+            data: 'register_number',
+            name: 'register_number',
             className: 'ps-3'
         },
         {
             data: 'name',
             name: 'name',
+            className: 'ps-3'
+        },
+        {
+            data: 'year',
+            name: 'year',
             className: 'ps-3'
         },
         {
@@ -438,19 +454,22 @@ $("#POPDA").DataTable({
         type: 'GET',
         data: function (d) {
             d.eventCategory = 2;
+            d.tahun = $('#popdaTahun').val();
+            d.cabangOlahraga = $('#popdaCaborId').val();
         },
         dataSrc: function (json) {
             return json.data;
         }
     },
-    columns: [{
+    columns: [
+        {
             data: 'name',
             name: 'name',
             className: 'ps-3'
         },
         {
-            data: 'name',
-            name: 'name',
+            data: 'year',
+            name: 'year',
             className: 'ps-3'
         },
         {
@@ -494,19 +513,22 @@ $("#POPWIL").DataTable({
         type: 'GET',
         data: function (d) {
             d.eventCategory = 3;
+            d.tahun = $('#popwilTahun').val();
+            d.cabangOlahraga = $('#popwilCaborId').val();
         },
         dataSrc: function (json) {
             return json.data;
         }
     },
-    columns: [{
+    columns: [
+        {
             data: 'name',
             name: 'name',
             className: 'ps-3'
         },
         {
-            data: 'name',
-            name: 'name',
+            data: 'year',
+            name: 'year',
             className: 'ps-3'
         },
         {

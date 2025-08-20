@@ -47,13 +47,22 @@
             </div>
         </div> -->
 
-        <div class="flex border-b mb-8">
-            <button class="tab-btn px-6 py-3 font-semibold border-b-2 text-blue-600 border-blue-600 font-bold"
-                data-tab="o2sn">O2SN</button>
-            <button class="tab-btn px-6 py-3 font-semibold text-gray-600 hover:text-blue-600 font-bold"
-                data-tab="popda">POPDA</button>
-            <button class="tab-btn px-6 py-3 font-semibold text-gray-600 hover:text-blue-600 font-bold"
-                data-tab="popwill">POPWIL</button>
+        <div class="flex border-b border-gray-200 mb-8">
+            <button
+                class="tab-btn px-6 py-3 font-semibold text-blue-600 border-b-4 border-blue-600 font-bold transition-all duration-300 ease-in-out rounded-t-lg"
+                data-tab="o2sn">
+                O2SN
+            </button>
+            <button
+                class="tab-btn px-6 py-3 font-semibold text-gray-600 hover:text-blue-600 hover:border-blue-400 border-b-4 border-transparent font-bold transition-all duration-300 ease-in-out rounded-t-lg"
+                data-tab="popda">
+                POPDA
+            </button>
+            <button
+                class="tab-btn px-6 py-3 font-semibold text-gray-600 hover:text-blue-600 hover:border-blue-400 border-b-4 border-transparent font-bold transition-all duration-300 ease-in-out rounded-t-lg"
+                data-tab="popwill">
+                POPWIL
+            </button>
         </div>
 
         <div id="tab-o2sn" class="tab-content">
@@ -175,18 +184,29 @@
                 <div class="px-6 py-4 bg-gray-50 border-b">
                     <h3 class="text-lg font-semibold text-gray-900">Perolehan Medali (POPDA)</h3>
                 </div>
-                <div class="overflow-x-auto">
-                    <table class="min-w-full">
+                <div class="table-responsive">
+                    <table class="w-full">
                         <thead class="bg-gray-50">
                             <tr>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Nama Atlet
+                                <th
+                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">
+                                    Nama Atlet
                                 </th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Cabang Olahraga</th>
+                                <th
+                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase whitespace-nowrap">
+                                    Cabang Olahraga
                                 </th>
-                                <th class="px-6 py-3 text-left font-medium text-xs text-gray-500 uppercase">No. Kelas Pertandingan</th>
-                                <th class="px-6 py-3 text-left font-medium text-xs text-gray-500 uppercase">Asal Sekolah
+                                <th
+                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase whitespace-nowrap">
+                                    No. Kelas Pertandingan
                                 </th>
-                                <th class="px-6 py-3 font-medium text-xs text-gray-500 uppercase">Perolehan Medali (Juara)</th>
+                                <th
+                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase whitespace-nowrap">
+                                    Asal Sekolah
+                                </th>
+                                <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase whitespace-nowrap">
+                                    Perolehan Medali (Juara)
+                                </th>
                             </tr>
                         </thead>
                         <tbody id="medalPOPDATableBody" class="bg-white divide-y divide-gray-200">
@@ -228,14 +248,25 @@
                     <table class="min-w-full">
                         <thead class="bg-gray-50">
                             <tr>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Nama Atlet
+                                <th
+                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">
+                                    Nama Atlet
                                 </th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Cabang Olahraga</th>
+                                <th
+                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase whitespace-nowrap">
+                                    Cabang Olahraga
                                 </th>
-                                <th class="px-6 py-3 text-left font-medium text-xs text-gray-500 uppercase">No. Kelas Pertandingan</th>
-                                <th class="px-6 py-3 text-left font-medium text-xs text-gray-500 uppercase">Asal Sekolah
+                                <th
+                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase whitespace-nowrap">
+                                    No. Kelas Pertandingan
                                 </th>
-                                <th class="px-6 py-3 font-medium text-xs text-gray-500 uppercase">Perolehan Medali (Juara)</th>
+                                <th
+                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase whitespace-nowrap">
+                                    Asal Sekolah
+                                </th>
+                                <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase whitespace-nowrap">
+                                    Perolehan Medali (Juara)
+                                </th>
                             </tr>
                         </thead>
                         <tbody id="medalPOPWILTableBody" class="bg-white divide-y divide-gray-200">
@@ -282,7 +313,7 @@
         <div class="text-center mt-12">
             <a href="/berita"
                 class="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg font-semibold transition-colors">
-                Lihat SEMUA Berita
+                Lihat Semua Berita
             </a>
         </div>
     </div>
@@ -322,6 +353,14 @@ $(document).ready(function() {
     let caborPopda = $('#caborPopda').val();
     let caborPopwil = $('#caborPopwil').val();
 
+    $('#next-slide').on('click', function() {
+        nextSlide();
+    });
+
+    $('#prev-slide').on('click', function() {
+        prevSlide();
+    });
+
     $('.tab-btn').on('click', function() {
         $('.tab-btn').removeClass('text-blue-600 border-blue-600 border-b-2').addClass('text-gray-600');
         $(this).addClass('text-blue-600 border-blue-600 border-b-2');
@@ -343,7 +382,7 @@ $(document).ready(function() {
     $('#o2sn-smp-table').hide();
     $('#jenjang').on('change', function() {
         let value = $(this).val();
-        if(value === 'SMP') {
+        if (value === 'SMP') {
             $('#o2sn-smp-table').show();
             $('#o2sn-sd-table').hide();
         } else {
@@ -781,10 +820,14 @@ function getCabor() {
 
 function medalName(code) {
     switch (code) {
-        case 1: return 'I';
-        case 2: return 'II';
-        case 3: return 'III';
-        default: return '-';
+        case 1:
+            return 'I';
+        case 2:
+            return 'II';
+        case 3:
+            return 'III';
+        default:
+            return '-';
     }
 }
 

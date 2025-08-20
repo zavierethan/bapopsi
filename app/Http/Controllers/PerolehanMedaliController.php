@@ -48,27 +48,20 @@ class PerolehanMedaliController extends Controller
             ->leftJoin('kecamatan', 'kecamatan.id', '=', 'event_registrations.kecamatan_id')
             ->leftJoin('sub_rayon', 'sub_rayon.id', '=', 'event_registrations.sub_rayon_id');
 
-        if (!empty($params['nama_lengkap'])) {
-            $query->where('atlet.nama_lengkap', $params['nama_lengkap']);
+        if (!empty($params['eventCategory']) && $params['eventCategory'] !== ' ') {
+            $query->where('events.event_category_id', $params['eventCategory']);
         }
 
-        $user = Auth::user();
-
-        if (!in_array($user->group_id, [1, 14])) {
-
-            if($user->group_id == 16) {
-
-            } else {
-                $query->where('atlet.created_by', $user->id);
-            }
+        if (!empty($params['cabangOlahraga']) && $params['cabangOlahraga'] !== ' ') {
+            $query->where('atlet.cabang_olahraga_id', $params['cabangOlahraga']);
         }
 
-        $searchValue = $request->input('search.value');
-        if (!empty($searchValue)) {
-            $query->where(function ($q) use ($searchValue) {
-                $q->where('atlet.nama_lengkap', 'like', '%' . strtoupper($searchValue) . '%');
-            });
-        }
+        // $searchValue = $request->input('search.value');
+        // if (!empty($searchValue)) {
+        //     $query->where(function ($q) use ($searchValue) {
+        //         $q->where('atlet.nama_lengkap', 'like', '%' . strtoupper($searchValue) . '%');
+        //     });
+        // }
 
         $start = $request->input('start', 0);
         $length = $request->input('length', 10);

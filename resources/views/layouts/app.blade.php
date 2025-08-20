@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="{{asset('assets/media/logos/bapopsi-logo.png')}}" />
     <title>BAPOPSI - Badan Pembina Olahraga Pelajar Seluruh Indonesia</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
@@ -19,7 +20,7 @@
                 <!-- Logo & Title -->
                 <div class="flex items-center">
                     <div class="flex-shrink-0 flex items-center">
-                        <i class="fas fa-trophy text-3xl text-blue-600"></i>
+                        <img src="{{asset('assets/media/logos/bapopsi-logo.png')}}" width="50" height="50" alt="">
                         <span class="ml-2 text-xl font-bold text-gray-900">BAPOPSI</span>
                     </div>
                 </div>
@@ -110,7 +111,7 @@
             <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
                 <div class="col-span-1 md:col-span-2">
                     <div class="flex items-center mb-4">
-                        <i class="fas fa-trophy text-2xl text-blue-400"></i>
+                        <img src="{{asset('assets/media/logos/bapopsi-logo.png')}}" width="50" height="50" alt="">
                         <span class="ml-2 text-xl font-bold">BAPOPSI</span>
                     </div>
                     <p class="text-gray-400 mb-4 max-w-md">

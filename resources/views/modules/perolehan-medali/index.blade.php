@@ -75,7 +75,7 @@
                                 <div class="tab-pane fade show active" id="tab_o2sn">
                                     <div class="card-toolbar">
                                         <div class="d-flex justify-content-between flex-wrap gap-3 w-100">
-                                            <div class="d-flex align-items-center gap-4">
+                                            <div class="d-flex align-items-center gap-4 mb-3">
                                                 <div class="d-flex align-items-center fw-bold">
                                                     <div class="text-gray-500 fs-7 me-2" style="white-space: nowrap;">
                                                         Kategori Event</div>
@@ -86,6 +86,18 @@
                                                         data-placeholder="Select an option" id="o2snEventCategory"
                                                         disabled>
                                                         <option value="1" selected="selected">O2SN</option>
+                                                    </select>
+                                                </div>
+                                                <div class="d-flex align-items-center fw-bold">
+                                                    <div class="text-gray-500 fs-7 me-2" style="white-space: nowrap;">Tahun</div>
+                                                    <select
+                                                        class="form-select form-select-transparent text-graY-800 fs-base lh-1 fw-bold py-0 ps-3 w-auto"
+                                                        data-control="select2" data-hide-search="true"
+                                                        data-dropdown-css-class="w-150px"
+                                                        data-placeholder="Select an option" id="o2snTahun">
+                                                        <option value="2023">2023</option>
+                                                        <option value="2024">2024</option>
+                                                        <option value="2025" selected>2025</option>
                                                     </select>
                                                 </div>
                                                 <div class="d-flex align-items-center fw-bold">
@@ -139,10 +151,10 @@
                                                         class="form-select form-select-transparent text-gray-900 fs-7 lh-1 fw-bold py-0 ps-3 w-auto"
                                                         data-control="select2" data-hide-search="true"
                                                         data-dropdown-css-class="w-150px"
-                                                        data-placeholder="Select an option" id="cabang-olahraga">
+                                                        data-placeholder="Select an option" id="cabang-olahraga" disabled>
                                                         <option value=" " selected="selected">Semua</option>
                                                         @foreach($cabangOlahraga as $co)
-                                                        <option value="{{$co->id}}">{{$co->name}}</option>
+                                                        <option value="{{$co->id}}" <?php echo (Auth::user()->cabor_id == $co->id) ? 'selected' : '';?>>{{$co->name}}</option>
                                                         @endforeach
                                                     </select>
                                                 </div>
@@ -151,15 +163,6 @@
                                                         Export Hasil Pertandingan
                                                     </a>
                                                 </div>
-                                            </div>
-                                            <div class="position-relative my-1">
-                                                <i
-                                                    class="ki-duotone ki-magnifier fs-2 position-absolute top-50 translate-middle-y ms-4">
-                                                    <span class="path1"></span>
-                                                    <span class="path2"></span>
-                                                </i>
-                                                <input type="text" data-kt-customer-table-filter="search"
-                                                    class="form-control w-250px ps-15" placeholder="Cari" />
                                             </div>
                                         </div>
                                     </div>
@@ -183,7 +186,7 @@
                                 <div class="tab-pane fade" id="tab_popda">
                                     <div class="card-toolbar">
                                         <div class="d-flex justify-content-between flex-wrap gap-3 w-100">
-                                            <div class="d-flex align-items-center gap-4">
+                                            <div class="d-flex align-items-center gap-4 mb-3">
                                                 <div class="d-flex align-items-center fw-bold">
                                                     <div class="text-gray-500 fs-7 me-2" style="white-space: nowrap;">
                                                         Kategori Event</div>
@@ -197,6 +200,18 @@
                                                     </select>
                                                 </div>
                                                 <div class="d-flex align-items-center fw-bold">
+                                                    <div class="text-gray-500 fs-7 me-2" style="white-space: nowrap;">Tahun</div>
+                                                    <select
+                                                        class="form-select form-select-transparent text-graY-800 fs-base lh-1 fw-bold py-0 ps-3 w-auto"
+                                                        data-control="select2" data-hide-search="true"
+                                                        data-dropdown-css-class="w-150px"
+                                                        data-placeholder="Select an option" id="popdaTahun">
+                                                        <option value="2023">2023</option>
+                                                        <option value="2024">2024</option>
+                                                        <option value="2025" selected>2025</option>
+                                                    </select>
+                                                </div>
+                                                <div class="d-flex align-items-center fw-bold">
                                                     <div class="text-gray-500 fs-7 me-2" style="white-space: nowrap;">
                                                         Cabang Olahraga
                                                     </div>
@@ -204,10 +219,10 @@
                                                         class="form-select form-select-transparent text-gray-900 fs-7 lh-1 fw-bold py-0 ps-3 w-auto"
                                                         data-control="select2" data-hide-search="true"
                                                         data-dropdown-css-class="w-150px"
-                                                        data-placeholder="Select an option" id="cabang-olahraga">
+                                                        data-placeholder="Select an option" id="popda-cabang-olahraga" disabled>
                                                         <option value=" " selected="selected">Semua</option>
                                                         @foreach($cabangOlahraga as $co)
-                                                        <option value="{{$co->id}}">{{$co->name}}</option>
+                                                        <option value="{{$co->id}}" <?php echo (Auth::user()->cabor_id == $co->id) ? 'selected' : '';?>>{{$co->name}}</option>
                                                         @endforeach
                                                     </select>
                                                 </div>
@@ -216,15 +231,6 @@
                                                         Export Data Atlet
                                                     </a>
                                                 </div>
-                                            </div>
-                                            <div class="position-relative my-1">
-                                                <i
-                                                    class="ki-duotone ki-magnifier fs-2 position-absolute top-50 translate-middle-y ms-4">
-                                                    <span class="path1"></span>
-                                                    <span class="path2"></span>
-                                                </i>
-                                                <input type="text" data-kt-customer-table-filter="search"
-                                                    class="form-control w-250px ps-15" placeholder="Cari" />
                                             </div>
                                         </div>
                                     </div>
@@ -247,7 +253,7 @@
                                 <div class="tab-pane fade" id="tab_popwill">
                                     <div class="card-toolbar">
                                         <div class="d-flex justify-content-between flex-wrap gap-3 w-100">
-                                            <div class="d-flex align-items-center gap-4">
+                                            <div class="d-flex align-items-center gap-4 mb-3">
                                                 <div class="d-flex align-items-center fw-bold">
                                                     <div class="text-gray-500 fs-7 me-2" style="white-space: nowrap;">
                                                         Kategori Event</div>
@@ -261,6 +267,18 @@
                                                     </select>
                                                 </div>
                                                 <div class="d-flex align-items-center fw-bold">
+                                                    <div class="text-gray-500 fs-7 me-2" style="white-space: nowrap;">Tahun</div>
+                                                    <select
+                                                        class="form-select form-select-transparent text-graY-800 fs-base lh-1 fw-bold py-0 ps-3 w-auto"
+                                                        data-control="select2" data-hide-search="true"
+                                                        data-dropdown-css-class="w-150px"
+                                                        data-placeholder="Select an option" id="popwilTahun">
+                                                        <option value="2023">2023</option>
+                                                        <option value="2024">2024</option>
+                                                        <option value="2025" selected>2025</option>
+                                                    </select>
+                                                </div>
+                                                <div class="d-flex align-items-center fw-bold">
                                                     <div class="text-gray-500 fs-7 me-2" style="white-space: nowrap;">
                                                         Cabang Olahraga
                                                     </div>
@@ -268,10 +286,10 @@
                                                         class="form-select form-select-transparent text-gray-900 fs-7 lh-1 fw-bold py-0 ps-3 w-auto"
                                                         data-control="select2" data-hide-search="true"
                                                         data-dropdown-css-class="w-150px"
-                                                        data-placeholder="Select an option" id="cabang-olahraga">
+                                                        data-placeholder="Select an option" id="popwil-cabang-olahraga" disabled>
                                                         <option value=" " selected="selected">Semua</option>
                                                         @foreach($cabangOlahraga as $co)
-                                                        <option value="{{$co->id}}">{{$co->name}}</option>
+                                                        <option value="{{$co->id}}" <?php echo (Auth::user()->cabor_id == $co->id) ? 'selected' : '';?>>{{$co->name}}</option>
                                                         @endforeach
                                                     </select>
                                                 </div>
@@ -280,15 +298,6 @@
                                                         Export Data Atlet
                                                     </a>
                                                 </div>
-                                            </div>
-                                            <div class="position-relative my-1">
-                                                <i
-                                                    class="ki-duotone ki-magnifier fs-2 position-absolute top-50 translate-middle-y ms-4">
-                                                    <span class="path1"></span>
-                                                    <span class="path2"></span>
-                                                </i>
-                                                <input type="text" data-kt-customer-table-filter="search"
-                                                    class="form-control w-250px ps-15" placeholder="Cari" />
                                             </div>
                                         </div>
                                     </div>
@@ -325,6 +334,9 @@
 
 @section('script')
 <script>
+$(document).ready(function() {
+
+});
 let o2snTable = $("#O2SN").DataTable({
     processing: true,
     serverSide: true,
@@ -336,6 +348,7 @@ let o2snTable = $("#O2SN").DataTable({
         data: function(d) {
             d.eventCategory = 1;
             d.jenjang = $('#jenjang').val();
+            d.cabangOlahraga = $('#cabang-olahraga').val();
         },
         dataSrc: function(json) {
             return json.data;
@@ -391,6 +404,15 @@ let o2snTable = $("#O2SN").DataTable({
 
 $('#jenjang').on('change', function() {
     o2snTable.draw(); // Trigger DataTable redraw with updated filter values
+
+    $value = $(this).val();
+    if($value === 'SD') {
+
+    } else if($value === 'SMP') {
+
+    } else {
+
+    }
 });
 
 $("#POPDA").DataTable({

@@ -102,17 +102,18 @@
                                     @endif
 
                                     @if(Auth::user()->group_id == 15)
-                                    <!-- Update Button -->
-                                    <button type="button" class="btn btn-primary btn-sm edit-atlet"
-                                        data-id="{{$atlet->id}}">
-                                        <i class="fa fa-pen-to-square"></i>
-                                    </button>
-
-                                    <!-- Update Button -->
-                                    <button type="button" class="btn btn-primary btn-print-id-card"
-                                        data-id="{{$atlet->id}}">
-                                        <i class="fa fa-print"></i>
-                                    </button>
+                                        @if($atlet->appr_status == '0' || $atlet->appr_status == NULL)
+                                        <button type="button" class="btn btn-primary btn-sm edit-atlet"
+                                            data-id="{{$atlet->id}}">
+                                            <i class="fa fa-pen-to-square"></i>
+                                        </button>
+                                        @endif
+                                        @if($atlet->appr_status == '1')
+                                        <button type="button" class="btn btn-primary btn-print-id-card"
+                                            data-id="{{$atlet->id}}">
+                                            <i class="fa fa-print"></i>
+                                        </button>
+                                        @endif
                                     @endif
                                 </div>
                                 <div class="row g-4">
@@ -223,7 +224,13 @@
                                         <div class="row mb-3 align-items-center">
                                             <label class="col-md-2 col-form-label">Status Approval</label>
                                             <div class="col-md-10">
-                                                <span class="badge badge-warning">{{ $atlet->approval_status }}</span>
+                                                @if($atlet->appr_status == '0')
+                                                <span class="badge badge-danger">{{ $atlet->approval_status_str }}</span>
+                                                @elseif($atlet->appr_status == '1')
+                                                <span class="badge badge-success">{{ $atlet->approval_status_str }}</span>
+                                                @else
+                                                <span class="badge badge-warning">{{ $atlet->approval_status_str }}</span>
+                                                @endif
                                             </div>
                                         </div>
 
@@ -300,7 +307,7 @@
                     @endif
                     <!-- Submit -->
                     <div class="text-end mb-10">
-                        <button type="button" class="btn btn-success" id="submit-form">Submit</button>
+                        <!-- <button type="button" class="btn btn-success" id="submit-form">Submit</button> -->
                         <a href="/event-registrations" class="btn btn-danger">Kembali</a>
                     </div>
                 </form>
@@ -323,6 +330,88 @@
         </div>
     </div>
 </div>
+
+<!-- Edit Atlet Modal -->
+<div class="modal fade" id="editAtletModal" tabindex="-1" aria-labelledby="editAtletModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <form id="form-atlet-update" method="POST" enctype="multipart/form-data">
+            @csrf
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editAtletModalLabel">Edit Atlet</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                <div class="modal-body">
+                    <!-- Nama Lengkap -->
+                    <div class="mb-3">
+                        <label class="form-label">Nama Lengkap</label>
+                        <input type="text" class="form-control" name="nama_lengkap" id="editNamaLengkap">
+                        <input type="hidden" class="form-control" name="registration_id" id="editRegistId">
+                        <input type="hidden" class="form-control" name="id" id="editId">
+                        <input type="hidden" class="form-control" name="perolehan_medali" id="editPerolehanMedali">
+                        <input type="hidden" class="form-control" name="flag" id="flag" value="revision">
+                    </div>
+
+                    <!-- Tempat Lahir -->
+                    <div class="mb-3">
+                        <label class="form-label">Tempat Lahir</label>
+                        <input type="text" class="form-control" name="tempat_lahir" id="editTempatLahir">
+                    </div>
+
+                    <!-- Tanggal Lahir -->
+                    <div class="mb-3">
+                        <label class="form-label">Tanggal Lahir</label>
+                        <input type="date" class="form-control" name="tanggal_lahir" id="editTanggalLahir">
+                    </div>
+
+                    <!-- Jenis Kelamin -->
+                    <div class="mb-3">
+                        <label class="form-label">Jenis Kelamin</label>
+                        <select name="jenis_kelamin" class="form-select" id="editJenisKelamin">
+                            <option value="">Pilih</option>
+                            <option value="L">Laki-laki</option>
+                            <option value="P">Perempuan</option>
+                        </select>
+                    </div>
+
+                    <!-- Nama Sekolah -->
+                    <div class="mb-3">
+                        <label class="form-label">Nama Sekolah</label>
+                        <input type="text" class="form-control" name="nama_sekolah" id="editNamaSekolah">
+                    </div>
+
+                    <!-- NISN -->
+                    <div class="mb-3">
+                        <label class="form-label">NISN</label>
+                        <input type="text" class="form-control" name="nisn" id="editNisn">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Raport</label>
+                        <input type="file" class="form-control" name="raport" id="editRaport">
+                        <small class="text-red">Pilih File jika file yang perlu di edit, selain itu biarkan kosong</small>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">SK</label>
+                        <input type="file" class="form-control" name="sk" id="editSK">
+                        <small class="text-red">Pilih File jika file yang perlu di edit, selain itu biarkan kosong</small>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Akta Lahir</label>
+                        <input type="file" class="form-control" name="akta_lahir" id="editAktaLahir">
+                        <small class="text-red">Pilih File jika file yang perlu di edit, selain itu biarkan kosong</small>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                    <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
 @endsection
 
 @section('script')
@@ -568,6 +657,73 @@ $(document).on('click', '.reject-atlet', function() {
                         icon: 'error',
                         title: 'Gagal!',
                         text: 'Gagal menolak atlet.'
+                    });
+                }
+            });
+        }
+    });
+});
+
+$(document).on('click', '.edit-atlet', function() {
+    let atletId = $(this).data('id');
+    $.ajax({
+        url: `/athletes/edit/${atletId}`, // Pastikan route ini mengembalikan JSON data atlet
+        type: 'GET',
+        success: function(data) {
+            // Isi form modal dengan data dari server
+            $('#editRegistId').val(data.event_reg_id);
+            $('#editId').val(data.id);
+            $('#editNamaLengkap').val(data.nama_lengkap);
+            $('#editTempatLahir').val(data.tempat_lahir);
+            $('#editTanggalLahir').val(data.tanggal_lahir);
+            $('#editJenisKelamin').val(data.jenis_kelamin);
+            $('#editNamaSekolah').val(data.nama_sekolah);
+            $('#editNisn').val(data.nisn);
+            $('#editPerolehanMedali').val(data.perolehan_medali);
+
+            // Tampilkan modal
+            $('#editAtletModal').modal('show');
+        }
+    });
+});
+
+$('#form-atlet-update').on('submit', function(e) {
+    e.preventDefault();
+
+    Swal.fire({
+        title: 'Simpan Perubahan?',
+        text: "Apakah kamu yakin ingin menyimpan perubahan data atlet?",
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonText: 'Ya, Simpan!',
+        cancelButtonText: 'Batal',
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+    }).then((result) => {
+        if (result.isConfirmed) {
+            const formData = new FormData($('#form-atlet-update')[0]);
+            const id = $('#editId').val();
+
+            $.ajax({
+                url: `/athletes/update/${id}`,
+                type: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function(res) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Berhasil',
+                        text: res.message
+                    }).then(() => {
+                        location.href = location.href;
+                    });
+                },
+                error: function(err) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Gagal',
+                        text: 'Terjadi kesalahan'
                     });
                 }
             });

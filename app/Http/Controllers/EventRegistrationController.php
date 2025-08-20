@@ -27,6 +27,7 @@ class EventRegistrationController extends Controller
             'event_categories.name as event_category',
             'sports.name as cabang_olahraga',
             'events.name',
+            'events.year',
             'events.description',
             DB::raw("TO_CHAR(event_registrations.approved_at, 'DD/MM/YYYY HH24:MI:SS') AS approval_date_formatted"),
             DB::raw("TO_CHAR(event_registrations.created_at, 'DD/MM/YYYY HH24:MI:SS') AS created_at_formatted"),
@@ -44,8 +45,24 @@ class EventRegistrationController extends Controller
             ->leftJoin('sub_rayon', 'sub_rayon.id', '=', 'event_registrations.sub_rayon_id')
             ->leftJoin('sports', 'sports.id', '=', 'event_registrations.sport_id');
 
+        $user = Auth::user();
+
+        $manager = DB::table('managers')->where('user_id', $user->id)->first();
+
+        if($user->group_id == 15) {
+            $query->where('event_registrations.manager_id', $manager->id);
+        }
+
         if (!empty($params['eventCategory']) && $params['eventCategory'] !== ' ') {
             $query->where('events.event_category_id', $params['eventCategory']);
+        }
+
+        if (!empty($params['cabangOlahraga']) && $params['cabangOlahraga'] !== ' ') {
+            $query->where('event_registrations.sport_id', $params['cabangOlahraga']);
+        }
+
+        if (!empty($params['tahun']) && $params['tahun'] !== ' ') {
+            $query->where('events.year', $params['tahun']);
         }
 
         $searchValue = $request->input('search.value');
@@ -97,7 +114,7 @@ class EventRegistrationController extends Controller
             $approvalStatus = NULL;
             $approvalDate = NULL;
 
-            if($userRole != 16) {
+            if($userRole == 15) {
                 $manager = DB::table('managers')->where('user_id', $userId)->first();
 
                 if (!$manager) {
@@ -109,14 +126,16 @@ class EventRegistrationController extends Controller
 
                 // Simpan pendaftaran event utama
                 $eventRegId = DB::table('event_registrations')->insertGetId([
-                    'event_id' => $request->event_id,
-                    'sport_id' => $request->cabang_olahraga_id,
-                    'sport_class_id' => $request->sport_class_id,
-                    'manager_id' => $manager->id,
-                    'kecamatan_id' => $manager->kecamatan_id,
-                    'sub_rayon_id' => $manager->sub_rayon_id,
-                    'created_at' => now(),
-                    'updated_at' => now(),
+                    'register_number' => DB::select('SELECT generate_o2sn_number() AS number')[0]->number,
+                    'event_id'        => $request->event_id,
+                    'sport_id'        => $request->cabang_olahraga_id,
+                    'sport_class_id'  => $request->sport_class_id,
+                    'manager_id'      => $manager->id,
+                    'kecamatan_id'    => $manager->kecamatan_id,
+                    'sub_rayon_id'    => $manager->sub_rayon_id,
+                    'jenjang'         => $manager->jenjang,
+                    'created_at'      => now(),
+                    'updated_at'      => now(),
                 ]);
             } else {
                 $eventRegId = DB::table('event_registrations')->insertGetId([
@@ -230,7 +249,7 @@ class EventRegistrationController extends Controller
                         WHEN atlet.appr_status IS NULL THEN 'Waiting Approval'
                         WHEN atlet.appr_status = 1 THEN 'Approved'
                         WHEN atlet.appr_status = 0 THEN 'Rejected'
-                    END as approval_status")
+                    END as approval_status_str")
             )
             ->where('event_reg_id', $id)->get();
         $officials = DB::table('officials')->where('event_reg_id', $id)->get();
@@ -471,6 +490,7 @@ class EventRegistrationController extends Controller
             ->leftJoin('sports as s', 's.id', '=', 'a.cabang_olahraga_id')
             ->leftJoin('sport_classes as sc', 'sc.id', '=', 'a.kelas_id')
             ->where('ec.id', 2)
+            ->where('a.appr_status', 1)
             ->select(
                 'a.id',
                 'a.nama_lengkap',
@@ -498,6 +518,7 @@ class EventRegistrationController extends Controller
             ->leftJoin('sports as s', 's.id', '=', 'a.cabang_olahraga_id')
             ->leftJoin('sport_classes as sc', 'sc.id', '=', 'a.kelas_id')
             ->where('ec.id', 3)
+            ->where('a.appr_status', 1)
             ->select(
                 'a.id',
                 'a.nama_lengkap',

@@ -64,6 +64,7 @@
                                     </div>
                                 </div>
                                 <div class="separator my-5 cabor"></div>
+                                @if(!is_null($user->cabor_id))
                                 <div class="fv-row mb-5 cabor">
                                     <div class="mb-1">
                                         <label class="form-label fw-bold fs-6 mb-2">Cabang Olahraga</label>
@@ -78,6 +79,7 @@
                                     </div>
                                 </div>
                                 <div class="separator my-5"></div>
+                                @endif
                                 <div class="fv-row mb-5">
                                     <div class="mb-1">
                                         <label class="form-label fw-bold fs-6 mb-2">Is Active</label>
@@ -108,8 +110,6 @@
 @section('script')
 <script>
 $(document).ready(function() {
-    $(".cabor").hide();
-
     $("#groupId").on("change", function() {
         if ($(this).val() === "16") { // Compare as string
             $(".cabor").show();
