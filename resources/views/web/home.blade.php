@@ -28,25 +28,6 @@
         <div class="text-center mb-12">
             <h2 class="text-3xl font-bold text-gray-900 mb-4">Rekapitulasi Perolehan Medali</h2>
         </div>
-
-        <!-- <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
-            <div class="bg-gradient-to-br from-yellow-400 to-yellow-600 text-white p-6 rounded-xl text-center">
-                <i class="fas fa-medal text-4xl mb-4"></i>
-                <div class="text-3xl font-bold mb-1" id="emas">0</div>
-                <div class="text-yellow-100">Medali Emas</div>
-            </div>
-            <div class="bg-gradient-to-br from-gray-400 to-gray-600 text-white p-6 rounded-xl text-center">
-                <i class="fas fa-medal text-4xl mb-4"></i>
-                <div class="text-3xl font-bold mb-1" id="perak">0</div>
-                <div class="text-gray-100">Medali Perak</div>
-            </div>
-            <div class="bg-gradient-to-br from-orange-400 to-orange-600 text-white p-6 rounded-xl text-center">
-                <i class="fas fa-medal text-4xl mb-4"></i>
-                <div class="text-3xl font-bold mb-1" id="perunggu">0</div>
-                <div class="text-orange-100">Medali Perunggu</div>
-            </div>
-        </div> -->
-
         <div class="flex border-b border-gray-200 mb-8">
             <button
                 class="tab-btn px-6 py-3 font-semibold text-blue-600 border-b-4 border-blue-600 font-bold transition-all duration-300 ease-in-out rounded-t-lg"
@@ -333,7 +314,7 @@
         <div class="text-center mt-12">
             <a href="/galery"
                 class="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg font-semibold transition-colors">
-                Lihat SEMUA Galeri
+                Lihat Semua Galeri
             </a>
         </div>
     </div>

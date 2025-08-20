@@ -14,7 +14,8 @@
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <article id="news-detail">
             <div class="mb-6">
-                <h1 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4" style="text-align: justify;">{{$post->title}}</h1>
+                <h1 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4" style="text-align: justify;">
+                    {{$post->title}}</h1>
                 <div class="flex flex-wrap items-center text-sm text-gray-600 mb-6">
                     <span class="mr-4">
                         <i class="fas fa-calendar mr-1"></i>
@@ -75,51 +76,8 @@
 <section class="py-16 bg-gray-50">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <h2 class="text-2xl font-bold text-gray-900 mb-8">Berita Terkait</h2>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <!-- Related News Item 1 -->
-            <div class="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
-                <img src="https://images.pexels.com/photos/1103829/pexels-photo-1103829.jpeg?auto=compress&cs=tinysrgb&w=400"
-                    alt="Berita Terkait 1" class="w-full h-48 object-cover">
-                <div class="p-6">
-                    <div class="text-sm text-blue-600 font-medium mb-2">10 Januari 2024</div>
-                    <h3 class="text-lg font-semibold text-gray-900 mb-2">
-                        Prestasi Membanggakan Tim Badminton Indonesia
-                    </h3>
-                    <a href="detail-berita.html?id=2" class="text-blue-600 hover:text-blue-700 font-medium text-sm">
-                        Baca Selengkapnya →
-                    </a>
-                </div>
-            </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8" id="newsGrid">
 
-            <!-- Related News Item 2 -->
-            <div class="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
-                <img src="https://images.pexels.com/photos/863988/pexels-photo-863988.jpeg?auto=compress&cs=tinysrgb&w=400"
-                    alt="Berita Terkait 2" class="w-full h-48 object-cover">
-                <div class="p-6">
-                    <div class="text-sm text-blue-600 font-medium mb-2">8 Januari 2024</div>
-                    <h3 class="text-lg font-semibold text-gray-900 mb-2">
-                        Kerjasama BAPOPSI dengan Kementerian Pendidikan
-                    </h3>
-                    <a href="detail-berita.html?id=3" class="text-blue-600 hover:text-blue-700 font-medium text-sm">
-                        Baca Selengkapnya →
-                    </a>
-                </div>
-            </div>
-
-            <!-- Related News Item 3 -->
-            <div class="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
-                <img src="https://images.pexels.com/photos/1552242/pexels-photo-1552242.jpeg?auto=compress&cs=tinysrgb&w=400"
-                    alt="Berita Terkait 3" class="w-full h-48 object-cover">
-                <div class="p-6">
-                    <div class="text-sm text-blue-600 font-medium mb-2">5 Januari 2024</div>
-                    <h3 class="text-lg font-semibold text-gray-900 mb-2">
-                        Workshop Pelatih Olahraga Pelajar Se-Indonesia
-                    </h3>
-                    <a href="detail-berita.html?id=4" class="text-blue-600 hover:text-blue-700 font-medium text-sm">
-                        Baca Selengkapnya →
-                    </a>
-                </div>
-            </div>
         </div>
     </div>
 </section>
@@ -128,15 +86,93 @@
 
 @section('script')
 <script>
+let currentFilter = 'latest'; // default filter
+let start = 0; // pagination offset
+const length = 3; // limit per fetch
+let loading = false;
 // Load news detail when page loads
 $(document).ready(function() {
-
+    loadNews();
 });
 // Copy to clipboard function
 function copyToClipboard() {
     const url = window.location.href;
     navigator.clipboard.writeText(url).then(function() {
         alert('Link berhasil disalin!');
+    });
+}
+
+function loadNews(reset = false) {
+    if (loading) return;
+    loading = true;
+    $('#loadMoreBtn').prop('disabled', true).text('Memuat...');
+
+    $.ajax({
+        url: `/api/posts/news`,
+        method: 'GET',
+        data: {
+            type: currentFilter,
+            start: start,
+            length: length
+        },
+        success: function(response) {
+            if (reset) {
+                $('#newsGrid').empty();
+            }
+
+            renderNews(response.data);
+
+            start += length;
+
+            if (response.data.length < length) {
+                $('#loadMoreBtn').hide();
+            } else {
+                $('#loadMoreBtn').show().prop('disabled', false).text('Muat Lebih Banyak');
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error('Gagal memuat berita:', error);
+            $('#loadMoreBtn').prop('disabled', false).text('Muat Lebih Banyak');
+        },
+        complete: function() {
+            loading = false;
+        }
+    });
+}
+
+function formatDate(dateStr) {
+    const options = {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+    };
+    return new Date(dateStr).toLocaleDateString('id-ID', options);
+}
+
+function stripHtml(html) {
+    return $('<div>').html(html).text();
+}
+
+function renderNews(newsArray) {
+    newsArray.forEach(news => {
+        const content = stripHtml(news.content).substring(0, 150) + '...';
+        const html = `
+                <div class="news-item bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
+                    <img src="/storage/${news.thumbnail_url}" alt="${news.title}" class="w-full h-48 object-cover">
+                    <div class="p-6 bg-white">
+                        <div class="flex justify-between items-center text-sm text-blue-600 font-medium mb-2">
+                            <span>${formatDate(news.published_at)}</span>
+                            <span>${news.category}</span>
+                        </div>
+                        <h3 class="text-lg font-semibold text-gray-900 mb-2">${news.title}</h3>
+                        <p class="text-gray-600 text-sm mb-4">${content}</p>
+                        <a href="berita/${news.slug}" class="text-blue-600 hover:text-blue-700 font-medium text-sm flex items-center">
+                            Baca Selengkapnya <i class="fas fa-arrow-right ml-2"></i>
+                        </a>
+                    </div>
+                </div>
+            `;
+        $('#newsGrid').append(html);
     });
 }
 </script>
