@@ -63,13 +63,29 @@
                         </div>
                         <div class="card-body pt-0 overflow-x-auto">
                             <div class="mb-5">
-                                <label class="form-label fw-bold">Kategori Event</label>
-                                <input type="text" class="form-control" name="name">
+                                <label class="form-label fw-bold fs-6 mb-2">Kategori Event</label>
+                                <div class="position-relative mb-3">
+                                    <select class="form-select form-select-solid" data-control="select2"
+                                        data-placeholder="-" name="cabor_id">
+                                        <option value=""></option>
+                                        @foreach($events as $event)
+                                        <option value="{{$event->id}}">{{$event->name}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
                             </div>
                             <div class="separator my-5"></div>
                             <div class="mb-5">
-                                <label class="form-label fw-bold">Cabang Olahraga</label>
-                                <input type="text" class="form-control" name="name">
+                                <label class="form-label fw-bold fs-6 mb-2">Cabang Olahraga</label>
+                                <div class="position-relative mb-3">
+                                    <select class="form-select form-select-solid" data-control="select2"
+                                        data-placeholder="-" name="cabor_id" disabled>
+                                        <option value=""></option>
+                                        @foreach($cabangOlahraga as $cabor)
+                                        <option value="{{$cabor->id}}" <?php echo (Auth::user()->group_id == 16 && Auth::user()->cabor_id == $cabor->id) ? 'selected' : '';?>>{{$cabor->name}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
                             </div>
                             <div class="separator my-5"></div>
                             <table class="table align-middle table-row-dashed fs-6 gy-5 mt-2" id="O2SN">
@@ -78,9 +94,6 @@
                                         <th class="ps-3">No</th>
                                         <th class="ps-3">Nama Lengkap</th>
                                         <th class="ps-3">Cabang Olahraga</th>
-                                        <th class="ps-3">Jenjang</th>
-                                        <th class="ps-3">Kecamatan</th>
-                                        <th class="ps-3">Sub Rayon</th>
                                         <th class="ps-3">Perolehan Medali (Juara)</th>
                                     </tr>
                                 </thead>
@@ -105,13 +118,18 @@
 $("#O2SN").DataTable({
     processing: true,
     serverSide: true,
-    paging: false,
+    paging: true,
     pageLength: 10,
     info: false,
     ajax: {
         url: `{{ route('athletes.get-lists') }}`,
         type: 'GET',
-        dataSrc: 'data'
+        data: function(d) {
+            d.eventId = 1;
+        },
+        dataSrc: function(json) {
+            return json.data;
+        }
     },
     columns: [{
             data: null,
@@ -134,21 +152,6 @@ $("#O2SN").DataTable({
             className: 'ps-3'
         },
         {
-            data: 'jenjang',
-            name: 'jenjang',
-            className: 'ps-3'
-        },
-        {
-            data: 'nama_kecamatan',
-            name: 'nama_kecamatan',
-            className: 'ps-3'
-        },
-        {
-            data: 'nama_sub_rayon',
-            name: 'nama_sub_rayon',
-            className: 'ps-3 text-center'
-        },
-        {
             data: null,
             name: 'perolehan_medali',
             orderable: false,
@@ -167,5 +170,55 @@ $("#O2SN").DataTable({
         }
     ]
 });
+
+$("#submit-form").on("click", function () {
+    let dataToSave = [];
+
+    // Loop semua select di tabel
+    $("#O2SN tbody tr").each(function () {
+        let medal = $(this).find(".perolehan-medali").val();
+        let athleteId = $(this).find(".perolehan-medali").data("id");
+
+        if (athleteId) {
+            dataToSave.push({
+                athlete_id: athleteId,
+                medal: medal
+            });
+        }
+    });
+
+    // Kirim via AJAX
+    $.ajax({
+        url: "{{ route('perolehan-medali.saveAll') }}", // bikin route untuk batch save
+        type: "POST",
+        data: {
+            _token: "{{ csrf_token() }}", // wajib untuk Laravel
+            data: dataToSave
+        },
+        success: function (res) {
+            if (res.success) {
+                Swal.fire({
+                    icon: "success",
+                    title: "Berhasil",
+                    text: "Data perolehan medali berhasil disimpan"
+                });
+            } else {
+                Swal.fire({
+                    icon: "error",
+                    title: "Gagal",
+                    text: "Tidak bisa menyimpan data"
+                });
+            }
+        },
+        error: function () {
+            Swal.fire({
+                icon: "error",
+                title: "Error",
+                text: "Terjadi kesalahan server"
+            });
+        }
+    });
+});
+
 </script>
 @endsection

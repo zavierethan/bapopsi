@@ -657,12 +657,12 @@ class EventRegistrationController extends Controller
             ->leftJoin('sub_rayon', 'sub_rayon.id', '=', 'event_registrations.sub_rayon_id');
 
         if ($request->filled('eventCategory')) {
-            $query->where('events.event_category_id', $request->eventCategory);
+            $query->where('events.event_category_id', 1);
         }
 
-        if ($request->filled('tahun')) {
-            $query->where('events.year', $request->tahun);
-        }
+        // if ($request->filled('tahun')) {
+        //     $query->where('events.year', $request->tahun);
+        // }
 
         $data = $query->orderBy('sports.name')->get();
 

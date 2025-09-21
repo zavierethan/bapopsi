@@ -28,9 +28,9 @@
         <div class="text-center mb-12">
             <h2 class="text-3xl font-bold text-gray-900 mb-4">Rekapitulasi Perolehan Medali</h2>
         </div>
-        <div class="flex border-b border-gray-200 mb-8">
+        <div class="flex border-b border-gray-200 mb-8 overflow-x-auto no-scrollbar">
             <button
-                class="tab-btn px-6 py-3 font-semibold text-blue-600 border-b-4 border-blue-600 font-bold transition-all duration-300 ease-in-out rounded-t-lg"
+                class="tab-btn px-6 py-3 font-semibold text-blue-600 hover:text-blue-600 hover:border-blue-400 border-b-4 border-transparent font-bold transition-all duration-300 ease-in-out rounded-t-lg"
                 data-tab="o2sn">
                 O2SN
             </button>
@@ -43,6 +43,11 @@
                 class="tab-btn px-6 py-3 font-semibold text-gray-600 hover:text-blue-600 hover:border-blue-400 border-b-4 border-transparent font-bold transition-all duration-300 ease-in-out rounded-t-lg"
                 data-tab="popwill">
                 POPWIL
+            </button>
+            <button
+                class="tab-btn px-6 py-3 font-semibold text-gray-600 hover:text-blue-600 hover:border-blue-400 border-b-4 border-transparent font-bold transition-all duration-300 ease-in-out rounded-t-lg"
+                data-tab="jadwal">
+                Jadwal Pertandingan
             </button>
         </div>
 
@@ -257,6 +262,61 @@
                 </div>
             </div>
         </div>
+
+        <div id="tab-jadwal" class="tab-content hidden">
+            <div class="flex flex-col md:flex-row md:items-end justify-between mb-6 gap-4">
+                <div class="flex flex-col md:flex-row gap-4">
+                    <div>
+                        <label for="cabor" class="block text-sm font-medium text-gray-700 mb-1">Cabang Olahraga</label>
+                        <select id="cabor-id" name="cabor_id"
+                            class="cabor w-full md:w-60 border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                            <option value="">SEMUA</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Filter Button -->
+                <div>
+                    <button type="button" id="filter-btn-jadwal"
+                        class="bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700 text-sm shadow">
+                        Filter
+                    </button>
+                </div>
+            </div>
+
+            <!-- Medal Table -->
+            <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+                <div class="px-6 py-4 bg-gray-50 border-b">
+                    <h3 class="text-lg font-semibold text-gray-900">Jadwal Pertandingan</h3>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="min-w-full">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th
+                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase whitespace-nowrap">
+                                    Tanggal
+                                </th>
+                                <th
+                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase whitespace-nowrap">
+                                    Tempat
+                                </th>
+                                <th
+                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase whitespace-nowrap">
+                                    Cabang olahraga
+                                </th>
+                                <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase whitespace-nowrap">
+                                    Kategori
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody id="jadwal-pertandingan" class="bg-white divide-y divide-gray-200">
+                            <!-- Rows via jQuery -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
     </div>
 </section>
 
@@ -359,6 +419,7 @@ $(document).ready(function() {
     loadNews();
     loadGaleries(true);
     getCabor();
+    loadJadwalPertandinganTable();
 
     $('#o2sn-smp-table').hide();
     $('#jenjang').on('change', function() {
@@ -380,6 +441,12 @@ $(document).ready(function() {
     $('#caborPopwil').on('change', function() {
         let cabangOlahraga = $(this).val();
         loadPOPWILMedalTable(cabangOlahraga);
+    });
+
+    $('#filter-btn-jadwal').on('click', function() {
+        let cabangOlahragaId = $('#tab-jadwal #cabor-id').val();
+        let eventId = $('#tab-jadwal #event-id').val();
+        loadJadwalPertandinganTable(cabangOlahragaId, eventId);
     });
 });
 
@@ -771,6 +838,38 @@ function loadPOPWILMedalTable(cabangOlahragaId = '') {
         },
         error: function() {
             $('#medalPOPWILTableBody').html(
+                '<tr><td colspan="5" class="text-center text-red-500 py-4">Gagal memuat data.</td></tr>'
+            );
+        }
+    });
+}
+
+function loadJadwalPertandinganTable(cabangOlahragaId = '', eventId = '') {
+    $.ajax({
+        url: '/api/getJadwalPertandingan',
+        method: 'GET',
+        data: {
+            caborId: cabangOlahragaId,
+            eventId: 1
+        },
+        success: function(response) {
+            let rows = '';
+
+            $.each(response.data, function(i, item) {
+                rows += `
+                    <tr>
+                        <td class="px-6 py-4 text-xs font-semibold">${escapeHtml(item.date)}</td>
+                        <td class="px-6 py-4 text-xs font-semibold">${escapeHtml(item.tempat)}</td>
+                        <td class="px-6 py-4 text-xs font-semibold">${escapeHtml(item.cabor)}</td>
+                        <td class="px-6 py-4 text-xs font-bold text-center">${escapeHtml(item.kategori)}</td>
+                    </tr>
+                `;
+            });
+
+            $('#jadwal-pertandingan').html(rows);
+        },
+        error: function() {
+            $('#jadwal-pertandingan').html(
                 '<tr><td colspan="5" class="text-center text-red-500 py-4">Gagal memuat data.</td></tr>'
             );
         }

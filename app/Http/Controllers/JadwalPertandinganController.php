@@ -31,6 +31,7 @@ class JadwalPertandinganController extends Controller
                 DB::raw("TO_CHAR(jadwal_pertandingan.tanggal, 'DD/MM/YYYY') AS date")
             )
             ->leftJoin('events', 'events.id', '=', 'jadwal_pertandingan.event_id')
+            ->leftJoin('event_categories', 'event_categories.id', '=', 'events.event_category_id')
             ->leftJoin('sports', 'sports.id', '=', 'jadwal_pertandingan.cabor_id')
             ->leftJoin('sport_classes', 'sport_classes.id', '=', 'jadwal_pertandingan.nomor_pertandingan');
 
@@ -40,6 +41,16 @@ class JadwalPertandinganController extends Controller
         // Apply filters
         if (!empty($request->query('eventStatus'))) {
             $baseQuery->where('events.status', $request->query('eventStatus'));
+        }
+
+        // Apply filters
+        if (!empty($request->query('caborId'))) {
+            $baseQuery->where('sports.id', $request->query('caborId'));
+        }
+
+        // Apply filters
+        if (!empty($request->query('eventId'))) {
+            $baseQuery->where('events.event_category_id', $request->query('eventId'));
         }
 
         if (!empty($searchValue)) {
@@ -55,7 +66,7 @@ class JadwalPertandinganController extends Controller
 
         // Pagination & ordering
         $data = $baseQuery
-            ->orderBy('jadwal_pertandingan.id', 'desc')
+            ->orderBy('jadwal_pertandingan.tanggal', 'desc')
             ->skip($start)
             ->take($length)
             ->get();
@@ -68,8 +79,6 @@ class JadwalPertandinganController extends Controller
             'data' => $data,
         ]);
     }
-
-
 
     public function create() {
 

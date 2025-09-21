@@ -124,8 +124,6 @@
                                                 class="img-thumbnail preview-pas-foto"
                                                 style="width: 300px; height: 300px; object-fit: cover;">
                                         </div>
-                                        <!-- <input type="file" name="atlets[{{ $atlet->id }}][pas_foto]" accept="image/*"
-                                            class="form-control input-pas-foto"> -->
                                     </div>
 
                                     <!-- Biodata -->

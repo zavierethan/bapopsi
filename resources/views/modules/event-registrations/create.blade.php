@@ -48,10 +48,10 @@
                                 <div class="col-md-6 mb-4">
                                     <label class="form-label fw-bold fs-6">Cabang Olahraga</label>
                                     <select name="cabang_olahraga_id" class="form-select form-select-solid"
-                                        data-control="select2" id="cabor-id">
+                                        data-control="select2" id="cabor-id" <?php echo (Auth::user()->group_id == 16) ? 'disabled' : '';?>>
                                         <option value="">Pilih Cabang</option>
                                         @foreach($cabangOlahraga as $cabor)
-                                        <option value="{{ $cabor->id }}">{{ $cabor->name }}</option>
+                                        <option value="{{ $cabor->id }}" <?php echo (Auth::user()->group_id == 16 && Auth::user()->cabor_id == $cabor->id) ? 'selected' : '';?>>{{ $cabor->name }}</option>
                                         @endforeach
                                     </select>
                                 </div>

@@ -32,6 +32,8 @@ Route::get('/getSubRayonMedalSummary', [App\Http\Controllers\EventRegistrationCo
 Route::get('/getPOPDAMedalSummary', [App\Http\Controllers\EventRegistrationController::class, 'getPOPDAMedalSummary']);
 Route::get('/getPOPWILMedalSummary', [App\Http\Controllers\EventRegistrationController::class, 'getPOPWILMedalSummary']);
 
+Route::get('/getJadwalPertandingan', [App\Http\Controllers\JadwalPertandinganController::class, 'getLists']);
+
 Route::get('/getAtletByKecamatan', [App\Http\Controllers\EventRegistrationController::class, 'getAtletByKecamatan']);
 Route::get('/getAtletBySubRayon', [App\Http\Controllers\EventRegistrationController::class, 'getAtletBySubRayon']);
 

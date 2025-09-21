@@ -112,6 +112,7 @@ Route::group(['middleware' => ['auth']], function() {
             Route::get('/create', [App\Http\Controllers\PerolehanMedaliController::class, 'create'])->name('create');
             Route::get('/create2', [App\Http\Controllers\PerolehanMedaliController::class, 'create2'])->name('create2');
             Route::post('/save', [App\Http\Controllers\PerolehanMedaliController::class, 'save'])->name('save');
+            Route::post('/saveAll', [App\Http\Controllers\PerolehanMedaliController::class, 'saveAll'])->name('saveAll');
             Route::get('/detail/{id}', [App\Http\Controllers\PerolehanMedaliController::class, 'edit'])->name('edit');
             Route::post('/update/{id}', [App\Http\Controllers\PerolehanMedaliController::class, 'update'])->name('update');
 

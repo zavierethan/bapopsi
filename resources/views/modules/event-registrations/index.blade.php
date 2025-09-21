@@ -12,7 +12,7 @@
                 <div class="page-title d-flex flex-column justify-content-center flex-wrap me-3">
                     <!--begin::Title-->
                     <h1 class="page-heading d-flex text-gray-900 fw-bold fs-3 flex-column justify-content-center my-0">
-                        Registrations</h1>
+                        Event Registrations</h1>
                     <!--end::Title-->
                     <!--begin::Breadcrumb-->
                     <ul class="breadcrumb breadcrumb-separatorless fw-semibold fs-7 my-0 pt-1">
@@ -36,7 +36,10 @@
                 <!--begin::Actions-->
                 <div class="d-flex align-items-center gap-2 gap-lg-3">
                     <!--begin::Primary button-->
+                    @if(Auth::user()->group_id == 15 || Auth::user()->group_id == 16)
                     <a href="{{route('event-registrations.create')}}" class="btn btn-sm fw-bold btn-primary">New</a>
+                    @endif
+
                     <!--end::Primary button-->
                 </div>
                 <!--end::Actions-->
@@ -64,7 +67,7 @@
                                         <a class="nav-link {{ Auth::user()->group_id == 14 || Auth::user()->group_id == 15 ? 'active' : '' }}" data-bs-toggle="tab" href="#tab_o2sn">O2SN</a>
                                     </li>
                                     @endif
-                                    @if(Auth::user()->group_id == 16)
+                                    @if(Auth::user()->group_id == 15)
                                     <li class="nav-item">
                                         <a class="nav-link {{ Auth::user()->group_id == 16 ? 'active' : '' }}" data-bs-toggle="tab" href="#tab_popsi">POPDA</a>
                                     </li>
@@ -127,7 +130,7 @@
                                                         Kecamatan</div>
                                                     <select
                                                         class="form-select form-select-transparent text-graY-800 fs-base lh-1 fw-bold py-0 ps-3 w-auto"
-                                                        data-control="select2" data-hide-search="true"
+                                                        data-control="select2" data-hide-search="false"
                                                         data-dropdown-css-class="w-150px"
                                                         data-placeholder="Select an option" id="kecamatan">
                                                         <option value=" " selected="selected">Semua</option>
@@ -158,7 +161,7 @@
                                                     </div>
                                                     <select
                                                         class="form-select form-select-transparent text-gray-900 fs-7 lh-1 fw-bold py-0 ps-3 w-auto"
-                                                        data-control="select2" data-hide-search="true"
+                                                        data-control="select2" data-hide-search="false"
                                                         data-dropdown-css-class="w-150px"
                                                         data-placeholder="Select an option" id="cabang-olahraga">
                                                         <option value=" " selected="selected">Semua</option>
@@ -367,8 +370,9 @@
 
 @section('script')
 <script>
-$("#filterKecamatan").hide();
-
+$(document).ready(function() {
+    $("#filterKecamatan").hide();
+});
 $(document).on("click", "#popdaTahun", function() {
     alert("Button clicked with .on!");
 });
