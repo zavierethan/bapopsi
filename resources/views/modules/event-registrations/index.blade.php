@@ -36,8 +36,12 @@
                 <!--begin::Actions-->
                 <div class="d-flex align-items-center gap-2 gap-lg-3">
                     <!--begin::Primary button-->
-                    @if(Auth::user()->group_id == 15 || Auth::user()->group_id == 16)
+                    @if(Auth::user()->group_id == 1)
                     <a href="{{route('event-registrations.create')}}" class="btn btn-sm fw-bold btn-primary">New</a>
+                    @else
+                        @if(Auth::user()->group_id == 15 || Auth::user()->group_id == 16)
+                        <a href="{{route('event-registrations.create')}}" class="btn btn-sm fw-bold btn-primary">New</a>
+                        @endif
                     @endif
 
                     <!--end::Primary button-->
@@ -62,6 +66,18 @@
                             <div class="card-title">
                                 <!-- Tabs -->
                                 <ul class="nav nav-tabs nav-line-tabs mb-5 fs-6">
+
+                                @if(Auth::user()->group_id == 1)
+                                    <li class="nav-item">
+                                        <a class="nav-link active" data-bs-toggle="tab" href="#tab_o2sn">O2SN</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" data-bs-toggle="tab" href="#tab_popsi">POPDA</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" data-bs-toggle="tab" href="#tab_popwill">POPWIL</a>
+                                    </li>
+                                @else
                                     @if(Auth::user()->group_id == 14 || Auth::user()->group_id == 15)
                                     <li class="nav-item">
                                         <a class="nav-link {{ Auth::user()->group_id == 14 || Auth::user()->group_id == 15 ? 'active' : '' }}" data-bs-toggle="tab" href="#tab_o2sn">O2SN</a>
@@ -75,6 +91,7 @@
                                         <a class="nav-link" data-bs-toggle="tab" href="#tab_popwill">POPWIL</a>
                                     </li>
                                     @endif
+                                @endif
                                 </ul>
                             </div>
                         </div>

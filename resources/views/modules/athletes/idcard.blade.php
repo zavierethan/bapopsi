@@ -123,7 +123,7 @@
             {{ $atlet->cabang_olahraga }} - {{ $atlet->asal ?? ($atlet->nama_sekolah ?? '-') }}
         </div>
         <div class="idcard-id">
-            ID: {{ 'PORDA-' . str_pad($atlet->id, 5, '0', STR_PAD_LEFT) }}
+            ID: {{ $atlet->register_number }}
         </div>
         <div class="idcard-qr">
             <div id="qrcode"></div>

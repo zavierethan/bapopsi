@@ -303,6 +303,7 @@ class AthleteController extends Controller
         $atlet = DB::table('atlet')
             ->select(
                 'atlet.*',
+                'event_registrations.register_number',
                 'events.name as nama_event',
                 'sports.name as cabang_olahraga'
             )
