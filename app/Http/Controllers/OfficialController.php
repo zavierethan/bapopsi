@@ -9,14 +9,12 @@ use Auth;
 class OfficialController extends Controller
 {
     public function index() {
-        return view('modules.officials.index');
+        $cabor = DB::table('sports')->get();
+        return view('modules.officials.index', compact('cabor'));
     }
 
     public function getLists(Request $request) {
-
-        $searchValue = $request->input('search.value');
-        $start = $request->input('start', 0);
-        $length = $request->input('length', 10);
+        $params = $request->all();
 
         $query = DB::table('officials')
             ->select(
@@ -48,10 +46,24 @@ class OfficialController extends Controller
             ->leftJoin('kecamatan', 'kecamatan.id', '=', 'event_registrations.kecamatan_id')
             ->leftJoin('sub_rayon', 'sub_rayon.id', '=', 'event_registrations.sub_rayon_id');
 
-        $totalRecords = $query->count();
+        if (isset($params['status']) && $params['status'] !== '') {
+            if ($params['status'] === 'waiting') {
+                $query->whereNull('officials.appr_status');
+            } else {
+                $query->where('officials.appr_status', $params['status']);
+            }
+        }
+
+        if (!empty($params['caborId'])) {
+            $query->where('event_registrations.sport_id', $params['caborId']);
+        }
+
+        $searchValue = $request->input('search.value');
 
         if (!empty($searchValue)) {
-            $query->where('officials.nama', 'like', '%' . $searchValue . '%');
+            $query->where(function ($q) use ($searchValue) {
+                $q->whereRaw('UPPER(officials.nama) LIKE ?', ['%' . strtoupper($searchValue) . '%']);
+            });
         }
 
         $user = Auth::user();
@@ -60,18 +72,18 @@ class OfficialController extends Controller
             $query->where('officials.created_by', $user->id);
         }
 
-        $filteredRecords = $query->count();
+        $start = $request->input('start', 0);
+        $length = $request->input('length', 10);
 
-        $data = $query->orderBy('officials.id', 'desc')
-                    ->skip($start)
-                    ->take($length)
-                    ->get();
+        $totalRecords = DB::table('officials')->count(); // tanpa filter
+        $filteredRecords = $query->count(); // setelah filter
+        $data = $query->orderBy('officials.id', 'desc')->skip($start)->take($length)->get();
 
         return response()->json([
-            'draw' => intval($request->input('draw')),
+            'draw' => $request->input('draw'),
             'recordsTotal' => $totalRecords,
             'recordsFiltered' => $filteredRecords,
-            'data' => $data,
+            'data' => $data
         ]);
     }
 

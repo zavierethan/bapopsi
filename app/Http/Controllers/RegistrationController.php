@@ -30,14 +30,23 @@ class RegistrationController extends Controller
             ->leftJoin('kecamatan', 'kecamatan.id', '=', 'registration_requests.kecamatan_id')
             ->leftJoin('sub_rayon', 'sub_rayon.id', '=', 'registration_requests.sub_rayon_id');
 
-        if (!empty($params['nama_lengkap'])) {
-            $query->where('registration_requests.nama_lengkap', $params['name']);
+        if (isset($params['status']) && $params['status'] !== '') {
+            if ($params['status'] === 'waiting') {
+                $query->whereNull('registration_requests.approval_status');
+            } else {
+                $query->where('registration_requests.approval_status', $params['status']);
+            }
+        }
+
+        if (!empty($params['jenjang'])) {
+            $query->where('registration_requests.jenjang', $params['jenjang']);
         }
 
         $searchValue = $request->input('search.value');
+
         if (!empty($searchValue)) {
             $query->where(function ($q) use ($searchValue) {
-                $q->where('registration_requests.nama_lengkap', 'like', '%' . strtoupper($searchValue) . '%');
+                $q->whereRaw('UPPER(registration_requests.nama_lengkap) LIKE ?', ['%' . strtoupper($searchValue) . '%']);
             });
         }
 

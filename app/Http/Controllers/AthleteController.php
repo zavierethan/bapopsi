@@ -14,7 +14,8 @@ use Auth;
 class AthleteController extends Controller
 {
     public function index() {
-        return view('modules.athletes.index');
+        $cabor = DB::table('sports')->get();
+        return view('modules.athletes.index', compact('cabor'));
     }
 
     public function getLists(Request $request){
@@ -59,14 +60,23 @@ class AthleteController extends Controller
             $query->where('event_registrations.jenjang', $params['jenjang']);
         }
 
-        if (!empty($params['caborId']) && $params['caborId'] !== ' ') {
-            $query->where('atlet.cabang_olahraga_id', $params['caborId']);
+        if (isset($params['status']) && $params['status'] !== '') {
+            if ($params['status'] === 'waiting') {
+                $query->whereNull('atlet.appr_status');
+            } else {
+                $query->where('atlet.appr_status', $params['status']);
+            }
+        }
+
+        if (!empty($params['caborId'])) {
+            $query->where('event_registrations.sport_id', $params['caborId']);
         }
 
         $searchValue = $request->input('search.value');
+
         if (!empty($searchValue)) {
             $query->where(function ($q) use ($searchValue) {
-                $q->where('atlet.nama_lengkap', 'like', '%' . strtoupper($searchValue) . '%');
+                $q->whereRaw('UPPER(atlet.nama_lengkap) LIKE ?', ['%' . strtoupper($searchValue) . '%']);
             });
         }
 
