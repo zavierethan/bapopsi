@@ -79,7 +79,7 @@
                                 <label class="form-label fw-bold fs-6 mb-2">Cabang Olahraga</label>
                                 <div class="position-relative mb-3">
                                     <select class="form-select form-select-solid" data-control="select2"
-                                        data-placeholder="-" name="cabor_id" disabled>
+                                        data-placeholder="-" name="cabor_id" id="cabor_id" disabled>
                                         <option value=""></option>
                                         @foreach($cabangOlahraga as $cabor)
                                         <option value="{{$cabor->id}}" <?php echo (Auth::user()->group_id == 16 && Auth::user()->cabor_id == $cabor->id) ? 'selected' : '';?>>{{$cabor->name}}</option>
@@ -118,7 +118,7 @@
 $("#O2SN").DataTable({
     processing: true,
     serverSide: true,
-    paging: true,
+    paging: false,
     pageLength: 10,
     info: false,
     ajax: {
@@ -126,6 +126,7 @@ $("#O2SN").DataTable({
         type: 'GET',
         data: function(d) {
             d.eventId = 1;
+            d.caborId = $("#cabor_id").val();
         },
         dataSrc: function(json) {
             return json.data;

@@ -59,6 +59,10 @@ class AthleteController extends Controller
             $query->where('event_registrations.jenjang', $params['jenjang']);
         }
 
+        if (!empty($params['caborId']) && $params['caborId'] !== ' ') {
+            $query->where('atlet.cabang_olahraga_id', $params['caborId']);
+        }
+
         $searchValue = $request->input('search.value');
         if (!empty($searchValue)) {
             $query->where(function ($q) use ($searchValue) {

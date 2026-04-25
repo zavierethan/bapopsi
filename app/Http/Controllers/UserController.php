@@ -11,7 +11,8 @@ use Auth;
 class UserController extends Controller
 {
     public function index() {
-        return view('modules.accounts.user.index');
+        $groups = DB::table('groups')->get();
+        return view('modules.accounts.user.index', compact('groups'));
     }
 
     public function getLists(Request $request) {
@@ -42,6 +43,18 @@ class UserController extends Controller
                 ->orWhere('users.email', 'like', '%' . $searchValue . '%')
                 ->orWhere('groups.name', 'like', '%' . $searchValue . '%');
             });
+        }
+
+        // Apply group filter if provided
+        $groupId = $request->input('group_id');
+        if (!empty($groupId)) {
+            $query->where('users.group_id', $groupId);
+        }
+
+        // Apply status filter if provided
+        $isActive = $request->input('is_active');
+        if ($isActive !== null && $isActive !== '') {
+            $query->where('users.is_active', $isActive);
         }
 
         // Get total and filtered records count

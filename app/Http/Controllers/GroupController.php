@@ -12,6 +12,11 @@ class GroupController extends Controller
         return view('modules.accounts.group.index');
     }
 
+    public function getListSimple() {
+        $groups = DB::table('groups')->get();
+        return response()->json($groups);
+    }
+
     public function getLists(Request $request){
         $params = $request->all();
 

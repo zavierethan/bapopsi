@@ -178,6 +178,7 @@ Route::group(['middleware' => ['auth']], function() {
         Route::name('groups.')->group(function () {
             Route::get('/', [App\Http\Controllers\GroupController::class, 'index'])->name('index');
             Route::get('/lists', [App\Http\Controllers\GroupController::class, 'getLists'])->name('get-lists');
+            Route::get('/list-simple', [App\Http\Controllers\GroupController::class, 'getListSimple'])->name('get-list');
             Route::get('/create', [App\Http\Controllers\GroupController::class, 'create'])->name('create');
             Route::post('/save', [App\Http\Controllers\GroupController::class, 'save'])->name('save');
             Route::get('/edit/{groupId}', [App\Http\Controllers\GroupController::class, 'edit'])->name('edit');

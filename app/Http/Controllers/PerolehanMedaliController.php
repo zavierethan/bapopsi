@@ -80,7 +80,7 @@ class PerolehanMedaliController extends Controller
 
     public function create() {
         $cabangOlahraga = DB::table('sports')->get();
-        $events = DB::table('events')->get();
+        $events = DB::table('event_categories')->get();
         return view('modules.perolehan-medali.create', compact('cabangOlahraga', 'events'));
     }
 
