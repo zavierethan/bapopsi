@@ -192,7 +192,7 @@
                                 <div class="cursor-pointer symbol symbol-35px"
                                     data-kt-menu-trigger="{default: 'click', lg: 'hover'}" data-kt-menu-attach="parent"
                                     data-kt-menu-placement="bottom-end">
-                                    <img src="{{asset('assets/media/avatars/300-3.jpg')}}" class="rounded-3"
+                                    <img src="{{asset('assets/media/avatars/blank.png')}}" class="rounded-3"
                                         alt="user" />
                                 </div>
                                 <!--begin::User account menu-->
@@ -203,7 +203,7 @@
                                         <div class="menu-content d-flex align-items-center px-3">
                                             <!--begin::Avatar-->
                                             <div class="symbol symbol-50px me-5">
-                                                <img alt="Logo" src="{{asset('assets/media/avatars/300-3.jpg')}}" />
+                                                <img alt="Logo" src="{{asset('assets/media/avatars/blank.png')}}" />
                                             </div>
                                             <!--end::Avatar-->
                                             <!--begin::Username-->
