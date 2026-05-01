@@ -311,26 +311,36 @@ $(document).on('click', '.btn-approve', function() {
     });
 });
 
-
 $(document).on('click', '.btn-reject', function() {
     const id = $(this).data('id');
 
     Swal.fire({
         title: 'Tolak Atlet?',
-        text: "Apakah kamu yakin ingin menolak atlet ini?",
+        text: "Masukkan alasan penolakan atlet ini:",
         icon: 'warning',
+        input: 'textarea',
+        inputPlaceholder: 'Contoh: Dokumen tidak lengkap...',
+        inputAttributes: {
+            'aria-label': 'Masukkan alasan penolakan'
+        },
         showCancelButton: true,
         confirmButtonColor: '#d33',
         cancelButtonColor: '#6c757d',
         confirmButtonText: 'Ya, Tolak!',
-        cancelButtonText: 'Batal'
+        cancelButtonText: 'Batal',
+        inputValidator: (value) => {
+            if (!value) {
+                return 'Alasan penolakan wajib diisi!';
+            }
+        }
     }).then((result) => {
         if (result.isConfirmed) {
             $.ajax({
                 url: `/athletes/reject/${id}`,
                 type: 'POST',
                 data: {
-                    _token: '{{ csrf_token() }}'
+                    _token: '{{ csrf_token() }}',
+                    reason: result.value
                 },
                 success: function() {
                     Swal.fire({
@@ -340,7 +350,8 @@ $(document).on('click', '.btn-reject', function() {
                         timer: 2000,
                         showConfirmButton: false
                     });
-                    $('#kt_groups_table').DataTable().ajax.reload();
+
+                    location.href = location.href;
                 },
                 error: function(xhr) {
                     console.error(xhr.responseText);
@@ -354,6 +365,7 @@ $(document).on('click', '.btn-reject', function() {
         }
     });
 });
+
 
 $(document).on('click', '.btn-print-id-card', function() {
     const atletId = $(this).data('id');
