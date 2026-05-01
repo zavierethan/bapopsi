@@ -28,26 +28,27 @@
         <div class="text-center mb-12">
             <h2 class="text-3xl font-bold text-gray-900 mb-4">Rekapitulasi Perolehan Medali</h2>
         </div>
-        <div class="flex border-b border-gray-200 mb-8 overflow-x-auto no-scrollbar">
+        <!-- Responsive Tabs -->
+        <div class="grid grid-cols-2 md:flex md:flex-wrap md:justify-center gap-2 md:gap-3 mb-8">
             <button
-                class="tab-btn px-6 py-3 font-semibold text-blue-600 hover:text-blue-600 hover:border-blue-400 border-b-4 border-transparent font-bold transition-all duration-300 ease-in-out rounded-t-lg"
+                class="tab-btn w-full md:w-auto px-3 py-2 md:px-4 md:py-3 bg-blue-600 text-white rounded-lg shadow-md hover:bg-blue-700 transition-all duration-300 font-semibold text-center text-sm md:text-base"
                 data-tab="o2sn">
                 O2SN
             </button>
             <button
-                class="tab-btn px-6 py-3 font-semibold text-gray-600 hover:text-blue-600 hover:border-blue-400 border-b-4 border-transparent font-bold transition-all duration-300 ease-in-out rounded-t-lg"
+                class="tab-btn w-full md:w-auto px-3 py-2 md:px-4 md:py-3 bg-gray-200 text-gray-700 rounded-lg shadow-md hover:bg-blue-50 hover:text-blue-600 transition-all duration-300 font-semibold text-center text-sm md:text-base"
                 data-tab="popda">
                 POPDA
             </button>
             <button
-                class="tab-btn px-6 py-3 font-semibold text-gray-600 hover:text-blue-600 hover:border-blue-400 border-b-4 border-transparent font-bold transition-all duration-300 ease-in-out rounded-t-lg"
+                class="tab-btn w-full md:w-auto px-3 py-2 md:px-4 md:py-3 bg-gray-200 text-gray-700 rounded-lg shadow-md hover:bg-blue-50 hover:text-blue-600 transition-all duration-300 font-semibold text-center text-sm md:text-base"
                 data-tab="popwill">
                 POPWIL
             </button>
             <button
-                class="tab-btn px-6 py-3 font-semibold text-gray-600 hover:text-blue-600 hover:border-blue-400 border-b-4 border-transparent font-bold transition-all duration-300 ease-in-out rounded-t-lg"
+                class="tab-btn w-full md:w-auto px-3 py-2 md:px-4 md:py-3 bg-gray-200 text-gray-700 rounded-lg shadow-md hover:bg-blue-50 hover:text-blue-600 transition-all duration-300 font-semibold text-center text-sm md:text-base"
                 data-tab="jadwal">
-                Jadwal Pertandingan
+                Jadwal
             </button>
         </div>
 
@@ -73,33 +74,21 @@
                 </div>
             </div>
 
-            <!-- Medal Table -->
-            <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+            <!-- Medal Table/Card for SD -->
+            <div class="bg-white rounded-lg shadow-lg overflow-hidden" id="o2sn-sd-table">
                 <div class="px-6 py-4 bg-gray-50 border-b">
-                    <h3 class="text-lg font-semibold text-gray-900">Perolehan Medali (O2SN)</h3>
+                    <h3 class="text-lg font-semibold text-gray-900">Perolehan Medali (O2SN - SD)</h3>
                 </div>
-                <div class="table-responsive" id="o2sn-sd-table">
+                <!-- Desktop Table -->
+                <div class="hidden md:block table-responsive">
                     <table class="w-full">
                         <thead class="bg-gray-50">
                             <tr>
-                                <th
-                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Kecamatan</th>
-                                <th
-                                    class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    <i class="fas fa-medal text-yellow-500"></i> Emas
-                                </th>
-                                <th
-                                    class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    <i class="fas fa-medal text-gray-400"></i> Perak
-                                </th>
-                                <th
-                                    class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    <i class="fas fa-medal text-orange-500"></i> Perunggu
-                                </th>
-                                <th
-                                    class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Total</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Kecamatan</th>
+                                <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"><i class="fas fa-medal text-yellow-500"></i> Emas</th>
+                                <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"><i class="fas fa-medal text-gray-400"></i> Perak</th>
+                                <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"><i class="fas fa-medal text-orange-500"></i> Perunggu</th>
+                                <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Total</th>
                             </tr>
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200" id="medalTableBody">
@@ -108,29 +97,26 @@
                         </tfoot>
                     </table>
                 </div>
+                <!-- Mobile Cards -->
+                <div class="md:hidden px-4 py-4 space-y-4" id="medalCardsSD">
+                </div>
+            </div>
 
-                <div class="table-responsive" id="o2sn-smp-table">
+            <!-- Medal Table/Card for SMP -->
+            <div class="bg-white rounded-lg shadow-lg overflow-hidden mt-6 hidden" id="o2sn-smp-table">
+                <div class="px-6 py-4 bg-gray-50 border-b">
+                    <h3 class="text-lg font-semibold text-gray-900">Perolehan Medali (O2SN - SMP)</h3>
+                </div>
+                <!-- Desktop Table -->
+                <div class="hidden md:block table-responsive">
                     <table class="w-full">
                         <thead class="bg-gray-50">
                             <tr>
-                                <th
-                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Sub Rayon</th>
-                                <th
-                                    class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    <i class="fas fa-medal text-yellow-500"></i> Emas
-                                </th>
-                                <th
-                                    class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    <i class="fas fa-medal text-gray-400"></i> Perak
-                                </th>
-                                <th
-                                    class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    <i class="fas fa-medal text-orange-500"></i> Perunggu
-                                </th>
-                                <th
-                                    class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Total</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Sub Rayon</th>
+                                <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"><i class="fas fa-medal text-yellow-500"></i> Emas</th>
+                                <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"><i class="fas fa-medal text-gray-400"></i> Perak</th>
+                                <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"><i class="fas fa-medal text-orange-500"></i> Perunggu</th>
+                                <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Total</th>
                             </tr>
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200" id="medalSubRayonTableBody">
@@ -138,6 +124,9 @@
                         <tfoot class="bg-gray-100" id="medalSubRayonTableFooter">
                         </tfoot>
                     </table>
+                </div>
+                <!-- Mobile Cards -->
+                <div class="md:hidden px-4 py-4 space-y-4 hidden" id="medalCardsSMP">
                 </div>
             </div>
         </div>
@@ -165,34 +154,21 @@
                 </div>
             </div>
 
-            <!-- Medal Table -->
+            <!-- Medal Table/Card -->
             <div class="bg-white rounded-lg shadow-lg overflow-hidden">
                 <div class="px-6 py-4 bg-gray-50 border-b">
                     <h3 class="text-lg font-semibold text-gray-900">Perolehan Medali (POPDA)</h3>
                 </div>
-                <div class="table-responsive">
+                <!-- Desktop Table -->
+                <div class="hidden md:block table-responsive">
                     <table class="w-full">
                         <thead class="bg-gray-50">
                             <tr>
-                                <th
-                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">
-                                    Nama Atlet
-                                </th>
-                                <th
-                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase whitespace-nowrap">
-                                    Cabang Olahraga
-                                </th>
-                                <th
-                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase whitespace-nowrap">
-                                    No. Kelas Pertandingan
-                                </th>
-                                <th
-                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase whitespace-nowrap">
-                                    Asal Sekolah
-                                </th>
-                                <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase whitespace-nowrap">
-                                    Perolehan Medali (Juara)
-                                </th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">Nama Atlet</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase whitespace-nowrap">Cabang Olahraga</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase whitespace-nowrap">No. Kelas Pertandingan</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase whitespace-nowrap">Asal Sekolah</th>
+                                <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase whitespace-nowrap">Perolehan Medali (Juara)</th>
                             </tr>
                         </thead>
                         <tbody id="medalPOPDATableBody" class="bg-white divide-y divide-gray-200">
@@ -200,8 +176,12 @@
                         </tbody>
                     </table>
                 </div>
+                <!-- Mobile Cards -->
+                <div class="md:hidden px-4 py-4 space-y-4" id="medalCardsPOPDA">
+                </div>
             </div>
         </div>
+
         <div id="tab-popwill" class="tab-content hidden">
             <div class="flex flex-col md:flex-row md:items-end justify-between mb-6 gap-4">
                 <div class="flex flex-col md:flex-row gap-4">
@@ -225,40 +205,30 @@
                 </div>
             </div>
 
-            <!-- Medal Table -->
+            <!-- Medal Table/Card -->
             <div class="bg-white rounded-lg shadow-lg overflow-hidden">
                 <div class="px-6 py-4 bg-gray-50 border-b">
                     <h3 class="text-lg font-semibold text-gray-900">Perolehan Medali (POPWIL)</h3>
                 </div>
-                <div class="overflow-x-auto">
+                <!-- Desktop Table -->
+                <div class="hidden md:block overflow-x-auto">
                     <table class="min-w-full">
                         <thead class="bg-gray-50">
                             <tr>
-                                <th
-                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">
-                                    Nama Atlet
-                                </th>
-                                <th
-                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase whitespace-nowrap">
-                                    Cabang Olahraga
-                                </th>
-                                <th
-                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase whitespace-nowrap">
-                                    No. Kelas Pertandingan
-                                </th>
-                                <th
-                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase whitespace-nowrap">
-                                    Asal Sekolah
-                                </th>
-                                <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase whitespace-nowrap">
-                                    Perolehan Medali (Juara)
-                                </th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">Nama Atlet</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase whitespace-nowrap">Cabang Olahraga</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase whitespace-nowrap">No. Kelas Pertandingan</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase whitespace-nowrap">Asal Sekolah</th>
+                                <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase whitespace-nowrap">Perolehan Medali (Juara)</th>
                             </tr>
                         </thead>
                         <tbody id="medalPOPWILTableBody" class="bg-white divide-y divide-gray-200">
                             <!-- Rows via jQuery -->
                         </tbody>
                     </table>
+                </div>
+                <!-- Mobile Cards -->
+                <div class="md:hidden px-4 py-4 space-y-4" id="medalCardsPOPWIL">
                 </div>
             </div>
         </div>
@@ -284,36 +254,29 @@
                 </div>
             </div>
 
-            <!-- Medal Table -->
+            <!-- Medal Table/Card -->
             <div class="bg-white rounded-lg shadow-lg overflow-hidden">
                 <div class="px-6 py-4 bg-gray-50 border-b">
                     <h3 class="text-lg font-semibold text-gray-900">Jadwal Pertandingan</h3>
                 </div>
-                <div class="overflow-x-auto">
+                <!-- Desktop Table -->
+                <div class="hidden md:block overflow-x-auto">
                     <table class="min-w-full">
                         <thead class="bg-gray-50">
                             <tr>
-                                <th
-                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase whitespace-nowrap">
-                                    Tanggal
-                                </th>
-                                <th
-                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase whitespace-nowrap">
-                                    Tempat
-                                </th>
-                                <th
-                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase whitespace-nowrap">
-                                    Cabang olahraga
-                                </th>
-                                <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase whitespace-nowrap">
-                                    Kategori
-                                </th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase whitespace-nowrap">Tanggal</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase whitespace-nowrap">Tempat</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase whitespace-nowrap">Cabang olahraga</th>
+                                <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase whitespace-nowrap">Kategori</th>
                             </tr>
                         </thead>
                         <tbody id="jadwal-pertandingan" class="bg-white divide-y divide-gray-200">
                             <!-- Rows via jQuery -->
                         </tbody>
                     </table>
+                </div>
+                <!-- Mobile Cards -->
+                <div class="md:hidden px-4 py-4 space-y-4" id="jadwalCards">
                 </div>
             </div>
         </div>
@@ -403,8 +366,8 @@ $(document).ready(function() {
     });
 
     $('.tab-btn').on('click', function() {
-        $('.tab-btn').removeClass('text-blue-600 border-blue-600 border-b-2').addClass('text-gray-600');
-        $(this).addClass('text-blue-600 border-blue-600 border-b-2');
+        $('.tab-btn').removeClass('bg-blue-600 text-white').addClass('bg-gray-200 text-gray-700');
+        $(this).removeClass('bg-gray-200 text-gray-700').addClass('bg-blue-600 text-white');
 
         const target = $(this).data('tab');
         $('.tab-content').addClass('hidden');
@@ -421,16 +384,30 @@ $(document).ready(function() {
     getCabor();
     loadJadwalPertandinganTable();
 
-    $('#o2sn-smp-table').hide();
-    $('#jenjang').on('change', function() {
-        let value = $(this).val();
+    // Initialize SD/SMP toggle
+    const toggleJenjang = function() {
+        const value = $('#jenjang').val();
         if (value === 'SMP') {
-            $('#o2sn-smp-table').show();
-            $('#o2sn-sd-table').hide();
+            // Show SMP, Hide SD
+            $('#o2sn-sd-table').addClass('hidden');
+            $('#medalCardsSD').addClass('hidden');
+            $('#o2sn-smp-table').removeClass('hidden');
+            $('#medalCardsSMP').removeClass('hidden');
         } else {
-            $('#o2sn-smp-table').hide();
-            $('#o2sn-sd-table').show();
+            // Show SD, Hide SMP
+            $('#o2sn-smp-table').addClass('hidden');
+            $('#medalCardsSMP').addClass('hidden');
+            $('#o2sn-sd-table').removeClass('hidden');
+            $('#medalCardsSD').removeClass('hidden');
         }
+    };
+
+    // Initial toggle on load
+    toggleJenjang();
+
+    // On change
+    $('#jenjang').on('change', function() {
+        toggleJenjang();
     });
 
     $('#caborPopda').on('change', function() {
@@ -684,6 +661,7 @@ function loadKecamatanMedalTable() {
                 perunggu = 0,
                 total = 0;
             let rows = '';
+            let cards = '';
 
             $.each(data, function(i, item) {
                 emas += item.emas;
@@ -704,6 +682,34 @@ function loadKecamatanMedalTable() {
                         <td class="px-6 py-4 text-center text-xs text-blue-600 font-bold">${item.total}</td>
                     </tr>
                 `;
+
+                cards += `
+                    <div class="bg-white rounded-lg shadow-md p-4 border">
+                        <h4 class="font-semibold text-gray-900 mb-2">
+                            <a href="/prestasi/kecamatan/${item.id}" class="text-blue-700 hover:underline">
+                                ${item.nama}
+                            </a>
+                        </h4>
+                        <div class="flex justify-between items-center">
+                            <div class="text-center">
+                                <div class="text-yellow-600 font-bold text-lg">${item.emas}</div>
+                                <div class="text-xs text-gray-500"><i class="fas fa-medal text-yellow-500"></i> Emas</div>
+                            </div>
+                            <div class="text-center">
+                                <div class="text-gray-600 font-bold text-lg">${item.perak}</div>
+                                <div class="text-xs text-gray-500"><i class="fas fa-medal text-gray-400"></i> Perak</div>
+                            </div>
+                            <div class="text-center">
+                                <div class="text-orange-600 font-bold text-lg">${item.perunggu}</div>
+                                <div class="text-xs text-gray-500"><i class="fas fa-medal text-orange-500"></i> Perunggu</div>
+                            </div>
+                            <div class="text-center">
+                                <div class="text-blue-600 font-bold text-lg">${item.total}</div>
+                                <div class="text-xs text-gray-500">Total</div>
+                            </div>
+                        </div>
+                    </div>
+                `;
             });
 
             $('#medalTableBody').html(rows);
@@ -716,10 +722,21 @@ function loadKecamatanMedalTable() {
                     <td class="px-6 py-4 text-center font-bold text-blue-600">${total}</td>
                 </tr>
             `);
+            $('#medalCardsSD').html(cards + `
+                <div class="bg-gray-100 rounded-lg p-4 border font-bold text-center">
+                    <div class="text-yellow-600 text-lg">${emas} Emas</div>
+                    <div class="text-gray-600 text-lg">${perak} Perak</div>
+                    <div class="text-orange-600 text-lg">${perunggu} Perunggu</div>
+                    <div class="text-blue-600 text-lg">${total} Total</div>
+                </div>
+            `);
         },
         error: function() {
             $('#medalTableBody').html(
                 '<tr><td colspan="5" class="text-center text-red-500 py-4">Gagal memuat data.</td></tr>'
+            );
+            $('#medalCardsSD').html(
+                '<div class="text-center text-red-500 py-4">Gagal memuat data.</div>'
             );
         }
     });
@@ -735,6 +752,7 @@ function loadSubRayonMedalTable() {
                 perunggu = 0,
                 total = 0;
             let rows = '';
+            let cards = '';
 
             $.each(data, function(i, item) {
                 emas += item.emas;
@@ -755,6 +773,34 @@ function loadSubRayonMedalTable() {
                         <td class="px-6 py-4 text-center text-xs text-blue-600 font-bold">${item.total}</td>
                     </tr>
                 `;
+
+                cards += `
+                    <div class="bg-white rounded-lg shadow-md p-4 border">
+                        <h4 class="font-semibold text-gray-900 mb-2">
+                            <a href="/prestasi/subrayon/${item.id}" class="text-blue-700 hover:underline">
+                                Sub Rayon ${item.nama}
+                            </a>
+                        </h4>
+                        <div class="flex justify-between items-center">
+                            <div class="text-center">
+                                <div class="text-yellow-600 font-bold text-lg">${item.emas}</div>
+                                <div class="text-xs text-gray-500"><i class="fas fa-medal text-yellow-500"></i> Emas</div>
+                            </div>
+                            <div class="text-center">
+                                <div class="text-gray-600 font-bold text-lg">${item.perak}</div>
+                                <div class="text-xs text-gray-500"><i class="fas fa-medal text-gray-400"></i> Perak</div>
+                            </div>
+                            <div class="text-center">
+                                <div class="text-orange-600 font-bold text-lg">${item.perunggu}</div>
+                                <div class="text-xs text-gray-500"><i class="fas fa-medal text-orange-500"></i> Perunggu</div>
+                            </div>
+                            <div class="text-center">
+                                <div class="text-blue-600 font-bold text-lg">${item.total}</div>
+                                <div class="text-xs text-gray-500">Total</div>
+                            </div>
+                        </div>
+                    </div>
+                `;
             });
 
             $('#medalSubRayonTableBody').html(rows);
@@ -767,10 +813,21 @@ function loadSubRayonMedalTable() {
                     <td class="px-6 py-4 text-center font-bold text-blue-600">${total}</td>
                 </tr>
             `);
+            $('#medalCardsSMP').html(cards + `
+                <div class="bg-gray-100 rounded-lg p-4 border font-bold text-center">
+                    <div class="text-yellow-600 text-lg">${emas} Emas</div>
+                    <div class="text-gray-600 text-lg">${perak} Perak</div>
+                    <div class="text-orange-600 text-lg">${perunggu} Perunggu</div>
+                    <div class="text-blue-600 text-lg">${total} Total</div>
+                </div>
+            `);
         },
         error: function() {
             $('#medalSubRayonTableBody').html(
                 '<tr><td colspan="5" class="text-center text-red-500 py-4">Gagal memuat data.</td></tr>'
+            );
+            $('#medalCardsSMP').html(
+                '<div class="text-center text-red-500 py-4">Gagal memuat data.</div>'
             );
         }
     });
@@ -785,6 +842,7 @@ function loadPOPDAMedalTable(cabangOlahragaId = '') {
         },
         success: function(data) {
             let rows = '';
+            let cards = '';
 
             $.each(data, function(i, item) {
                 rows += `
@@ -798,13 +856,33 @@ function loadPOPDAMedalTable(cabangOlahragaId = '') {
                         <td class="px-6 py-4 text-xs font-bold text-center">${escapeHtml(medalName(item.perolehan_medali))}</td>
                     </tr>
                 `;
+
+                cards += `
+                    <div class="bg-white rounded-lg shadow-md p-4 border">
+                        <h4 class="font-semibold text-gray-900 mb-2">${escapeHtml(item.nama_lengkap)}</h4>
+                        <div class="space-y-1 text-sm">
+                            <div><strong>Cabang:</strong> ${escapeHtml(item.cabang_olahraga)}</div>
+                            <div><strong>No. Kelas:</strong> ${escapeHtml(item.no_pertandingan)}</div>
+                            <div><strong>Sekolah:</strong> ${escapeHtml(item.asal_sekolah)}</div>
+                            <div class="text-center mt-2">
+                                <span class="inline-block px-3 py-1 bg-yellow-100 text-yellow-800 rounded-full font-bold">
+                                    Juara ${escapeHtml(medalName(item.perolehan_medali))}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                `;
             });
 
             $('#medalPOPDATableBody').html(rows);
+            $('#medalCardsPOPDA').html(cards);
         },
         error: function() {
             $('#medalPOPDATableBody').html(
                 '<tr><td colspan="5" class="text-center text-red-500 py-4">Gagal memuat data.</td></tr>'
+            );
+            $('#medalCardsPOPDA').html(
+                '<div class="text-center text-red-500 py-4">Gagal memuat data.</div>'
             );
         }
     });
@@ -819,6 +897,7 @@ function loadPOPWILMedalTable(cabangOlahragaId = '') {
         },
         success: function(data) {
             let rows = '';
+            let cards = '';
 
             $.each(data, function(i, item) {
                 rows += `
@@ -832,13 +911,33 @@ function loadPOPWILMedalTable(cabangOlahragaId = '') {
                         <td class="px-6 py-4 text-xs font-bold text-center">${escapeHtml(medalName(item.perolehan_medali))}</td>
                     </tr>
                 `;
+
+                cards += `
+                    <div class="bg-white rounded-lg shadow-md p-4 border">
+                        <h4 class="font-semibold text-gray-900 mb-2">${escapeHtml(item.nama_lengkap)}</h4>
+                        <div class="space-y-1 text-sm">
+                            <div><strong>Cabang:</strong> ${escapeHtml(item.cabang_olahraga)}</div>
+                            <div><strong>No. Kelas:</strong> ${escapeHtml(item.no_pertandingan)}</div>
+                            <div><strong>Sekolah:</strong> ${escapeHtml(item.asal_sekolah)}</div>
+                            <div class="text-center mt-2">
+                                <span class="inline-block px-3 py-1 bg-yellow-100 text-yellow-800 rounded-full font-bold">
+                                    Juara ${escapeHtml(medalName(item.perolehan_medali))}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                `;
             });
 
             $('#medalPOPWILTableBody').html(rows);
+            $('#medalCardsPOPWIL').html(cards);
         },
         error: function() {
             $('#medalPOPWILTableBody').html(
                 '<tr><td colspan="5" class="text-center text-red-500 py-4">Gagal memuat data.</td></tr>'
+            );
+            $('#medalCardsPOPWIL').html(
+                '<div class="text-center text-red-500 py-4">Gagal memuat data.</div>'
             );
         }
     });
@@ -854,6 +953,7 @@ function loadJadwalPertandinganTable(cabangOlahragaId = '', eventId = '') {
         },
         success: function(response) {
             let rows = '';
+            let cards = '';
 
             $.each(response.data, function(i, item) {
                 rows += `
@@ -864,13 +964,32 @@ function loadJadwalPertandinganTable(cabangOlahragaId = '', eventId = '') {
                         <td class="px-6 py-4 text-xs font-bold text-center">${escapeHtml(item.kategori)}</td>
                     </tr>
                 `;
+
+                cards += `
+                    <div class="bg-white rounded-lg shadow-md p-4 border">
+                        <h4 class="font-semibold text-gray-900 mb-2">${escapeHtml(item.cabor)}</h4>
+                        <div class="space-y-1 text-sm">
+                            <div><strong>Tanggal:</strong> ${formatDate(item.date)}</div>
+                            <div><strong>Tempat:</strong> ${escapeHtml(item.tempat)}</div>
+                            <div class="text-center mt-2">
+                                <span class="inline-block px-3 py-1 bg-blue-100 text-blue-800 rounded-full font-bold">
+                                    ${escapeHtml(item.kategori)}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                `;
             });
 
             $('#jadwal-pertandingan').html(rows);
+            $('#jadwalCards').html(cards);
         },
         error: function() {
             $('#jadwal-pertandingan').html(
                 '<tr><td colspan="5" class="text-center text-red-500 py-4">Gagal memuat data.</td></tr>'
+            );
+            $('#jadwalCards').html(
+                '<div class="text-center text-red-500 py-4">Gagal memuat data.</div>'
             );
         }
     });
