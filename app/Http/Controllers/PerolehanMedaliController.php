@@ -56,12 +56,13 @@ class PerolehanMedaliController extends Controller
             $query->where('atlet.cabang_olahraga_id', $params['cabangOlahraga']);
         }
 
-        // $searchValue = $request->input('search.value');
-        // if (!empty($searchValue)) {
-        //     $query->where(function ($q) use ($searchValue) {
-        //         $q->where('atlet.nama_lengkap', 'like', '%' . strtoupper($searchValue) . '%');
-        //     });
-        // }
+        if (!empty($params['jenjang']) && $params['jenjang'] !== ' ') {
+            $query->where('event_registrations.jenjang', $params['jenjang']);
+        }
+
+        if (!empty($params['tahun']) && $params['tahun'] !== ' ') {
+            $query->where('events.year', $params['tahun']);
+        }
 
         $start = $request->input('start', 0);
         $length = $request->input('length', 10);
@@ -80,7 +81,7 @@ class PerolehanMedaliController extends Controller
 
     public function create() {
         $cabangOlahraga = DB::table('sports')->get();
-        $events = DB::table('event_categories')->get();
+        $events = DB::table('events')->get();
         return view('modules.perolehan-medali.create', compact('cabangOlahraga', 'events'));
     }
 

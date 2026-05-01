@@ -95,9 +95,9 @@
                                                         data-control="select2" data-hide-search="true"
                                                         data-dropdown-css-class="w-150px"
                                                         data-placeholder="Select an option" id="o2snTahun">
-                                                        <option value="2023">2023</option>
-                                                        <option value="2024">2024</option>
-                                                        <option value="2025" selected>2025</option>
+                                                        @foreach(range(date('Y'), date('Y') - 10, -1) as $year)
+                                                            <option value="{{ $year }}" {{ $year == date('Y') ? 'selected' : '' }}>{{ $year }}</option>
+                                                        @endforeach
                                                     </select>
                                                 </div>
                                                 <div class="d-flex align-items-center fw-bold">
@@ -110,36 +110,6 @@
                                                         <option value=" " selected="selected">Semua</option>
                                                         <option value="SD">SD</option>
                                                         <option value="SMP">SMP</option>
-                                                    </select>
-                                                </div>
-
-                                                <div class="d-flex align-items-center fw-bold" id="filterKecamatan">
-                                                    <div class="text-gray-500 fs-7 me-2" style="white-space: nowrap;">
-                                                        Kecamatan</div>
-                                                    <select
-                                                        class="form-select form-select-transparent text-graY-800 fs-base lh-1 fw-bold py-0 ps-3 w-auto"
-                                                        data-control="select2" data-hide-search="true"
-                                                        data-dropdown-css-class="w-150px"
-                                                        data-placeholder="Select an option" id="kecamatan">
-                                                        <option value=" " selected="selected">Semua</option>
-                                                        @foreach($kecamatan as $k)
-                                                        <option value="{{$k->id}}">{{$k->nama}}</option>
-                                                        @endforeach
-                                                    </select>
-                                                </div>
-
-                                                <div class="d-flex align-items-center fw-bold" id="filterSubRayon">
-                                                    <div class="text-gray-500 fs-7 me-2" style="white-space: nowrap;">
-                                                        Sub Rayon</div>
-                                                    <select
-                                                        class="form-select form-select-transparent text-graY-800 fs-base lh-1 fw-bold py-0 ps-3 w-auto"
-                                                        data-control="select2" data-hide-search="true"
-                                                        data-dropdown-css-class="w-150px"
-                                                        data-placeholder="Select an option" id="subRayon">
-                                                        <option value=" " selected="selected">Semua</option>
-                                                        @foreach($subRayon as $sr)
-                                                        <option value="{{$sr->id}}">{{$sr->nama}}</option>
-                                                        @endforeach
                                                     </select>
                                                 </div>
 
@@ -170,10 +140,10 @@
                                         <thead class="bg-primary text-white">
                                             <tr class="text-start text-white fw-bolder fs-7 text-uppercase gs-0">
                                                 <th class="ps-3">Nama Lengkap</th>
-                                                <th class="ps-3">Cabang Olahraga</th>
+                                                <th class="ps-3">Jenis Kelamin</th>
                                                 <th class="ps-3">Jenjang</th>
-                                                <th class="ps-3">Kecamatan</th>
-                                                <th class="ps-3">Sub Rayon</th>
+                                                <th class="ps-3">Asal Sekolah</th>
+                                                <th class="ps-3">Cabang Olahraga</th>
                                                 <th class="ps-3">Perolehan Medali (Juara)</th>
                                                 <th class="ps-3 text-center">Actions</th>
                                             </tr>
@@ -206,9 +176,9 @@
                                                         data-control="select2" data-hide-search="true"
                                                         data-dropdown-css-class="w-150px"
                                                         data-placeholder="Select an option" id="popdaTahun">
-                                                        <option value="2023">2023</option>
-                                                        <option value="2024">2024</option>
-                                                        <option value="2025" selected>2025</option>
+                                                        @foreach(range(date('Y'), date('Y') - 10, -1) as $year)
+                                                            <option value="{{ $year }}" {{ $year == date('Y') ? 'selected' : '' }}>{{ $year }}</option>
+                                                        @endforeach
                                                     </select>
                                                 </div>
                                                 <div class="d-flex align-items-center fw-bold">
@@ -273,9 +243,9 @@
                                                         data-control="select2" data-hide-search="true"
                                                         data-dropdown-css-class="w-150px"
                                                         data-placeholder="Select an option" id="popwilTahun">
-                                                        <option value="2023">2023</option>
-                                                        <option value="2024">2024</option>
-                                                        <option value="2025" selected>2025</option>
+                                                        @foreach(range(date('Y'), date('Y') - 10, -1) as $year)
+                                                            <option value="{{ $year }}" {{ $year == date('Y') ? 'selected' : '' }}>{{ $year }}</option>
+                                                        @endforeach
                                                     </select>
                                                 </div>
                                                 <div class="d-flex align-items-center fw-bold">
@@ -347,22 +317,24 @@ let o2snTable = $("#O2SN").DataTable({
         type: 'GET',
         data: function(d) {
             d.eventCategory = 1;
+            d.tahun = $('#o2snTahun').val();
             d.jenjang = $('#jenjang').val();
-            d.cabangOlahraga = $('#cabang-olahraga').val();
+            d.caborId = $('#cabang-olahraga').val();
         },
         dataSrc: function(json) {
             return json.data;
         }
     },
-    columns: [{
+    columns: [
+        {
             data: 'nama_lengkap',
             name: 'nama_lengkap',
             className: 'ps-3'
         },
         {
-            data: 'cabang_olahraga',
-            name: 'cabang_olahraga',
-            className: 'ps-3'
+            data: 'jenis_kelamin',
+            name: 'jenis_kelamin',
+            className: 'text-center'
         },
         {
             data: 'jenjang',
@@ -370,14 +342,14 @@ let o2snTable = $("#O2SN").DataTable({
             className: 'ps-3'
         },
         {
-            data: 'nama_kecamatan',
-            name: 'nama_kecamatan',
+            data: 'nama_sekolah',
+            name: 'nama_sekolah',
             className: 'ps-3'
         },
         {
-            data: 'nama_sub_rayon',
-            name: 'nama_sub_rayon',
-            className: 'ps-3 text-center'
+            data: 'cabang_olahraga',
+            name: 'cabang_olahraga',
+            className: 'ps-3'
         },
         {
             data: 'perolehan_medali',
@@ -402,17 +374,14 @@ let o2snTable = $("#O2SN").DataTable({
     ]
 });
 
-$('#jenjang').on('change', function() {
-    o2snTable.draw(); // Trigger DataTable redraw with updated filter values
-
-    $value = $(this).val();
-    if($value === 'SD') {
-
-    } else if($value === 'SMP') {
-
-    } else {
-
+function refreshO2SNTable() {
+    if (o2snTable) {
+        o2snTable.draw();
     }
+}
+
+$("#jenjang, #cabang-olahraga, #o2snTahun").on('change', function() {
+    refreshO2SNTable();
 });
 
 $("#POPDA").DataTable({

@@ -123,10 +123,10 @@
                                                         class="form-select form-select-transparent text-graY-800 fs-base lh-1 fw-bold py-0 ps-3 w-auto"
                                                         data-control="select2" data-hide-search="true"
                                                         data-dropdown-css-class="w-150px"
-                                                        data-placeholder="Select an option" id="popwilTahun">
-                                                        <option value="2023">2023</option>
-                                                        <option value="2024">2024</option>
-                                                        <option value="2025" selected>2025</option>
+                                                        data-placeholder="Select an option" id="tahun">
+                                                        @foreach(range(date('Y'), date('Y') - 10, -1) as $year)
+                                                            <option value="{{ $year }}" {{ $year == date('Y') ? 'selected' : '' }}>{{ $year }}</option>
+                                                        @endforeach
                                                     </select>
                                                 </div>
                                                 <div class="d-flex align-items-center fw-bold">
@@ -141,37 +141,6 @@
                                                         <option value="SMP">SMP</option>
                                                     </select>
                                                 </div>
-
-                                                <div class="d-flex align-items-center fw-bold" id="filterKecamatan">
-                                                    <div class="text-gray-500 fs-7 me-2" style="white-space: nowrap;">
-                                                        Kecamatan</div>
-                                                    <select
-                                                        class="form-select form-select-transparent text-graY-800 fs-base lh-1 fw-bold py-0 ps-3 w-auto"
-                                                        data-control="select2" data-hide-search="false"
-                                                        data-dropdown-css-class="w-150px"
-                                                        data-placeholder="Select an option" id="kecamatan">
-                                                        <option value=" " selected="selected">Semua</option>
-                                                        @foreach($kecamatan as $k)
-                                                        <option value="{{$k->id}}">{{$k->nama}}</option>
-                                                        @endforeach
-                                                    </select>
-                                                </div>
-
-                                                <div class="d-flex align-items-center fw-bold" id="filterSubRayon">
-                                                    <div class="text-gray-500 fs-7 me-2" style="white-space: nowrap;">
-                                                        Sub Rayon</div>
-                                                    <select
-                                                        class="form-select form-select-transparent text-graY-800 fs-base lh-1 fw-bold py-0 ps-3 w-auto"
-                                                        data-control="select2" data-hide-search="true"
-                                                        data-dropdown-css-class="w-150px"
-                                                        data-placeholder="Select an option" id="subRayon">
-                                                        <option value=" " selected="selected">Semua</option>
-                                                        @foreach($subRayon as $sr)
-                                                        <option value="{{$sr->id}}">{{$sr->nama}}</option>
-                                                        @endforeach
-                                                    </select>
-                                                </div>
-
                                                 <div class="d-flex align-items-center fw-bold">
                                                     <div class="text-gray-500 fs-7 me-2" style="white-space: nowrap;">
                                                         Cabang Olahraga
@@ -206,6 +175,9 @@
                                                 <th class="ps-3">Jenjang</th>
                                                 <th class="ps-3">Cabang Olahraga</th>
                                                 <th class="ps-3">Tanggal Registrasi</th>
+                                                <th class="ps-3">Total Atlet</th>
+                                                <th class="ps-3">Total Reject</th>
+                                                <th class="ps-3">Total Approve</th>
                                                 <th class="ps-3 text-center">Actions</th>
                                             </tr>
                                         </thead>
@@ -239,9 +211,9 @@
                                                         data-control="select2" data-hide-search="true"
                                                         data-dropdown-css-class="w-150px"
                                                         data-placeholder="Select an option" id="popdaTahun">
-                                                        <option value="2023">2023</option>
-                                                        <option value="2024">2024</option>
-                                                        <option value="2025" selected>2025</option>
+                                                        @foreach(range(date('Y'), date('Y') - 10, -1) as $year)
+                                                            <option value="{{ $year }}" {{ $year == date('Y') ? 'selected' : '' }}>{{ $year }}</option>
+                                                        @endforeach
                                                     </select>
                                                 </div>
                                                 <div class="d-flex align-items-center fw-bold">
@@ -317,9 +289,9 @@
                                                         data-control="select2" data-hide-search="true"
                                                         data-dropdown-css-class="w-150px"
                                                         data-placeholder="Select an option" id="popwilTahun">
-                                                        <option value="2023">2023</option>
-                                                        <option value="2024">2024</option>
-                                                        <option value="2025" selected>2025</option>
+                                                        @foreach(range(date('Y'), date('Y') - 10, -1) as $year)
+                                                            <option value="{{ $year }}" {{ $year == date('Y') ? 'selected' : '' }}>{{ $year }}</option>
+                                                        @endforeach
                                                     </select>
                                                 </div>
                                                 <div class="d-flex align-items-center fw-bold">
@@ -389,16 +361,13 @@
 <script>
 $(document).ready(function() {
     $("#filterKecamatan").hide();
-});
-$(document).on("click", "#popdaTahun", function() {
-    alert("Button clicked with .on!");
+    $("#filterSubRayon").hide();
+
+    // Set initial relationship of jenjang filters
+    $("#jenjang").trigger('change');
 });
 
-$(document).on("click", "#popwilTahun", function() {
-    alert("Button clicked with .on!");
-});
-
-$("#O2SN").DataTable({
+var o2snTable = $("#O2SN").DataTable({
     processing: true,
     serverSide: true,
     paging: true,
@@ -408,6 +377,11 @@ $("#O2SN").DataTable({
         type: 'GET',
         data: function (d) {
             d.eventCategory = 1;
+            d.tahun = $('#tahun').val();
+            d.jenjang = $('#jenjang').val();
+            d.kecamatan = $('#filterKecamatan').is(':visible') ? $('#kecamatan').val() : ' ';
+            d.subRayon = $('#filterSubRayon').is(':visible') ? $('#subRayon').val() : ' ';
+            d.cabangOlahraga = $('#cabang-olahraga').val();
         },
         dataSrc: function (json) {
             return json.data;
@@ -445,6 +419,21 @@ $("#O2SN").DataTable({
             className: 'ps-3'
         },
         {
+            data: 'total_atlet',
+            name: 'total_atlet',
+            className: 'text-center'
+        },
+        {
+            data: 'total_reject',
+            name: 'total_reject',
+            className: 'text-center'
+        },
+        {
+            data: 'total_approve',
+            name: 'total_approve',
+            className: 'text-center'
+        },
+        {
             data: null,
             name: 'action',
             className: 'ps-3',
@@ -463,6 +452,16 @@ $("#O2SN").DataTable({
             }
         }
     ]
+});
+
+function refreshO2SNTable() {
+    if (o2snTable) {
+        o2snTable.draw();
+    }
+}
+
+$("#jenjang, #cabang-olahraga, #tahun").on('change', function() {
+    refreshO2SNTable();
 });
 
 $("#POPDA").DataTable({
@@ -649,20 +648,24 @@ $("#btn-export-popwil").on('click', function() {
 
 
 $("#jenjang").on("change", function() {
+    const value = $(this).val().trim();
 
-    const value = $(this).val();
-
-    if(value === "SD") {
+    if (value === 'SD') {
         $("#filterKecamatan").show();
-    }
-
-    if(value === "") {
-        $("#filterKecamatan").hide();
-    }
-
-    if(value === "SMP") {
         $("#filterSubRayon").hide();
+        $("#subRayon").val(' ').trigger('change');
+    } else if (value === 'SMP') {
+        $("#filterKecamatan").hide();
+        $("#filterSubRayon").show();
+        $("#kecamatan").val(' ').trigger('change');
+    } else {
+        $("#filterKecamatan").hide();
+        $("#filterSubRayon").hide();
+        $("#kecamatan").val(' ').trigger('change');
+        $("#subRayon").val(' ').trigger('change');
     }
+
+    refreshO2SNTable();
 });
 
 </script>

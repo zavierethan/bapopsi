@@ -16,9 +16,9 @@
                         </select>
                         <select class="form-select w-auto" id="filter-medal">
                             <option value="">Semua Medali</option>
-                            <option value="emas">Emas</option>
-                            <option value="perak">Perak</option>
-                            <option value="perunggu">Perunggu</option>
+                            <option value="1">Emas</option>
+                            <option value="2">Perak</option>
+                            <option value="3">Perunggu</option>
                         </select>
                         <select class="form-select w-auto" id="filter-sport">
                             <option value="">Semua Cabang</option>

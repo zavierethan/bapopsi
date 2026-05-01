@@ -14,9 +14,6 @@
                         <div class="card mb-5">
                             <div class="card-header d-flex justify-content-between align-items-center">
                                 <h3 class="card-title fw-bold">Biodata Atlet</h3>
-                                <!-- <button type="button" id="add-atlet" class="btn btn-sm btn-light-primary">
-                                <i class="fa fa-plus"></i> Tambah Atlet
-                            </button> -->
                             </div>
                             <div class="card-body" id="atlet-wrapper">
                                 <div class="border p-4 mb-4 rounded position-relative atlet-item bg-light">
@@ -26,10 +23,12 @@
                                             <div class="mb-5">
                                                 <img src="{{ $atlet->pas_foto ? asset('storage/' . $atlet->pas_foto) : 'https://via.placeholder.com/150' }}"
                                                     class="img-thumbnail preview-pas-foto"
-                                                    style="width: 150px; height: 150px; object-fit: cover;">
+                                                    style="width: 300px; height: 300px; object-fit: cover; cursor: pointer;"
+                                                    onclick="document.getElementById('input-pas-foto').click()">
+                                                <input type="file" name="pas_foto" accept="image/*"
+                                                    id="input-pas-foto" class="d-none input-pas-foto">
+                                                <div class="mt-2 text-muted small"><i class="fa fa-camera"></i> Klik untuk upload</div>
                                             </div>
-                                            <input type="file" name="pas_foto" accept="image/*"
-                                                class="form-control input-pas-foto">
                                         </div>
 
                                         <!-- Biodata -->
@@ -91,28 +90,39 @@
                                                 </div>
                                             </div>
                                             <div class="row mb-3 align-items-center">
-                                                <label class="col-md-2 col-form-label">Rapor</label>
-                                                <div class="col-md-10">
-                                                    <input type="file" name="raport"
-                                                        class="form-control mt-1">
-                                                    @if($atlet->raport)
-                                                    <a href="#" class="text-primary"
-                                                        onclick="showPdfModal('{{ asset('storage/' . $atlet->raport) }}'); return false;">Lihat
-                                                        file Raport (PDF)</a><br>
-                                                    @endif
-                                                </div>
+                                            <label class="col-md-2 col-form-label">Raport</label>
+                                            <div class="col-md-10">
+                                                <!-- <input type="file" name="atlets[{{ $atlet->id }}][raport]"
+                                                    class="form-control mt-1"> -->
+                                                @if($atlet->raport)
+                                                <a href="#" class="text-primary"
+                                                    onclick="showPdfModal('{{ asset('storage/' . $atlet->raport) }}'); return false;">Lihat
+                                                    file Raport (PDF)</a><br>
+                                                @endif
                                             </div>
-                                            <div class="row mb-3 align-items-center">
-                                                <label class="col-md-2 col-form-label">Akta Lahir</label>
-                                                <div class="col-md-10">
-                                                    <input type="file" name="akta_lahir"
-                                                        class="form-control mt-1">
-                                                    @if($atlet->akta_lahir)
-                                                    <a href="#" class="text-primary"
-                                                        onclick="showPdfModal('{{ asset('storage/' . $atlet->akta_lahir) }}'); return false;">Lihat
-                                                        file Akta (PDF)</a><br>
-                                                    @endif
-                                                </div>
+                                        </div>
+                                        <div class="row mb-3 align-items-center">
+                                            <label class="col-md-2 col-form-label">SK</label>
+                                            <div class="col-md-10">
+                                                <!-- <input type="file" name="atlets[{{ $atlet->id }}][sk]"
+                                                    class="form-control mt-1"> -->
+                                                @if($atlet->sk)
+                                                <a href="#" class="text-primary"
+                                                    onclick="showPdfModal('{{ asset('storage/' . $atlet->sk) }}'); return false;">Lihat
+                                                    file SK (PDF)</a><br>
+                                                @endif
+                                            </div>
+                                        </div>
+                                        <div class="row mb-3 align-items-center">
+                                            <label class="col-md-2 col-form-label">Akta Lahir</label>
+                                            <div class="col-md-10">
+                                                <!-- <input type="file" name="atlets[{{ $atlet->id }}][akta_lahir]"
+                                                    class="form-control mt-1"> -->
+                                                @if($atlet->akta_lahir)
+                                                <a href="#" class="text-primary"
+                                                    onclick="showPdfModal('{{ asset('storage/' . $atlet->akta_lahir) }}'); return false;">Lihat
+                                                    file Akta (PDF)</a><br>
+                                                @endif
                                             </div>
                                             <div class="row mb-3 align-items-center">
                                                 <label class="col-md-2 col-form-label">Perolehan Medali</label>

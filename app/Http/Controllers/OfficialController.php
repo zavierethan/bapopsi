@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use DB;
 use Auth;
 
@@ -125,29 +126,31 @@ class OfficialController extends Controller
 
     public function update(Request $request, $id) {
         $validated = $request->validate([
-            'title'       => 'required|string|max:255',
-            'description' => 'required|string',
-            'agenda_date' => 'required|date',
-            'start_time'  => 'nullable|date_format:H:i',
-            'end_time'    => 'nullable|date_format:H:i|after_or_equal:start_time',
-            'location'    => 'required|string|max:255',
+            'nama_lengkap' => 'required|string|max:255',
+            'jabatan'      => 'required|integer|exists:jabatan_official,id',
+            'foto'         => 'nullable|file|mimes:jpg,jpeg,png|max:4096',
         ]);
 
-        $agenda = DB::table('officials')->where('id', $id)->first();
+        $official = DB::table('officials')->where('id', $id)->first();
 
-        if (!$agenda) {
+        if (!$official) {
             return response()->json(['message' => 'Official tidak ditemukan'], 404);
         }
 
-        DB::table('officials')->where('id', $id)->update([
-            'title'        => $request->title,
-            'description'  => $request->description,
-            'agenda_date'  => $request->agenda_date,
-            'start_time'   => $request->start_time,
-            'end_time'     => $request->end_time,
-            'location'     => $request->location,
-            'updated_at'   => now(),
-        ]);
+        $updateData = [
+            'nama'       => $request->nama_lengkap,
+            'jabatan_id' => $request->jabatan,
+            'updated_at' => now(),
+        ];
+
+        if ($request->hasFile('foto')) {
+            if (!empty($official->foto)) {
+                Storage::disk('public')->delete($official->foto);
+            }
+            $updateData['foto'] = $request->file('foto')->store('officials/foto', 'public');
+        }
+
+        DB::table('officials')->where('id', $id)->update($updateData);
 
         $updated = DB::table('officials')->where('id', $id)->first();
 

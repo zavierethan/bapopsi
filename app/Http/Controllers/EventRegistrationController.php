@@ -24,6 +24,8 @@ class EventRegistrationController extends Controller
         $query = DB::table('event_registrations')
             ->select(
             'event_registrations.*',
+            'event_registrations.kecamatan_id',
+            'event_registrations.sub_rayon_id',
             'event_categories.name as event_category',
             'sports.name as cabang_olahraga',
             'events.name',
@@ -31,6 +33,23 @@ class EventRegistrationController extends Controller
             'events.description',
             DB::raw("TO_CHAR(event_registrations.approved_at, 'DD/MM/YYYY HH24:MI:SS') AS approval_date_formatted"),
             DB::raw("TO_CHAR(event_registrations.created_at, 'DD/MM/YYYY HH24:MI:SS') AS created_at_formatted"),
+            DB::raw("(
+                        SELECT COUNT(*)
+                        FROM atlet a
+                        WHERE a.event_reg_id = event_registrations.id
+                    ) AS total_atlet"),
+            DB::raw("(
+                        SELECT COUNT(*)
+                        FROM atlet a
+                        WHERE a.event_reg_id = event_registrations.id
+                          AND a.appr_status = 0
+                    ) AS total_reject"),
+            DB::raw("(
+                        SELECT COUNT(*)
+                        FROM atlet a
+                        WHERE a.event_reg_id = event_registrations.id
+                          AND a.appr_status = 1
+                    ) AS total_approve"),
             'kecamatan.nama as nama_kecamatan',
             'sub_rayon.nama as sub_rayon',
             DB::raw("CASE
@@ -59,6 +78,18 @@ class EventRegistrationController extends Controller
 
         if (!empty($params['cabangOlahraga']) && $params['cabangOlahraga'] !== ' ') {
             $query->where('event_registrations.sport_id', $params['cabangOlahraga']);
+        }
+
+        if (!empty($params['jenjang']) && $params['jenjang'] !== ' ') {
+            $query->where('event_registrations.jenjang', $params['jenjang']);
+        }
+
+        if (!empty($params['kecamatan']) && $params['kecamatan'] !== ' ') {
+            $query->where('event_registrations.kecamatan_id', $params['kecamatan']);
+        }
+
+        if (!empty($params['subRayon']) && $params['subRayon'] !== ' ') {
+            $query->where('event_registrations.sub_rayon_id', $params['subRayon']);
         }
 
         if (!empty($params['tahun']) && $params['tahun'] !== ' ') {

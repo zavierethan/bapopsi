@@ -188,12 +188,11 @@ $("#submit-form").on("click", function () {
         }
     });
 
-    // Kirim via AJAX
     $.ajax({
-        url: "{{ route('perolehan-medali.saveAll') }}", // bikin route untuk batch save
+        url: "{{ route('perolehan-medali.saveAll') }}",
         type: "POST",
         data: {
-            _token: "{{ csrf_token() }}", // wajib untuk Laravel
+            _token: "{{ csrf_token() }}",
             data: dataToSave
         },
         success: function (res) {

@@ -125,12 +125,12 @@ $('#submit-form').on('click', function(e) {
         $('select[name="cabang_olahraga_id"]').removeClass('is-invalid');
     }
 
-    if (!sportClassId) {
-        errorMessages.push('• No. Kelas Pertandingan harus dipilih');
-        $('#sport_class_id').addClass('is-invalid');
-    } else {
-        $('#sport_class_id').removeClass('is-invalid');
-    }
+    // if (!sportClassId) {
+    //     errorMessages.push('• No. Kelas Pertandingan harus dipilih');
+    //     $('#sport_class_id').addClass('is-invalid');
+    // } else {
+    //     $('#sport_class_id').removeClass('is-invalid');
+    // }
 
     // Validasi Atlet
     const atletItems = $('.atlet-item');
@@ -296,7 +296,7 @@ function atletRow(index) {
                 <div class="mb-5">
                     <img src="https://via.placeholder.com/150"
                          class="img-thumbnail preview-pas-foto"
-                         style="width: 150px; height: 150px; object-fit: cover; cursor: pointer;"
+                         style="width: 100%; max-width: 300px; height: 300px; object-fit: cover; cursor: pointer;"
                          onclick="document.getElementById('atlet-pas-foto-${index}').click()">
                     <input type="file" name="atlets[${index}][pas_foto]" accept="image/*"
                            id="atlet-pas-foto-${index}"
@@ -384,26 +384,36 @@ function officialRow(index) {
         <button type="button" class="btn btn-icon btn-danger btn-sm position-absolute top-0 end-0 mt-2 me-2 remove-official">
             <i class="fa fa-times"></i>
         </button>
-        <div class="row g-3 align-items-end">
+        <div class="row g-4">
             <div class="col-md-4 text-center">
-                <img src="https://via.placeholder.com/120"
-                     class="img-thumbnail preview-foto-official mb-2"
-                     style="width: 120px; height: 120px; object-fit: cover; cursor: pointer;"
-                     onclick="document.getElementById('official-foto-${index}').click()">
-                <input type="file" name="officials[${index}][foto]"
-                       id="official-foto-${index}"
-                       class="d-none input-foto-official"
-                       onchange="previewOfficialFoto(this, ${index})">
-                <div class="mt-2 text-muted small"><i class="fa fa-camera"></i> Klik untuk upload</div>
+                <div class="mb-5">
+                    <img src="https://via.placeholder.com/150"
+                         class="img-thumbnail preview-foto-official"
+                         style="width: 100%; max-width: 300px; height: 300px; object-fit: cover; cursor: pointer;"
+                         onclick="document.getElementById('official-foto-${index}').click()">
+                    <input type="file" name="officials[${index}][foto]"
+                           id="official-foto-${index}"
+                           class="d-none input-foto-official"
+                           onchange="previewOfficialFoto(this, ${index})">
+                    <div class="mt-2 text-muted small"><i class="fa fa-camera"></i> Klik untuk upload foto</div>
+                </div>
             </div>
-            <div class="col-md-4">
-                <input type="text" name="officials[${index}][nama_lengkap]" placeholder="Nama Lengkap" class="form-control" required>
-            </div>
-            <div class="col-md-4">
-                <select name="officials[${index}][jabatan]" class="form-select" required>
-                    <option value="">Pilih Jabatan</option>
-                    ${jabatanSelectOptions}
-                </select>
+            <div class="col-md-8">
+                <div class="row mb-3 align-items-center">
+                    <label class="col-md-3 col-form-label">Nama Lengkap</label>
+                    <div class="col-md-9">
+                        <input type="text" name="officials[${index}][nama_lengkap]" class="form-control" required>
+                    </div>
+                </div>
+                <div class="row mb-3 align-items-center">
+                    <label class="col-md-3 col-form-label">Jabatan</label>
+                    <div class="col-md-9">
+                        <select name="officials[${index}][jabatan]" class="form-select" required>
+                            <option value="">Pilih Jabatan</option>
+                            ${jabatanSelectOptions}
+                        </select>
+                    </div>
+                </div>
             </div>
         </div>
     </div>`;

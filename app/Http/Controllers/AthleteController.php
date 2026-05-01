@@ -72,6 +72,10 @@ class AthleteController extends Controller
             $query->where('event_registrations.sport_id', $params['caborId']);
         }
 
+        if (!empty($params['tahun']) && $params['tahun'] !== ' ') {
+            $query->where('events.year', $params['tahun']);
+        }
+
         $searchValue = $request->input('search.value');
 
         if (!empty($searchValue)) {
@@ -195,6 +199,12 @@ class AthleteController extends Controller
 
     public function editAtlet($id) {
         $data = DB::table('atlet')->where('id', $id)->first();
+
+        if ($data) {
+            $data->pas_foto = $data->pas_foto ? Storage::url($data->pas_foto) : null;
+            $data->approval_status = $data->appr_status;
+        }
+
         return response()->json($data);
     }
 
@@ -215,7 +225,6 @@ class AthleteController extends Controller
                 'nama_sekolah'       => $request->nama_sekolah,
                 'nisn'               => $request->nisn,
                 'perolehan_medali'   => $request->perolehan_medali,
-                'appr_status'        => null,
                 'updated_at'         => now()
             ];
 

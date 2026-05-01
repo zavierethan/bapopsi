@@ -38,7 +38,13 @@ class HomeController extends Controller
                 'atlet.*',
                 'sports.name as cabang_olahraga',
                 'sport_classes.name as nomor_cabang_olahraga',
-                'medals.medal_type'
+                'medals.medal_type',
+                DB::raw("CASE
+                    WHEN atlet.perolehan_medali IS NULL THEN '-'
+                    WHEN atlet.perolehan_medali = 1 THEN 'Emas (1)'
+                    WHEN atlet.perolehan_medali = 2 THEN 'Perak (2)'
+                    WHEN atlet.perolehan_medali = 3 THEN 'Perunggu (3)'
+                END as perolehan_medali"),
             )
             ->leftJoin('event_registrations', 'event_registrations.id', '=', 'atlet.event_reg_id')
             ->leftJoin('events', 'events.id', '=', 'event_registrations.event_id')
@@ -46,7 +52,6 @@ class HomeController extends Controller
             ->leftJoin('sports', 'sports.id', '=', 'atlet.cabang_olahraga_id')
             ->leftJoin('sport_classes', 'sport_classes.id', '=', 'atlet.kelas_id')
             ->leftJoin('medals', 'medals.atlet_id', '=', 'atlet.id')
-            ->where('events.event_category_id', 1)
             ->where('atlet.appr_status', 1);
 
         if (!empty($params['event_id'])) {
@@ -95,7 +100,6 @@ class HomeController extends Controller
             ->leftJoin('event_registrations', 'event_registrations.id', '=', 'atlet.event_reg_id')
             ->leftJoin('events', 'events.id', '=', 'event_registrations.event_id')
             ->leftJoin('event_categories', 'event_categories.id', '=', 'events.event_category_id')
-            ->where('events.event_category_id', 1)
             ->where('atlet.appr_status', 1);
 
 
