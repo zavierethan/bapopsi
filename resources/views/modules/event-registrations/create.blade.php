@@ -34,7 +34,7 @@
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-md-6 mb-4">
-                                    <label class="form-label fw-bold fs-6">Nama Event</label>
+                                    <label class="form-label fw-bold fs-6">Nama Event <span class="text-danger">*</span></label>
                                     <select name="event_id" class="form-select form-select-solid"
                                         data-control="select2">
                                         <option value="">Pilih Event</option>
@@ -46,7 +46,7 @@
                             </div>
                             <div class="row mt-5">
                                 <div class="col-md-6 mb-4">
-                                    <label class="form-label fw-bold fs-6">Cabang Olahraga</label>
+                                    <label class="form-label fw-bold fs-6">Cabang Olahraga <span class="text-danger">*</span></label>
                                     <select name="cabang_olahraga_id" class="form-select form-select-solid"
                                         data-control="select2" id="cabor-id" <?php echo (Auth::user()->group_id == 16) ? 'disabled' : '';?>>
                                         <option value="">Pilih Cabang</option>
@@ -101,6 +101,127 @@
 <script>
 $('#submit-form').on('click', function(e) {
     e.preventDefault();
+
+    // Validasi form sebelum submit
+    let isValid = true;
+    let errorMessages = [];
+
+    // Validasi Event dan Cabor
+    const eventId = $('select[name="event_id"]').val();
+    const caborId = $('select[name="cabang_olahraga_id"]').val();
+    const sportClassId = $('select[name="sport_class_id"]').val();
+
+    if (!eventId) {
+        errorMessages.push('• Nama Event harus dipilih');
+        $('select[name="event_id"]').addClass('is-invalid');
+    } else {
+        $('select[name="event_id"]').removeClass('is-invalid');
+    }
+
+    if (!caborId) {
+        errorMessages.push('• Cabang Olahraga harus dipilih');
+        $('select[name="cabang_olahraga_id"]').addClass('is-invalid');
+    } else {
+        $('select[name="cabang_olahraga_id"]').removeClass('is-invalid');
+    }
+
+    if (!sportClassId) {
+        errorMessages.push('• No. Kelas Pertandingan harus dipilih');
+        $('#sport_class_id').addClass('is-invalid');
+    } else {
+        $('#sport_class_id').removeClass('is-invalid');
+    }
+
+    // Validasi Atlet
+    const atletItems = $('.atlet-item');
+    if (atletItems.length === 0) {
+        errorMessages.push('• Minimal harus ada 1 atlet');
+        isValid = false;
+    }
+
+    atletItems.each(function(index) {
+        const item = $(this);
+        const namaLengkap = item.find('input[name$="[nama_lengkap]"]').val();
+        const tempatLahir = item.find('input[name$="[tempat_lahir]"]').val();
+        const tanggalLahir = item.find('input[name$="[tanggal_lahir]"]').val();
+        const jenisKelamin = item.find('select[name$="[jenis_kelamin]"]').val();
+        const namaSekolah = item.find('input[name$="[nama_sekolah]"]').val();
+        const nisn = item.find('input[name$="[nisn]"]').val();
+
+        if (!namaLengkap) {
+            errorMessages.push(`• Atlet #${index + 1}: Nama Lengkap harus diisi`);
+            item.find('input[name$="[nama_lengkap]"]').addClass('is-invalid');
+        } else {
+            item.find('input[name$="[nama_lengkap]"]').removeClass('is-invalid');
+        }
+
+        if (!tempatLahir) {
+            errorMessages.push(`• Atlet #${index + 1}: Tempat Lahir harus diisi`);
+            item.find('input[name$="[tempat_lahir]"]').addClass('is-invalid');
+        } else {
+            item.find('input[name$="[tempat_lahir]"]').removeClass('is-invalid');
+        }
+
+        if (!tanggalLahir) {
+            errorMessages.push(`• Atlet #${index + 1}: Tanggal Lahir harus diisi`);
+            item.find('input[name$="[tanggal_lahir]"]').addClass('is-invalid');
+        } else {
+            item.find('input[name$="[tanggal_lahir]"]').removeClass('is-invalid');
+        }
+
+        if (!jenisKelamin) {
+            errorMessages.push(`• Atlet #${index + 1}: Jenis Kelamin harus dipilih`);
+            item.find('select[name$="[jenis_kelamin]"]').addClass('is-invalid');
+        } else {
+            item.find('select[name$="[jenis_kelamin]"]').removeClass('is-invalid');
+        }
+
+        if (!namaSekolah) {
+            errorMessages.push(`• Atlet #${index + 1}: Nama Sekolah harus diisi`);
+            item.find('input[name$="[nama_sekolah]"]').addClass('is-invalid');
+        } else {
+            item.find('input[name$="[nama_sekolah]"]').removeClass('is-invalid');
+        }
+
+        if (!nisn) {
+            errorMessages.push(`• Atlet #${index + 1}: NISN harus diisi`);
+            item.find('input[name$="[nisn]"]').addClass('is-invalid');
+        } else {
+            item.find('input[name$="[nisn]"]').removeClass('is-invalid');
+        }
+    });
+
+    // Validasi Official (jika ada)
+    const officialItems = $('.official-item');
+    officialItems.each(function(index) {
+        const item = $(this);
+        const namaLengkap = item.find('input[name$="[nama_lengkap]"]').val();
+        const jabatan = item.find('select[name$="[jabatan]"]').val();
+
+        if (!namaLengkap) {
+            errorMessages.push(`• Official #${index + 1}: Nama Lengkap harus diisi`);
+            item.find('input[name$="[nama_lengkap]"]').addClass('is-invalid');
+        } else {
+            item.find('input[name$="[nama_lengkap]"]').removeClass('is-invalid');
+        }
+
+        if (!jabatan) {
+            errorMessages.push(`• Official #${index + 1}: Jabatan harus dipilih`);
+            item.find('select[name$="[jabatan]"]').addClass('is-invalid');
+        } else {
+            item.find('select[name$="[jabatan]"]').removeClass('is-invalid');
+        }
+    });
+
+    // Tampilkan error jika ada
+    if (errorMessages.length > 0) {
+        Swal.fire({
+            title: 'Validasi Gagal!',
+            html: errorMessages.join('<br>'),
+            icon: 'error'
+        });
+        return;
+    }
 
     Swal.fire({
         title: 'Konfirmasi',
@@ -175,36 +296,40 @@ function atletRow(index) {
                 <div class="mb-5">
                     <img src="https://via.placeholder.com/150"
                          class="img-thumbnail preview-pas-foto"
-                         style="width: 150px; height: 150px; object-fit: cover;">
+                         style="width: 150px; height: 150px; object-fit: cover; cursor: pointer;"
+                         onclick="document.getElementById('atlet-pas-foto-${index}').click()">
+                    <input type="file" name="atlets[${index}][pas_foto]" accept="image/*"
+                           id="atlet-pas-foto-${index}"
+                           class="d-none input-pas-foto"
+                           onchange="previewAtletFoto(this, ${index})">
+                    <div class="mt-2 text-muted small"><i class="fa fa-camera"></i> Klik untuk upload</div>
                 </div>
-                <input type="file" name="atlets[${index}][pas_foto]" accept="image/*"
-                       class="form-control input-pas-foto">
             </div>
 
             <!-- Biodata -->
             <div class="col-md-8">
                 <div class="row mb-3 align-items-center">
-                    <label class="col-md-2 col-form-label">Nama Lengkap</label>
+                    <label class="col-md-2 col-form-label">Nama Lengkap <span class="text-danger">*</span></label>
                     <div class="col-md-10">
                         <input type="text" class="form-control" name="atlets[${index}][nama_lengkap]" required>
                     </div>
                 </div>
                 <div class="row mb-3 align-items-center">
-                    <label class="col-md-2 col-form-label">Tempat Lahir</label>
+                    <label class="col-md-2 col-form-label">Tempat Lahir <span class="text-danger">*</span></label>
                     <div class="col-md-10">
-                        <input type="text" class="form-control" name="atlets[${index}][tempat_lahir]">
+                        <input type="text" class="form-control" name="atlets[${index}][tempat_lahir]" required>
                     </div>
                 </div>
                 <div class="row mb-3 align-items-center">
-                    <label class="col-md-2 col-form-label">Tanggal Lahir</label>
+                    <label class="col-md-2 col-form-label">Tanggal Lahir <span class="text-danger">*</span></label>
                     <div class="col-md-10">
-                        <input type="date" class="form-control" name="atlets[${index}][tanggal_lahir]">
+                        <input type="date" class="form-control" name="atlets[${index}][tanggal_lahir]" required>
                     </div>
                 </div>
                 <div class="row mb-3 align-items-center">
-                    <label class="col-md-2 col-form-label">Jenis Kelamin</label>
+                    <label class="col-md-2 col-form-label">Jenis Kelamin <span class="text-danger">*</span></label>
                     <div class="col-md-10">
-                        <select name="atlets[${index}][jenis_kelamin]" class="form-select">
+                        <select name="atlets[${index}][jenis_kelamin]" class="form-select" required>
                             <option value="">Pilih Jenis Kelamin</option>
                             <option value="L">Laki-laki</option>
                             <option value="P">Perempuan</option>
@@ -212,15 +337,15 @@ function atletRow(index) {
                     </div>
                 </div>
                 <div class="row mb-3 align-items-center">
-                    <label class="col-md-2 col-form-label">Nama Sekolah</label>
+                    <label class="col-md-2 col-form-label">Nama Sekolah <span class="text-danger">*</span></label>
                     <div class="col-md-10">
-                        <input type="text" class="form-control" name="atlets[${index}][nama_sekolah]">
+                        <input type="text" class="form-control" name="atlets[${index}][nama_sekolah]" required>
                     </div>
                 </div>
                 <div class="row mb-3 align-items-center">
-                    <label class="col-md-2 col-form-label">NISN</label>
+                    <label class="col-md-2 col-form-label">NISN <span class="text-danger">*</span></label>
                     <div class="col-md-10">
-                        <input type="text" class="form-control" name="atlets[${index}][nisn]">
+                        <input type="text" class="form-control" name="atlets[${index}][nisn]" required>
                     </div>
                 </div>
                 <div class="row mb-3 align-items-center">
@@ -261,8 +386,15 @@ function officialRow(index) {
         </button>
         <div class="row g-3 align-items-end">
             <div class="col-md-4 text-center">
-                <img src="https://via.placeholder.com/120" class="img-thumbnail preview-foto-official mb-2" style="width: 120px; height: 120px; object-fit: cover;">
-                <input type="file" name="officials[${index}][foto]" class="form-control input-foto-official">
+                <img src="https://via.placeholder.com/120"
+                     class="img-thumbnail preview-foto-official mb-2"
+                     style="width: 120px; height: 120px; object-fit: cover; cursor: pointer;"
+                     onclick="document.getElementById('official-foto-${index}').click()">
+                <input type="file" name="officials[${index}][foto]"
+                       id="official-foto-${index}"
+                       class="d-none input-foto-official"
+                       onchange="previewOfficialFoto(this, ${index})">
+                <div class="mt-2 text-muted small"><i class="fa fa-camera"></i> Klik untuk upload</div>
             </div>
             <div class="col-md-4">
                 <input type="text" name="officials[${index}][nama_lengkap]" placeholder="Nama Lengkap" class="form-control" required>
@@ -295,31 +427,27 @@ $(document).on('click', '.remove-official', function() {
     $(this).closest('.official-item').remove();
 });
 
-$(document).on('change', '.input-pas-foto', function() {
-    const input = this;
-    const reader = new FileReader();
-
-    reader.onload = function(e) {
-        $(input).closest('.atlet-item').find('.preview-pas-foto').attr('src', e.target.result);
-    };
-
+// Preview foto atlet
+function previewAtletFoto(input, index) {
     if (input.files && input.files[0]) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            $(input).closest('.atlet-item').find('.preview-pas-foto').attr('src', e.target.result);
+        };
         reader.readAsDataURL(input.files[0]);
     }
-});
+}
 
-$(document).on('change', '.input-foto-official', function() {
-    const input = this;
-    const reader = new FileReader();
-
-    reader.onload = function(e) {
-        $(input).closest('.official-item').find('.preview-foto-official').attr('src', e.target.result);
-    };
-
+// Preview foto official
+function previewOfficialFoto(input, index) {
     if (input.files && input.files[0]) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            $(input).closest('.official-item').find('.preview-foto-official').attr('src', e.target.result);
+        };
         reader.readAsDataURL(input.files[0]);
     }
-});
+}
 
 $('#cabor-id').on('change', function() {
     let sportId = $(this).val();

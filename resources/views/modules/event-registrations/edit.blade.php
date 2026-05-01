@@ -343,8 +343,8 @@
                 <div class="modal-body">
                     <!-- Nama Lengkap -->
                     <div class="mb-3">
-                        <label class="form-label">Nama Lengkap</label>
-                        <input type="text" class="form-control" name="nama_lengkap" id="editNamaLengkap">
+                        <label class="form-label">Nama Lengkap <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" name="nama_lengkap" id="editNamaLengkap" required>
                         <input type="hidden" class="form-control" name="registration_id" id="editRegistId">
                         <input type="hidden" class="form-control" name="id" id="editId">
                         <input type="hidden" class="form-control" name="perolehan_medali" id="editPerolehanMedali">
@@ -353,20 +353,20 @@
 
                     <!-- Tempat Lahir -->
                     <div class="mb-3">
-                        <label class="form-label">Tempat Lahir</label>
-                        <input type="text" class="form-control" name="tempat_lahir" id="editTempatLahir">
+                        <label class="form-label">Tempat Lahir <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" name="tempat_lahir" id="editTempatLahir" required>
                     </div>
 
                     <!-- Tanggal Lahir -->
                     <div class="mb-3">
-                        <label class="form-label">Tanggal Lahir</label>
-                        <input type="date" class="form-control" name="tanggal_lahir" id="editTanggalLahir">
+                        <label class="form-label">Tanggal Lahir <span class="text-danger">*</span></label>
+                        <input type="date" class="form-control" name="tanggal_lahir" id="editTanggalLahir" required>
                     </div>
 
                     <!-- Jenis Kelamin -->
                     <div class="mb-3">
-                        <label class="form-label">Jenis Kelamin</label>
-                        <select name="jenis_kelamin" class="form-select" id="editJenisKelamin">
+                        <label class="form-label">Jenis Kelamin <span class="text-danger">*</span></label>
+                        <select name="jenis_kelamin" class="form-select" id="editJenisKelamin" required>
                             <option value="">Pilih</option>
                             <option value="L">Laki-laki</option>
                             <option value="P">Perempuan</option>
@@ -375,14 +375,14 @@
 
                     <!-- Nama Sekolah -->
                     <div class="mb-3">
-                        <label class="form-label">Nama Sekolah</label>
-                        <input type="text" class="form-control" name="nama_sekolah" id="editNamaSekolah">
+                        <label class="form-label">Nama Sekolah <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" name="nama_sekolah" id="editNamaSekolah" required>
                     </div>
 
                     <!-- NISN -->
                     <div class="mb-3">
-                        <label class="form-label">NISN</label>
-                        <input type="text" class="form-control" name="nisn" id="editNisn">
+                        <label class="form-label">NISN <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" name="nisn" id="editNisn" required>
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Raport</label>
@@ -687,6 +687,68 @@ $(document).on('click', '.edit-atlet', function() {
 
 $('#form-atlet-update').on('submit', function(e) {
     e.preventDefault();
+
+    // Validasi form update atlet
+    let errorMessages = [];
+
+    const namaLengkap = $('#editNamaLengkap').val();
+    const tempatLahir = $('#editTempatLahir').val();
+    const tanggalLahir = $('#editTanggalLahir').val();
+    const jenisKelamin = $('#editJenisKelamin').val();
+    const namaSekolah = $('#editNamaSekolah').val();
+    const nisn = $('#editNisn').val();
+
+    if (!namaLengkap) {
+        errorMessages.push('• Nama Lengkap harus diisi');
+        $('#editNamaLengkap').addClass('is-invalid');
+    } else {
+        $('#editNamaLengkap').removeClass('is-invalid');
+    }
+
+    if (!tempatLahir) {
+        errorMessages.push('• Tempat Lahir harus diisi');
+        $('#editTempatLahir').addClass('is-invalid');
+    } else {
+        $('#editTempatLahir').removeClass('is-invalid');
+    }
+
+    if (!tanggalLahir) {
+        errorMessages.push('• Tanggal Lahir harus diisi');
+        $('#editTanggalLahir').addClass('is-invalid');
+    } else {
+        $('#editTanggalLahir').removeClass('is-invalid');
+    }
+
+    if (!jenisKelamin) {
+        errorMessages.push('• Jenis Kelamin harus dipilih');
+        $('#editJenisKelamin').addClass('is-invalid');
+    } else {
+        $('#editJenisKelamin').removeClass('is-invalid');
+    }
+
+    if (!namaSekolah) {
+        errorMessages.push('• Nama Sekolah harus diisi');
+        $('#editNamaSekolah').addClass('is-invalid');
+    } else {
+        $('#editNamaSekolah').removeClass('is-invalid');
+    }
+
+    if (!nisn) {
+        errorMessages.push('• NISN harus diisi');
+        $('#editNisn').addClass('is-invalid');
+    } else {
+        $('#editNisn').removeClass('is-invalid');
+    }
+
+    // Tampilkan error jika ada
+    if (errorMessages.length > 0) {
+        Swal.fire({
+            title: 'Validasi Gagal!',
+            html: errorMessages.join('<br>'),
+            icon: 'error'
+        });
+        return;
+    }
 
     Swal.fire({
         title: 'Simpan Perubahan?',
