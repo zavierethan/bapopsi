@@ -45,7 +45,7 @@
                                     <option value="SMP">SMP</option>
                                 </select>
                             </div>
-                            <div class="fv-row mb-8" id="kecamatan">
+                            <div class="fv-row mb-8" id="kecamatanField">
                                 <select name="kecamatan_id" class="form-control bg-transparent" id="kecamatan">
                                     <option value="">Pilih Kecamatan</option>
                                     @foreach($kecamatan as $k)
@@ -67,7 +67,7 @@
                                 </select>
                             </div>
                             <div class="fv-row mb-8">
-                                <input type="text" name="username" placeholder="Username"
+                                <input type="text" name="username" id="username" placeholder="Username"
                                     class="form-control bg-transparent" required />
                             </div>
 
@@ -155,19 +155,20 @@
 
     <script>
     $(function() {
-        $('#kecamatan').hide();
+        $('#kecamatanField').hide();
         $('#sub-rayon').hide();
 
         // Toggle Sub Rayon based on Jenjang
         $('#jenjang').change(function() {
-            if ($(this).val() === "SMP") {
-                $('#kecamatan').hide();
+            const jenjang = $(this).val();
+            if (jenjang === "SMP") {
+                $('#kecamatanField').hide();
                 $('#sub-rayon').show();
                 $('#kecamatan').val("");
             } else {
-                $('#kecamatan').show();
+                $('#kecamatanField').show();
                 $('#sub-rayon').hide();
-                $('#sub-rayon').val("");
+                $('#subRayonSelect').val("");
             }
         });
 
@@ -180,12 +181,24 @@
                 const options = response.data.map(item =>
                     `<option value="${item.id}">${item.nama}</option>`);
                 $('#subRayonSelect').html(
-                    '<option disabled selected>-- Pilih Sub Rayon --</option>' + options
-                    .join(''));
+                    '<option disabled selected>-- Pilih Sub Rayon --</option>' + options.join(''));
             }).fail(xhr => {
                 console.error('Gagal mengambil sub rayon:', xhr);
             });
         });
+
+        function validateEmail(email) {
+            const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return regex.test(email);
+        }
+
+        function showValidationError(message) {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Validasi Gagal',
+                text: message
+            });
+        }
 
         // Show/Hide Password
         $('#togglePasswordReg, #toggleConfirmPasswordReg').click(function() {
@@ -200,21 +213,47 @@
         $('#kt_register_form').submit(function(e) {
             e.preventDefault();
 
-            const $form = $(this);
-            const $btn = $('#kt_register_submit');
-
-            // Validasi password match secara manual (opsional)
+            const namaLengkap = $('input[name="nama_lengkap"]').val().trim();
+            const email = $('input[name="email"]').val().trim();
+            const jenjang = $('#jenjang').val();
+            const kecamatanId = $('#kecamatan').val();
+            const subRayonId = $('#subRayonSelect').val();
+            const username = $('#username').val().trim();
             const password = $('#passwordInputReg').val();
             const confirmPassword = $('#confirmPasswordInputReg').val();
-            if (password !== confirmPassword) {
-                Swal.fire({
-                    icon: 'warning',
-                    title: 'Password Tidak Cocok',
-                    text: 'Konfirmasi password tidak sama.'
-                });
+
+            if (!namaLengkap || !email || !jenjang || !username || !password || !confirmPassword) {
+                showValidationError('Semua input form wajib diisi.');
                 return;
             }
 
+            if (!validateEmail(email)) {
+                showValidationError('Format email tidak valid.');
+                return;
+            }
+
+            if (username.indexOf(' ') !== -1) {
+                showValidationError('Username tidak boleh mengandung spasi.');
+                return;
+            }
+
+            if (jenjang === 'SMP' && !subRayonId) {
+                showValidationError('Silakan pilih Sub Rayon untuk jenjang SMP.');
+                return;
+            }
+
+            if (jenjang === 'SD' && !kecamatanId) {
+                showValidationError('Silakan pilih Kecamatan untuk jenjang SD.');
+                return;
+            }
+
+            if (password !== confirmPassword) {
+                showValidationError('Konfirmasi password tidak sama.');
+                return;
+            }
+
+            const $form = $(this);
+            const $btn = $('#kt_register_submit');
             $btn.prop('disabled', true).text('Memproses...');
 
             $.ajax({

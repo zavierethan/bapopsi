@@ -115,7 +115,7 @@
                                         <th class="min-w-125px">Kecamatan</th>
                                         <th class="min-w-125px">Sub Rayon</th>
                                         <th class="min-w-125px">Approval Status</th>
-                                        <th class="min-w-125px">Catatan Approval</th>
+                                        <th class="min-w-125px">Catatan</th>
                                         <th class="min-w-125px">Tanggal Approval</th>
                                         <th class="min-w-125px text-center">Actions</th>
                                     </tr>

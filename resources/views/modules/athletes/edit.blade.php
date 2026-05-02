@@ -173,6 +173,9 @@
                             </div>
                             <div class="text-end mb-10">
                                 <a href="/athletes" class="btn btn-danger">Kembali</a>
+                                @if(Auth::user()->group_id == 16)
+                                <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
+                                @endif
                             </div>
                         </div>
                     </form>
