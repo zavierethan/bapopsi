@@ -211,11 +211,11 @@ class EventRegistrationController extends Controller
 
                 // Simpan atlet
                 DB::table('atlet')->insert([
-                    'nama_lengkap'       => $a['nama_lengkap'] ?? '',
-                    'tempat_lahir'       => $a['tempat_lahir'] ?? '',
+                    'nama_lengkap'       => strtoupper($a['nama_lengkap'] ?? ''),
+                    'tempat_lahir'       => strtoupper($a['tempat_lahir'] ?? ''),
                     'tanggal_lahir'      => $a['tanggal_lahir'] ?? null,
                     'jenis_kelamin'      => $a['jenis_kelamin'] ?? '',
-                    'nama_sekolah'       => $a['nama_sekolah'] ?? '',
+                    'nama_sekolah'       => strtoupper($a['nama_sekolah'] ?? ''),
                     'nisn'               => $a['nisn'] ?? '',
                     'pas_foto'           => $pasFoto,
                     'raport'             => $raport,
@@ -241,7 +241,7 @@ class EventRegistrationController extends Controller
                 }
 
                 DB::table('officials')->insert([
-                    'nama'          => $o['nama_lengkap'] ?? '',
+                    'nama'          => strtoupper($o['nama_lengkap'] ?? ''),
                     'jabatan_id'    => $o['jabatan'] ?? null,
                     'foto'          => $fotoPath,
                     'event_reg_id'  => $eventRegId,
@@ -319,11 +319,11 @@ class EventRegistrationController extends Controller
                 }
 
                 $updateData = [
-                    'nama_lengkap'   => $atlet['nama_lengkap'] ?? $existingAtlet->nama_lengkap,
-                    'tempat_lahir'   => $atlet['tempat_lahir'] ?? $existingAtlet->tempat_lahir,
+                    'nama_lengkap'   => strtoupper($atlet['nama_lengkap'] ?? $existingAtlet->nama_lengkap),
+                    'tempat_lahir'   => strtoupper($atlet['tempat_lahir'] ?? $existingAtlet->tempat_lahir),
                     'tanggal_lahir'  => $atlet['tanggal_lahir'] ?? $existingAtlet->tanggal_lahir,
                     'jenis_kelamin'  => $atlet['jenis_kelamin'] ?? $existingAtlet->jenis_kelamin,
-                    'nama_sekolah'   => $atlet['nama_sekolah'] ?? $existingAtlet->nama_sekolah,
+                    'nama_sekolah'   => strtoupper($atlet['nama_sekolah'] ?? $existingAtlet->nama_sekolah),
                     'nisn'           => $atlet['nisn'] ?? $existingAtlet->nisn,
                     'updated_at'     => now(),
                 ];
@@ -364,7 +364,7 @@ class EventRegistrationController extends Controller
                 }
 
                 $updatedOfficial = [
-                    'nama'       => $official['nama_lengkap'] ?? $existingOfficial->nama,
+                    'nama'       => strtoupper($official['nama_lengkap'] ?? $existingOfficial->nama),
                     'jabatan_id' => $official['jabatan'] ?? $existingOfficial->jabatan_id,
                     'updated_at' => now(),
                 ];

@@ -132,7 +132,12 @@ $('#submit-form').on('click', function(e) {
     //     $('#sport_class_id').removeClass('is-invalid');
     // }
 
-    // Validasi Atlet
+    // Validasi File Upload
+    const MAX_FILE_SIZE = 2 * 1024 * 1024; // 2 MB
+    const ALLOWED_TYPE = 'application/pdf';
+    const fileUploadFields = ['raport', 'sk', 'akta_lahir'];
+
+    // Atlet
     const atletItems = $('.atlet-item');
     if (atletItems.length === 0) {
         errorMessages.push('• Minimal harus ada 1 atlet');
@@ -141,6 +146,43 @@ $('#submit-form').on('click', function(e) {
 
     atletItems.each(function(index) {
         const item = $(this);
+
+        // Validasi file upload untuk setiap atlet
+        fileUploadFields.forEach(fieldName => {
+            const fileInput = item.find(`input[name="atlets[${index}][${fieldName}]"]`)[0];
+
+            if (!fileInput.files || fileInput.files.length === 0) {
+                const labelName = fieldName === 'raport' ? 'Rapor' :
+                                 fieldName === 'sk' ? 'SK' : 'Akta Lahir';
+                errorMessages.push(`• Atlet #${index + 1}: ${labelName} harus diupload`);
+                item.find(`input[name="atlets[${index}][${fieldName}]"]`).addClass('is-invalid');
+            } else {
+                const file = fileInput.files[0];
+
+                // Validasi tipe file
+                if (file.type !== ALLOWED_TYPE) {
+                    const labelName = fieldName === 'raport' ? 'Rapor' :
+                                     fieldName === 'sk' ? 'SK' : 'Akta Lahir';
+                    errorMessages.push(`• Atlet #${index + 1}: ${labelName} harus berformat PDF`);
+                    item.find(`input[name="atlets[${index}][${fieldName}]"]`).addClass('is-invalid');
+                } else {
+                    item.find(`input[name="atlets[${index}][${fieldName}]"]`).removeClass('is-invalid');
+                }
+
+                // Validasi ukuran file
+                if (file.size > MAX_FILE_SIZE) {
+                    const labelName = fieldName === 'raport' ? 'Rapor' :
+                                     fieldName === 'sk' ? 'SK' : 'Akta Lahir';
+                    const fileSizeMB = (file.size / (1024 * 1024)).toFixed(2);
+                    errorMessages.push(`• Atlet #${index + 1}: ${labelName} melebihi ukuran maksimal 2 MB (Ukuran file: ${fileSizeMB} MB)`);
+                    item.find(`input[name="atlets[${index}][${fieldName}]"]`).addClass('is-invalid');
+                } else {
+                    item.find(`input[name="atlets[${index}][${fieldName}]"]`).removeClass('is-invalid');
+                }
+            }
+        });
+
+        // Validasi biodata atlet
         const namaLengkap = item.find('input[name$="[nama_lengkap]"]').val();
         const tempatLahir = item.find('input[name$="[tempat_lahir]"]').val();
         const tanggalLahir = item.find('input[name$="[tanggal_lahir]"]').val();
@@ -294,7 +336,7 @@ function atletRow(index) {
             <!-- Foto Profil -->
             <div class="col-md-4 text-center">
                 <div class="mb-5">
-                    <img src="https://via.placeholder.com/150"
+                    <img src="{{asset('assets/media/avatars/blank.png')}}"
                          class="img-thumbnail preview-pas-foto"
                          style="width: 100%; max-width: 300px; height: 300px; object-fit: cover; cursor: pointer;"
                          onclick="document.getElementById('atlet-pas-foto-${index}').click()">
@@ -349,21 +391,24 @@ function atletRow(index) {
                     </div>
                 </div>
                 <div class="row mb-3 align-items-center">
-                    <label class="col-md-2 col-form-label">Rapor</label>
+                    <label class="col-md-2 col-form-label">Rapor <span class="text-danger">*</span></label>
                     <div class="col-md-10">
-                        <input type="file" name="atlets[${index}][raport]" class="form-control mt-1">
+                        <input type="file" name="atlets[${index}][raport]" class="form-control mt-1 file-upload" required>
+                        <small class="text-muted" style="font-style: italic;"><i class="fa fa-info-circle"></i> Wajib diisi - Format: PDF, Maksimal: 2 MB</small>
                     </div>
                 </div>
                 <div class="row mb-3 align-items-center">
-                    <label class="col-md-2 col-form-label">SK</label>
+                    <label class="col-md-2 col-form-label">SK <span class="text-danger">*</span></label>
                     <div class="col-md-10">
-                        <input type="file" name="atlets[${index}][sk]" class="form-control mt-1">
+                        <input type="file" name="atlets[${index}][sk]" class="form-control mt-1 file-upload" required>
+                        <small class="text-muted" style="font-style: italic;"><i class="fa fa-info-circle"></i> Wajib diisi - Format: PDF, Maksimal: 2 MB</small>
                     </div>
                 </div>
                 <div class="row mb-3 align-items-center">
-                    <label class="col-md-2 col-form-label">Akta Lahir</label>
+                    <label class="col-md-2 col-form-label">Akta Lahir <span class="text-danger">*</span></label>
                     <div class="col-md-10">
-                        <input type="file" name="atlets[${index}][akta_lahir]" class="form-control mt-1">
+                        <input type="file" name="atlets[${index}][akta_lahir]" class="form-control mt-1 file-upload" required>
+                        <small class="text-muted" style="font-style: italic;"><i class="fa fa-info-circle"></i> Wajib diisi - Format: PDF, Maksimal: 2 MB</small>
                     </div>
                 </div>
             </div>
@@ -387,7 +432,7 @@ function officialRow(index) {
         <div class="row g-4">
             <div class="col-md-4 text-center">
                 <div class="mb-5">
-                    <img src="https://via.placeholder.com/150"
+                    <img src="{{asset('assets/media/avatars/blank.png')}}"
                          class="img-thumbnail preview-foto-official"
                          style="width: 100%; max-width: 300px; height: 300px; object-fit: cover; cursor: pointer;"
                          onclick="document.getElementById('official-foto-${index}').click()">
@@ -495,6 +540,46 @@ $('#cabor-id').on('change', function() {
                 $container.html('<p class="text-danger">Gagal memuat kelas.</p>');
             }
         });
+    }
+});
+
+// Real-time validation untuk file uploads
+$(document).on('change', '.file-upload', function() {
+    const MAX_FILE_SIZE = 2 * 1024 * 1024; // 2 MB
+    const ALLOWED_TYPE = 'application/pdf';
+    const input = this;
+    const file = input.files[0];
+
+    // Remove previous error message jika ada
+    const existingError = $(input).next('.invalid-feedback');
+    if (existingError.length) {
+        existingError.remove();
+    }
+
+    // Reset invalid class
+    $(input).removeClass('is-invalid');
+
+    if (file) {
+        let errorMsg = '';
+
+        // Check file type
+        if (file.type !== ALLOWED_TYPE) {
+            errorMsg = 'Hanya file PDF yang diizinkan';
+            $(input).addClass('is-invalid');
+        }
+
+        // Check file size
+        if (file.size > MAX_FILE_SIZE) {
+            const fileSizeMB = (file.size / (1024 * 1024)).toFixed(2);
+            if (errorMsg) errorMsg += '<br>';
+            errorMsg += `Ukuran file terlalu besar (${fileSizeMB} MB). Maksimal 2 MB.`;
+            $(input).addClass('is-invalid');
+        }
+
+        // Show error message if any
+        if (errorMsg) {
+            $(input).after(`<div class="invalid-feedback" style="display: block;">${errorMsg}</div>`);
+        }
     }
 });
 </script>
