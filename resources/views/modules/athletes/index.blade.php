@@ -65,7 +65,11 @@
                                     <!-- LEFT: Filters -->
                                     <div class="d-flex align-items-center gap-3">
                                         <!-- Cabor -->
-                                        <select class="form-select form-select-solid" id="cabor" style="width: 250px;">
+                                        <select
+                                            class="form-select form-select-transparent text-gray-900 fs-7 lh-1 fw-bold py-0 ps-3 w-auto"
+                                            data-control="select2" data-hide-search="true"
+                                            data-dropdown-css-class="w-150px"
+                                            id="cabor" style="width: 400px;">
                                             <option value="">-- Pilih Cabang Olahraga --</option>
                                             @foreach($cabor as $c)
                                                 <option value="{{$c->id}}">{{$c->name}}</option>
@@ -73,7 +77,11 @@
                                         </select>
 
                                         <!-- Status -->
-                                        <select class="form-select form-select-solid" id="status" style="width: 180px;">
+                                        <select
+                                            class="form-select form-select-transparent text-gray-900 fs-7 lh-1 fw-bold py-0 ps-3 w-auto"
+                                            data-control="select2" data-hide-search="true"
+                                            data-dropdown-css-class="w-150px"
+                                            id="status" style="width: 180px;">
                                             <option value="">-- Pilih Status --</option>
                                             <option value="waiting">Waiting Approval</option>
                                             <option value="1">Approved</option>
@@ -114,10 +122,10 @@
                                         <th class="min-w-125px">Event</th>
                                         <th class="min-w-125px">Kecamatan</th>
                                         <th class="min-w-125px">Sub Rayon</th>
-                                        <th class="min-w-125px">Approval Status</th>
+                                        <th class="min-w-125px">Status</th>
                                         <th class="min-w-125px">Catatan</th>
                                         <th class="min-w-125px">Tanggal Approval</th>
-                                        <th class="min-w-125px text-center">Actions</th>
+                                        <th class="min-w-250px text-center">Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody class="fw-semibold text-gray-700">

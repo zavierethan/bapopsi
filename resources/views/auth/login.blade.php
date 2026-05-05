@@ -29,7 +29,7 @@
                                 </div>
                             @endif
                             <div class="fv-row mb-8">
-                                <input type="text" placeholder="Username" name="name" autocomplete="off" class="form-control bg-transparent @error('name') is-invalid @enderror" value="{{ old('name') }}" />
+                                <input type="text" placeholder="Username / Email" name="name" autocomplete="off" class="form-control bg-transparent @error('name') is-invalid @enderror" value="{{ old('name') }}" />
                                 @error('name')
                                 <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
                                 @enderror

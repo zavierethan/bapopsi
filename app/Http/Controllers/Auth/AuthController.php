@@ -11,58 +11,104 @@ use App\Models\User;
 
 class AuthController extends Controller
 {
-    public function login(Request $request){
+    // public function login(Request $request){
+    //     $request->validate([
+    //         'name' => 'required|string',
+    //         'password' => 'required|string',
+    //     ]);
+
+    //     $credentials = $request->only('name', 'password');
+
+    //     // Fetch the user with the provided name
+    //     $user = User::where('name', $credentials['name'])->first();
+
+    //     if (!$user) {
+    //         return redirect('/login')->with('error', 'Username atau password salah.');
+    //     }
+
+    //     // Check if the user is active
+    //     if ($user->is_active === 0) {
+    //         return redirect('/login')->with('error', 'Your account is inactive. Please contact support.');
+    //     }
+
+    //     // Attempt authentication using name
+    //     if (Auth::attempt($credentials)) {
+
+
+    //         $user = Auth::user();
+    //         $role = $user->group_id;
+
+    //         if (false) {
+    //             return redirect('/transactions');
+    //         }
+
+    //         switch($role) {
+    //             case 1 :
+    //                 return redirect()->route('dashboards.general');
+    //                 break;
+    //             case 14 :
+    //                 return redirect()->route('dashboards.general');
+    //                 break;
+    //             case 15 :
+    //                 return redirect()->route('dashboards.general');
+    //                 break;
+    //             case 16 :
+    //                 return redirect()->route('dashboards.general');
+    //                 break;
+    //             default:
+
+    //         }
+
+    //         return redirect()->route('dashboards.general');
+    //     }
+
+    //     return redirect('/login')->with('error', 'Username atau password salah.');
+    // }
+
+    public function login(Request $request) {
         $request->validate([
-            'name' => 'required|string',
+            'name' => 'required|string', // bisa email / username
             'password' => 'required|string',
         ]);
 
-        $credentials = $request->only('name', 'password');
+        $loginInput = $request->input('name');
 
-        // Fetch the user with the provided name
-        $user = User::where('name', $credentials['name'])->first();
+        // Tentukan apakah email atau username
+        $field = filter_var($loginInput, FILTER_VALIDATE_EMAIL) ? 'email' : 'name';
+
+        $credentials = [
+            $field => $loginInput,
+            'password' => $request->password
+        ];
+
+        // Ambil user dulu untuk cek status aktif
+        $user = User::where($field, $loginInput)->first();
 
         if (!$user) {
-            return redirect('/login')->with('error', 'Username atau password salah.');
+            return redirect('/login')->with('error', 'Username atau email / password salah.');
         }
 
-        // Check if the user is active
         if ($user->is_active === 0) {
             return redirect('/login')->with('error', 'Your account is inactive. Please contact support.');
         }
 
-        // Attempt authentication using name
         if (Auth::attempt($credentials)) {
-
 
             $user = Auth::user();
             $role = $user->group_id;
 
-            if (false) {
-                return redirect('/transactions');
-            }
-
-            switch($role) {
-                case 1 :
+            switch ($role) {
+                case 1:
+                case 14:
+                case 15:
+                case 16:
                     return redirect()->route('dashboards.general');
-                    break;
-                case 14 :
-                    return redirect()->route('dashboards.general');
-                    break;
-                case 15 :
-                    return redirect()->route('dashboards.general');
-                    break;
-                case 16 :
-                    return redirect()->route('dashboards.general');
-                    break;
-                default:
-
             }
 
             return redirect()->route('dashboards.general');
         }
 
-        return redirect('/login')->with('error', 'Username atau password salah.');
+        return redirect('/login')->with('error', 'Username atau email / password salah.');
     }
 
     public function registration() {
