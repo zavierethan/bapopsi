@@ -53,7 +53,7 @@
                                         <!-- Foto Profil -->
                                         <div class="col-md-4 text-center">
                                             <div class="mb-5">
-                                                <img src="{{ $atlet->pas_foto ? asset('storage/' . $atlet->pas_foto) : 'https://via.placeholder.com/150' }}"
+                                                <img src="{{ $atlet->pas_foto ? asset('storage/' . $atlet->pas_foto) : asset('assets/media/avatars/blank.png') }}"
                                                     class="img-thumbnail preview-pas-foto"
                                                     style="width: 300px; height: 300px; object-fit: cover; cursor: pointer;"
                                                     onclick="document.getElementById('input-pas-foto').click()">
@@ -220,7 +220,7 @@
                     <div class="row g-4">
                         <div class="col-md-4 text-center">
                             <div class="mb-5">
-                                <img src="https://via.placeholder.com/150" class="img-thumbnail" id="editAtletPhotoPreview"
+                                <img src="{{ asset('assets/media/avatars/blank.png') }}" class="img-thumbnail" id="editAtletPhotoPreview"
                                     style="width: 100%; max-width: 300px; height: 300px; object-fit: cover; cursor: pointer;"
                                     onclick="document.getElementById('editAtletPhoto').click()">
                                 <input type="file" name="pas_foto" id="editAtletPhoto" class="d-none" accept="image/*">
@@ -314,7 +314,7 @@
 
 $(document).on('click', '#print-id-card', function () {
     const atletId = $(this).data('id');
-    const url = `/athletes/id-card/59`; // route to controller
+    const url = `/athletes/id-card/${atletId}`; // route to controller
 
     // Set URL ke iframe untuk load konten
     $('#pdfIframe').attr('src', url);
@@ -350,8 +350,9 @@ $(document).on('click', '#approve', function() {
                         text: 'Atlet berhasil disetujui.',
                         timer: 2000,
                         showConfirmButton: false
+                    }).then(() => {
+                        window.location.href = '{{ route('athletes.index') }}';
                     });
-                    $('#kt_groups_table').DataTable().ajax.reload(null, false);
                 },
                 error: function(xhr) {
                     console.error(xhr.responseText);
@@ -404,8 +405,9 @@ $(document).on('click', '#reject', function() {
                         text: 'Atlet berhasil ditolak.',
                         timer: 2000,
                         showConfirmButton: false
+                    }).then(() => {
+                        window.location.href = '{{ route('athletes.index') }}';
                     });
-                    $('#kt_groups_table').DataTable().ajax.reload();
                 },
                 error: function(xhr) {
                     console.error(xhr.responseText);
@@ -485,7 +487,7 @@ $('#form-atlet-edit').on('submit', function(e) {
                         title: 'Berhasil',
                         text: res.message
                     }).then(() => {
-                        window.location.href = "{{ route('perolehan-medali.index') }}";
+                        window.location.href = "{{ route('athletes.index') }}";
                     });
                 },
                 error: function(err) {
@@ -539,11 +541,15 @@ $(document).on('click', '.edit-atlet', function() {
             if (data.pas_foto) {
                 $('#editAtletPhotoPreview').attr('src', data.pas_foto);
             } else {
-                $('#editAtletPhotoPreview').attr('src', 'https://via.placeholder.com/150');
+                $('#editAtletPhotoPreview').attr('src', '{{asset('assets/media/avatars/blank.png')}}');
             }
 
             if (typeof data.approval_status !== 'undefined') {
-                $('#editAtletApprovalStatus').text(setOfficialModalStatusText(data.approval_status));
+                let statusText = data.approval_status === 'Approved' ? 'Disetujui' :
+                                data.approval_status === 'Rejected' ? 'Ditolak' : 'Menunggu Persetujuan';
+                let badgeClass = data.approval_status === 'Approved' ? 'badge-success' :
+                                data.approval_status === 'Rejected' ? 'badge-danger' : 'badge-warning';
+                $('#editAtletApprovalStatus').removeClass('badge-secondary badge-success badge-danger badge-warning').addClass(badgeClass).text(statusText);
             } else {
                 $('#editAtletApprovalStatus').text('-');
             }
@@ -552,6 +558,34 @@ $(document).on('click', '.edit-atlet', function() {
             $('#editAtletModal').modal('show');
         }
     });
+});
+
+$(document).on('click', '.input-pas-foto', function() {
+    // Handle image preview for photo input
+});
+
+// Handle image preview for file input
+$('.input-pas-foto').on('change', function(e) {
+    const file = e.target.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function(event) {
+            $(e.target).closest('.col-md-4').find('.preview-pas-foto').attr('src', event.target.result);
+        };
+        reader.readAsDataURL(file);
+    }
+});
+
+// Handle photo preview in modal
+$('#editAtletPhoto').on('change', function(e) {
+    const file = e.target.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function(event) {
+            $('#editAtletPhotoPreview').attr('src', event.target.result);
+        };
+        reader.readAsDataURL(file);
+    }
 });
 
 $(document).on('click', '.approve-atlet', function() {

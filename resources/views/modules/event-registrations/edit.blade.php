@@ -124,7 +124,7 @@
                                     <!-- Foto Profil -->
                                     <div class="col-md-4 text-center">
                                         <div class="mb-5">
-                                            <img src="{{ $atlet->pas_foto ? asset('storage/' . $atlet->pas_foto) : 'https://via.placeholder.com/150' }}"
+                                            <img src="{{ $atlet->pas_foto ? asset('storage/' . $atlet->pas_foto) : asset('assets/media/avatars/blank.png') }}"
                                                 class="img-thumbnail preview-pas-foto"
                                                 style="width: 300px; height: 300px; object-fit: cover; cursor: pointer;"
                                                 onclick="document.getElementById('atlet-pas-foto-{{ $atlet->id }}').click()">
@@ -300,7 +300,7 @@
                                 <div class="row g-4">
                                     <div class="col-md-4 text-center">
                                         <div class="mb-5">
-                                            <img src="{{ $official->foto ? asset('storage/' . $official->foto) : 'https://via.placeholder.com/120' }}"
+                                            <img src="{{ $official->foto ? asset('storage/' . $official->foto) : asset('assets/media/avatars/blank.png') }}"
                                                 class="img-thumbnail preview-foto-official mb-2"
                                                 style="width: 300px; height: 300px; object-fit: cover; cursor: pointer;"
                                                 onclick="document.getElementById('official-foto-{{ $official->id }}').click()">
@@ -395,7 +395,7 @@
                     <div class="row g-4">
                         <div class="col-md-4 text-center">
                             <div class="mb-5">
-                                <img src="https://via.placeholder.com/150" class="img-thumbnail" id="officialModalPhotoPreview"
+                                <img src="{{ asset('assets/media/avatars/blank.png') }}" class="img-thumbnail" id="officialModalPhotoPreview"
                                     style="width: 300px; height: 300px; object-fit: cover; cursor: pointer;"
                                     onclick="document.getElementById('editOfficialPhoto').click()">
                                 <input type="file" name="foto" id="editOfficialPhoto" class="d-none" accept="image/*">
@@ -458,7 +458,7 @@
                     <div class="row g-4">
                         <div class="col-md-4 text-center">
                             <div class="mb-5">
-                                <img src="https://via.placeholder.com/150" class="img-thumbnail" id="editAtletPhotoPreview"
+                                <img src="{{ asset('assets/media/avatars/blank.png') }}" class="img-thumbnail" id="editAtletPhotoPreview"
                                     style="width: 100%; max-width: 300px; height: 300px; object-fit: cover; cursor: pointer;"
                                     onclick="document.getElementById('editAtletPhoto').click()">
                                 <input type="file" name="pas_foto" id="editAtletPhoto" class="d-none" accept="image/*">
@@ -819,7 +819,7 @@ $(document).on('click', '.edit-atlet', function() {
             if (data.pas_foto) {
                 $('#editAtletPhotoPreview').attr('src', data.pas_foto);
             } else {
-                $('#editAtletPhotoPreview').attr('src', 'https://via.placeholder.com/150');
+                $('#editAtletPhotoPreview').attr('src', '{{ asset('assets/media/avatars/blank.png') }}');
             }
 
             if (typeof data.approval_status !== 'undefined') {
@@ -856,7 +856,7 @@ $(document).on('click', '.edit-official', function() {
     $('#editOfficialName').val(name);
     $('#editOfficialJabatan').val(jabatan);
     $('#editOfficialApprovalStatus').text(setOfficialModalStatusText(approvalStatus));
-    $('#officialModalPhotoPreview').attr('src', photoSrc || 'https://via.placeholder.com/150');
+    $('#officialModalPhotoPreview').attr('src', photoSrc || '{{ asset('assets/media/avatars/blank.png') }}');
     $('#editOfficialPhoto').val('');
 
     $('#editOfficialModal').modal('show');

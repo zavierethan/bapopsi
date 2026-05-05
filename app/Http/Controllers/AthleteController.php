@@ -15,7 +15,9 @@ class AthleteController extends Controller
 {
     public function index() {
         $cabor = DB::table('sports')->get();
-        return view('modules.athletes.index', compact('cabor'));
+        $kecamatan = DB::table('kecamatan')->get();
+        $sub_rayon = DB::table('sub_rayon')->get();
+        return view('modules.athletes.index', compact('cabor', 'kecamatan', 'sub_rayon'));
     }
 
     public function getLists(Request $request){
@@ -31,12 +33,6 @@ class AthleteController extends Controller
                     WHEN atlet.appr_status = 1 THEN 'Approved'
                     WHEN atlet.appr_status = 0 THEN 'Rejected'
                 END as approval_status"),
-                DB::raw("CASE
-                    WHEN atlet.perolehan_medali IS NULL THEN '-'
-                    WHEN atlet.perolehan_medali = 1 THEN 'Emas (1)'
-                    WHEN atlet.perolehan_medali = 2 THEN 'Perak (2)'
-                    WHEN atlet.perolehan_medali = 3 THEN 'Perunggu (3)'
-                END as perolehan_medali"),
                 DB::raw("TO_CHAR(atlet.appr_date, 'DD/MM/YYYY HH24:MI:SS') AS approval_date"),
                 'atlet.appr_notes',
                 'sports.name as cabang_olahraga',
@@ -70,6 +66,14 @@ class AthleteController extends Controller
 
         if (!empty($params['caborId'])) {
             $query->where('event_registrations.sport_id', $params['caborId']);
+        }
+
+        if (!empty($params['kecamatanId'])) {
+            $query->where('event_registrations.kecamatan_id', $params['kecamatanId']);
+        }
+
+        if (!empty($params['subRayonId'])) {
+            $query->where('event_registrations.sub_rayon_id', $params['subRayonId']);
         }
 
         if (!empty($params['tahun']) && $params['tahun'] !== ' ') {
