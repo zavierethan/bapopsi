@@ -683,8 +683,8 @@ class EventRegistrationController extends Controller
                 'sub_rayon.nama as nama_sub_rayon',
             )
             ->leftJoin('sports', 'sports.id', '=', 'atlet.cabang_olahraga_id')
-            ->leftJoin('sport_classes', 'sport_classes.id', '=', 'event_registrations.sport_class_id')
             ->leftJoin('event_registrations', 'event_registrations.id', '=', 'atlet.event_reg_id')
+            ->leftJoin('sport_classes', 'sport_classes.id', '=', 'event_registrations.sport_class_id')
             ->leftJoin('events', 'events.id', '=', 'event_registrations.event_id')
             ->leftJoin('kecamatan', 'kecamatan.id', '=', 'event_registrations.kecamatan_id')
             ->leftJoin('sub_rayon', 'sub_rayon.id', '=', 'event_registrations.sub_rayon_id')
