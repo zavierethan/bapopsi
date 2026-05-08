@@ -28,9 +28,8 @@
                         </select>
                     </div>
                     <div class="col-lg-3 mb-2 text-end">
-                        <button class="btn btn-success px-4" id="btnExportExcel"><i
-                                class="fas fa-file-excel me-2"></i>Export
-                            Excel</button>
+                        <button class="btn btn-success px-4" id="btn-export"><i
+                                class="fas me-2"></i>Export Perolehan Medali</button>
                     </div>
                 </div>
                 <!-- Statistik Card -->
@@ -157,6 +156,38 @@ $(document).ready(function() {
 $('#filter-event, #filter-medal, #filter-sport').on('change', function() {
     fetchSummary();
     table.ajax.reload();
+});
+
+$("#btn-export").on('click', function() {
+    let event = $("#filter-event").val();
+    let cabor = $("#filter-sport").val();
+    $.ajax({
+        url: `/dashboards/export`,
+        method: 'GET',
+        data: {
+            event: event,
+            cabor: cabor
+        },
+        xhrFields: {
+            responseType: 'blob' // important for binary data
+        },
+        success: function(data, status, xhr) {
+            const blob = new Blob([data], { type: 'application/pdf' });
+            const link = document.createElement('a');
+
+            // ambil nama file dari header
+            const filename = xhr.getResponseHeader('X-Filename') || 'Album Atlet.pdf';
+
+            link.href = window.URL.createObjectURL(blob);
+            link.download = filename;
+            link.click();
+
+            window.URL.revokeObjectURL(link.href);
+        },
+        error: function(xhr) {
+            alert('Failed to download PDF.');
+        }
+    });
 });
 
 function fetchSummary() {

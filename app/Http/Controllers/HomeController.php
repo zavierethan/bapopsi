@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Barryvdh\DomPDF\Facade\Pdf;
 use DB;
 use Auth;
 
@@ -130,5 +131,51 @@ class HomeController extends Controller
                 'total_cabang_olahraga' => $totalCabangOlahraga
             ]
         ]);
+    }
+
+    public function export(Request $request) {
+        $query = DB::table('atlet')
+            ->select(
+                'atlet.nama_lengkap',
+                'atlet.jenis_kelamin',
+                DB::raw("CASE
+                    WHEN atlet.perolehan_medali IS NULL THEN '-'
+                    WHEN atlet.perolehan_medali = 1 THEN 'Emas'
+                    WHEN atlet.perolehan_medali = 2 THEN 'Perak'
+                    WHEN atlet.perolehan_medali = 3 THEN 'Perunggu'
+                END as perolehan_medali"),
+                'events.name as nama_event',
+                DB::raw("TO_CHAR(atlet.tanggal_lahir, 'DD/MM/YYYY') AS tanggal_lahir"),
+                'sports.name as cabang_olahraga',
+                'sport_classes.name as kelas_olahraga',
+                'event_registrations.jenjang',
+                'kecamatan.nama as nama_kecamatan',
+                'sub_rayon.nama as nama_sub_rayon',
+            )
+            ->leftJoin('sports', 'sports.id', '=', 'atlet.cabang_olahraga_id')
+            ->leftJoin('event_registrations', 'event_registrations.id', '=', 'atlet.event_reg_id')
+            ->leftJoin('sport_classes', 'sport_classes.id', '=', 'event_registrations.sport_class_id')
+            ->leftJoin('events', 'events.id', '=', 'event_registrations.event_id')
+            ->leftJoin('kecamatan', 'kecamatan.id', '=', 'event_registrations.kecamatan_id')
+            ->leftJoin('sub_rayon', 'sub_rayon.id', '=', 'event_registrations.sub_rayon_id')
+            ->where('atlet.appr_status', 1);
+
+        if ($request->filled('event')) {
+            $query->where('events.id', $request->event);
+        }
+
+        if ($request->filled('cabor')) {
+            $query->where('atlet.cabang_olahraga_id', $request->cabor);
+        }
+
+        $data = $query->orderBy('atlet.nama_lengkap', 'asc')->get();
+
+        $pdf = Pdf::loadView('modules.dashboards.export', compact('data'))
+                  ->setPaper('A4', 'portrait');
+
+        return response($pdf->output(), 200)
+            ->header('Content-Type', 'application/pdf')
+            ->header('Content-Disposition', 'attachment; filename="Perolehan Medali Atlet ' . date('Y-m-d') . '.pdf"')
+            ->header('X-Filename', 'Perolehan Medali Atlet ' . date('Y-m-d') . '.pdf');
     }
 }

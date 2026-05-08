@@ -70,6 +70,7 @@ Route::group(['middleware' => ['auth']], function() {
             Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('general');
             Route::get('/lists', [App\Http\Controllers\HomeController::class, 'getLists'])->name('get-lists');
             Route::get('/summary', [App\Http\Controllers\HomeController::class, 'getSummary'])->name('summary');
+            Route::get('/export', [App\Http\Controllers\HomeController::class, 'export']);
         });
     });
 

@@ -29,8 +29,7 @@
                     </div>
                     <div class="col-lg-3 mb-2 text-end">
                         <button class="btn btn-success px-4" id="btnExportExcel"><i
-                                class="fas fa-file-excel me-2"></i>Export
-                            Excel</button>
+                                class="fas me-2"></i>Export Excel</button>
                     </div>
                 </div>
                 <!-- Statistik Card -->
