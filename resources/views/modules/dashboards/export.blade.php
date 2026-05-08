@@ -58,7 +58,7 @@
             @php $index = 0; @endphp
             @foreach($data as $data)
             <tr>
-                <td class="text-center">{{ $index + 1 }}</td>
+                <td class="text-center">{{ ++$index }}</td>
                 <td>{{ $data->nama_lengkap }}</td>
                 <td class="text-center">{{ $data->jenis_kelamin }}</td>
                 <td>{{ $data->cabang_olahraga }}</td>
