@@ -675,6 +675,7 @@ class EventRegistrationController extends Controller
                 DB::raw("TO_CHAR(atlet.appr_date, 'DD/MM/YYYY HH24:MI:SS') AS approval_date"),
                 'atlet.appr_notes',
                 'sports.name as cabang_olahraga',
+                'sport_classes.name as kelas_olahraga',
                 'event_registrations.jenjang',
                 'event_registrations.kecamatan_id',
                 'event_registrations.sub_rayon_id',
@@ -682,6 +683,7 @@ class EventRegistrationController extends Controller
                 'sub_rayon.nama as nama_sub_rayon',
             )
             ->leftJoin('sports', 'sports.id', '=', 'atlet.cabang_olahraga_id')
+            ->leftJoin('sport_classes', 'sport_classes.id', '=', 'event_registrations.sport_class_id')
             ->leftJoin('event_registrations', 'event_registrations.id', '=', 'atlet.event_reg_id')
             ->leftJoin('events', 'events.id', '=', 'event_registrations.event_id')
             ->leftJoin('kecamatan', 'kecamatan.id', '=', 'event_registrations.kecamatan_id')
@@ -704,7 +706,7 @@ class EventRegistrationController extends Controller
             $query->where('atlet.cabang_olahraga_id', $request->cabor);
         }
 
-        $data = $query->orderBy('sports.name')->get();
+        $data = $query->orderBy('atlet.nama_lengkap', 'asc')->get();
 
         $groupedData = $data->groupBy('cabang_olahraga');
 

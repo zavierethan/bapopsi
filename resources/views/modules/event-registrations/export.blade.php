@@ -49,7 +49,7 @@
                         <td class="text-center">{{ $index + 1 }}</td>
                         <td>{{ $atlet->nama_lengkap }}</td>
                         <td>{{ $atlet->cabang_olahraga }}</td>
-                        <td></td>
+                        <td>{{ $atlet->kelas_olahraga }}</td>
                         <td>{{ $atlet->tanggal_lahir }}</td>
                         <td>{{ $atlet->nama_sekolah ?? '' }}</td>
                         <td></td>
