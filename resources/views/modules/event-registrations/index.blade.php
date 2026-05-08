@@ -593,8 +593,7 @@ $("#POPWIL").DataTable({
 });
 
 $("#btn-export-o2sn").on('click', function() {
-    let eventCategory = $("#popdaEventCategory").val();
-    let tahun = $("#popdaTahun").val();
+    let tahun = $("#tahun").val();
     let jenjang = $("#jenjang").val();
     let cabor = $("#cabang-olahraga").val();
     $.ajax({
@@ -609,6 +608,10 @@ $("#btn-export-o2sn").on('click', function() {
         xhrFields: {
             responseType: 'blob' // important for binary data
         },
+        beforeSend: function() {
+            // Tampilkan loader dan disable button
+            $('#btn-export-o2sn').prop('disabled', true);
+        },
         success: function(data, status, xhr) {
             const blob = new Blob([data], { type: 'application/pdf' });
             const link = document.createElement('a');
@@ -621,9 +624,44 @@ $("#btn-export-o2sn").on('click', function() {
             link.click();
 
             window.URL.revokeObjectURL(link.href);
+
+            // Tampilkan success message
+            if (typeof Swal !== 'undefined') {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Berhasil!',
+                    text: 'File berhasil diunduh: ' + filename,
+                    confirmButtonText: 'OK',
+                    timer: 2000,
+                    timerProgressBar: true
+                });
+            }
         },
         error: function(xhr) {
-            alert('Failed to download PDF.');
+            let errorMessage = 'Gagal mengunduh PDF.';
+
+            // Cek jika ada error message dari response
+            if (xhr.responseJSON && xhr.responseJSON.message) {
+                errorMessage = xhr.responseJSON.message;
+            } else if (xhr.statusText) {
+                errorMessage = 'Error: ' + xhr.statusText;
+            }
+
+            // Gunakan sweet alert jika tersedia, jika tidak gunakan alert biasa
+            if (typeof Swal !== 'undefined') {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Gagal!',
+                    text: errorMessage,
+                    confirmButtonText: 'OK'
+                });
+            } else {
+                alert(errorMessage);
+            }
+        },
+        complete: function() {
+            // Sembunyikan loader dan enable button
+            $('#btn-export-o2sn').prop('disabled', false);
         }
     });
 });

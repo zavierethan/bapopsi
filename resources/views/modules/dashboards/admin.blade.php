@@ -33,7 +33,7 @@
                     </div>
                 </div>
                 <!-- Statistik Card -->
-                <div class="row mb-4">
+                <div class="row mb-4 mt-3">
                     <div class="col-md-3 mb-3">
                         <div class="card text-center shadow-card rounded-card p-3">
                             <div class="stat-icon blue mx-auto mb-2"><i class="fas fa-users"></i></div>
@@ -90,6 +90,18 @@
         </div>
     </div>
 </div>
+@endsection
+
+@section('style')
+<style>
+#export-loader {
+    display: none !important;
+}
+
+#export-loader.show {
+    display: flex !important;
+}
+</style>
 @endsection
 
 @section('script')
@@ -171,21 +183,62 @@ $("#btn-export").on('click', function() {
         xhrFields: {
             responseType: 'blob' // important for binary data
         },
+        beforeSend: function() {
+            // Tampilkan loader dan disable button
+            $('#export-loader').addClass('show');
+            $('#btn-export').prop('disabled', true);
+        },
         success: function(data, status, xhr) {
             const blob = new Blob([data], { type: 'application/pdf' });
             const link = document.createElement('a');
 
             // ambil nama file dari header
-            const filename = xhr.getResponseHeader('X-Filename') || 'Album Atlet.pdf';
+            const filename = xhr.getResponseHeader('X-Filename') || 'Perolehan Medali Atlet.pdf';
 
             link.href = window.URL.createObjectURL(blob);
             link.download = filename;
             link.click();
 
             window.URL.revokeObjectURL(link.href);
+
+            // Tampilkan success message
+            if (typeof Swal !== 'undefined') {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Berhasil!',
+                    text: 'File berhasil diunduh: ' + filename,
+                    confirmButtonText: 'OK',
+                    timer: 2000,
+                    timerProgressBar: true
+                });
+            }
         },
         error: function(xhr) {
-            alert('Failed to download PDF.');
+            let errorMessage = 'Gagal mengunduh PDF.';
+
+            // Cek jika ada error message dari response
+            if (xhr.responseJSON && xhr.responseJSON.message) {
+                errorMessage = xhr.responseJSON.message;
+            } else if (xhr.statusText) {
+                errorMessage = 'Error: ' + xhr.statusText;
+            }
+
+            // Gunakan sweet alert jika tersedia, jika tidak gunakan alert biasa
+            if (typeof Swal !== 'undefined') {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Gagal!',
+                    text: errorMessage,
+                    confirmButtonText: 'OK'
+                });
+            } else {
+                alert(errorMessage);
+            }
+        },
+        complete: function() {
+            // Sembunyikan loader dan enable button
+            $('#export-loader').removeClass('show');
+            $('#btn-export').prop('disabled', false);
         }
     });
 });
@@ -207,7 +260,25 @@ function fetchSummary() {
             }
         },
         error: function(xhr) {
-            console.error(xhr);
+            let errorMessage = 'Gagal memuat data ringkasan.';
+
+            if (xhr.responseJSON && xhr.responseJSON.message) {
+                errorMessage = xhr.responseJSON.message;
+            } else if (xhr.statusText) {
+                errorMessage = 'Error: ' + xhr.statusText;
+            }
+
+            console.error('Error:', errorMessage);
+
+            // Opsional: tampilkan sweet alert untuk error
+            if (typeof Swal !== 'undefined') {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Peringatan',
+                    text: errorMessage,
+                    confirmButtonText: 'OK'
+                });
+            }
         }
     });
 }
