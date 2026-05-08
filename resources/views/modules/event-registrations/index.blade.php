@@ -159,7 +159,7 @@
 
                                                 <div class="d-flex align-items-center fw-bold">
                                                     <a href="javascript:void(0);"
-                                                        class="btn btn-sm fw-bold btn-primary" id="btn-export-popwil">
+                                                        class="btn btn-sm fw-bold btn-primary" id="btn-export-o2sn">
                                                         Export Album Atlet
                                                     </a>
                                                 </div>
@@ -383,7 +383,17 @@ var o2snTable = $("#O2SN").DataTable({
             d.subRayon = $('#filterSubRayon').is(':visible') ? $('#subRayon').val() : ' ';
             d.cabangOlahraga = $('#cabang-olahraga').val();
         },
+        error: function(xhr, error, thrown) {
+            // Check if error is due to large dataset
+            if (xhr.status === 413) {
+                alert('Data terlalu besar. Harap tambahkan filter untuk mengurangi jumlah data.');
+            }
+        },
         dataSrc: function (json) {
+            // Check if data is too large
+            if (json.data && json.data.length > 1000) {
+                alert('Data terlalu besar. Harap tambahkan filter untuk mengurangi jumlah data.');
+            }
             return json.data;
         }
     },
@@ -582,6 +592,42 @@ $("#POPWIL").DataTable({
     ]
 });
 
+$("#btn-export-o2sn").on('click', function() {
+    let eventCategory = $("#popdaEventCategory").val();
+    let tahun = $("#popdaTahun").val();
+    let jenjang = $("#jenjang").val();
+    let cabor = $("#cabang-olahraga").val();
+    $.ajax({
+        url: `/event-registrations/export`,
+        method: 'GET',
+        data: {
+            eventCategory: 1,
+            tahun: tahun,
+            jenjang: jenjang,
+            cabor: cabor
+        },
+        xhrFields: {
+            responseType: 'blob' // important for binary data
+        },
+        success: function(data, status, xhr) {
+            const blob = new Blob([data], { type: 'application/pdf' });
+            const link = document.createElement('a');
+
+            // ambil nama file dari header
+            const filename = xhr.getResponseHeader('X-Filename') || 'Album Atlet.pdf';
+
+            link.href = window.URL.createObjectURL(blob);
+            link.download = filename;
+            link.click();
+
+            window.URL.revokeObjectURL(link.href);
+        },
+        error: function(xhr) {
+            alert('Failed to download PDF.');
+        }
+    });
+});
+
 $("#btn-export-popda").on('click', function() {
     let eventCategory = $("#popdaEventCategory").val();
     let tahun = $("#popdaTahun").val();
@@ -667,6 +713,8 @@ $("#jenjang").on("change", function() {
 
     refreshO2SNTable();
 });
+
+
 
 </script>
 @endsection

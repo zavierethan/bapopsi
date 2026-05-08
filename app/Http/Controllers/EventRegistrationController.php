@@ -685,15 +685,24 @@ class EventRegistrationController extends Controller
             ->leftJoin('event_registrations', 'event_registrations.id', '=', 'atlet.event_reg_id')
             ->leftJoin('events', 'events.id', '=', 'event_registrations.event_id')
             ->leftJoin('kecamatan', 'kecamatan.id', '=', 'event_registrations.kecamatan_id')
-            ->leftJoin('sub_rayon', 'sub_rayon.id', '=', 'event_registrations.sub_rayon_id');
+            ->leftJoin('sub_rayon', 'sub_rayon.id', '=', 'event_registrations.sub_rayon_id')
+            ->where('atlet.appr_status', 1);
 
         if ($request->filled('eventCategory')) {
-            $query->where('events.event_category_id', 1);
+            $query->where('events.event_category_id', $request->eventCategory);
         }
 
-        // if ($request->filled('tahun')) {
-        //     $query->where('events.year', $request->tahun);
-        // }
+        if ($request->filled('tahun')) {
+            $query->where('events.year', $request->tahun);
+        }
+
+        if ($request->filled('jenjang')) {
+            $query->where('event_registrations.jenjang', $request->jenjang);
+        }
+
+        if ($request->filled('cabor')) {
+            $query->where('atlet.cabang_olahraga_id', $request->cabor);
+        }
 
         $data = $query->orderBy('sports.name')->get();
 
