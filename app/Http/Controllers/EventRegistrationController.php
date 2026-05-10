@@ -706,6 +706,14 @@ class EventRegistrationController extends Controller
             $query->where('atlet.cabang_olahraga_id', $request->cabor);
         }
 
+        if ($request->filled('kecamatan')) {
+            $query->where('event_registrations.kecamatan_id', $request->kecamatan);
+        }
+
+        if ($request->filled('subRayon')) {
+            $query->where('event_registrations.sub_rayon_id', $request->subRayon);
+        }
+
         $data = $query->orderBy('atlet.nama_lengkap', 'asc')->get();
 
         $groupedData = $data->groupBy('cabang_olahraga');

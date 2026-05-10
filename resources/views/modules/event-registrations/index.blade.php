@@ -141,6 +141,33 @@
                                                         <option value="SMP">SMP</option>
                                                     </select>
                                                 </div>
+                                                <div class="d-flex align-items-center fw-bold" id="filterKecamatan">
+                                                    <div class="text-gray-500 fs-7 me-2" style="white-space: nowrap;">Kecamatan</div>
+                                                    <select
+                                                        class="form-select form-select-transparent text-graY-800 fs-base lh-1 fw-bold py-0 ps-3 w-auto"
+                                                        data-control="select2" data-hide-search="true"
+                                                        data-dropdown-css-class="w-150px"
+                                                        data-placeholder="Select an option" id="kecamatan">
+                                                        <option value=" " selected="selected">Semua</option>
+                                                        <option value="">-- Pilih Kecamatan --</option>
+                                                        @foreach($kecamatan as $k)
+                                                            <option value="{{$k->id}}">{{$k->nama}}</option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                                <div class="d-flex align-items-center fw-bold" id="filterSubRayon">
+                                                    <div class="text-gray-500 fs-7 me-2" style="white-space: nowrap;">Sub Rayon</div>
+                                                    <select
+                                                        class="form-select form-select-transparent text-graY-800 fs-base lh-1 fw-bold py-0 ps-3 w-auto"
+                                                        data-control="select2" data-hide-search="true"
+                                                        data-dropdown-css-class="w-150px"
+                                                        data-placeholder="Select an option" id="sub-rayon">
+                                                        <option value=" " selected="selected">Semua</option>
+                                                        @foreach($subRayon as $sr)
+                                                        <option value="{{$sr->id}}">{{$sr->nama}}</option>
+                                                    @endforeach
+                                                    </select>
+                                                </div>
                                                 <div class="d-flex align-items-center fw-bold">
                                                     <div class="text-gray-500 fs-7 me-2" style="white-space: nowrap;">
                                                         Cabang Olahraga
@@ -380,7 +407,7 @@ var o2snTable = $("#O2SN").DataTable({
             d.tahun = $('#tahun').val();
             d.jenjang = $('#jenjang').val();
             d.kecamatan = $('#filterKecamatan').is(':visible') ? $('#kecamatan').val() : ' ';
-            d.subRayon = $('#filterSubRayon').is(':visible') ? $('#subRayon').val() : ' ';
+            d.subRayon = $('#filterSubRayon').is(':visible') ? $('#sub-rayon').val() : ' ';
             d.cabangOlahraga = $('#cabang-olahraga').val();
         },
         error: function(xhr, error, thrown) {
@@ -470,7 +497,7 @@ function refreshO2SNTable() {
     }
 }
 
-$("#jenjang, #cabang-olahraga, #tahun").on('change', function() {
+$("#jenjang, #cabang-olahraga, #tahun, #kecamatan, #sub-rayon").on('change', function() {
     refreshO2SNTable();
 });
 
@@ -596,6 +623,8 @@ $("#btn-export-o2sn").on('click', function() {
     let tahun = $("#tahun").val();
     let jenjang = $("#jenjang").val();
     let cabor = $("#cabang-olahraga").val();
+    let kecamatan = $("#kecamatan").val();
+    let subRayon = $("#sub-rayon").val();
     $.ajax({
         url: `/event-registrations/export`,
         method: 'GET',
@@ -603,7 +632,9 @@ $("#btn-export-o2sn").on('click', function() {
             eventCategory: 1,
             tahun: tahun,
             jenjang: jenjang,
-            cabor: cabor
+            cabor: cabor,
+            kecamatan: kecamatan,
+            subRayon: subRayon
         },
         xhrFields: {
             responseType: 'blob' // important for binary data

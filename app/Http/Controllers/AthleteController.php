@@ -14,9 +14,9 @@ use Auth;
 class AthleteController extends Controller
 {
     public function index() {
-        $cabor = DB::table('sports')->get();
+        $cabor = DB::table('sports')->orderBy('name')->get();
         $kecamatan = DB::table('kecamatan')->get();
-        $sub_rayon = DB::table('sub_rayon')->get();
+        $sub_rayon = DB::table('sub_rayon')->orderBy('id')->get();
         return view('modules.athletes.index', compact('cabor', 'kecamatan', 'sub_rayon'));
     }
 
@@ -93,7 +93,7 @@ class AthleteController extends Controller
 
         $totalRecords = $query->count();
         $filteredRecords = $query->count();
-        $data = $query->orderBy('atlet.id', 'desc')->skip($start)->take($length)->get();
+        $data = $query->orderBy('atlet.nama_lengkap', 'asc')->skip($start)->take($length)->get();
 
         return response()->json([
             'draw' => $request->input('draw'),
