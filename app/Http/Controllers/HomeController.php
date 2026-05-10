@@ -79,7 +79,7 @@ class HomeController extends Controller
 
         $totalRecords = $query->count();
         $filteredRecords = $query->count();
-        $data = $query->orderBy('sports.name', 'ASC')->orderBy('atlet.perolehan_medali', 'ASC')->skip($start)->take($length)->get();
+        $data = $query->orderBy('atlet.nama_lengkap', 'asc')->orderBy('atlet.jenis_kelamin', 'asc')->skip($start)->take($length)->get();
 
         return response()->json([
             'draw' => $request->input('draw'),
