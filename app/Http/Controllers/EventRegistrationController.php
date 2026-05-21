@@ -470,7 +470,12 @@ class EventRegistrationController extends Controller
                 DB::raw("COUNT(CASE WHEN a.perolehan_medali = 3 THEN 1 END) as perunggu")
             )
             ->groupBy('k.id', 'k.nama')
-            ->orderBy('k.nama');
+            ->orderByRaw('
+                (COUNT(CASE WHEN a.perolehan_medali = 1 THEN 1 END) +
+                COUNT(CASE WHEN a.perolehan_medali = 2 THEN 1 END) +
+                COUNT(CASE WHEN a.perolehan_medali = 3 THEN 1 END)) DESC
+            ')
+            ->orderBy('k.nama'); // tiebreaker: nama kecamatan A-Z
 
         if ($request->has('kecamatan_id')) {
             $query->where('k.id', $request->input('kecamatan_id'));
@@ -502,6 +507,9 @@ class EventRegistrationController extends Controller
                 DB::raw("COUNT(CASE WHEN a.perolehan_medali = 3 THEN 1 END) as perunggu")
             )
             ->groupBy('k.id', 'k.nama')
+            ->orderByRaw("COUNT(CASE WHEN a.perolehan_medali = 1 THEN 1 END) DESC")
+            ->orderByRaw("COUNT(CASE WHEN a.perolehan_medali = 2 THEN 1 END) DESC")
+            ->orderByRaw("COUNT(CASE WHEN a.perolehan_medali = 3 THEN 1 END) DESC")
             ->orderBy('k.nama');
 
         if ($request->has('kecamatan_id')) {
