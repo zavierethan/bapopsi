@@ -29,6 +29,7 @@
                 <table class="min-w-full">
                     <thead class="bg-gray-50">
                         <tr>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">No.</th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Nama Atlet</th>
                             <th class="px-6 py-3 text-left font-medium text-xs text-gray-500 uppercase">L/P</th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Asal Sekolah</th>
@@ -138,9 +139,13 @@ function renderPage() {
     const pageData = allData.slice(startIndex, endIndex);
 
     let rows = '';
-    $.each(pageData, function(_, item) {
+    $.each(pageData, function(index, item) {
+        const rowNumber = startIndex + index + 1;
         rows += `
             <tr>
+                <td class="px-6 py-4 font-medium text-xs text-gray-900">
+                    ${rowNumber}
+                </td>
                 <td class="px-6 py-4 font-medium text-xs">
                     ${escapeHtml(item.nama_lengkap)}
                 </td>
